@@ -37,9 +37,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.capabilities.ForgeCapabilities;
-import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.IFluidTank;
@@ -58,7 +56,7 @@ public class FuelTankBlockEntity extends SmartBlockEntity implements IHaveGoggle
 
     private static final int MAX_SIZE = 3;
 
-    protected LazyOptional<IFluidHandler> fluidCapability;
+    // Expose handler via method; capability providers are registered in mod init (RegisterCapabilitiesEvent)
     protected boolean forceFluidLevelUpdate;
     protected FuelFluidHandler tankInventory;
     protected BlockPos controller;
@@ -79,8 +77,7 @@ public class FuelTankBlockEntity extends SmartBlockEntity implements IHaveGoggle
 
     public FuelTankBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
-        tankInventory = createInventory();
-        fluidCapability = LazyOptional.of(() -> tankInventory);
+    tankInventory = createInventory();
         forceFluidLevelUpdate = true;
         updateConnectivity = false;
         updateCapability = false;
@@ -318,9 +315,10 @@ public class FuelTankBlockEntity extends SmartBlockEntity implements IHaveGoggle
     }
 
     private void refreshCapability() {
-        LazyOptional<IFluidHandler> oldCap = fluidCapability;
-        fluidCapability = LazyOptional.of(this::handlerForCapability);
-        oldCap.invalidate();
+        // Invalidate cached capabilities for this structure so caches pick up new provider/handler
+        if (level != null) {
+            invalidateAllPartsCapabilities();
+        }
     }
 
     private IFluidHandler handlerForCapability() {
@@ -346,8 +344,7 @@ public class FuelTankBlockEntity extends SmartBlockEntity implements IHaveGoggle
         FuelTankBlockEntity controllerBE = getControllerBE();
         if (controllerBE == null)
             return false;
-        return containedFluidTooltip(tooltip, isPlayerSneaking,
-                controllerBE.getCapability(ForgeCapabilities.FLUID_HANDLER));
+    return containedFluidTooltip(tooltip, isPlayerSneaking, controllerBE.getFluidHandler(null));
     }
 
     @Override
@@ -442,15 +439,7 @@ public class FuelTankBlockEntity extends SmartBlockEntity implements IHaveGoggle
         forceFluidLevelUpdate = false;
     }
 
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (!fluidCapability.isPresent())
-            refreshCapability();
-        if (cap == ForgeCapabilities.FLUID_HANDLER)
-            return fluidCapability.cast();
-        return super.getCapability(cap, side);
-    }
+    // Capabilities are provided via RegisterCapabilitiesEvent; do not override getCapability.
 
     @Override
     public void invalidate() {
@@ -590,6 +579,31 @@ public class FuelTankBlockEntity extends SmartBlockEntity implements IHaveGoggle
     @Override
     public FluidStack getFluid(int tank) {
         return tankInventory.getFluid().copy();
+    }
+
+    /**
+     * Returns the fluid handler for this block entity. Providers registered to
+     * RegisterCapabilitiesEvent should call this method when providing capabilities.
+     */
+    public IFluidHandler getFluidHandler(@Nullable Direction side) {
+        return handlerForCapability();
+    }
+
+    private void invalidateAllPartsCapabilities() {
+        if (level == null)
+            return;
+        if (isController()) {
+            for (int yOffset = 0; yOffset < height; yOffset++) {
+                for (int xOffset = 0; xOffset < width; xOffset++) {
+                    for (int zOffset = 0; zOffset < width; zOffset++) {
+                        BlockPos pos = this.worldPosition.offset(xOffset, yOffset, zOffset);
+                        level.invalidateCapabilities(pos);
+                    }
+                }
+            }
+        } else {
+            level.invalidateCapabilities(worldPosition);
+        }
     }
 
     public static class FuelFluidHandler extends SmartFluidTank {
