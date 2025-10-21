@@ -18,14 +18,12 @@
 
 pluginManagement {
     repositories {
-        maven { url = uri("https://maven.fabricmc.net/") }
-        maven { url = uri("https://maven.architectury.dev/") }
-        maven { url = uri("https://maven.minecraftforge.net/") }
-        maven { url = uri("https://maven.quiltmc.org/repository/release") }
+        maven { url = uri("https://maven.neoforged.net/releases") }
         gradlePluginPortal()
     }
 }
 
+// Single-loader NeoForge mod with common/ for shared game logic
 include("common")
 include("forge")
 
