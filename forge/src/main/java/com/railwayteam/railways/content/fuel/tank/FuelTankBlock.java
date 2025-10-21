@@ -61,9 +61,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.capabilities.ForgeCapabilities;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.util.ForgeSoundType;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
@@ -142,10 +141,9 @@ public class FuelTankBlock extends Block implements IWrenchable, IBE<FuelTankBlo
         if (be == null)
             return InteractionResult.FAIL;
 
-        LazyOptional<IFluidHandler> tankCapability = be.getCapability(ForgeCapabilities.FLUID_HANDLER);
-        if (!tankCapability.isPresent())
+        IFluidHandler fluidTank = world.getCapability(Capabilities.FluidHandler.BLOCK, be.getBlockPos(), ray.getDirection());
+        if (fluidTank == null)
             return InteractionResult.PASS;
-        IFluidHandler fluidTank = tankCapability.orElse(null);
         FluidStack prevFluidInTank = fluidTank.getFluidInTank(0)
                 .copy();
 
@@ -163,8 +161,7 @@ public class FuelTankBlock extends Block implements IWrenchable, IBE<FuelTankBlo
 
         SoundEvent soundevent = null;
         BlockState fluidState = null;
-        FluidStack fluidInTank = tankCapability.map(fh -> fh.getFluidInTank(0))
-                .orElse(FluidStack.EMPTY);
+    FluidStack fluidInTank = fluidTank.getFluidInTank(0);
 
         if (exchange == FluidHelper.FluidExchange.ITEM_TO_TANK) {
             Fluid fluid = fluidInTank.getFluid();

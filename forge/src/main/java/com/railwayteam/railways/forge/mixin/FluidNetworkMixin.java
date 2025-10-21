@@ -24,7 +24,6 @@ import com.simibubi.create.content.fluids.FluidNetwork;
 import com.simibubi.create.content.fluids.PipeConnection;
 import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.math.BlockFace;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -37,11 +36,11 @@ import java.util.Set;
 @Mixin(value = FluidNetwork.class, remap = false)
 public class FluidNetworkMixin {
     @Shadow Set<Pair<BlockFace, PipeConnection>> frontier;
-    @Shadow LazyOptional<IFluidHandler> source;
+    @Shadow @Nullable IFluidHandler source;
 
     @Inject(method = "keepPortableFluidInterfaceEngaged", at = @At("HEAD"))
     private void keepPortableFluidInterfaceEngaged(CallbackInfo ci) {
-        IFluidHandler handler = source.orElse(null);
+    IFluidHandler handler = source;
         if (!(handler instanceof InterfaceFluidHandler || handler instanceof PortableFluidInterfaceBlockEntity.InterfaceFluidHandler))
             return;
         if (frontier.isEmpty())
