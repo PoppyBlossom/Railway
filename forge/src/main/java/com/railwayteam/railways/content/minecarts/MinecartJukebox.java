@@ -93,7 +93,7 @@ public class MinecartJukebox extends MinecartBlock {
 
   @Override
   public void activateMinecart(int x, int y, int z, boolean active) {
-    if (active && !level.isClientSide) {
+    if (active && !level().isClientSide) {
       if (cooldownCount <= 0) {
         cooldownCount = COOLDOWN;
         PacketSender.updateJukeboxClientside(this, this.disc);
@@ -112,7 +112,7 @@ public class MinecartJukebox extends MinecartBlock {
     InteractionResult ret = super.interact(player, hand);
     if (ret.consumesAction()) return ret;
 
-    if (!level.isClientSide) {
+    if (!level().isClientSide) {
       if (disc.isEmpty()) { // no disc inserted
         // get the disc from the player, if they have one
         ItemStack handStack = player.getItemInHand(hand);
@@ -128,27 +128,29 @@ public class MinecartJukebox extends MinecartBlock {
         __ejectRecord();
       }
     }
-    return InteractionResult.sidedSuccess(level.isClientSide);
+    return InteractionResult.sidedSuccess(level().isClientSide);
   }
 
   @Override
   protected void readAdditionalSaveData(CompoundTag compound) {
     super.readAdditionalSaveData(compound);
     if (compound.contains("Disc", Tag.TAG_COMPOUND)) {
-      disc = ItemStack.of(compound.getCompound("Disc"));
+      // In 1.21, ItemStack.parse requires a HolderLookup.Provider
+      disc = ItemStack.parseOptional(level().registryAccess(), compound.getCompound("Disc")).orElse(ItemStack.EMPTY);
     }
   }
 
   @Override
   protected void addAdditionalSaveData(CompoundTag compound) {
     super.addAdditionalSaveData(compound);
-    compound.put("Disc", disc.save(new CompoundTag()));
+    // In 1.21, save requires a HolderLookup.Provider
+    compound.put("Disc", disc.save(level().registryAccess()));
   }
 
   // clientside
   public void insertRecord (ItemStack record) {
     __insertRecord(record);
-    if (level.isClientSide) {
+    if (level().isClientSide) {
       if (!this.disc.isEmpty()) {
         if (sound == null || sound.isStopped()) {
           startPlaying();
@@ -164,21 +166,21 @@ public class MinecartJukebox extends MinecartBlock {
       content = Blocks.JUKEBOX.defaultBlockState();
     }
     this.content = content.setValue(JukeboxBlock.HAS_RECORD, !disc.isEmpty());
-    if (!level.isClientSide) PacketSender.updateJukeboxClientside(this, this.disc);
+    if (!level().isClientSide) PacketSender.updateJukeboxClientside(this, this.disc);
   }
 
   // serverside
   private void __ejectRecord () {
-    if (level.isClientSide) return;
+    if (level().isClientSide) return;
 
     Vector3d pos = new Vector3d(
       this.position().x + 0.5d,
       this.position().y + 1d,
       this.position().z + 0.5d
     );
-    ItemEntity out = new ItemEntity(level, pos.x, pos.y, pos.z, this.disc);
+    ItemEntity out = new ItemEntity(level(), pos.x, pos.y, pos.z, this.disc);
     out.setDefaultPickUpDelay();
-    level.addFreshEntity(out);
+    level().addFreshEntity(out);
     __insertRecord(ItemStack.EMPTY);
   }
 
@@ -222,7 +224,7 @@ public class MinecartJukebox extends MinecartBlock {
   @Override
   public void destroy(@NotNull DamageSource source) {
     super.destroy(source);
-    if (!source.is(DamageTypeTags.IS_EXPLOSION) && this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS) && this.disc != null && !this.disc.isEmpty()) {
+    if (!source.is(DamageTypeTags.IS_EXPLOSION) && this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS) && this.disc != null && !this.disc.isEmpty()) {
       this.spawnAtLocation(this.disc.copy());
       this.disc = ItemStack.EMPTY;
     }
