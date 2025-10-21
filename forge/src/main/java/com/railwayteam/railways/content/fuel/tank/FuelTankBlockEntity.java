@@ -56,7 +56,7 @@ public class FuelTankBlockEntity extends SmartBlockEntity implements IHaveGoggle
 
     private static final int MAX_SIZE = 3;
 
-    // Expose handler via method; capability providers are registered in mod init (RegisterCapabilitiesEvent)
+    // Expose handler via method; capability providers are registered in mod init (RegisterCapabilitiesEvent).
     protected boolean forceFluidLevelUpdate;
     protected FuelFluidHandler tankInventory;
     protected BlockPos controller;

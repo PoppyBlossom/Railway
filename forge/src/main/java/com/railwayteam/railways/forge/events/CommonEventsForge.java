@@ -18,7 +18,6 @@
 
 package com.railwayteam.railways.forge.events;
 
-import com.railwayteam.railways.Railways;
 import com.railwayteam.railways.content.conductor.ConductorEntity;
 import com.railwayteam.railways.content.conductor.toolbox.MountedToolbox;
 import com.railwayteam.railways.mixin.AccessorToolboxBlockEntity;
@@ -26,8 +25,6 @@ import com.railwayteam.railways.registry.forge.CRBlockEntitiesImpl;
 import com.railwayteam.railways.content.fuel.LiquidFuelManager;
 import com.railwayteam.railways.events.CommonEvents;
 import com.railwayteam.railways.registry.CREntities;
-import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -57,8 +54,6 @@ public class CommonEventsForge {
 		if (event.getEntity() instanceof ServerPlayer player)
 			CommonEvents.onPlayerJoin(player);
 	}
-
-	private static final ResourceLocation conductorItemCap = Railways.asResource("conductor_item_capability");
 
 	@SubscribeEvent
 	public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
@@ -109,8 +104,11 @@ class ConductorItemHandler implements IItemHandler {
 
 	private @Nullable com.simibubi.create.content.equipment.toolbox.ToolboxInventory inv() {
 		MountedToolbox tb = conductor.getToolbox();
-		if (tb == null) return null;
-		return ((AccessorToolboxBlockEntity) tb).getInventory();
+		if (tb == null)
+			return null;
+		if (tb instanceof AccessorToolboxBlockEntity accessor)
+			return accessor.getInventory();
+		return null;
 	}
 
 	@Override

@@ -30,6 +30,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import org.jetbrains.annotations.Nullable;
 
 public class PortableFuelInterfaceBlockEntity extends PortableStorageInterfaceBlockEntity {
 
@@ -55,7 +56,7 @@ public class PortableFuelInterfaceBlockEntity extends PortableStorageInterfaceBl
         super.stopTransferring();
     }
 
-    private InterfaceFluidHandler currentHandler;
+    private @Nullable InterfaceFluidHandler currentHandler;
 
     private InterfaceFluidHandler createEmptyHandler() {
         return new InterfaceFluidHandler(new FluidTank(0));
