@@ -18,8 +18,7 @@
 
 package com.railwayteam.railways.forge.asm;
 
-import cpw.mods.modlauncher.api.INameMappingService;
-import net.neoforged.neoforge.common.util.ObfuscationReflectionHelper;
+// Avoid depending on ModLauncher name-mapping APIs here; match by known names instead.
 import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
@@ -44,7 +43,10 @@ import org.objectweb.asm.tree.*;
 public class ContainerLevelAccessASM {
     public static void processNode(ClassNode classNode) {
         for (MethodNode node : classNode.methods) {
-            if (node.name.equals(ObfuscationReflectionHelper.remapName(INameMappingService.Domain.METHOD, "m_39289_"))) {
+            // The target method was previously mapped via ModLauncher (INameMappingService).
+            // ModLauncher APIs and name mappings have changed; to remain resilient, match
+            // the method by its known deobfuscated name or the obfuscated name used in mappings.
+            if (node.name.equals("create") || node.name.equals("m_39289_")) {
                 InsnList instructions = node.instructions;
                 InsnList newInstructions = new InsnList();
 
