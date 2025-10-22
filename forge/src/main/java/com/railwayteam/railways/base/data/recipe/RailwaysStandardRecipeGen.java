@@ -34,6 +34,7 @@ import com.simibubi.create.AllItems;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
@@ -45,6 +46,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleCookingSerializer;
 import net.minecraft.world.level.ItemLike;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
@@ -350,13 +352,13 @@ public class RailwaysStandardRecipeGen extends RailwaysRecipeProvider {
         return create(result::get);
     }
 
-    public RailwaysStandardRecipeGen(PackOutput pOutput) {
-        super(pOutput);
+    public RailwaysStandardRecipeGen(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        super(pOutput, lookupProvider);
     }
 
-    @Override
-    public String getName() {
-        return "Steam 'n' Rails Standard Recipes";
+    // Factory method for Create's PackGenerator which only provides PackOutput
+    public static RailwaysStandardRecipeGen create(PackOutput output) {
+        return new RailwaysStandardRecipeGen(output, CompletableFuture.completedFuture(null));
     }
 
     class GeneratedRecipeBuilder {

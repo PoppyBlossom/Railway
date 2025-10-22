@@ -20,7 +20,11 @@ package com.railwayteam.railways.content.conductor;
 
 import com.railwayteam.railways.Railways;
 import com.simibubi.create.AllBlocks;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -36,19 +40,45 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
+import java.util.EnumMap;
+import java.util.List;
 import java.util.Locale;
 
 public abstract class ConductorCapItem extends ArmorItem {
   public final DyeColor color;
   public final ResourceLocation textureId;
   public final String textureStr;
+  
+  // Create the armor material holder
+  private static final Holder<ArmorMaterial> CONDUCTOR_CAP_MATERIAL = createConductorCapMaterial();
 
   protected ConductorCapItem(Properties props, DyeColor color) {
-    super(new ConductorArmorMaterial(), Type.HELMET, props);
+    super(CONDUCTOR_CAP_MATERIAL, Type.HELMET, props);
     this.color  = color;
     String colorName = color.getName().toLowerCase(Locale.ROOT);
     this.textureId = Railways.asResource("textures/entity/caps/%s_conductor_cap.png".formatted(colorName));
     this.textureStr = textureId.toString();
+  }
+  
+  private static Holder<ArmorMaterial> createConductorCapMaterial() {
+    // Create the ArmorMaterial instance  
+    ArmorMaterial material = new ArmorMaterial(
+      Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+        map.put(ArmorItem.Type.BOOTS, 0);
+        map.put(ArmorItem.Type.LEGGINGS, 0);
+        map.put(ArmorItem.Type.CHESTPLATE, 0);
+        map.put(ArmorItem.Type.HELMET, 0);
+        map.put(ArmorItem.Type.BODY, 0);
+      }),
+      0, // enchantmentValue
+      SoundEvents.ARMOR_EQUIP_LEATHER, // equipSound (now a Holder)
+      () -> Ingredient.EMPTY, // repairIngredient
+      List.of(new ArmorMaterial.Layer(Railways.asResource("conductor_cap"))), // layers
+      0f, // toughness
+      0f  // knockbackResistance
+    );
+    // Wrap in a direct holder reference
+    return new Holder.Reference<>(Holder.Reference.Type.STAND_ALONE, null, null, material);
   }  public static ConductorCapItem create(Properties props, DyeColor color) {
     throw new AssertionError();
   }
@@ -74,47 +104,5 @@ public abstract class ConductorCapItem extends ArmorItem {
       return InteractionResult.SUCCESS;
     }
     return super.useOn(ctx);
-  }
-
-  static class ConductorArmorMaterial implements ArmorMaterial {
-    @Override
-    public int getDurabilityForType(@NotNull Type type) {
-      return 0;
-    }
-
-    @Override
-    public int getDefenseForType(@NotNull Type type) {
-      return 0;
-    }
-
-    @Override
-    public int getEnchantmentValue() {
-      return 0;
-    }
-
-    @Override
-    public @NotNull SoundEvent getEquipSound() {
-      return SoundEvents.ARMOR_EQUIP_LEATHER;
-    }
-
-    @Override
-    public @NotNull Ingredient getRepairIngredient() {
-      return Ingredient.EMPTY;
-    }
-
-    @Override
-    public @NotNull String getName() {
-      return "conductor_cap";
-    }
-
-    @Override
-    public float getToughness() {
-      return 0;
-    }
-
-    @Override
-    public float getKnockbackResistance() {
-      return 0;
-    }
   }
 }

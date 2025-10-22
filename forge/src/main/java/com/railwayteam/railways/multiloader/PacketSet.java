@@ -70,8 +70,8 @@ public abstract class PacketSet {
 		this.c2sPackets = c2sPackets;
 		this.c2sTypes = c2sTypes;
 
-		c2sPacket = new ResourceLocation(id, "c2s");
-		s2cPacket = new ResourceLocation(id, "s2c");
+		c2sPacket = ResourceLocation.fromNamespaceAndPath(id, "c2s");
+		s2cPacket = ResourceLocation.fromNamespaceAndPath(id, "s2c");
 	}
 
 	/**

@@ -29,6 +29,7 @@ import com.simibubi.create.content.kinetics.press.PressingRecipe;
 import com.simibubi.create.content.kinetics.saw.CuttingRecipe;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipeBuilder;
 import com.simibubi.create.content.trains.track.TrackMaterial;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
@@ -36,14 +37,20 @@ import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static com.railwayteam.railways.compat.tracks.TrackCompatUtils.TRACK_COMPAT_MODS;
 
 public class RailwaysSequencedAssemblyRecipeGen extends RailwaysRecipeProvider {
-  public RailwaysSequencedAssemblyRecipeGen(PackOutput output) {
-        super(output);
+    public RailwaysSequencedAssemblyRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        super(output, lookupProvider);
+    }
+
+    // Factory method for Create's PackGenerator which only provides PackOutput
+    public static RailwaysSequencedAssemblyRecipeGen create(PackOutput output) {
+        return new RailwaysSequencedAssemblyRecipeGen(output, CompletableFuture.completedFuture(null));
     }
 
     protected GeneratedRecipe create(String name, Function<RailwaysSequencedAssemblyRecipeBuilder, SequencedAssemblyRecipeBuilder> transform) {
@@ -187,10 +194,5 @@ public class RailwaysSequencedAssemblyRecipeGen extends RailwaysRecipeProvider {
             .addStep(DeployerApplicationRecipe::new, rb -> rb.require(Ingredients.ironSheet()))
             .addStep(PressingRecipe::new, rb -> rb)
         ));
-    }
-
-    @Override
-    public @NotNull String getName() {
-        return "Railways' Sequenced Assembly Recipes";
     }
 }

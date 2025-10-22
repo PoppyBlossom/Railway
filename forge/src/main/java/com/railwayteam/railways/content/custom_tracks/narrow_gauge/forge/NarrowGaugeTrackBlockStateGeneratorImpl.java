@@ -110,14 +110,14 @@ public class NarrowGaugeTrackBlockStateGeneratorImpl extends NarrowGaugeTrackBlo
                 Railways.asResource("block/narrow_gauge_base/" + value.getModel()))
             .texture("particle", material.particle);
         for (String k : textureMap.keySet()) {
-            builder = builder.texture(k, new ResourceLocation(textureModId, texturePrefix + textureMap.get(k) + resName));
+            builder = builder.texture(k, ResourceLocation.fromNamespaceAndPath(textureModId, texturePrefix + textureMap.get(k) + resName));
         }
         for (String k : new String[]{"segment_left", "segment_right", "tie"}) { // obj_track
             prov.models()
                 .withExistingParent(prefix + k,
                     Railways.asResource("block/narrow_gauge_base/" + k))
-                .texture("0", new ResourceLocation(textureModId, texturePrefix + "standard_track_" + resName))
-                .texture("1", new ResourceLocation(textureModId, texturePrefix + "standard_track_mip_" + resName))
+                .texture("0", ResourceLocation.fromNamespaceAndPath(textureModId, texturePrefix + "standard_track_" + resName))
+                .texture("1", ResourceLocation.fromNamespaceAndPath(textureModId, texturePrefix + "standard_track_mip_" + resName))
                 .texture("particle", material.particle);
         }
         return builder;

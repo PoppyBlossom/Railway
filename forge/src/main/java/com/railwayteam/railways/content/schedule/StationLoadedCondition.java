@@ -23,6 +23,7 @@ import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.content.trains.schedule.condition.ScheduleWaitCondition;
 import com.simibubi.create.content.trains.station.GlobalStation;
 import net.createmod.catnip.data.Pair;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -55,11 +56,12 @@ public class StationLoadedCondition extends ScheduleWaitCondition {
         return stationLevel.isPositionEntityTicking(currentStation.getBlockEntityPos());
     }
 
-    @Override
-    protected void writeAdditional(CompoundTag tag) {}
+    // TODO: Check if Create 1.21.1 has updated serialization methods for ScheduleWaitCondition
+    // @Override
+    // protected void writeAdditional(CompoundTag tag, HolderLookup.Provider provider) {}
 
-    @Override
-    protected void readAdditional(CompoundTag tag) {}
+    // @Override
+    // protected void readAdditional(CompoundTag tag, HolderLookup.Provider provider) {}
 
     @Override
     public ResourceLocation getId() {

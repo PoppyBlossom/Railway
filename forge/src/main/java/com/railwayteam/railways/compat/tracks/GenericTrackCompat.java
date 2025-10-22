@@ -146,7 +146,7 @@ public class GenericTrackCompat {
     }
 
     protected ResourceLocation asResource(String path) {
-        return new ResourceLocation(modid, path);
+        return ResourceLocation.fromNamespaceAndPath(modid, path);
     }
 
     protected ResourceLocation getSlabLocation(String name) {

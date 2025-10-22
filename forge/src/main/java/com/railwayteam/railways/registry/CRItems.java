@@ -55,7 +55,7 @@ public class CRItems {
   public static final TagKey<Item> CONDUCTOR_CAPS = CRTags.AllItemTags.CONDUCTOR_CAPS.tag;
 
   public static TagKey<Item> makeItemTag(String mod, String path) {
-    return TagKey.create(Registries.ITEM, new ResourceLocation(mod, path));
+    return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(mod, path));
   }
 
   private static ItemBuilder<? extends Item, ?> makeMinecart(String name, AbstractMinecart.Type type) {

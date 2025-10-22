@@ -138,7 +138,7 @@ public abstract class TrackCompatUtils {
             .onRegister(CRTrackMaterials::addToBlockEntityType)
             .item(TrackBlockItem::new)
             .removeTab(hideInCreativeTabs ? null : CreativeModeTabs.SEARCH)
-            .model((c, p) -> p.generated(c, new ResourceLocation(owningMod, "item/track/track_"+material.resourceName())))
+            .model((c, p) -> p.generated(c, ResourceLocation.fromNamespaceAndPath(owningMod, "item/track/track_"+material.resourceName())))
             .build()
             .register();
     }

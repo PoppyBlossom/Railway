@@ -109,15 +109,15 @@ public class Railways {
   }
 
   public static ResourceLocation asResource(String name) {
-    return new ResourceLocation(MOD_ID, name);
+    return ResourceLocation.fromNamespaceAndPath(MOD_ID, name);
   }
 
   public static void gatherData(DataGenerator.PackGenerator gen) {
     REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, CRTagGen::generateBlockTags);
     REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, CRTagGen::generateItemTags);
     REGISTRATE.addDataGenerator(ProviderType.LANG, CRLangGen::generate);
-    gen.addProvider(RailwaysSequencedAssemblyRecipeGen::new);
-    gen.addProvider(RailwaysStandardRecipeGen::new);
+    gen.addProvider(RailwaysSequencedAssemblyRecipeGen::create);
+    gen.addProvider(RailwaysStandardRecipeGen::create);
     gen.addProvider(RailwaysMechanicalCraftingRecipeGen::create);
     gen.addProvider(EmiExcludedTagGen::new);
     gen.addProvider(EmiRecipeDefaultsGen::new);
