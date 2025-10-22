@@ -21,7 +21,7 @@ package com.railwayteam.railways.compat.journeymap;
 import java.util.UUID;
 
 public class DummyRailwayMarkerHandler implements IRailwayMarkerHandler {
-    static IRailwayMarkerHandler instance = new DummyRailwayMarkerHandler();
+    private static final IRailwayMarkerHandler instance = new DummyRailwayMarkerHandler();
 
     public static IRailwayMarkerHandler getInstance() {
         return instance;

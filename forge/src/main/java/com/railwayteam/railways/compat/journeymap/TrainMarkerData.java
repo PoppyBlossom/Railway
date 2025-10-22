@@ -42,7 +42,8 @@ public record TrainMarkerData(String name, int carriageCount, UUID owner, String
         Carriage primary = train.carriages.get(0);
         CarriageBogey bogey = primary.leadingBogey();
 
-        ResourceKey<Level> dimension = Level.END;
+        // Use null to represent an unknown or absent dimension
+        ResourceKey<Level> dimension = null;
         BlockPos pos = ABSENT_POS;
 
         if (bogey.leading().node1 != null && bogey.leading().node2 != null) {
