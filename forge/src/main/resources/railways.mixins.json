@@ -12,7 +12,6 @@
   "mixins": [
     "AllKeysMixin",
     "ChunkMapAccessor",
-    "ChunkMapAccessor$TrackedEntityAccessor",
     "ContainerLevelAccessMixin",
     "FluidNetworkMixin",
     "MixinLootDataManager",
