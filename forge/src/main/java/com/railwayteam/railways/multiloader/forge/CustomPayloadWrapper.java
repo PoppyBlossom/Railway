@@ -41,7 +41,7 @@ public record CustomPayloadWrapper(Type<CustomPayloadWrapper> type, FriendlyByte
         return StreamCodec.of(
             (buf, payload) -> buf.writeBytes(payload.data),
             (buf) -> {
-                FriendlyByteBuf data = new FriendlyByteBuf(buf.readBytes(buf.readableBytes()));
+                FriendlyByteBuf data = new FriendlyByteBuf(buf.readRetainedSlice(buf.readableBytes()));
                 return new CustomPayloadWrapper(new Type<>(id), data);
             }
         );
