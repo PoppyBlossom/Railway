@@ -21,7 +21,7 @@ package com.railwayteam.railways.content.fuel;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import net.minecraft.ResourceLocationException;
+// no dedicated ResourceLocationException available in this mapping; rely on IllegalArgumentException from parse
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -72,17 +72,17 @@ public class LiquidFuelType {
                                 String string = primitive.getAsString();
 
                                 if (string.startsWith("#")) {
-                                    TagKey<Fluid> tag = TagKey.create(Registries.FLUID, new ResourceLocation(primitive.getAsString().substring(1)));
+                                    TagKey<Fluid> tag = TagKey.create(Registries.FLUID, ResourceLocation.parse(primitive.getAsString().substring(1)));
                                     if (tag != null) {
                                         type.fluidTags.add(() -> tag);
                                     }
                                 } else {
-                                    Fluid fluid = BuiltInRegistries.FLUID.get(new ResourceLocation(primitive.getAsString()));
+                                    Fluid fluid = BuiltInRegistries.FLUID.get(ResourceLocation.parse(primitive.getAsString()));
                                     if (fluid != null) {
                                         type.fluids.add(() -> fluid);
                                     }
                                 }
-                            } catch (ResourceLocationException ignored) {}
+                            } catch (IllegalArgumentException ignored) {}
                         }
                     }
                 }

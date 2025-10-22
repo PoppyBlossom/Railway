@@ -129,7 +129,7 @@ public abstract class RailwaysMechanicalCraftingRecipeGen extends RailwaysRecipe
             String path = loc.getPath();
             while (path.contains("//"))
                 path = path.replaceAll("//", "/");
-            return new ResourceLocation(loc.getNamespace(), path);
+            return ResourceLocation.fromNamespaceAndPath(loc.getNamespace(), path);
         }
 
 
