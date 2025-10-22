@@ -18,6 +18,6 @@ public @interface Mod {
         Bus bus() default Bus.MOD;
 
         // Some usages call @EventBusSubscriber(Dist.CLIENT) or @EventBusSubscriber(value = Dist.CLIENT,...)
-        net.neoforged.neoforge.api.distmarker.Dist value() default net.neoforged.neoforge.api.distmarker.Dist.CLIENT;
+        net.neoforged.neoforge.api.distmarker.Dist value();
     }
 }

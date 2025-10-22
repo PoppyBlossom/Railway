@@ -12,5 +12,4 @@ public interface ParticleOptions {
         T fromNetwork(ParticleType<T> particleTypeIn, FriendlyByteBuf buffer);
     }
 
-    <T extends ParticleOptions> Codec<T> getCodec(ParticleType<T> type);
 }

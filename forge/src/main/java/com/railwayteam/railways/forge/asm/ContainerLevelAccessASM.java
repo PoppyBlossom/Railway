@@ -46,6 +46,8 @@ public class ContainerLevelAccessASM {
             // The target method was previously mapped via ModLauncher (INameMappingService).
             // ModLauncher APIs and name mappings have changed; to remain resilient, match
             // the method by its known deobfuscated name or the obfuscated name used in mappings.
+            // NOTE: The obfuscated name "m_39289_" corresponds to the "create" method in Minecraft 1.20.1 (Mojang mappings as of June 2023).
+            // If updating to a new Minecraft version, verify and update this name as needed.
             if (node.name.equals("create") || node.name.equals("m_39289_")) {
                 InsnList instructions = node.instructions;
                 InsnList newInstructions = new InsnList();
