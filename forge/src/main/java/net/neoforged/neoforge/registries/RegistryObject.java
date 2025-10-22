@@ -15,39 +15,34 @@ public class RegistryObject<T> {
     // These fields are never actually used since this stub is replaced by NeoForge's
     // DeferredHolder implementation at runtime. They exist only to make the stub
     // structurally valid for compilation.
-    private T value;
-    private ResourceKey<T> key;
+    private final T value = null;
+    private final ResourceKey<T> key = null;
     
-    // Constructor only exists for completeness - this stub is never instantiated.
-    // At runtime, NeoForge's DeferredRegister returns the real DeferredHolder instances.
-    public RegistryObject() {
-        this.value = null;
-        this.key = null;
-    }
+    // All methods throw to prevent accidental runtime usage of this stub.
     
     // Legacy method from old RegistryObject API
     public T get() {
-        return value;
+        throw new UnsupportedOperationException("This is a compile-time stub and should not be used at runtime.");
     }
     
     // NeoForge 1.21+ DeferredHolder API methods
     public T value() {
-        return value;
+        throw new UnsupportedOperationException("This is a compile-time stub and should not be used at runtime.");
     }
     
     public ResourceKey<T> getKey() {
-        return key;
+        throw new UnsupportedOperationException("This is a compile-time stub and should not be used at runtime.");
     }
     
     public ResourceLocation getId() {
-        return key != null ? key.location() : null;
+        throw new UnsupportedOperationException("This is a compile-time stub and should not be used at runtime.");
     }
     
     public boolean is(ResourceKey<T> key) {
-        return this.key != null && this.key.equals(key);
+        throw new UnsupportedOperationException("This is a compile-time stub and should not be used at runtime.");
     }
     
     public boolean is(ResourceLocation location) {
-        return key != null && key.location().equals(location);
+        throw new UnsupportedOperationException("This is a compile-time stub and should not be used at runtime.");
     }
 }
