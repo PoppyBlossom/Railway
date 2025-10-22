@@ -21,6 +21,7 @@ package com.railwayteam.railways.content.smokestack.particles.legacy;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.railwayteam.railways.registry.CRParticleTypes;
 import com.simibubi.create.foundation.particle.ICustomParticleDataWithSprite;
@@ -28,12 +29,13 @@ import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 
 import java.util.Locale;
 
 public class SmokeParticleData implements ParticleOptions, ICustomParticleDataWithSprite<SmokeParticleData> {
 
-	public static final Codec<SmokeParticleData> CODEC = RecordCodecBuilder.create(i -> i
+	public static final MapCodec<SmokeParticleData> CODEC = RecordCodecBuilder.mapCodec(i -> i
 		.group(Codec.BOOL.fieldOf("stationary")
 			.forGetter(p -> p.stationary),
 			Codec.FLOAT.fieldOf("red")
@@ -65,6 +67,21 @@ public class SmokeParticleData implements ParticleOptions, ICustomParticleDataWi
 			}
 		};
 
+	public static final StreamCodec<FriendlyByteBuf, SmokeParticleData> STREAM_CODEC = new StreamCodec<>() {
+		@Override
+		public void encode(FriendlyByteBuf buffer, SmokeParticleData data) {
+			buffer.writeBoolean(data.stationary);
+			buffer.writeFloat(data.red);
+			buffer.writeFloat(data.green);
+			buffer.writeFloat(data.blue);
+		}
+
+		@Override
+		public SmokeParticleData decode(FriendlyByteBuf buffer) {
+			return new SmokeParticleData(buffer.readBoolean(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
+		}
+	};
+
 	boolean stationary;
 	float red;
 	float green;
@@ -93,12 +110,10 @@ public class SmokeParticleData implements ParticleOptions, ICustomParticleDataWi
 		this.blue = blue;
 	}
 
-	@Override
 	public ParticleType<?> getType() {
 		return CRParticleTypes.SMOKE.get();
 	}
 
-	@Override
 	public void writeToNetwork(FriendlyByteBuf buffer) {
 		buffer.writeBoolean(stationary);
 		buffer.writeFloat(red);
@@ -106,19 +121,22 @@ public class SmokeParticleData implements ParticleOptions, ICustomParticleDataWi
 		buffer.writeFloat(blue);
 	}
 
-	@Override
 	public String writeToString() {
 		return String.format(Locale.ROOT, "%s %b %f %f %f", CRParticleTypes.SMOKE.parameter(), stationary, red, green, blue);
 	}
 
-	@Override
 	public Deserializer<SmokeParticleData> getDeserializer() {
 		return DESERIALIZER;
 	}
 
 	@Override
-	public Codec<SmokeParticleData> getCodec(ParticleType<SmokeParticleData> type) {
+	public MapCodec<SmokeParticleData> getCodec(ParticleType<SmokeParticleData> type) {
 		return CODEC;
+	}
+
+	@Override
+	public StreamCodec<FriendlyByteBuf, SmokeParticleData> getStreamCodec() {
+		return STREAM_CODEC;
 	}
 
 	@Override

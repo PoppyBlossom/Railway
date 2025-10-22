@@ -21,6 +21,7 @@ package com.railwayteam.railways.content.smokestack.particles.chimneypush;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.railwayteam.railways.registry.CRParticleTypes;
 import com.simibubi.create.foundation.particle.ICustomParticleDataWithSprite;
@@ -28,6 +29,7 @@ import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.DyeColor;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -42,8 +44,8 @@ public abstract class ChimneyPushParticleData<T extends ChimneyPushParticleData<
 		T create(boolean stationary, float red, float green, float blue);
 	}
 
-	protected static <T extends ChimneyPushParticleData<T>> Codec<T> makeCodec(Constructor<T> constructor) {
-		return RecordCodecBuilder.create(i -> i
+	protected static <T extends ChimneyPushParticleData<T>> MapCodec<T> makeCodec(Constructor<T> constructor) {
+		return RecordCodecBuilder.mapCodec(i -> i
 			.group(Codec.BOOL.fieldOf("leadOnly")
 					.forGetter(p -> p.leadOnly),
 				Codec.FLOAT.fieldOf("red") // -1, -1, -1 indicates un-dyed
@@ -108,12 +110,10 @@ public abstract class ChimneyPushParticleData<T extends ChimneyPushParticleData<
 
 	protected abstract @NotNull CRParticleTypes getParticleType();
 
-	@Override
 	public @NotNull ParticleType<?> getType() {
 		return getParticleType().get();
 	}
 
-	@Override
 	public void writeToNetwork(FriendlyByteBuf buffer) {
 		buffer.writeBoolean(leadOnly);
 		buffer.writeFloat(red);
@@ -121,17 +121,17 @@ public abstract class ChimneyPushParticleData<T extends ChimneyPushParticleData<
 		buffer.writeFloat(blue);
 	}
 
-	@Override
 	public @NotNull String writeToString() {
 		return String.format(Locale.ROOT, "%s %b %f %f %f", getParticleType().parameter(), leadOnly, red, green, blue);
 	}
 
 	@SuppressWarnings("deprecation")
-	@Override
 	public abstract Deserializer<T> getDeserializer();
 
 	@Override
-	public abstract Codec<T> getCodec(ParticleType<T> type);
+	public abstract MapCodec<T> getCodec(ParticleType<T> type);
+
+	public abstract StreamCodec<FriendlyByteBuf, T> getStreamCodec();
 
 	@Override
 	public abstract ParticleEngine.SpriteParticleRegistration<T> getMetaFactory();
@@ -160,10 +160,25 @@ public abstract class ChimneyPushParticleData<T extends ChimneyPushParticleData<
 	}
 
 	public static class Small extends ChimneyPushParticleData<Small> {
-		public static final Codec<Small> CODEC = makeCodec(Small::new);
+		public static final MapCodec<Small> CODEC = makeCodec(Small::new);
 
 		@SuppressWarnings("deprecation")
 		public static final Deserializer<Small> DESERIALIZER = makeDeserializer(Small::new);
+
+		public static final StreamCodec<FriendlyByteBuf, Small> STREAM_CODEC = new StreamCodec<>() {
+			@Override
+			public void encode(FriendlyByteBuf buffer, Small data) {
+				buffer.writeBoolean(data.leadOnly);
+				buffer.writeFloat(data.red);
+				buffer.writeFloat(data.green);
+				buffer.writeFloat(data.blue);
+			}
+
+			@Override
+			public Small decode(FriendlyByteBuf buffer) {
+				return new Small(buffer.readBoolean(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
+			}
+		};
 
 		public Small() {}
 
@@ -195,8 +210,13 @@ public abstract class ChimneyPushParticleData<T extends ChimneyPushParticleData<
 		}
 
 		@Override
-		public Codec<Small> getCodec(ParticleType<Small> type) {
+		public MapCodec<Small> getCodec(ParticleType<Small> type) {
 			return CODEC;
+		}
+
+		@Override
+		public StreamCodec<FriendlyByteBuf, Small> getStreamCodec() {
+			return STREAM_CODEC;
 		}
 
 		@Override
@@ -211,10 +231,25 @@ public abstract class ChimneyPushParticleData<T extends ChimneyPushParticleData<
 	}
 
 	public static class Medium extends ChimneyPushParticleData<Medium> {
-		public static final Codec<Medium> CODEC = makeCodec(Medium::new);
+		public static final MapCodec<Medium> CODEC = makeCodec(Medium::new);
 
 		@SuppressWarnings("deprecation")
 		public static final Deserializer<Medium> DESERIALIZER = makeDeserializer(Medium::new);
+
+		public static final StreamCodec<FriendlyByteBuf, Medium> STREAM_CODEC = new StreamCodec<>() {
+			@Override
+			public void encode(FriendlyByteBuf buffer, Medium data) {
+				buffer.writeBoolean(data.leadOnly);
+				buffer.writeFloat(data.red);
+				buffer.writeFloat(data.green);
+				buffer.writeFloat(data.blue);
+			}
+
+			@Override
+			public Medium decode(FriendlyByteBuf buffer) {
+				return new Medium(buffer.readBoolean(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
+			}
+		};
 
 		public Medium() {}
 
@@ -246,8 +281,13 @@ public abstract class ChimneyPushParticleData<T extends ChimneyPushParticleData<
 		}
 
 		@Override
-		public Codec<Medium> getCodec(ParticleType<Medium> type) {
+		public MapCodec<Medium> getCodec(ParticleType<Medium> type) {
 			return CODEC;
+		}
+
+		@Override
+		public StreamCodec<FriendlyByteBuf, Medium> getStreamCodec() {
+			return STREAM_CODEC;
 		}
 
 		@Override

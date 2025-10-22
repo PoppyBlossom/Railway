@@ -18,14 +18,7 @@
 
 package com.railwayteam.railways.content.smokestack.particles.legacy;
 
-import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
-import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Axis;
 import com.railwayteam.railways.config.CRConfigs;
 import net.createmod.catnip.animation.LerpedFloat;
@@ -37,8 +30,6 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SimpleAnimatedParticle;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
@@ -61,30 +52,7 @@ public class SmokeParticle extends SimpleAnimatedParticle {
 		}
 	}
 
-	public static final ParticleRenderType TRANSPARENT_SMOKE = new ParticleRenderType() {
-		@Override
-		public void begin(BufferBuilder builder, TextureManager manager) {
-			RenderSystem.depthMask(false);
-			RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
-			RenderSystem.enableBlend();
-			RenderSystem.enableDepthTest();
-			RenderSystem.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-			builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
-		}
-
-		@Override
-		public void end(Tesselator tesselator) {
-			tesselator.end();
-			RenderSystem.depthMask(true);
-			RenderSystem.disableBlend();
-			RenderSystem.defaultBlendFunc();
-		}
-
-		@Override
-		public String toString() {
-			return "TRANSPARENT_SMOKE";
-		}
-	};
+	// Use the built-in translucent particle sheet render type in 1.21+
 
 	private LerpedFloat ascendScale = LerpedFloat.linear().startWithValue(1.0);
 	private double baseYd;
@@ -115,7 +83,7 @@ public class SmokeParticle extends SimpleAnimatedParticle {
 
 	@Override
 	public @NotNull ParticleRenderType getRenderType() {
-		return TRANSPARENT_SMOKE;
+		return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
 	}
 
 	@Override
@@ -186,10 +154,22 @@ public class SmokeParticle extends SimpleAnimatedParticle {
 		float n = this.getV0();
 		float o = this.getV1();
 		int p = this.getLightColor(partialTicks);
-		buffer.vertex((double)vector3fs[0].x(), (double)vector3fs[0].y(), (double)vector3fs[0].z()).uv(m, o).color(this.rCol, this.gCol, this.bCol, this.alpha*alphaFactor).uv2(p).endVertex();
-		buffer.vertex((double)vector3fs[1].x(), (double)vector3fs[1].y(), (double)vector3fs[1].z()).uv(m, n).color(this.rCol, this.gCol, this.bCol, this.alpha*alphaFactor).uv2(p).endVertex();
-		buffer.vertex((double)vector3fs[2].x(), (double)vector3fs[2].y(), (double)vector3fs[2].z()).uv(l, n).color(this.rCol, this.gCol, this.bCol, this.alpha*alphaFactor).uv2(p).endVertex();
-		buffer.vertex((double)vector3fs[3].x(), (double)vector3fs[3].y(), (double)vector3fs[3].z()).uv(l, o).color(this.rCol, this.gCol, this.bCol, this.alpha*alphaFactor).uv2(p).endVertex();
+		buffer.addVertex(vector3fs[0].x(), vector3fs[0].y(), vector3fs[0].z())
+			.setUv(m, o)
+			.setColor(this.rCol, this.gCol, this.bCol, this.alpha * alphaFactor)
+			.setLight(p);
+		buffer.addVertex(vector3fs[1].x(), vector3fs[1].y(), vector3fs[1].z())
+			.setUv(m, n)
+			.setColor(this.rCol, this.gCol, this.bCol, this.alpha * alphaFactor)
+			.setLight(p);
+		buffer.addVertex(vector3fs[2].x(), vector3fs[2].y(), vector3fs[2].z())
+			.setUv(l, n)
+			.setColor(this.rCol, this.gCol, this.bCol, this.alpha * alphaFactor)
+			.setLight(p);
+		buffer.addVertex(vector3fs[3].x(), vector3fs[3].y(), vector3fs[3].z())
+			.setUv(l, o)
+			.setColor(this.rCol, this.gCol, this.bCol, this.alpha * alphaFactor)
+			.setLight(p);
 	}
 
     /*	@Override
