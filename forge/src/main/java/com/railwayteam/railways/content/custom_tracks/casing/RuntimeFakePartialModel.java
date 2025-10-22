@@ -27,7 +27,7 @@ import java.time.Clock;
 
 public class RuntimeFakePartialModel {
   private static ResourceLocation runtime_ify(ResourceLocation loc, BakedModel model) {
-    return new ResourceLocation(loc.getNamespace(), "runtime/" + Clock.systemUTC().millis() + "/" + model.hashCode() + "/" + loc.getPath());
+    return ResourceLocation.fromNamespaceAndPath(loc.getNamespace(), "runtime/" + Clock.systemUTC().millis() + "/" + model.hashCode() + "/" + loc.getPath());
   }
 
   public static PartialModel make(ResourceLocation loc, BakedModel bakedModel) {

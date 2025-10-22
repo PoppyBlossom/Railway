@@ -443,7 +443,7 @@ public class RailwaysStandardRecipeGen extends RailwaysRecipeProvider {
             String path = loc.getPath();
             while (path.contains("//"))
                 path = path.replaceAll("//", "/");
-            return new ResourceLocation(loc.getNamespace(), path);
+            return ResourceLocation.fromNamespaceAndPath(loc.getNamespace(), path);
         }
 
         private ResourceLocation createSimpleLocation(String recipeType) {

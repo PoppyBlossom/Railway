@@ -54,7 +54,7 @@ public class ConductorRenderer extends MobRenderer<ConductorEntity, ConductorEnt
 
   private ResourceLocation ensurePng(ResourceLocation loc) {
     if (loc.getPath().endsWith(".png")) return loc;
-    return new ResourceLocation(loc.getNamespace(), loc.getPath() + ".png");
+    return ResourceLocation.fromNamespaceAndPath(loc.getNamespace(), loc.getPath() + ".png");
   }
 
   @Override

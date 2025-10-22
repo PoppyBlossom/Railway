@@ -187,7 +187,7 @@ public class BuilderTransformersImpl {
             .forAllStates(state -> ConfiguredModel.builder()
                 .modelFile(p.models().getExistingFile(state.getValue(CONDUCTOR_VISIBLE) ?
                     Railways.asResource("block/copycat_vent_visible") :
-                    new ResourceLocation("block/air")))
+                    ResourceLocation.withDefaultNamespace("block/air")))
                 .build()));
     }
 

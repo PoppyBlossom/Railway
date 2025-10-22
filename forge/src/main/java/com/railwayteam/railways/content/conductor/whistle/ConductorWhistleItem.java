@@ -289,7 +289,7 @@ public class ConductorWhistleItem extends TrackTargetingBlockItem {
                 if (!scheduleStack.isEmpty()) {
                     for (CompoundTag passengerTag : ((AccessorCarriage) conductorCarriage).getSerialisedPassengers().values()) {
                         if (passengerTag.contains("PlayerPassenger")) continue;
-                        if (passengerTag.contains("id") && CREntities.CONDUCTOR.getId().equals(new ResourceLocation(passengerTag.getString("id")))) {
+                        if (passengerTag.contains("id") && CREntities.CONDUCTOR.getId().equals(ResourceLocation.parse(passengerTag.getString("id")))) {
                             // It is a conductor
                             if (passengerTag.hasUUID("UUID") && passengerTag.getUUID("UUID").equals(conductorId)) {
                                 // It is the targeted conductor

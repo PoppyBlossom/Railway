@@ -41,7 +41,7 @@ import java.util.function.UnaryOperator;
 
 @OnlyIn(Dist.CLIENT)
 public class BufferModelUtils {
-    public static final StitchedSprite SPRUCE_PLANKS_TEMPLATE = new StitchedSprite(new ResourceLocation("block/spruce_planks"));
+    public static final StitchedSprite SPRUCE_PLANKS_TEMPLATE = new StitchedSprite(ResourceLocation.withDefaultNamespace("block/spruce_planks"));
     public static final StitchedSprite BIG_BUFFER_TEMPLATE = new StitchedSprite(Railways.asResource("block/buffer/big_buffer"));
     public static final StitchedSprite SMALL_BUFFER_TEMPLATE = new StitchedSprite(Railways.asResource("block/buffer/small_buffer"));
     public static final StitchedSprite SMALL_BUFFER_MONORAIL_TEMPLATE = new StitchedSprite(Railways.asResource("block/buffer/small_buffer_monorail"));
