@@ -34,7 +34,7 @@ public record TrainMarkerData(String name, int carriageCount, UUID owner, String
     public static final BlockPos ABSENT_POS = new BlockPos(1331, 0, 1331);
 
     public static TrainMarkerData make(Train train) {
-        String name = train.name.getString();// + "NO YOU DONT";
+        String name = train.name.getString();
         int carriageCount = train.carriages.size();
         UUID owner = train.owner;
         String destination = Optional.ofNullable(train.navigation.destination).map(s -> s.name).orElse("Unknown/Not Present");
