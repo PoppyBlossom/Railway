@@ -24,6 +24,7 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -77,8 +78,11 @@ public abstract class ConductorCapItem extends ArmorItem {
       0f, // toughness
       0f  // knockbackResistance
     );
-    // Wrap in a direct holder reference
-    return new Holder.Reference<>(Holder.Reference.Type.STAND_ALONE, null, null, material);
+    // Register the material into the built-in registry and return a registry-backed holder
+    ResourceLocation id = Railways.asResource("conductor_cap_material");
+    BuiltInRegistries.register(BuiltInRegistries.ARMOR_MATERIAL, id, material);
+    ResourceKey<ArmorMaterial> key = ResourceKey.create(Registries.ARMOR_MATERIAL, id);
+    return BuiltInRegistries.ARMOR_MATERIAL.getHolderOrThrow(key);
   }  public static ConductorCapItem create(Properties props, DyeColor color) {
     throw new AssertionError();
   }
