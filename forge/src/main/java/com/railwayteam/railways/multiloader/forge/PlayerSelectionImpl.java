@@ -93,7 +93,8 @@ public class PlayerSelectionImpl extends PlayerSelection {
 
 	@Override
 	public void accept(ResourceLocation id, FriendlyByteBuf buffer) {
-		ClientboundCustomPayloadPacket packet = new ClientboundCustomPayloadPacket(id, buffer);
+		CustomPayloadWrapper payload = CustomPayloadWrapper.create(id, buffer);
+		ClientboundCustomPayloadPacket packet = new ClientboundCustomPayloadPacket(payload);
 		target.send(packet);
 	}
 

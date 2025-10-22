@@ -37,19 +37,17 @@ public class ServerGamePacketListenerImplMixin {
 
 	@Inject(
 			method = "handleCustomPayload",
-			at = @At(
-					value = "INVOKE",
-					target = "Lnet/minecraftforge/network/NetworkHooks;onCustomPayload(Lnet/minecraftforge/network/ICustomPacket;Lnet/minecraft/network/Connection;)Z",
-					remap = false // forge method + names are moj
-			),
+			at = @At("HEAD"),
 			cancellable = true
 	)
 	private void railways$handleC2S(ServerboundCustomPayloadPacket packet, CallbackInfo ci) {
-		ResourceLocation id = packet.getIdentifier();
-		PacketSet handler = PacketSetImpl.HANDLERS.get(id);
-		if (handler != null) {
-			handler.handleC2SPacket(player, packet.getData());
-			ci.cancel();
+		var payload = packet.payload();
+		if (payload instanceof com.railwayteam.railways.multiloader.forge.CustomPayloadWrapper wrapper) {
+			PacketSet handler = PacketSetImpl.HANDLERS.get(wrapper.id());
+			if (handler != null) {
+				handler.handleC2SPacket(player, wrapper.data());
+				ci.cancel();
+			}
 		}
 	}
 }
