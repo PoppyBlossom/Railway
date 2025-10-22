@@ -356,9 +356,9 @@ public class RailwaysStandardRecipeGen extends RailwaysRecipeProvider {
         super(pOutput, lookupProvider);
     }
 
-    // Factory method for Create's PackGenerator which only provides PackOutput
-    public static RailwaysStandardRecipeGen create(PackOutput output) {
-        return new RailwaysStandardRecipeGen(output, CompletableFuture.completedFuture(null));
+    // Factory method for Create's PackGenerator which now requires a lookup provider
+    public static RailwaysStandardRecipeGen create(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        return new RailwaysStandardRecipeGen(output, lookupProvider);
     }
 
     class GeneratedRecipeBuilder {

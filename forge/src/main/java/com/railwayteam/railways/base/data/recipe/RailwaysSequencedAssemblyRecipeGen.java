@@ -48,9 +48,9 @@ public class RailwaysSequencedAssemblyRecipeGen extends RailwaysRecipeProvider {
         super(output, lookupProvider);
     }
 
-    // Factory method for Create's PackGenerator which only provides PackOutput
-    public static RailwaysSequencedAssemblyRecipeGen create(PackOutput output) {
-        return new RailwaysSequencedAssemblyRecipeGen(output, CompletableFuture.completedFuture(null));
+    // Factory method for Create's PackGenerator which now requires a lookup provider
+    public static RailwaysSequencedAssemblyRecipeGen create(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        return new RailwaysSequencedAssemblyRecipeGen(output, lookupProvider);
     }
 
     protected GeneratedRecipe create(String name, Function<RailwaysSequencedAssemblyRecipeBuilder, SequencedAssemblyRecipeBuilder> transform) {

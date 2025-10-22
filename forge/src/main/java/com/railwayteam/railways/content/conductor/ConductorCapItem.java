@@ -71,7 +71,7 @@ public abstract class ConductorCapItem extends ArmorItem {
         map.put(ArmorItem.Type.BODY, 0);
       }),
       0, // enchantmentValue
-      SoundEvents.ARMOR_EQUIP_LEATHER, // equipSound (now a Holder)
+      SoundEvents.ARMOR_EQUIP_LEATHER,
       () -> Ingredient.EMPTY, // repairIngredient
       List.of(new ArmorMaterial.Layer(Railways.asResource("conductor_cap"))), // layers
       0f, // toughness
