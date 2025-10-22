@@ -21,7 +21,7 @@ This document summarizes the changes made to update Create mod integrations for 
 - Uncommented and updated imports for NeoForge 1.21 Pack API
 - Replaced the old Pack API with the new one:
   - `Pack.Info` → `PackLocationInfo` + `PackSelectionConfig`
-  - `ModFilePackResources` → `PathPackResources`
+  - `ModFilePackResources` → `PathPackResources` (from `net.neoforged.neoforge.resource`)
   - New `Pack.readMetaAndCreate()` method with `ResourcesSupplier` pattern
 
 **Old API (1.20.1)**:
@@ -41,6 +41,7 @@ Pack.create(
 
 **New API (1.21.1)**:
 ```java
+// Note: PathPackResources is from net.neoforged.neoforge.resource, not net.minecraft.server.packs
 PackLocationInfo packInfo = new PackLocationInfo(
     Railways.asResource(pack.id).toString(),
     Component.literal(pack.name),
@@ -76,7 +77,7 @@ Pack.readMetaAndCreate(
 
 **Key Changes**:
 - Pack metadata is now separated into `PackLocationInfo` and `PackSelectionConfig`
-- Resource packs are now created via `PathPackResources` instead of `ModFilePackResources`
+- Resource packs are now created via NeoForge's `PathPackResources` (from `net.neoforged.neoforge.resource`) instead of Create's `ModFilePackResources`
 - Pack creation uses a `ResourcesSupplier` pattern instead of a simple factory function
 - Feature flags are no longer part of pack creation (handled elsewhere)
 
