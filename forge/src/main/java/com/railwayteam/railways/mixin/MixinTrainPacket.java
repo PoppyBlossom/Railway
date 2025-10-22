@@ -32,11 +32,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinTrainPacket {
     @Shadow(remap = false) Train train;
 
+    // Inject at the end of the write method to add handcar status to the packet
+    // ordinal = 1 targets the second RETURN in the method (after the main packet data is written)
+    // If this mixin fails, check if Create's TrainPacket.write() structure changed
     @Inject(method = "write", at = @At(value = "RETURN", ordinal = 1))
     private void writeHandcarStatus(FriendlyByteBuf buffer, CallbackInfo ci) {
         buffer.writeBoolean(((IHandcarTrain) train).railways$isHandcar());
     }
 
+    // Inject at the end of the constructor to read handcar status from the packet
+    // ordinal = 1 targets the second constructor RETURN
+    // If this mixin fails, check if Create's TrainPacket constructors changed
     @Inject(method = "<init>(Lnet/minecraft/network/FriendlyByteBuf;)V", at = @At(value = "RETURN", ordinal = 1))
     private void readHandcarStatus(FriendlyByteBuf buffer, CallbackInfo ci) {
         ((IHandcarTrain) train).railways$setHandcar(buffer.readBoolean());

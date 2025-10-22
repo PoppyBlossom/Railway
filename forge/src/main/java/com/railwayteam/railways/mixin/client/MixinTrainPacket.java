@@ -33,6 +33,11 @@ public class MixinTrainPacket {
     @Shadow
     UUID trainId;
 
+    // This targets a lambda method in TrainPacket.handle() that removes trains from a map
+    // Lambda method names are compiler-generated and fragile - they can change between Create versions
+    // If this mixin fails with "target not found", the lambda name likely changed
+    // The injection point catches train removal to update JourneyMap markers
+    // Alternative: Consider using @ModifyVariable or targeting the handle() method directly
     @Inject(method = "lambda$handle$0", at = @At(value = "INVOKE", target = "Ljava/util/Map;remove(Ljava/lang/Object;)Ljava/lang/Object;"))
     private void catchRemoval(CallbackInfo ci) {
         if (DummyRailwayMarkerHandler.getInstance() != null) {
