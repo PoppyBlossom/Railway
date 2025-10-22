@@ -12,12 +12,14 @@ import net.minecraft.resources.ResourceLocation;
  * which provides access to both the registered value and its registry key.
  */
 public class RegistryObject<T> {
-    // These fields and constructor are only used if this stub is somehow instantiated,
-    // which shouldn't happen since NeoForge provides the real implementation at runtime
+    // These fields are never actually used since this stub is replaced by NeoForge's
+    // DeferredHolder implementation at runtime. They exist only to make the stub
+    // structurally valid for compilation.
     private T value;
     private ResourceKey<T> key;
     
-    // No-arg constructor for potential edge cases
+    // Constructor only exists for completeness - this stub is never instantiated.
+    // At runtime, NeoForge's DeferredRegister returns the real DeferredHolder instances.
     public RegistryObject() {
         this.value = null;
         this.key = null;
