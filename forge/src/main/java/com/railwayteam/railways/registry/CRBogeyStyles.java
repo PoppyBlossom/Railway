@@ -360,7 +360,7 @@ public class CRBogeyStyles {
 
     public static CategoryEntry registerCategory(String modid, String name) {
         Component categoryName = Component.translatable(modid + ".gui.bogey_menu.category." + name);
-        ResourceLocation categoryId = new ResourceLocation(modid, "bogey_menu/category/" + name);
+        ResourceLocation categoryId = ResourceLocation.fromNamespaceAndPath(modid, "bogey_menu/category/" + name);
 
         return BogeyMenuManager.INSTANCE.registerCategory(categoryName, categoryId);
     }

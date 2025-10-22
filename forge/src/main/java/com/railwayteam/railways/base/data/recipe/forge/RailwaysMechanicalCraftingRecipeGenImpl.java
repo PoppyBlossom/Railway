@@ -19,21 +19,22 @@
 package com.railwayteam.railways.base.data.recipe.forge;
 
 import com.railwayteam.railways.base.data.recipe.RailwaysMechanicalCraftingRecipeGen;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.function.Consumer;
+import java.util.concurrent.CompletableFuture;
 
 public class RailwaysMechanicalCraftingRecipeGenImpl extends RailwaysMechanicalCraftingRecipeGen {
-    protected RailwaysMechanicalCraftingRecipeGenImpl(PackOutput pPackoutput) {
-        super(pPackoutput);
+    protected RailwaysMechanicalCraftingRecipeGenImpl(PackOutput pPackoutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        super(pPackoutput, lookupProvider);
     }
 
-    public static RecipeProvider create(PackOutput gen) {
-        RailwaysMechanicalCraftingRecipeGenImpl provider = new RailwaysMechanicalCraftingRecipeGenImpl(gen);
-        return new RecipeProvider(gen) {
+    public static RecipeProvider create(PackOutput gen, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        RailwaysMechanicalCraftingRecipeGenImpl provider = new RailwaysMechanicalCraftingRecipeGenImpl(gen, lookupProvider);
+        return new RecipeProvider(gen, lookupProvider) {
             @Override
             protected void buildRecipes(@NotNull RecipeOutput writer) {
                 provider.buildRecipes(writer);

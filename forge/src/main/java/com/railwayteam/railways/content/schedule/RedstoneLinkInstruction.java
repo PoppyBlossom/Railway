@@ -41,6 +41,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -148,18 +149,19 @@ public class RedstoneLinkInstruction extends ScheduleInstruction {
             .getStack();
     }
 
-    @Override
-    protected void writeAdditional(CompoundTag tag) {
-        tag.put("Frequency", freq.serializeEach(f -> f.getStack().save(new CompoundTag())));
-    }
+    // TODO: Check if Create 1.21.1 has updated serialization methods for ScheduleInstruction  
+    // @Override
+    // protected void writeAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+    //     tag.put("Frequency", freq.serializeEach(f -> (CompoundTag) f.getStack().save(provider)));
+    // }
 
-    @Override
-    protected void readAdditional(CompoundTag tag) {
-        if (tag.contains("Frequency", Tag.TAG_LIST))
-            freq = Couple.deserializeEach(tag.getList("Frequency", Tag.TAG_COMPOUND), c -> RedstoneLinkNetworkHandler.Frequency.of(ItemStack.of(c)));
-        else
-            freq = Couple.create(() -> RedstoneLinkNetworkHandler.Frequency.EMPTY);
-    }
+    // @Override
+    // protected void readAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+    //     if (tag.contains("Frequency", Tag.TAG_COMPOUND))
+    //         freq = Couple.deserializeEach(tag.getList("Frequency", Tag.TAG_COMPOUND), c -> RedstoneLinkNetworkHandler.Frequency.of(ItemStack.parseOptional(provider, c)));
+    //     else
+    //         freq = Couple.create(() -> RedstoneLinkNetworkHandler.Frequency.EMPTY);
+    // }
 
     @Override
     @OnlyIn(Dist.CLIENT)

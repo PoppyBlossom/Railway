@@ -22,25 +22,27 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.railwayteam.railways.Railways;
 import com.railwayteam.railways.RailwaysClient;
 import com.railwayteam.railways.registry.CRParticleTypes;
-import com.simibubi.create.foundation.pack.ModFilePackResources;
+// TODO: Port pack registration to NeoForge 1.21 API
+// import com.simibubi.create.foundation.pack.ModFilePackResources;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.SharedSuggestionProvider;
-import net.minecraft.network.chat.Component;
+// import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.repository.Pack;
-import net.minecraft.server.packs.repository.PackSource;
-import net.minecraft.world.flag.FeatureFlagSet;
+// import net.minecraft.server.packs.repository.Pack;
+// import net.minecraft.server.packs.repository.PackSource;
+// import net.minecraft.world.flag.FeatureFlagSet;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModList;
+// import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.loading.moddiscovery.locating.IModFile;
+// TODO: IModFile API changed in NeoForge 1.21
+// import net.neoforged.fml.loading.moddiscovery.locating.IModFile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -104,23 +106,26 @@ public class RailwaysClientImpl {
 	}
 
 	// based on Create's impl
+	// TODO: Port this to NeoForge 1.21 Pack API - Pack.Info and IModFile have changed
 	public static void onBuiltinPackRegistration(AddPackFindersEvent event) {
 		if (event.getPackType() != PackType.CLIENT_RESOURCES)
 			return;
-		IModFile modFile = ModList.get().getModFileById(Railways.MOD_ID).getFile();
+		// IModFile modFile = ModList.get().getModFileById(Railways.MOD_ID).getFile();
 
-		packs.forEach(pack -> event.addRepositorySource((consumer) -> consumer.accept(
-			Pack.create(Railways.asResource(pack.id).toString(),
-				Component.literal(pack.name),
-				false,
-				(a) -> new ModFilePackResources(pack.name, modFile, "resourcepacks/" + pack.id),
-				new Pack.Info(Component.empty(), 10, FeatureFlagSet.of()),
-				PackType.CLIENT_RESOURCES,
-				Pack.Position.TOP,
-				false,
-				PackSource.DEFAULT
-			)
-		)));
+		// packs.forEach(pack -> event.addRepositorySource((consumer) -> consumer.accept(
+		// 	Pack.create(Railways.asResource(pack.id).toString(),
+		// 		Component.literal(pack.name),
+		// 		false,
+		// 		(a) -> new ModFilePackResources(pack.name, modFile, "resourcepacks/" + pack.id),
+		// 		new Pack.Info(Component.empty(), 10, FeatureFlagSet.of()),
+		// 		PackType.CLIENT_RESOURCES,
+		// 		Pack.Position.TOP,
+		// 		false,
+		// 		PackSource.DEFAULT
+		// 	)
+		// )));
+		// packs.clear();
+		Railways.LOGGER.warn("Built-in pack registration not yet ported to NeoForge 1.21 - skipping {} packs", packs.size());
 		packs.clear();
 	}
 

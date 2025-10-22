@@ -3,7 +3,7 @@
 
 Keep guidance concise and only suggest changes that are consistent with the project's structure and Gradle properties. This repository has been migrated to a single-loader NeoForge setup for Minecraft 1.21.x. The canonical game logic and most source remain under `common/`, while the runtime is NeoForge-only under `forge/`.
 
-Repository goal (important): The active goal for this repository is to port and maintain the mod on Minecraft 1.21.1+ using NeoForge (single-loader). Do not propose Fabric or multi-loader changes unless explicitly asked — focus on NeoForge + `common` changes required for the 1.21.* line.
+Repository goal (important): The active goal for this repository is to port and maintain the mod on Minecraft 1.21.1+ from 1.20.1 using NeoForge (single-loader). Do not propose Fabric or multi-loader changes unless explicitly asked — focus on NeoForge + `common` changes required for the 1.21.* line.
 
 High-level architecture
 - `common/` – shared game logic, registries, data generators and most source code. This is the canonical implementation of features (registries, block/item definitions, core mechanics).

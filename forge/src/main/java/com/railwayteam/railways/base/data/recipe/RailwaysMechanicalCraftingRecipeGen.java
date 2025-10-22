@@ -24,6 +24,7 @@ import com.railwayteam.railways.base.data.recipe.DyedRecipeList.NullableDyedReci
 import com.railwayteam.railways.registry.CRPalettes.Styles;
 import com.simibubi.create.api.data.recipe.MechanicalCraftingRecipeBuilder;
 import net.createmod.catnip.platform.CatnipServices;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -31,6 +32,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
@@ -84,8 +86,8 @@ public abstract class RailwaysMechanicalCraftingRecipeGen extends RailwaysRecipe
             .patternLine(" #/# ")
             .patternLine("  #  ")));
 
-    protected RailwaysMechanicalCraftingRecipeGen(PackOutput pPackoutput) {
-        super(pPackoutput);
+    protected RailwaysMechanicalCraftingRecipeGen(PackOutput pPackoutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        super(pPackoutput, lookupProvider);
     }
 
     GeneratedRecipeBuilder create(Supplier<ItemLike> result) {
@@ -147,10 +149,5 @@ public abstract class RailwaysMechanicalCraftingRecipeGen extends RailwaysRecipe
         }
     }    public static RecipeProvider create(PackOutput gen) {
         throw new AssertionError();
-    }
-
-    @Override
-    public @NotNull String getName() {
-        return "Steam 'n' Rails Mechanical Crafting Recipes";
     }
 }

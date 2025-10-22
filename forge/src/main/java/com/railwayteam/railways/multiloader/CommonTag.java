@@ -51,8 +51,8 @@ public class CommonTag<T> {
 		return new CommonTag<>(
 				registry,
 				Railways.asResource("internal/" + common),
-				new ResourceLocation("c", fabric),
-				new ResourceLocation("forge", forge)
+				ResourceLocation.fromNamespaceAndPath("c", fabric),
+				ResourceLocation.fromNamespaceAndPath("forge", forge)
 		);
 	}
 

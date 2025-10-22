@@ -37,6 +37,7 @@ import net.createmod.catnip.lang.Lang;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -70,14 +71,14 @@ public class SemaphoreBlockEntity extends SmartBlockEntity implements IOverridab
     }
 
     @Override
-    protected void read(CompoundTag tag, boolean clientPacket) {
-        super.read(tag, clientPacket);
+    protected void read(CompoundTag tag, HolderLookup.Provider lookupProvider, boolean clientPacket) {
+        super.read(tag, lookupProvider, clientPacket);
         cachedWasUpsideDown = tag.getBoolean("CachedWasUpsideDown");
     }
 
     @Override
-    protected void write(CompoundTag tag, boolean clientPacket) {
-        super.write(tag, clientPacket);
+    protected void write(CompoundTag tag, HolderLookup.Provider lookupProvider, boolean clientPacket) {
+        super.write(tag, lookupProvider, clientPacket);
         tag.putBoolean("CachedWasUpsideDown", cachedWasUpsideDown);
     }
 

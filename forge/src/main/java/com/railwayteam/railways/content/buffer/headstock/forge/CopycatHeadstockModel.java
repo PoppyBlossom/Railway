@@ -268,7 +268,7 @@ public class CopycatHeadstockModel implements BakedModel {
     }
 
     private static boolean filterCopycatParts(BakedQuad quad) {
-        return !quad.getSprite().contents().name().equals(new ResourceLocation("create", "block/copycat_base"));
+        return !quad.getSprite().contents().name().equals(ResourceLocation.fromNamespaceAndPath("create", "block/copycat_base"));
     }
 
     private static @NotNull List<BakedQuad> filterQuads(@NotNull Predicate<BakedQuad> filter, @NotNull List<BakedQuad> quads) {

@@ -26,6 +26,7 @@ import com.railwayteam.railways.registry.CRBlocks;
 import com.railwayteam.railways.registry.CRTags;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -42,14 +43,15 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public abstract class RailwaysRecipeProvider extends RecipeProvider {
 
   protected final List<GeneratedRecipe> all = new ArrayList<>();
 
-  public RailwaysRecipeProvider(PackOutput pOutput) {
-    super(pOutput);
+  public RailwaysRecipeProvider(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+    super(pOutput, lookupProvider);
   }
 
 
@@ -104,7 +106,7 @@ public abstract class RailwaysRecipeProvider extends RecipeProvider {
     }
 
     public static TagKey<Item> fence() {
-      return TagKey.create(Registries.ITEM, new ResourceLocation("minecraft:fences"));
+      return TagKey.create(Registries.ITEM, ResourceLocation.parse("minecraft:fences"));
     }
 
     public static ItemLike campfire() {
