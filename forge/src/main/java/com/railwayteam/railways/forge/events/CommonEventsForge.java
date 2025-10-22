@@ -26,16 +26,14 @@ import com.railwayteam.railways.content.fuel.LiquidFuelManager;
 import com.railwayteam.railways.events.CommonEvents;
 import com.railwayteam.railways.registry.CREntities;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.TagsUpdatedEvent;
-import net.neoforged.neoforge.event.TickEvent;
-import net.neoforged.neoforge.event.TickEvent.Phase;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod.EventBusSubscriber;
+import net.neoforged.fml.common.EventBusSubscriber;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -44,9 +42,8 @@ import net.minecraft.world.item.ItemStack;
 @EventBusSubscriber
 public class CommonEventsForge {
 	@SubscribeEvent
-	public static void onWorldTick(TickEvent.LevelTickEvent event) {
-		if (event.phase == Phase.START)
-			CommonEvents.onWorldTickStart(event.level);
+	public static void onWorldTick(LevelTickEvent.Pre event) {
+		CommonEvents.onWorldTickStart(event.getLevel());
 	}
 
 	@SubscribeEvent

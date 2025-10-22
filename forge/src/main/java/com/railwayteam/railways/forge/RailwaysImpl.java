@@ -40,24 +40,24 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.FMLJavaModLoadingContext;
+import net.neoforged.fml.common.EventBusSubscriber;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
 @Mod(Railways.MOD_ID)
-@Mod.EventBusSubscriber
+@EventBusSubscriber
 public class RailwaysImpl {
 	static IEventBus bus;
 
-	public RailwaysImpl() {
-		bus = FMLJavaModLoadingContext.get().getModEventBus();
+	public RailwaysImpl(IEventBus modEventBus, ModContainer modContainer) {
+		bus = modEventBus;
 		CRCreativeModeTabsImpl.register(RailwaysImpl.bus);
 		Railways.init();
-		CRConfigsImpl.register(ModLoadingContext.get());
+		CRConfigsImpl.register(modContainer);
 		CRParticleTypesParticleEntryImpl.register(bus);
 		//noinspection Convert2MethodRef
 		Env.CLIENT.runIfCurrent(() -> () -> RailwaysClientImpl.init());
