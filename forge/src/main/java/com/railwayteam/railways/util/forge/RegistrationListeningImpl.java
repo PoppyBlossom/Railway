@@ -21,8 +21,8 @@ package com.railwayteam.railways.util.forge;
 import com.railwayteam.railways.util.RegistrationListening.Listener;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod.EventBusSubscriber;
-import net.neoforged.fml.common.Mod.EventBusSubscriber.Bus;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.EventBusSubscriber.Bus;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 
 import java.util.HashSet;

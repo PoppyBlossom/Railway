@@ -21,20 +21,20 @@ package com.railwayteam.railways.config.forge;
 import com.railwayteam.railways.config.CRConfigs;
 import net.createmod.catnip.config.ConfigBase;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModLoadingContext;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
 
 import java.util.Map;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 public class CRConfigsImpl {
-    public static void register(ModLoadingContext context) {
+    public static void register(ModContainer container) {
         CRConfigs.registerCommon();
 
         for (Map.Entry<ModConfig.Type, ConfigBase> pair : CRConfigs.CONFIGS.entrySet())
-            context.registerConfig(pair.getKey(), pair.getValue().specification);
+            container.registerConfig(pair.getKey(), pair.getValue().specification);
     }
 
     @SubscribeEvent
