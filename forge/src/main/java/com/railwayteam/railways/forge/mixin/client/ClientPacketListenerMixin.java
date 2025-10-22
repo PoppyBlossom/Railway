@@ -47,11 +47,13 @@ public class ClientPacketListenerMixin {
 			cancellable = true
 	)
 	private void railways$handleS2C(ClientboundCustomPayloadPacket packet, CallbackInfo ci) {
-		ResourceLocation id = packet.getIdentifier();
-		PacketSet handler = PacketSetImpl.HANDLERS.get(id);
-		if (handler != null) {
-			handler.handleS2CPacket(minecraft, packet.getData());
-			ci.cancel();
+		var payload = packet.payload();
+		if (payload instanceof com.railwayteam.railways.multiloader.forge.CustomPayloadWrapper wrapper) {
+			PacketSet handler = PacketSetImpl.HANDLERS.get(wrapper.id());
+			if (handler != null) {
+				handler.handleS2CPacket(minecraft, wrapper.data());
+				ci.cancel();
+			}
 		}
 	}
 }

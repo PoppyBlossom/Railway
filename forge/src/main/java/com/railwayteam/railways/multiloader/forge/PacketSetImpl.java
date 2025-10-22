@@ -84,7 +84,8 @@ public class PacketSetImpl extends PacketSet {
 	protected void doSendC2S(FriendlyByteBuf buf) {
 		ClientPacketListener connection = Minecraft.getInstance().getConnection();
 		if (connection != null) {
-			connection.send(new ServerboundCustomPayloadPacket(c2sPacket, buf));
+			CustomPayloadWrapper payload = CustomPayloadWrapper.create(c2sPacket, buf);
+			connection.send(new ServerboundCustomPayloadPacket(payload));
 		} else {
 			Railways.LOGGER.error("Cannot send a C2S packet before the client connection exists, skipping!");
 		}

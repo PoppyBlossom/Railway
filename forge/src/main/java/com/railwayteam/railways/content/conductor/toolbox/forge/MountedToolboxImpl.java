@@ -20,10 +20,9 @@ package com.railwayteam.railways.content.conductor.toolbox.forge;
 
 import com.railwayteam.railways.content.conductor.toolbox.MountedToolbox;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.neoforge.network.NetworkHooks;
 
 public class MountedToolboxImpl {
 	public static void openMenu(ServerPlayer player, MountedToolbox toolbox) {
-		NetworkHooks.openScreen(player, toolbox, toolbox::sendToMenu);
+		player.openMenu(toolbox, toolbox::sendToMenu);
 	}
 }
