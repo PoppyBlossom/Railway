@@ -37,6 +37,18 @@ public record CustomPayloadWrapper(Type<CustomPayloadWrapper> type, FriendlyByte
         return type.id();
     }
     
+    /**
+     * Returns a {@link StreamCodec} for serializing and deserializing {@link CustomPayloadWrapper} instances.
+     * <p>
+     * This method is intended to be used for registering the codec with Minecraft's networking system
+     * when custom payload packets are sent or received. If you require codec registration for your
+     * custom payloads, use this method to obtain the appropriate codec and register it as needed.
+     * <p>
+     * If codec registration is not required, this method can be safely ignored.
+     *
+     * @param id The {@link ResourceLocation} identifier for the custom payload type.
+     * @return A {@link StreamCodec} for {@link CustomPayloadWrapper}.
+     */
     public static StreamCodec<FriendlyByteBuf, CustomPayloadWrapper> codec(ResourceLocation id) {
         return StreamCodec.of(
             (buf, payload) -> buf.writeBytes(payload.data),
