@@ -25,8 +25,8 @@ import com.simibubi.create.foundation.utility.animation.LerpedFloat;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.util.Mth;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
 public class FuelTankRenderer extends SafeBlockEntityRenderer<FuelTankBlockEntity> {
 
