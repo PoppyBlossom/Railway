@@ -126,8 +126,6 @@ public class RailwaysClientImpl {
 						java.util.Optional.empty()
 					);
 					
-					PathPackResources packResources = new PathPackResources(packInfo, resourcePath);
-					
 					PackSelectionConfig selectionConfig = new PackSelectionConfig(
 						false,  // required
 						Pack.Position.TOP,
@@ -139,12 +137,12 @@ public class RailwaysClientImpl {
 						new Pack.ResourcesSupplier() {
 							@Override
 							public PathPackResources openPrimary(PackLocationInfo info) {
-								return packResources;
+								return new PathPackResources(info, resourcePath);
 							}
 
 							@Override
 							public PathPackResources openFull(PackLocationInfo info, Pack.Metadata metadata) {
-								return packResources;
+								return new PathPackResources(info, resourcePath);
 							}
 						},
 						PackType.CLIENT_RESOURCES,

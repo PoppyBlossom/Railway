@@ -49,8 +49,6 @@ PackLocationInfo packInfo = new PackLocationInfo(
     java.util.Optional.empty()
 );
 
-PathPackResources packResources = new PathPackResources(packInfo, resourcePath);
-
 PackSelectionConfig selectionConfig = new PackSelectionConfig(
     false,  // required
     Pack.Position.TOP,
@@ -62,12 +60,14 @@ Pack.readMetaAndCreate(
     new Pack.ResourcesSupplier() {
         @Override
         public PathPackResources openPrimary(PackLocationInfo info) {
-            return packResources;
+            // Create a fresh instance for each call to avoid resource lifecycle issues
+            return new PathPackResources(info, resourcePath);
         }
 
         @Override
         public PathPackResources openFull(PackLocationInfo info, Pack.Metadata metadata) {
-            return packResources;
+            // Create a fresh instance for each call to avoid resource lifecycle issues
+            return new PathPackResources(info, resourcePath);
         }
     },
     PackType.CLIENT_RESOURCES,
