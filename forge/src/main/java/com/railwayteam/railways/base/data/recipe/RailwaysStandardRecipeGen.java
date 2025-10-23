@@ -348,7 +348,7 @@ public class RailwaysStandardRecipeGen extends RailwaysRecipeProvider {
         return new GeneratedRecipeBuilder("/", result);
     }
 
-    GeneratedRecipeBuilder create(ItemProviderEntry<? extends ItemLike> result) {
+    GeneratedRecipeBuilder create(ItemProviderEntry<?, ? extends ItemLike> result) {
         return create(result::get);
     }
 

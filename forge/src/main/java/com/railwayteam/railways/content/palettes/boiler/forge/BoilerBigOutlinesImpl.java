@@ -19,10 +19,11 @@
 package com.railwayteam.railways.content.palettes.boiler.forge;
 
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.common.ForgeMod;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public class BoilerBigOutlinesImpl {
     public static double getRange(Player player) {
-        return player.getAttribute(ForgeMod.BLOCK_REACH.get()).getValue();
+        var inst = player.getAttribute(Attributes.BLOCK_INTERACTION_RANGE);
+        return inst != null ? inst.getValue() : 4.5D; // vanilla default
     }
 }

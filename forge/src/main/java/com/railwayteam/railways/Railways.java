@@ -116,9 +116,6 @@ public class Railways {
     REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, CRTagGen::generateBlockTags);
     REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, CRTagGen::generateItemTags);
     REGISTRATE.addDataGenerator(ProviderType.LANG, CRLangGen::generate);
-    gen.addProvider(RailwaysSequencedAssemblyRecipeGen::create);
-    gen.addProvider(RailwaysStandardRecipeGen::create);
-    gen.addProvider(RailwaysMechanicalCraftingRecipeGen::create);
     gen.addProvider(EmiExcludedTagGen::new);
     gen.addProvider(EmiRecipeDefaultsGen::new);
     gen.addProvider(RailwaysHatOffsetGenerator::new);

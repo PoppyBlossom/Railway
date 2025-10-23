@@ -40,7 +40,7 @@ import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.resource.PathPackResources;
+import net.minecraft.server.packs.PathPackResources;
 
 import java.util.ArrayList;
 import java.util.HashMap;
