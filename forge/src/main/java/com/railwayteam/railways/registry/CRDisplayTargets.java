@@ -26,9 +26,9 @@ import com.tterrag.registrate.util.entry.RegistryEntry;
 import java.util.function.Supplier;
 
 public class CRDisplayTargets {
-	public static RegistryEntry<SemaphoreDisplayTarget> SEMAPHORE = simple("semaphore", SemaphoreDisplayTarget::new);
+	public static RegistryEntry<DisplayTarget, SemaphoreDisplayTarget> SEMAPHORE = simple("semaphore", SemaphoreDisplayTarget::new);
 
-	private static <T extends DisplayTarget> RegistryEntry<T> simple(String name, Supplier<T> supplier) {
+	private static <T extends DisplayTarget> RegistryEntry<DisplayTarget, T> simple(String name, Supplier<T> supplier) {
 		return Railways.registrate().displayTarget(name, supplier).register();
 	}
 
