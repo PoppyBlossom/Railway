@@ -34,7 +34,6 @@ import net.minecraft.server.network.ServerPlayerConnection;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.neoforged.neoforge.network.NetworkDirection;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.PacketDistributor.PacketTarget;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
@@ -80,10 +79,10 @@ public class PlayerSelectionImpl extends PlayerSelection {
 	}
 
 	private static final PacketDistributor<Predicate<ServerPlayer>> ALL_WITH =
-		new PacketDistributor<>(PlayerSelectionImpl::playerListAllWith, NetworkDirection.PLAY_TO_CLIENT);
+		new PacketDistributor<>(PlayerSelectionImpl::playerListAllWith);
 
 	private static final PacketDistributor<Pair<Entity, Predicate<ServerPlayer>>> TRACKING_ENTITY_WITH =
-		new PacketDistributor<>(PlayerSelectionImpl::trackingEntityWith, NetworkDirection.PLAY_TO_CLIENT);
+		new PacketDistributor<>(PlayerSelectionImpl::trackingEntityWith);
 
 	final PacketTarget target;
 
@@ -99,36 +98,36 @@ public class PlayerSelectionImpl extends PlayerSelection {
 	}
 
 	public static PlayerSelection all() {
-		return new PlayerSelectionImpl(PacketDistributor.ALL.noArg());
+		return new PlayerSelectionImpl(PacketDistributor.ALL.with());
 	}
 
 	public static PlayerSelection allWith(Predicate<ServerPlayer> condition) {
-		return new PlayerSelectionImpl(ALL_WITH.with(() -> condition));
+		return new PlayerSelectionImpl(ALL_WITH.with(condition));
 	}
 
 	public static PlayerSelection of(ServerPlayer player) {
-		return new PlayerSelectionImpl(PacketDistributor.PLAYER.with(() -> player));
+		return new PlayerSelectionImpl(PacketDistributor.PLAYER.with(player));
 	}
 
 	public static PlayerSelection tracking(Entity entity) {
-		return new PlayerSelectionImpl(PacketDistributor.TRACKING_ENTITY.with(() -> entity));
+		return new PlayerSelectionImpl(PacketDistributor.TRACKING_ENTITY.with(entity));
 	}
 
 	public static PlayerSelection trackingWith(Entity entity, Predicate<ServerPlayer> condition) {
-		return new PlayerSelectionImpl(TRACKING_ENTITY_WITH.with(() -> Pair.of(entity, condition)));
+		return new PlayerSelectionImpl(TRACKING_ENTITY_WITH.with(Pair.of(entity, condition)));
 	}
 
 	public static PlayerSelection tracking(BlockEntity be) {
 		LevelChunk chunk = be.getLevel().getChunkAt(be.getBlockPos());
-		return new PlayerSelectionImpl(PacketDistributor.TRACKING_CHUNK.with(() -> chunk));
+		return new PlayerSelectionImpl(PacketDistributor.TRACKING_CHUNK.with(chunk));
 	}
 
 	public static PlayerSelection tracking(ServerLevel level, BlockPos pos) {
 		LevelChunk chunk = level.getChunkAt(pos);
-		return new PlayerSelectionImpl(PacketDistributor.TRACKING_CHUNK.with(() -> chunk));
+		return new PlayerSelectionImpl(PacketDistributor.TRACKING_CHUNK.with(chunk));
 	}
 
 	public static PlayerSelection trackingAndSelf(ServerPlayer player) {
-		return new PlayerSelectionImpl(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player));
+		return new PlayerSelectionImpl(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(player));
 	}
 }

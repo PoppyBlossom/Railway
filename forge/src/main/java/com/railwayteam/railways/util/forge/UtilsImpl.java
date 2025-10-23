@@ -45,7 +45,7 @@ public class UtilsImpl {
     }
 
     public static void sendHonkPacket(Train train, boolean isHonk) {
-		AllPackets.getChannel().send(PacketDistributor.ALL.noArg(), new HonkPacket(train, isHonk));
+		AllPackets.getChannel().send(PacketDistributor.ALL.with(), new HonkPacket(train, isHonk));
     }
 
     public static void postChunkEventClient(LevelChunk chunk, boolean load) {

@@ -72,7 +72,7 @@ public class PacketSetImpl extends PacketSet {
 
 	@Override
 	public void sendTo(ServerPlayer player, SimplePacketBase packet) {
-		AllPackets.getChannel().send(PacketDistributor.PLAYER.with(() -> player), packet);
+		AllPackets.getChannel().send(PacketDistributor.PLAYER.with(player), packet);
 	}
 
 	@Override
