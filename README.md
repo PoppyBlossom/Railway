@@ -23,7 +23,7 @@ Open issues/pull-requests: ![Open Issues](https://img.shields.io/github/issues/P
       
 
 ## Credits
-This project is a fork of **[Create: Steam 'n' Rails](https://github.com/Layers-of-Railways/Railway)**.
+This project is a unofficial fork of **[Create: Steam 'n' Rails](https://github.com/Layers-of-Railways/Railway)**.
 >[!Warning]
 >Please refrain from reporting any issues related to this repository on the official **[Create: Steam 'n' Rails Repository](https://github.com/Layers-of-Railways/Railway)**
 
