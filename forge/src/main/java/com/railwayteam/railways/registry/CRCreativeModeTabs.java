@@ -257,14 +257,12 @@ public class CRCreativeModeTabs {    public static ResourceKey<CreativeModeTab> 
                 if (is3d.test(item) != special)
                     continue;
                 if (!exclusionPredicate.test(item))
-                    items.add(item);
-            }
-            return items;
-        }        private static boolean isInCreativeTab(RegistryEntry<?> entry, ResourceKey<CreativeModeTab> tab) {
-            throw new AssertionError();
+                items.add(item);
         }
-
-        private static void applyOrderings(List<Item> items, List<ItemOrdering> orderings) {
+        return items;
+    }        private static boolean isInCreativeTab(RegistryEntry<?, ?> entry, ResourceKey<CreativeModeTab> tab) {
+        throw new AssertionError();
+    }        private static void applyOrderings(List<Item> items, List<ItemOrdering> orderings) {
             for (ItemOrdering ordering : orderings) {
                 int anchorIndex = items.indexOf(ordering.anchor());
                 if (anchorIndex != -1) {

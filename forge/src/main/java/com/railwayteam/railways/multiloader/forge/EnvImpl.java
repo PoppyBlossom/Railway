@@ -19,7 +19,7 @@
 package com.railwayteam.railways.multiloader.forge;
 
 import com.railwayteam.railways.multiloader.Env;
-import net.neoforged.neoforge.api.distmarker.Dist;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.loading.FMLEnvironment;
 
 public class EnvImpl {

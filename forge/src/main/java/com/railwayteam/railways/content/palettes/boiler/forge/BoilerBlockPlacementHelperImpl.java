@@ -19,10 +19,10 @@
 package com.railwayteam.railways.content.palettes.boiler.forge;
 
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.neoforged.neoforge.common.ForgeMod;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public class BoilerBlockPlacementHelperImpl {
     public static Attribute getAttribute() {
-        return ForgeMod.BLOCK_REACH.get();
+           return Attributes.BLOCK_INTERACTION_RANGE;
     }
 }
