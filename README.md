@@ -12,7 +12,7 @@ We use [Crowdin](https://crowdin.com/project/create-steam-n-rails-official) as o
 Please DM [`@slimeistdev`](https://discord.com/users/880626913813598219) on Discord to request access to the translator's chat.
 
 ## Contributing (for team members):
-1. Create a new branch for your feature (named `1.20/<feat>`). This branch should probably be in the [development repo](https://github.com/Layers-of-Railways/RailwaySecretDev)
+1. Create a new branch for your feature (named `1.21/<feat>`). This branch should probably be in the [development repo](https://github.com/Layers-of-Railways/RailwaySecretDev)
 2. Make a pull request so that it doesn't get lost
 3. Write your feature
 4. Have somebody review it, and merge
@@ -29,6 +29,10 @@ Please DM [`@slimeistdev`](https://discord.com/users/880626913813598219) on Disc
 Make sure to set the following environment variable when running datagen.
 ```env
 DATAGEN=TRUE
+```
+Run datagen using the NeoForge task:
+```bash
+./gradlew :forge:runData
 ```
 
 ### Commit Tricks:
