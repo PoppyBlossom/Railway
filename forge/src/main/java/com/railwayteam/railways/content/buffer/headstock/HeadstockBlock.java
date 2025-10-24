@@ -18,6 +18,7 @@
 
 package com.railwayteam.railways.content.buffer.headstock;
 
+import com.mojang.serialization.MapCodec;
 import com.railwayteam.railways.content.buffer.BlockStateBlockItemGroup;
 import com.railwayteam.railways.registry.CRBlockEntities;
 import com.railwayteam.railways.registry.CRBlocks;
@@ -58,6 +59,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class HeadstockBlock extends HorizontalDirectionalBlock implements IBE<HeadstockBlockEntity>, IWrenchable, ProperWaterloggedBlock, BlockStateBlockItemGroup.GroupedBlock {
+    public static final MapCodec<HeadstockBlock> CODEC = simpleCodec(HeadstockBlock::new);
     public static final EnumProperty<HeadstockStyle> STYLE = EnumProperty.create("style", HeadstockStyle.class);
     public static final BooleanProperty UPSIDE_DOWN = BooleanProperty.create("upside_down");
 
@@ -69,6 +71,11 @@ public class HeadstockBlock extends HorizontalDirectionalBlock implements IBE<He
             .setValue(STYLE, HeadstockStyle.BUFFER)
             .setValue(UPSIDE_DOWN, false)
         );
+    }
+
+    @Override
+    protected MapCodec<? extends HeadstockBlock> codec() {
+        return CODEC;
     }
 
     @Override

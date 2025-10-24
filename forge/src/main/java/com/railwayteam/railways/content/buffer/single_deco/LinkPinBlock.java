@@ -18,6 +18,7 @@
 
 package com.railwayteam.railways.content.buffer.single_deco;
 
+import com.mojang.serialization.MapCodec;
 import com.railwayteam.railways.Railways;
 import com.railwayteam.railways.content.buffer.BlockStateBlockItemGroup;
 import com.railwayteam.railways.registry.CRBlocks;
@@ -42,12 +43,18 @@ import java.util.Locale;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class LinkPinBlock extends AbstractDyeableSingleBufferBlock implements BlockStateBlockItemGroup.GroupedBlock {
+    public static final MapCodec<LinkPinBlock> CODEC = simpleCodec(LinkPinBlock::new);
     public static final EnumProperty<Style> STYLE = EnumProperty.create("style", Style.class);
 
     public LinkPinBlock(Properties properties) {
         super(properties);
         registerDefaultState(defaultBlockState()
             .setValue(STYLE, Style.LINK));
+    }
+
+    @Override
+    protected MapCodec<? extends LinkPinBlock> codec() {
+        return CODEC;
     }
 
     @Override

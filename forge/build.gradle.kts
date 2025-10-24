@@ -26,12 +26,24 @@ operator fun String.invoke(): String = rootProject.ext[this] as? String ?: error
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 repositories {
+    // Local maven for vendored dependencies
+    maven {
+        url = uri("${rootProject.projectDir}/local-maven")
+    }
     mavenCentral()
     maven("https://maven.neoforged.net/releases")
     maven("https://maven.createmod.net")
     maven("https://mvn.devos.one/snapshots/")
     maven("https://maven.blamejared.com/")
     maven("https://maven.tterrag.com/")
+    maven("https://jitpack.io")
+    maven("https://maven.parchmentmc.org")
+    maven("https://modmaven.dev/")
+    maven("https://maven.theillusivec4.top/")
+    // MaxHenkel's repo hosts the voicechat API
+    maven("https://maven.maxhenkel.de/releases")
+    // Modrinth for mods
+    maven("https://api.modrinth.com/maven")
 }
 
 
@@ -59,6 +71,10 @@ dependencies {
     
     // Annotations
     compileOnly("com.google.code.findbugs:jsr305:3.0.2")
+    // Voice chat API (compileOnly so builds succeed even when the runtime mod isn't present)
+    compileOnly("de.maxhenkel.voicechat:voicechat-api:${"voicechat_api_version"()}")
+    // Voice chat mod itself (compileOnly for mixin compilation - the full mod is needed for internal classes)
+    compileOnly("de.maxhenkel.voicechat:voicechat-neoforge:1.21.1-2.6.6")
     
     // Note: @ExpectPlatform from Architectury no longer used
     // Platform-specific implementations are directly in forge/ package

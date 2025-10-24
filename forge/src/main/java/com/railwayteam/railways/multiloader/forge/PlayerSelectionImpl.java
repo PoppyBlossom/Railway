@@ -20,10 +20,8 @@ package com.railwayteam.railways.multiloader.forge;
 
 import com.railwayteam.railways.forge.mixin.ChunkMapAccessor;
 import com.railwayteam.railways.multiloader.PlayerSelection;
-import net.createmod.catnip.data.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ChunkMap;
@@ -34,101 +32,107 @@ import net.minecraft.server.network.ServerPlayerConnection;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.neoforged.neoforge.network.NetworkDirection;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.PacketDistributor.PacketTarget;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 public class PlayerSelectionImpl extends PlayerSelection {
 
-	private static Consumer<Packet<?>> playerListAllWith(final PacketDistributor<Predicate<ServerPlayer>> distributor,
-														 final Supplier<Predicate<ServerPlayer>> predicateSupplier) {
-		return p -> {
-			Predicate<ServerPlayer> predicate = predicateSupplier.get();
-			for (ServerPlayer player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers()) {
-				if (predicate.test(player)) {
-					player.connection.send(p);
-				}
-			}
-		};
-	}
+private final Consumer<ClientboundCustomPayloadPacket> sender;
 
-	private static Consumer<Packet<?>> trackingEntityWith(final PacketDistributor<Pair<Entity, Predicate<ServerPlayer>>> distributor,
-														 final Supplier<Pair<Entity, Predicate<ServerPlayer>>> pairSupplier) {
-		return p -> {
-			Pair<Entity, Predicate<ServerPlayer>> pair = pairSupplier.get();
-			Entity entity = pair.getFirst();
-			Predicate<ServerPlayer> predicate = pair.getSecond();
+private PlayerSelectionImpl(Consumer<ClientboundCustomPayloadPacket> sender) {
+this.sender = sender;
+}
 
+@Override
+public void accept(ResourceLocation id, FriendlyByteBuf buffer) {
+CustomPayloadWrapper payload = CustomPayloadWrapper.create(id, buffer);
+ClientboundCustomPayloadPacket packet = new ClientboundCustomPayloadPacket(payload);
+sender.accept(packet);
+}
+
+public static PlayerSelection all() {
+return new PlayerSelectionImpl(packet -> {
+for (ServerPlayer player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers()) {
+player.connection.send(packet);
+}
+});
+}
+
+public static PlayerSelection allWith(Predicate<ServerPlayer> condition) {
+return new PlayerSelectionImpl(packet -> {
+for (ServerPlayer player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers()) {
+if (condition.test(player)) {
+player.connection.send(packet);
+}
+}
+});
+}
+
+public static PlayerSelection of(ServerPlayer player) {
+return new PlayerSelectionImpl(packet -> player.connection.send(packet));
+}
+
+	public static PlayerSelection tracking(Entity entity) {
+		return new PlayerSelectionImpl(packet -> {
 			ServerChunkCache manager = (ServerChunkCache) entity.level().getChunkSource();
 			ChunkMap storage = manager.chunkMap;
-			ChunkMap.TrackedEntity trackedEntity = ((ChunkMapAccessor)storage).getEntityMap().get(entity.getId());
+			Object trackedEntity = ((ChunkMapAccessor)storage).getEntityMap().get(entity.getId());
 
 			if (trackedEntity == null)
 				return;
 
 			for (ServerPlayerConnection connection : ((ChunkMapAccessor.TrackedEntityAccessor) trackedEntity).getSeenBy()) {
-				if (predicate.test(connection.getPlayer())) {
-					connection.send(p);
-				}
+				connection.send(packet);
 			}
-		};
-	}
-
-	private static final PacketDistributor<Predicate<ServerPlayer>> ALL_WITH =
-		new PacketDistributor<>(PlayerSelectionImpl::playerListAllWith, NetworkDirection.PLAY_TO_CLIENT);
-
-	private static final PacketDistributor<Pair<Entity, Predicate<ServerPlayer>>> TRACKING_ENTITY_WITH =
-		new PacketDistributor<>(PlayerSelectionImpl::trackingEntityWith, NetworkDirection.PLAY_TO_CLIENT);
-
-	final PacketTarget target;
-
-	private PlayerSelectionImpl(PacketTarget target) {
-		this.target = target;
-	}
-
-	@Override
-	public void accept(ResourceLocation id, FriendlyByteBuf buffer) {
-		CustomPayloadWrapper payload = CustomPayloadWrapper.create(id, buffer);
-		ClientboundCustomPayloadPacket packet = new ClientboundCustomPayloadPacket(payload);
-		target.send(packet);
-	}
-
-	public static PlayerSelection all() {
-		return new PlayerSelectionImpl(PacketDistributor.ALL.noArg());
-	}
-
-	public static PlayerSelection allWith(Predicate<ServerPlayer> condition) {
-		return new PlayerSelectionImpl(ALL_WITH.with(() -> condition));
-	}
-
-	public static PlayerSelection of(ServerPlayer player) {
-		return new PlayerSelectionImpl(PacketDistributor.PLAYER.with(() -> player));
-	}
-
-	public static PlayerSelection tracking(Entity entity) {
-		return new PlayerSelectionImpl(PacketDistributor.TRACKING_ENTITY.with(() -> entity));
+		});
 	}
 
 	public static PlayerSelection trackingWith(Entity entity, Predicate<ServerPlayer> condition) {
-		return new PlayerSelectionImpl(TRACKING_ENTITY_WITH.with(() -> Pair.of(entity, condition)));
-	}
+		return new PlayerSelectionImpl(packet -> {
+			ServerChunkCache manager = (ServerChunkCache) entity.level().getChunkSource();
+			ChunkMap storage = manager.chunkMap;
+			Object trackedEntity = ((ChunkMapAccessor)storage).getEntityMap().get(entity.getId());
 
-	public static PlayerSelection tracking(BlockEntity be) {
-		LevelChunk chunk = be.getLevel().getChunkAt(be.getBlockPos());
-		return new PlayerSelectionImpl(PacketDistributor.TRACKING_CHUNK.with(() -> chunk));
-	}
+			if (trackedEntity == null)
+				return;
 
-	public static PlayerSelection tracking(ServerLevel level, BlockPos pos) {
-		LevelChunk chunk = level.getChunkAt(pos);
-		return new PlayerSelectionImpl(PacketDistributor.TRACKING_CHUNK.with(() -> chunk));
-	}
+			for (ServerPlayerConnection connection : ((ChunkMapAccessor.TrackedEntityAccessor) trackedEntity).getSeenBy()) {
+				if (condition.test(connection.getPlayer())) {
+					connection.send(packet);
+				}
+			}
+		});
+	}public static PlayerSelection tracking(BlockEntity be) {
+LevelChunk chunk = be.getLevel().getChunkAt(be.getBlockPos());
+return new PlayerSelectionImpl(packet -> {
+ServerChunkCache manager = (ServerChunkCache) be.getLevel().getChunkSource();
+manager.chunkMap.getPlayers(chunk.getPos(), false).forEach(player -> player.connection.send(packet));
+});
+}
+
+public static PlayerSelection tracking(ServerLevel level, BlockPos pos) {
+LevelChunk chunk = level.getChunkAt(pos);
+return new PlayerSelectionImpl(packet -> {
+ServerChunkCache manager = (ServerChunkCache) level.getChunkSource();
+manager.chunkMap.getPlayers(chunk.getPos(), false).forEach(player -> player.connection.send(packet));
+});
+}
 
 	public static PlayerSelection trackingAndSelf(ServerPlayer player) {
-		return new PlayerSelectionImpl(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player));
+		return new PlayerSelectionImpl(packet -> {
+			player.connection.send(packet);
+			// Also send to all tracking players
+			ServerChunkCache manager = (ServerChunkCache) player.level().getChunkSource();
+			ChunkMap storage = manager.chunkMap;
+			Object trackedEntity = ((ChunkMapAccessor)storage).getEntityMap().get(player.getId());
+
+			if (trackedEntity != null) {
+				for (ServerPlayerConnection connection : ((ChunkMapAccessor.TrackedEntityAccessor) trackedEntity).getSeenBy()) {
+					connection.send(packet);
+				}
+			}
+		});
 	}
 }

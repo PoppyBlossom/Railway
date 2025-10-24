@@ -19,6 +19,7 @@
 package com.railwayteam.railways.content.buffer;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.tags.BlockTags;
@@ -63,8 +64,8 @@ public class WoodVariantTrackBufferBlockEntity extends TrackBufferBlockEntity im
     }
 
     @Override
-    protected void read(CompoundTag compound, boolean clientPacket) {
-        super.read(compound, clientPacket);
+    protected void read(CompoundTag compound, HolderLookup.Provider lookupProvider, boolean clientPacket) {
+        super.read(compound, lookupProvider, clientPacket);
         BlockState prevMaterial = material;
         if (!compound.contains("Material"))
             return;
@@ -78,8 +79,8 @@ public class WoodVariantTrackBufferBlockEntity extends TrackBufferBlockEntity im
     }
 
     @Override
-    public void write(CompoundTag compound, boolean clientPacket) {
-        super.write(compound, clientPacket);
+    public void write(CompoundTag compound, HolderLookup.Provider lookupProvider, boolean clientPacket) {
+        super.write(compound, lookupProvider, clientPacket);
         compound.put("Material", NbtUtils.writeBlockState(material));
     }
 }

@@ -509,8 +509,8 @@ public class TrackSwitchBlockEntity extends SmartBlockEntity implements Transfor
     }
 
     @Override
-    protected void write(CompoundTag tag, boolean clientPacket) {
-        super.write(tag, clientPacket);
+    protected void write(CompoundTag tag, net.minecraft.core.HolderLookup.Provider lookupProvider, boolean clientPacket) {
+        super.write(tag, lookupProvider, clientPacket);
         if (clientPacket)
             tag.putString("SwitchState", (state == null ? SwitchState.NORMAL : state).getSerializedName());
         tag.putInt("AnalogOutput", lastAnalogOutput);
@@ -522,8 +522,8 @@ public class TrackSwitchBlockEntity extends SmartBlockEntity implements Transfor
     }
 
     @Override
-    protected void read(CompoundTag tag, boolean clientPacket) {
-        super.read(tag, clientPacket);
+    protected void read(CompoundTag tag, net.minecraft.core.HolderLookup.Provider lookupProvider, boolean clientPacket) {
+        super.read(tag, lookupProvider, clientPacket);
         if (clientPacket) {
             String switchState = tag.getString("SwitchState").toUpperCase(Locale.ROOT);
             try {

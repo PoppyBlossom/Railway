@@ -18,6 +18,7 @@
 
 package com.railwayteam.railways.content.semaphore;
 
+import com.mojang.serialization.MapCodec;
 import com.railwayteam.railways.config.CRConfigs;
 import com.railwayteam.railways.registry.CRBlockEntities;
 import com.railwayteam.railways.registry.CRBlocks;
@@ -57,6 +58,8 @@ import java.util.function.Predicate;
 
 public class SemaphoreBlock extends HorizontalDirectionalBlock implements IBE<SemaphoreBlockEntity>, IWrenchable {
 
+    public static final MapCodec<SemaphoreBlock> CODEC = simpleCodec(SemaphoreBlock::new);
+
     public static final int placementHelperId = PlacementHelpers.register(new PlacementHelper());
     public static final int girderPlacementHelperId = PlacementHelpers.register(new GirderPlacementHelper());
     public static final BooleanProperty FLIPPED = BooleanProperty.create("flipped");
@@ -67,6 +70,12 @@ public class SemaphoreBlock extends HorizontalDirectionalBlock implements IBE<Se
         super(pProperties);
         registerDefaultState(defaultBlockState().setValue(FLIPPED,false).setValue(FULL,false).setValue(UPSIDE_DOWN, false));
     }
+    
+    @Override
+    protected MapCodec<? extends SemaphoreBlock> codec() {
+        return CODEC;
+    }
+    
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         super.createBlockStateDefinition(pBuilder.add(FACING).add(FLIPPED).add(FULL).add(UPSIDE_DOWN));

@@ -74,8 +74,8 @@ public class SmokeStackBlockEntity extends SmartBlockEntity implements IHaveGogg
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {}
 
     @Override
-    protected void read(CompoundTag tag, boolean clientPacket) {
-        super.read(tag, clientPacket);
+    protected void read(CompoundTag tag, net.minecraft.core.HolderLookup.Provider lookupProvider, boolean clientPacket) {
+        super.read(tag, lookupProvider, clientPacket);
         if (tag.contains("color", Tag.TAG_INT)) {
             int colorOrdinal = tag.getInt("color");
             color = DyeColor.byId(colorOrdinal);
@@ -86,8 +86,8 @@ public class SmokeStackBlockEntity extends SmartBlockEntity implements IHaveGogg
     }
 
     @Override
-    protected void write(CompoundTag tag, boolean clientPacket) {
-        super.write(tag, clientPacket);
+    protected void write(CompoundTag tag, net.minecraft.core.HolderLookup.Provider lookupProvider, boolean clientPacket) {
+        super.write(tag, lookupProvider, clientPacket);
         if (color != null) {
             tag.putInt("color", color.getId());
         }

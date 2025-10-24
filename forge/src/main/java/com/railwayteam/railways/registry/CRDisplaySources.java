@@ -29,8 +29,7 @@ import java.util.function.Supplier;
 public class CRDisplaySources {
 	public static RegistryEntry<DisplaySource, TrackCouplerDisplaySource> TRACK_COUPLER_INFO = simple("track_coupler_info", TrackCouplerDisplaySource::new);
 	public static RegistryEntry<DisplaySource, SwitchDisplaySource> TRACK_SWITCH = simple("track_switch", SwitchDisplaySource::new);
-	
-	
+    
 	private static <T extends DisplaySource> RegistryEntry<DisplaySource, T> simple(String name, Supplier<T> supplier) {
 		return Railways.registrate().displaySource(name, supplier).register();
 	}
