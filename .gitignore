@@ -32,7 +32,6 @@ jars/
 **/changelog.html
 **/recent_changelog.html
 .DS_Store
-.vscode/
 
 ##################
 # Dev's Personal #

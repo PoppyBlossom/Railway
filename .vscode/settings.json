@@ -5,5 +5,19 @@
         "tmp_mod"
     ],
     "java.project.referencedLibraries": [],
-    "java.compile.nullAnalysis.mode": "disabled"
+    "java.compile.nullAnalysis.mode": "disabled",
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-21",
+            "path": "/usr/lib/jvm/java-21-openjdk-amd64",
+            "default": true
+        }
+    ],
+    "java.jdt.ls.java.home": "/usr/lib/jvm/java-21-openjdk-amd64",
+    "java.import.gradle.java.home": "/usr/lib/jvm/java-21-openjdk-amd64"
+    ,
+    "terminal.integrated.env.linux": {
+        "JAVA_HOME": "/usr/lib/jvm/java-21-openjdk-amd64",
+        "PATH": "/usr/lib/jvm/java-21-openjdk-amd64/bin:${env:PATH}"
+    }
 }
