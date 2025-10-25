@@ -19,10 +19,14 @@
 package com.railwayteam.railways.multiloader.forge;
 
 import net.minecraft.world.item.Item;
-import net.neoforged.neoforge.common.CommonHooks;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
 
 public class PlatformAbstractionHelperImpl {
     public static int getBurnTime(Item item) {
-        return CommonHooks.getBurnTime(item.getDefaultInstance(), null);
+        // NeoForge 21: CommonHooks.getBurnTime was removed.
+        // Use vanilla fuel lookup via RecipeType.SMELTING burn time query.
+        ItemStack stack = item.getDefaultInstance();
+        return stack.getBurnTime(RecipeType.SMELTING);
     }
 }
