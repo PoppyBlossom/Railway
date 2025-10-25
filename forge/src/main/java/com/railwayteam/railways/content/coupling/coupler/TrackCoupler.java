@@ -26,6 +26,7 @@ import com.simibubi.create.content.trains.graph.TrackEdge;
 import com.simibubi.create.content.trains.graph.TrackGraph;
 import com.simibubi.create.content.trains.signal.SignalPropagator;
 import com.simibubi.create.content.trains.signal.SingleBlockEntityEdgePoint;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
@@ -83,8 +84,8 @@ public class TrackCoupler extends SingleBlockEntityEdgePoint {
     }
 
     @Override
-    public void read(CompoundTag nbt, boolean migration, DimensionPalette dimensions) {
-        super.read(nbt, migration, dimensions);
+    public void read(CompoundTag nbt, HolderLookup.Provider provider, boolean migration, DimensionPalette dimensions) {
+        super.read(nbt, provider, migration, dimensions);
         activated = nbt.getInt("Activated");
         if (nbt.contains("TrainId"))
             currentTrain = nbt.getUUID("TrainId");
@@ -98,8 +99,8 @@ public class TrackCoupler extends SingleBlockEntityEdgePoint {
     }
 
     @Override
-    public void write(CompoundTag nbt, DimensionPalette dimensions) {
-        super.write(nbt, dimensions);
+    public void write(CompoundTag nbt, HolderLookup.Provider provider, DimensionPalette dimensions) {
+        super.write(nbt, provider, dimensions);
         nbt.putInt("Activated", activated);
         if (currentTrain != null)
             nbt.putUUID("TrainId", currentTrain);

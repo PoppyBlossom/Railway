@@ -22,6 +22,7 @@ import com.railwayteam.railways.content.extended_sliding_doors.SlidingDoorMode;
 import com.simibubi.create.content.decoration.slidingDoor.SlidingDoorBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollOptionBehaviour;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
@@ -42,8 +43,8 @@ public class MixinSlidingDoorBlockEntity implements SlidingDoorMode.IHasDoorMode
         SlidingDoorBlockEntity this_ = (SlidingDoorBlockEntity) (Object) this;
         railways$doorModeScroll = new ScrollOptionBehaviour<>(SlidingDoorMode.class, Component.translatable("create.sliding_door.mode"), this_, new SlidingDoorMode.SlidingDoorValueBoxTransform()) {
             @Override
-            public void read(CompoundTag nbt, boolean clientPacket) {
-                super.read(nbt, clientPacket);
+            public void read(CompoundTag nbt, HolderLookup.Provider provider, boolean clientPacket) {
+                super.read(nbt, provider, clientPacket);
                 setValue(value); // ensure that it is properly bounded
             }
         };

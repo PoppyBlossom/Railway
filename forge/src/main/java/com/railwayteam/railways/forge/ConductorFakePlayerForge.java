@@ -31,9 +31,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.Pose;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import org.jetbrains.annotations.NotNull;
@@ -66,10 +63,7 @@ public class ConductorFakePlayerForge extends FakePlayer implements IConductorHo
 		return Component.translatable(Railways.MOD_ID + "." + "conductor_name");
 	}
 
-	@Override
-	public float getEyeHeight(@NotNull Pose pose) {
-		return 0;
-	}
+	// Removed getEyeHeight override - method is now final in 1.21
 
 	@Override
 	public Vec3 position() {
@@ -86,12 +80,7 @@ public class ConductorFakePlayerForge extends FakePlayer implements IConductorHo
 		return false;
 	}
 
-	@Override
-	@NotNull
-	public ItemStack eat(@NotNull Level world, ItemStack stack) {
-		stack.shrink(1);
-		return stack;
-	}
+	// Removed eat override - method is now final in 1.21
 
 	@Override
 	public @Nullable ConductorEntity getConductor() {
@@ -100,7 +89,7 @@ public class ConductorFakePlayerForge extends FakePlayer implements IConductorHo
 
 	private static class ConductorNetHandler extends ServerGamePacketListenerImpl {
 		public ConductorNetHandler(MinecraftServer server, ServerPlayer player) {
-			super(server, NETWORK_MANAGER, player);
+			super(server, NETWORK_MANAGER, player, null);  // Cookie can be null for fake players
 		}
 
 		@Override
