@@ -20,13 +20,29 @@ package com.railwayteam.railways.multiloader.forge;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
+import net.neoforged.neoforge.common.extensions.IItemExtension;
 
 public class PlatformAbstractionHelperImpl {
+    /**
+     * Return the burn time for the given item.
+     * <p>
+     * Preferred path: use NeoForge's IItemExtension#getBurnTime which takes
+     * an ItemStack and optional RecipeType (for NBT-sensitive burn times). If
+     * that returns a negative value (requesting vanilla fallback) we use the
+     * vanilla/NeoForge fuel map {@link AbstractFurnaceBlockEntity#getFuel()}.
+     */
     public static int getBurnTime(Item item) {
-        // NeoForge 21: CommonHooks.getBurnTime was removed.
-        // Use vanilla fuel lookup via RecipeType.SMELTING burn time query.
         ItemStack stack = item.getDefaultInstance();
-        return stack.getBurnTime(RecipeType.SMELTING);
+        int burn = ((IItemExtension) item).getBurnTime(stack, null);
+        if (burn >= 0) {
+            return burn;
+        }
+
+        // Fallback to the vanilla fuel map. Mark deprecation suppression since
+        // NeoForge provides a data map replacement but the vanilla API still exists.
+        @SuppressWarnings("deprecation")
+        int fallback = AbstractFurnaceBlockEntity.getFuel().getOrDefault(item, 0);
+        return fallback;
     }
 }
