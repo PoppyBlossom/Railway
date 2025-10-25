@@ -52,6 +52,6 @@ public class EntityUtilsImpl {
 
 	public static boolean handleUseEvent(Player player, InteractionHand hand, BlockHitResult hit) {
 		PlayerInteractEvent.RightClickBlock event = CommonHooks.onRightClickBlock(player, InteractionHand.MAIN_HAND, hit.getBlockPos(), hit);
-		return event.getUseBlock() != TriState.FALSE && event.getUseItem() != TriState.FALSE;
+		return event.getUseBlock() != TriState.FALSE || event.getUseItem() != TriState.FALSE;
 	}
 }
