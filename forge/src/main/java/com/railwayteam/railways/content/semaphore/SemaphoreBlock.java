@@ -136,7 +136,6 @@ public class SemaphoreBlock extends HorizontalDirectionalBlock implements IBE<Se
 
         KineticBlockEntity.switchToBlockState(world, context.getClickedPos(), updateAfterWrenched(rotated, context));
 
-    context.getLevel().getBlockEntity(context.getClickedPos());
 
         if (upsideDownChanged) {
             BlockPos currentPos = context.getClickedPos().below();
