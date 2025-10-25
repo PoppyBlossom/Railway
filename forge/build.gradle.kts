@@ -73,8 +73,11 @@ dependencies {
     compileOnly("com.google.code.findbugs:jsr305:3.0.2")
     // Voice chat API (compileOnly so builds succeed even when the runtime mod isn't present)
     compileOnly("de.maxhenkel.voicechat:voicechat-api:${"voicechat_api_version"()}")
-    // Voice chat mod itself (compileOnly for mixin compilation - the full mod is needed for internal classes)
-    compileOnly("de.maxhenkel.voicechat:voicechat-neoforge:1.21.1-2.6.6")
+    // Voice chat mod itself (only when explicitly enabled)
+    if ("enable_simple_voice_chat"().toBoolean()) {
+        // compileOnly for mixin compilation when targeting internal classes; skip by default
+        compileOnly("de.maxhenkel.voicechat:voicechat-neoforge:1.21.1-2.6.6")
+    }
     
     // Note: @ExpectPlatform from Architectury no longer used
     // Platform-specific implementations are directly in forge/ package
