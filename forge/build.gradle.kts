@@ -93,7 +93,10 @@ tasks.processResources {
         "minecraft_version" to "minecraft_version"(),
         "neoforge_version" to "neoforge_version"(),
         "mod_id" to "mod_id"(),
-        "mod_name" to "mod_name"()
+        "mod_name" to "mod_name"(),
+        // Additional placeholders used in mods.toml
+        "create_forge_version" to "create_forge_version"(),
+        "voicechat_api_version" to "voicechat_api_version"()
     )
     inputs.properties(props)
     filesMatching("META-INF/mods.toml") { expand(props) }
