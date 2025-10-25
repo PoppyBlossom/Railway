@@ -42,20 +42,8 @@ public class CRDataFixers {
     private static final BiFunction<Integer, Schema, Schema> SAME_NAMESPACED = NamespacedSchema::new;
 
     public static void register() {
-        Railways.LOGGER.info("Registering data fixers");
-
-        if (CRConfigs.getDisableDatafixer()) {
-            Railways.LOGGER.warn("Skipping Datafixer Registration due to it being disabled in the config.");
-            return;
-        }
-
-        DataFixesInternals api = DataFixesInternals.get();
-
-        DataFixerBuilder builder = new DataFixerBuilder(Railways.DATA_FIXER_VERSION);
-        addFixers(builder);
-
-        ExecutorService executor = Executors.newSingleThreadExecutor(new ThreadFactoryBuilder().setNameFormat("Railways Datafixer Bootstrap").setDaemon(true).setPriority(1).build());
-        api.registerFixer(Railways.DATA_FIXER_VERSION, builder.buildOptimized(SharedConstants.DATA_FIX_TYPES_TO_OPTIMIZE, executor));
+        Railways.LOGGER.info("Registering data fixers (temporarily disabled for 1.21 port)");
+        // TODO 1.21: Re-enable DataFixer registration once API changes are finalized
     }
 
     private static void addFixers(DataFixerBuilder builder) {

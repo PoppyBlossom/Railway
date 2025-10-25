@@ -44,7 +44,7 @@ public class MountedToolboxDisposeAllPacket implements C2SPacket {
 
 	@Override
 	public void handle(ServerPlayer player) {
-		Level world = player.level;
+	Level world = player.level();
 		if (world.getEntity(toolboxCarrierId) instanceof ConductorEntity conductorEntity) {
 
 			double maxRange = ToolboxHandler.getMaxRange(player);

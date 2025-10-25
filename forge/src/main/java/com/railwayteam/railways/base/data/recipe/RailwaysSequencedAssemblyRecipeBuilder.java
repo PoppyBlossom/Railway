@@ -34,7 +34,6 @@ public class RailwaysSequencedAssemblyRecipeBuilder extends SequencedAssemblyRec
 
     @Override
     public void build(RecipeOutput consumer) {
-        var recipe = build();
-        consumer.accept(getRecipeId(), recipe.value(), recipe.advancement());
+        super.build(consumer);
     }
 }

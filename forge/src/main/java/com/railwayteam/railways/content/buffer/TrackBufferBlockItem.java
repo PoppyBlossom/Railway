@@ -47,6 +47,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -128,8 +130,8 @@ public class TrackBufferBlockItem extends TrackTargetingBlockItem {
                 return InteractionResult.FAIL;
             }
             
-            CompoundTag stackTag = stack.getOrCreateTag();
-            stack.setTag(stackTag);
+            CustomData existing = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+            CompoundTag stackTag = existing.copyTag();
             
             CompoundTag oldTeTag = stackTag.getCompound("BlockEntityTag");
             
@@ -160,6 +162,7 @@ public class TrackBufferBlockItem extends TrackTargetingBlockItem {
             
             teTag.put("TargetTrack", NbtUtils.writeBlockPos(pos.subtract(placedPos)));
             stackTag.put("BlockEntityTag", teTag);
+            stack.set(DataComponents.CUSTOM_DATA, CustomData.of(stackTag));
             
             TrackShape shape = state.getValue(TrackBlock.SHAPE);
             boolean diagonal = shape == TrackShape.PD || shape == TrackShape.ND;

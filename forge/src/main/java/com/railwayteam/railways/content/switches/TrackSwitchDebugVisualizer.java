@@ -83,7 +83,7 @@ public class TrackSwitchDebugVisualizer {
         return;
 
       BlockPos pos = blockHitResult.getBlockPos();
-      BlockState state = mc.player.level.getBlockState(pos);
+      BlockState state = mc.player.level().getBlockState(pos);
       if (!(state.getBlock() instanceof TrackSwitchBlock))
         return;
     }

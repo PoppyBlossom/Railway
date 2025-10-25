@@ -23,6 +23,7 @@ import net.createmod.catnip.placement.IPlacementHelper;
 import net.createmod.catnip.placement.PlacementHelpers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -61,11 +62,11 @@ public class SemaphoreItem extends BlockItem {
         if(!placementHelper.matchesState(state))
             return super.place(pContext);
 
-        InteractionResult result = placementHelper.getOffset(player, world, state, pos, ray)
+        ItemInteractionResult result = placementHelper.getOffset(player, world, state, pos, ray)
                 .placeInWorld(world, this, player, pContext.getHand(), ray);
 
         if(result.consumesAction())
-            return result;
+            return InteractionResult.sidedSuccess(world.isClientSide);
         else
             return super.place(pContext);
     }

@@ -50,7 +50,7 @@ public class CameraMovePacketOld implements C2SPacket {
 
     @Override
     public void handle(ServerPlayer sender) {
-        if (sender.level.getEntity(id) instanceof ConductorEntity conductor && sender.getCamera() == conductor) {
+        if (sender.level().getEntity(id) instanceof ConductorEntity conductor && sender.getCamera() == conductor) {
             conductor.setYRot(yRot % 360.0f);
             conductor.setXRot(Mth.clamp(xRot, -90.0f, 90.0f) % 360.0f);
         }

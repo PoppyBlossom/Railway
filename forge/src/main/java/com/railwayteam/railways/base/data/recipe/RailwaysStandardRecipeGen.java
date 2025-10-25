@@ -463,7 +463,7 @@ public class RailwaysStandardRecipeGen extends RailwaysRecipeProvider {
         }
 
         private ResourceLocation getRegistryName() {
-            return compatDatagenOutput == null ? CatnipServices.REGISTRIES.getKeyOrThrow(result.get()
+            return compatDatagenOutput == null ? net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(result.get()
                 .asItem()) : compatDatagenOutput;
         }
 
@@ -580,7 +580,7 @@ public class RailwaysStandardRecipeGen extends RailwaysRecipeProvider {
                             exp, (int) (cookingTime * cookingTimeModifier)));
                     if (unlockedBy != null)
                         b.unlockedBy("has_item", inventoryTrigger(unlockedBy.get()));
-                    b.save(consumer, createSimpleLocation(CatnipServices.REGISTRIES.getKeyOrThrow(serializer)
+                    b.save(consumer, createSimpleLocation(net.minecraft.core.registries.BuiltInRegistries.RECIPE_SERIALIZER.getKey(serializer)
                         .getPath()));
                 });
             }

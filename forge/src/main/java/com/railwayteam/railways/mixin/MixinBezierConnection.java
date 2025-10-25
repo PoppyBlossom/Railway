@@ -107,7 +107,7 @@ public abstract class MixinBezierConnection implements IHasTrackCasing {
 		  Railways.LOGGER.error("NBTCtor trackCasing was minecraft:block!!! for BezierConnection: primary={}, secondary={}", bePositions.getFirst(), bePositions.getSecond());
       }
       //Railways.LOGGER.warn("NBTCtor: Casing="+compound.getString("Casing"));
-      setTrackCasing((SlabBlock) BuiltInRegistries.BLOCK.get(ResourceLocation.of(compound.getString("Casing"), ':')));
+      setTrackCasing((SlabBlock) BuiltInRegistries.BLOCK.get(ResourceLocation.parse(compound.getString("Casing"))));
     }
     if (compound.contains("ShiftDown", Tag.TAG_BYTE)) {
       setAlternate(compound.getBoolean("ShiftDown"));

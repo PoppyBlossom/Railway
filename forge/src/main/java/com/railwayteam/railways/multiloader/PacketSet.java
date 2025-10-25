@@ -27,6 +27,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.DisconnectionDetails;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -205,7 +206,7 @@ public abstract class PacketSet {
 				return;
 			Component error = Component.literal("Steam n' Rails on the client uses a different network format than the server.")
 					.append(" You should use the same version of the mod on both sides.");
-			mc.getConnection().onDisconnect(error);
+			mc.getConnection().onDisconnect(new DisconnectionDetails(error));
 		}
 	}
 

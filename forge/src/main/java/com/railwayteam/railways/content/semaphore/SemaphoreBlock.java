@@ -35,6 +35,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -44,7 +45,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -82,20 +82,16 @@ public class SemaphoreBlock extends HorizontalDirectionalBlock implements IBE<Se
     }
     @SuppressWarnings("deprecation")
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
+    public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
                                  BlockHitResult ray) {
-        ItemStack heldItem = player.getItemInHand(hand);
-
-        //IPlacementHelper placementHelper = PlacementHelpers.get(placementHelperId);
-
-
-        ItemStack itemInHand = player.getItemInHand(hand);
         IPlacementHelper helper = PlacementHelpers.get(SemaphoreBlock.girderPlacementHelperId);
 
-        if (helper.matchesItem(itemInHand))
-            return helper.getOffset(player, world, state, pos, ray)
-                            .placeInWorld(world, (BlockItem) itemInHand.getItem(), player, hand, ray);
-        return InteractionResult.PASS;
+        if (helper.matchesItem(stack)) {
+            ItemInteractionResult result = helper.getOffset(player, world, state, pos, ray)
+                .placeInWorld(world, (BlockItem) stack.getItem(), player, hand, ray);
+            return result.consumesAction() ? result : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
@@ -140,8 +136,6 @@ public class SemaphoreBlock extends HorizontalDirectionalBlock implements IBE<Se
 
         KineticBlockEntity.switchToBlockState(world, context.getClickedPos(), updateAfterWrenched(rotated, context));
 
-        BlockEntity te = context.getLevel()
-                .getBlockEntity(context.getClickedPos());
 
         if (upsideDownChanged) {
             BlockPos currentPos = context.getClickedPos().below();

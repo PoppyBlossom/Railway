@@ -29,9 +29,9 @@ import java.util.Set;
 @Mixin(ChunkMap.class)
 public interface ChunkMapAccessor {
     @Accessor
-    Int2ObjectMap<ChunkMap.TrackedEntity> getEntityMap();
+    Int2ObjectMap<?> getEntityMap();
 
-    @Mixin(ChunkMap.TrackedEntity.class)
+    @Mixin(targets = "net.minecraft.server.level.ChunkMap$TrackedEntity")
     interface TrackedEntityAccessor {
         @Accessor
         Set<ServerPlayerConnection> getSeenBy();

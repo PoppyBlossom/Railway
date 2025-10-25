@@ -28,10 +28,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -116,7 +118,7 @@ public abstract class TrackBufferBlock<BE extends TrackBufferBlockEntity> extend
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+	public ItemStack getCloneItemStack(BlockState state, net.minecraft.world.phys.HitResult target, LevelReader level, BlockPos pos, Player player) {
 		return CRBlocks.TRACK_BUFFER.asStack();
 	}
 
@@ -128,11 +130,12 @@ public abstract class TrackBufferBlock<BE extends TrackBufferBlockEntity> extend
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand,
-															 BlockHitResult pHit) {
+	public ItemInteractionResult useItemOn(ItemStack stack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand,
+										   BlockHitResult pHit) {
 		if (AdventureUtils.isAdventure(pPlayer))
-			return InteractionResult.PASS;
-		return onBlockEntityUse(pLevel, pPos, be -> be.applyDyeIfValid(pPlayer.getItemInHand(pHand)));
+			return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+		InteractionResult r = onBlockEntityUse(pLevel, pPos, be -> be.applyDyeIfValid(stack));
+		return r.consumesAction() ? ItemInteractionResult.sidedSuccess(pLevel.isClientSide) : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 	}
 
 	public static int getBaseModelYRotationOf(BlockState state) {

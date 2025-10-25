@@ -34,6 +34,7 @@ import net.createmod.catnip.placement.PlacementOffset;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.core.Holder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -141,19 +142,19 @@ public class BoilerBlock extends Block implements IWrenchable, IHasCustomOutline
     }
 
     @Override
-    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos,
+    public net.minecraft.world.ItemInteractionResult useItemOn(net.minecraft.world.item.ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos,
                                           Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
         if (player.isShiftKeyDown() || !player.mayBuild())
-            return InteractionResult.PASS;
-
-        ItemStack heldItem = player.getItemInHand(hand);
+            return net.minecraft.world.ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
         IPlacementHelper helper = PlacementHelpers.get(placementHelperId);
-        if (helper.matchesItem(heldItem))
-            return helper.getOffset(player, level, state, pos, hit)
-                    .placeInWorld(level, (BlockItem) heldItem.getItem(), player, hand, hit);
+        if (helper.matchesItem(stack)) {
+            net.minecraft.world.ItemInteractionResult result = helper.getOffset(player, level, state, pos, hit)
+                .placeInWorld(level, (BlockItem) stack.getItem(), player, hand, hit);
+            return result.consumesAction() ? result : net.minecraft.world.ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
 
-        return InteractionResult.PASS;
+        return net.minecraft.world.ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
@@ -272,8 +273,12 @@ public class BoilerBlock extends Block implements IWrenchable, IHasCustomOutline
                 int range = AllConfigs.server().equipment.placementAssistRange.get();
                 if (player != null) {
                     AttributeInstance reach = player.getAttribute(getAttribute());
-                    if (reach != null && reach.hasModifier(ExtendoGripItem.singleRangeAttributeModifier))
-                        range += 4;
+                    if (reach != null) {
+                        // In 1.21+, modifiers are identified differently; use effective value instead
+                        double extra = reach.getValue() - reach.getBaseValue();
+                        if (extra > 0)
+                            range += (int) Math.round(extra);
+                    }
                 }
                 int poles = attachedPoles(level, pos, dir);
                 if (poles >= range)
@@ -292,7 +297,7 @@ public class BoilerBlock extends Block implements IWrenchable, IHasCustomOutline
             }
 
             return offset;
-        }        public static Attribute getAttribute() {
+        }        public static Holder<Attribute> getAttribute() {
             throw new AssertionError();
         }
     }

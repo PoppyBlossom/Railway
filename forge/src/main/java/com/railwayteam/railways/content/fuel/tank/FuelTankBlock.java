@@ -38,6 +38,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -125,24 +126,23 @@ public class FuelTankBlock extends Block implements IWrenchable, IBE<FuelTankBlo
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
+    public ItemInteractionResult useItemOn(ItemStack heldItem, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
                                  BlockHitResult ray) {
-        ItemStack heldItem = player.getItemInHand(hand);
         boolean onClient = world.isClientSide;
 
         if (heldItem.isEmpty())
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         if (!player.isCreative())
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
         FluidHelper.FluidExchange exchange = null;
         FuelTankBlockEntity be = ConnectivityHandler.partAt(getBlockEntityType(), world, pos);
         if (be == null)
-            return InteractionResult.FAIL;
+            return ItemInteractionResult.FAIL;
 
         IFluidHandler fluidTank = world.getCapability(Capabilities.FluidHandler.BLOCK, be.getBlockPos(), ray.getDirection());
         if (fluidTank == null)
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         FluidStack prevFluidInTank = fluidTank.getFluidInTank(0)
                 .copy();
 
@@ -154,13 +154,13 @@ public class FuelTankBlock extends Block implements IWrenchable, IBE<FuelTankBlo
         if (exchange == null) {
             if (GenericItemEmptying.canItemBeEmptied(world, heldItem)
                     || GenericItemFilling.canItemBeFilled(world, heldItem))
-                return InteractionResult.SUCCESS;
-            return InteractionResult.PASS;
+                return ItemInteractionResult.sidedSuccess(world.isClientSide);
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
         SoundEvent soundevent = null;
         BlockState fluidState = null;
-    FluidStack fluidInTank = fluidTank.getFluidInTank(0);
+        FluidStack fluidInTank = fluidTank.getFluidInTank(0);
 
         if (exchange == FluidHelper.FluidExchange.ITEM_TO_TANK) {
             Fluid fluid = fluidInTank.getFluid();
@@ -208,7 +208,7 @@ public class FuelTankBlock extends Block implements IWrenchable, IBE<FuelTankBlo
                                 .scale(1 / 20f);
                         vec = vec.add(motion);
                         world.addParticle(blockParticleData, vec.x, vec.y, vec.z, motion.x, motion.y, motion.z);
-                        return InteractionResult.SUCCESS;
+                        return ItemInteractionResult.sidedSuccess(true);
                     }
 
                     controllerBE.sendDataImmediately();
@@ -217,7 +217,7 @@ public class FuelTankBlock extends Block implements IWrenchable, IBE<FuelTankBlo
             }
         }
 
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.sidedSuccess(world.isClientSide);
     }
 
     @Override
@@ -294,8 +294,8 @@ public class FuelTankBlock extends Block implements IWrenchable, IBE<FuelTankBlo
 
     // Tanks are less noisy when placed in batch
     public static final SoundType SILENCED_METAL =
-        new SoundType(0.1F, 1.5F, () -> SoundEvents.METAL_BREAK, () -> SoundEvents.METAL_STEP,
-            () -> SoundEvents.METAL_PLACE, () -> SoundEvents.METAL_HIT, () -> SoundEvents.METAL_FALL);
+        new SoundType(0.1F, 1.5F, SoundEvents.METAL_BREAK, SoundEvents.METAL_STEP,
+            SoundEvents.METAL_PLACE, SoundEvents.METAL_HIT, SoundEvents.METAL_FALL);
 
     @Override
     public SoundType getSoundType(BlockState state, LevelReader world, BlockPos pos, Entity entity) {

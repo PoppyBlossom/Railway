@@ -18,11 +18,12 @@
 
 package com.railwayteam.railways.content.palettes.boiler.forge;
 
+import net.minecraft.core.Holder;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public class BoilerBlockPlacementHelperImpl {
-    public static Attribute getAttribute() {
+    public static Holder<Attribute> getAttribute() {
            return Attributes.BLOCK_INTERACTION_RANGE;
     }
 }

@@ -60,43 +60,16 @@ public abstract class MixinStationScreen extends AbstractStationScreen {
     private void initCheckbox(CallbackInfo ci) {
         int x = guiLeft;
         int y = guiTop;
-        limitEnableCheckbox = new Checkbox(x + background.getWidth() - 98, y + background.getHeight() - 26, 50, 20, Component.translatable("railways.station.train_limit"), station != null && ((ILimited) station).isLimitEnabled(), true) {
-            @Override
-            public void onPress() {
-                super.onPress();
-                CRPackets.PACKETS.send(ILimited.makeLimitEnabledPacket(blockEntity.getBlockPos(), this.selected()));
-            }
-
-            @Override
-            public void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-                super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
-                if (this.isHoveredOrFocused()) {
-                    guiGraphics.renderComponentTooltip(font, ImmutableList.of(Component.translatable("railways.station.train_limit.tooltip.1"), Component.translatable("railways.station.train_limit.tooltip.2")), mouseX, mouseY);
-                }
-            }
-        };
-        addRenderableWidget(limitEnableCheckbox);
-
-        iconTypes = TrainIconType.REGISTRY.keySet()
-                .stream()
-                .toList();
-        iconTypeScroll = new ScrollInput(x + 4, y + 17, 184, 14).titled(CreateLang.translateDirect("station.icon_type"));
-        iconTypeScroll.withRange(0, iconTypes.size());
-        iconTypeScroll.withStepFunction(ctx -> -iconTypeScroll.standardStep()
-                .apply(ctx));
-        iconTypeScroll.calling(s -> {
-            Train train = displayedTrain.get();
-            if (train != null) {
-                train.icon = TrainIconType.byId(iconTypes.get(s));
-                Utils.sendCreatePacketToServer(
-                        new TrainEditPacket(train.id, trainNameBox.getValue(), train.icon.getId(), train.mapColorIndex));
-            }
-        });
-        iconTypeScroll.active = false;
+        // TODO 1.21: Checkbox and train icon editing UI requires porting to new API; temporarily disabled.
+        // addRenderableWidget(limitEnableCheckbox);
+        // icon type scroll temporarily disabled
+        iconTypeScroll = null;
     }
 
     @Inject(method = "tickTrainDisplay", at = @At("HEAD"))
     private void tickIconScroll(CallbackInfo ci) {
+        if (iconTypeScroll == null)
+            return;
         Train train = displayedTrain.get();
 
         if (train == null) {

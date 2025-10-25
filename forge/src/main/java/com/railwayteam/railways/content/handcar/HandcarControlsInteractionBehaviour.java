@@ -37,13 +37,13 @@ public class HandcarControlsInteractionBehaviour extends ControlsInteractionBeha
     public boolean handlePlayerInteraction(Player player, InteractionHand activeHand, BlockPos localPos, AbstractContraptionEntity contraptionEntity) {
         if (!AdventureUtils.isAdventure(player) && AllItems.WRENCH.isIn(player.getItemInHand(activeHand))) {
             if (contraptionEntity instanceof CarriageContraptionEntity cce) {
-                if (player.level.isClientSide) return true;
+                if (player.level().isClientSide) return true;
 
                 ItemStack stack = CRBlocks.HANDCAR.asStack();
                 if (!player.isCreative()) {
                     player.getInventory().placeItemBackInInventory(stack);
                 }
-                AllSoundEvents.WRENCH_REMOVE.playOnServer(player.level, BlockPos.containing(cce.toGlobalVector(Vec3.atCenterOf(localPos), 0.5f)), 1, player.getRandom().nextFloat() * .5f + .5f);
+                AllSoundEvents.WRENCH_REMOVE.playOnServer(player.level(), BlockPos.containing(cce.toGlobalVector(Vec3.atCenterOf(localPos), 0.5f)), 1, player.getRandom().nextFloat() * .5f + .5f);
 
                 TrainUtils.discardTrain(cce.getCarriage().train);
                 return true;

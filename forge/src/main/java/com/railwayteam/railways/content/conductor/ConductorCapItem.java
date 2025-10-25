@@ -23,11 +23,7 @@ import com.simibubi.create.AllBlocks;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ArmorItem;
@@ -38,7 +34,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.util.EnumMap;
@@ -78,11 +73,8 @@ public abstract class ConductorCapItem extends ArmorItem {
       0f, // toughness
       0f  // knockbackResistance
     );
-    // Register the material into the built-in registry and return a registry-backed holder
-    ResourceLocation id = Railways.asResource("conductor_cap_material");
-    BuiltInRegistries.register(BuiltInRegistries.ARMOR_MATERIAL, id, material);
-    ResourceKey<ArmorMaterial> key = ResourceKey.create(Registries.ARMOR_MATERIAL, id);
-    return BuiltInRegistries.ARMOR_MATERIAL.getHolderOrThrow(key);
+    // Wrap in a direct holder for 1.21; avoid mutating registries at runtime
+    return Holder.direct(material);
   }  public static ConductorCapItem create(Properties props, DyeColor color) {
     throw new AssertionError();
   }

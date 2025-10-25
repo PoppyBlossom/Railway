@@ -40,6 +40,8 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -143,16 +145,14 @@ public class BufferModel implements BakedModel {
         UnaryOperator<TextureAtlasSprite> materialSwapper = null;
         UnaryOperator<TextureAtlasSprite> colorSwapper = null;
 
-        if (stack.hasTag()) {
-            CompoundTag tag = stack.getTag();
-            if (tag.contains("BlockEntityTag", Tag.TAG_COMPOUND)) {
-                CompoundTag blockEntityTag = tag.getCompound("BlockEntityTag");
-                if (blockEntityTag.contains("Material", Tag.TAG_COMPOUND)) {
-                    materialSwapper = getSwapper(NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), blockEntityTag.getCompound("Material")));
-                }
-                if (blockEntityTag.contains("Color", Tag.TAG_INT)) {
-                    colorSwapper = getSwapper(DyeColor.byId(blockEntityTag.getInt("Color")));
-                }
+        CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+        if (tag != null && tag.contains("BlockEntityTag", Tag.TAG_COMPOUND)) {
+            CompoundTag blockEntityTag = tag.getCompound("BlockEntityTag");
+            if (blockEntityTag.contains("Material", Tag.TAG_COMPOUND)) {
+                materialSwapper = getSwapper(NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), blockEntityTag.getCompound("Material")));
+            }
+            if (blockEntityTag.contains("Color", Tag.TAG_INT)) {
+                colorSwapper = getSwapper(DyeColor.byId(blockEntityTag.getInt("Color")));
             }
         }
         final UnaryOperator<TextureAtlasSprite> finalMaterialSwapper = materialSwapper;

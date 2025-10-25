@@ -29,7 +29,10 @@ import com.simibubi.create.content.trains.track.TrackBlockEntity;
 import net.createmod.catnip.data.Couple;
 import net.createmod.catnip.data.Pair;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
@@ -57,7 +60,10 @@ public class TrackReplacePaver {
         }
         if ((replacedState = context.world.getBlockState(trackPos)).getBlock() instanceof ITrackBlock
                 && stateToPaveWith.getBlock() instanceof ITrackBlock newTrackBlock) {
-            FilterItemStack filter = FilterItemStack.of(context.blockEntityData.getCompound("Filter"));
+            ItemStack filterStack = new ItemStack(Items.PAPER);
+            CustomData filterData = CustomData.of(context.blockEntityData.getCompound("Filter"));
+            filterStack.set(DataComponents.CUSTOM_DATA, filterData);
+            FilterItemStack filter = FilterItemStack.of(filterStack);
             if (replacedState.getBlock() != stateToPaveWith.getBlock()) {
                 boolean restoreBE = false;
                 Pair<SlabBlock, Boolean> casingData = null;

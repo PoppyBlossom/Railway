@@ -33,8 +33,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -144,13 +146,14 @@ public class HeadstockBlock extends HorizontalDirectionalBlock implements IBE<He
 
     @SuppressWarnings("deprecation")
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand,
+    public ItemInteractionResult useItemOn(ItemStack stack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand,
                                  BlockHitResult pHit) {
         if (AdventureUtils.isAdventure(pPlayer))
-            return InteractionResult.PASS;
-        InteractionResult result = onBlockEntityUse(pLevel, pPos, be -> be.applyMaterialIfValid(pPlayer.getItemInHand(pHand)));
-        if (result.consumesAction()) return result;
-        return onBlockEntityUse(pLevel, pPos, be -> be.applyDyeIfValid(pPlayer.getItemInHand(pHand)));
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        InteractionResult result = onBlockEntityUse(pLevel, pPos, be -> be.applyMaterialIfValid(stack));
+        if (result.consumesAction()) return ItemInteractionResult.sidedSuccess(pLevel.isClientSide);
+        result = onBlockEntityUse(pLevel, pPos, be -> be.applyDyeIfValid(stack));
+        return result.consumesAction() ? ItemInteractionResult.sidedSuccess(pLevel.isClientSide) : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
@@ -164,7 +167,7 @@ public class HeadstockBlock extends HorizontalDirectionalBlock implements IBE<He
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+    public ItemStack getCloneItemStack(BlockState state, net.minecraft.world.phys.HitResult target, LevelReader level, BlockPos pos, Player player) {
         return CRBlocks.HEADSTOCK_GROUP.get(state.getValue(STYLE)).asStack();
     }
 }

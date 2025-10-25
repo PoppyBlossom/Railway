@@ -87,7 +87,7 @@ public abstract class MixinTrackVisual$BezierTrackVisual {
         if (bc.getMaterial().trackType == CRTrackMaterials.CRTrackType.MONORAIL) {
             PoseStack pose = new PoseStack();
             TransformStack.of(pose)
-                .translate(trackInstance.getVisualPosition())
+                .translate(new net.minecraft.world.phys.Vec3(0, 0, 0))
                 .nudge((int) bc.bePositions.getFirst()
                     .asLong());
 

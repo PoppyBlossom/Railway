@@ -47,15 +47,15 @@ public class CopycatHeadstockBlockEntity extends CopycatBlockEntity implements I
     }
 
     @Override
-    protected void write(CompoundTag tag, boolean clientPacket) {
-        super.write(tag, clientPacket);
+    protected void write(CompoundTag tag, net.minecraft.core.HolderLookup.Provider provider, boolean clientPacket) {
+        super.write(tag, provider, clientPacket);
         if (color != null)
             tag.putInt("Color", color.getId());
     }
 
     @Override
-    protected void read(CompoundTag tag, boolean clientPacket) {
-        super.read(tag, clientPacket);
+    protected void read(CompoundTag tag, net.minecraft.core.HolderLookup.Provider provider, boolean clientPacket) {
+        super.read(tag, provider, clientPacket);
         DyeColor prevColor = color;
 
         if (tag.contains("Color"))

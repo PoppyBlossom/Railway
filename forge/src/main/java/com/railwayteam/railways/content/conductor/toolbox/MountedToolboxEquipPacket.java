@@ -64,7 +64,7 @@ public class MountedToolboxEquipPacket implements C2SPacket {
 
 	@Override
 	public void handle(ServerPlayer player) {
-		Level world = player.level;
+	Level world = player.level();
 
 		if (toolboxCarrierId == null) {
 			ToolboxHandler.unequip(player, hotbarSlot, false);

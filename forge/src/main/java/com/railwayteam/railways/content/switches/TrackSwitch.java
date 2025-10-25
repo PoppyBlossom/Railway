@@ -334,8 +334,8 @@ public class TrackSwitch extends SingleBlockEntityEdgePoint {
     }
 
     @Override
-    public void write(CompoundTag nbt, DimensionPalette dimensions) {
-        super.write(nbt, dimensions);
+    public void write(CompoundTag nbt, net.minecraft.core.HolderLookup.Provider provider, DimensionPalette dimensions) {
+        super.write(nbt, provider, dimensions);
         nbt.put("SwitchPoint", switchPoint.write(dimensions));
         nbt.put("Exits", NBTHelper.writeCompoundList(exits, e -> e.write(dimensions)));
         nbt.putString("SwitchState", switchState.getSerializedName());
@@ -355,8 +355,8 @@ public class TrackSwitch extends SingleBlockEntityEdgePoint {
     }
 
     @Override
-    public void read(CompoundTag nbt, boolean migration, DimensionPalette dimensions) {
-        super.read(nbt, migration, dimensions);
+    public void read(CompoundTag nbt, net.minecraft.core.HolderLookup.Provider provider, boolean migration, DimensionPalette dimensions) {
+        super.read(nbt, provider, migration, dimensions);
         String exit = nbt.getString("SwitchState");
         try {
             switchState = SwitchState.valueOf(exit.toUpperCase(Locale.ROOT));

@@ -57,6 +57,7 @@ public class FlywheelMovementBehaviour implements MovementBehaviour {
         switch (dir) {
             case NORTH, SOUTH -> { if (flwAxis == Direction.Axis.Z) return; }
             case EAST, WEST -> { if (flwAxis == Direction.Axis.X) return; }
+            case UP, DOWN -> { return; } // Vertical directions not supported
         }
 
         ICarriageFlywheel flywheel = ((ICarriageFlywheel) flywheelBlockEntity);

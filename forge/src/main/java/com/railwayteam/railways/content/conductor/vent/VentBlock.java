@@ -27,10 +27,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -172,7 +172,7 @@ public abstract class VentBlock extends CopycatBlock implements IWrenchable {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (player instanceof ServerPlayer serverPlayer && level instanceof ServerLevel serverLevel && ConductorEntity.isPlayerDisguised(player)) {
             Direction direction = hit.getDirection().getOpposite();
 
@@ -187,7 +187,7 @@ public abstract class VentBlock extends CopycatBlock implements IWrenchable {
                 return InteractionResult.SUCCESS;
             }
         }
-        return super.use(state, level, pos, player, hand, hit);
+        return InteractionResult.PASS;
     }
 
     @Override

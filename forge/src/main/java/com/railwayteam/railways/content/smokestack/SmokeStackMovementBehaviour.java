@@ -162,27 +162,9 @@ public class SmokeStackMovementBehaviour implements MovementBehaviour {
             return;
         }
         temporaryData.moveParticles(context);
-        if (true) {
-            return;
-        }
-        ShaderInstance oldShader = RenderSystem.getShader();
-        float[] oldShaderColor = RenderSystem.getShaderColor();
-        {
-            ParticleRenderType renderType = ParticleRenderType.PARTICLE_SHEET_OPAQUE;
-            RenderSystem.setShader(GameRenderer::getParticleShader);
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            Tesselator tesselator = Tesselator.getInstance();
-            BufferBuilder bufferBuilder = tesselator.getBuilder();
-            renderType.begin(bufferBuilder, Minecraft.getInstance().getTextureManager());
-
-            for (ChimneyPushParticle particle : temporaryData.getPushParticles()) {
-                particle.render(bufferBuilder, Minecraft.getInstance().gameRenderer.getMainCamera(), AnimationTickHolder.getPartialTicks(renderWorld));
-            }
-
-            renderType.end(tesselator);
-        }
-        RenderSystem.setShader(() -> oldShader);
-        RenderSystem.setShaderColor(oldShaderColor[0], oldShaderColor[1], oldShaderColor[2], oldShaderColor[3]);
+        // Rendering is currently disabled here for 1.21 migration; particles are spawned in tick and rendered by the engine.
+        // If custom rendering is needed, update to the 1.21 ParticleRenderType/Tesselator API.
+        return;
     }
 
     @Override

@@ -37,7 +37,7 @@ public class MixinConfigHelper {
     }
 
     @Inject(method = "findForgeConfigSpecFor", at = @At("HEAD"), cancellable = true)
-    private static void returnSNRConfig(ModConfig.Type type, String modID, CallbackInfoReturnable<IConfigSpec<?>> cir) {
+    private static void returnSNRConfig(ModConfig.Type type, String modID, CallbackInfoReturnable<IConfigSpec> cir) {
         if (modID.equals(Railways.MOD_ID)) {
             cir.setReturnValue(CRConfigs.byType(type).specification);
         }

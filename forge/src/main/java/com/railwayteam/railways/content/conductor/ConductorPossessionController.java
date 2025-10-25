@@ -21,6 +21,7 @@ package com.railwayteam.railways.content.conductor;
 import com.railwayteam.railways.annotation.event.MultiLoaderEvent;
 import com.railwayteam.railways.compat.Mods;
 import com.railwayteam.railways.compat.tweakeroo.TweakerooCompat;
+import com.railwayteam.railways.mixin.client.AccessorLocalPlayer;
 import com.railwayteam.railways.registry.CRPackets;
 import com.railwayteam.railways.util.packet.CameraMovePacket;
 import com.railwayteam.railways.util.packet.DismountCameraPacket;
@@ -159,8 +160,8 @@ public class ConductorPossessionController {
 
                 //update other players with the head rotation
                 LocalPlayer player = mc.player;
-                double yRotChange = player.getYRot() - player.yRotLast;
-                double xRotChange = player.getXRot() - player.xRotLast;
+                double yRotChange = player.getYRot() - ((AccessorLocalPlayer) player).railways$getYRotLast();
+                double xRotChange = player.getXRot() - ((AccessorLocalPlayer) player).railways$getXRotLast();
 
                 if (yRotChange != 0.0D || xRotChange != 0.0D || ++ticksSincePacket > 10) {
                     ticksSincePacket = 0;
@@ -316,7 +317,7 @@ public class ConductorPossessionController {
         if (!(entity instanceof Player player))
             return false;
 
-        if (player.level.isClientSide)
+        if (player.level().isClientSide)
             return ClientHandler.isPlayerMountedOnCamera();
         else
             return ((ServerPlayer) player).getCamera() instanceof ConductorEntity;
@@ -327,7 +328,7 @@ public class ConductorPossessionController {
         if (!(entity instanceof Player player))
             return null;
 
-        if (player.level.isClientSide)
+        if (player.level().isClientSide)
             return ClientHandler.getPlayerMountedOnCamera();
         else
             return ((ServerPlayer) player).getCamera() instanceof ConductorEntity ce ? ce : null;

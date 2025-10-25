@@ -23,6 +23,8 @@ import com.railwayteam.railways.registry.CRKeys;
 import com.railwayteam.railways.registry.CRPackets;
 import com.railwayteam.railways.registry.CRPalettes;
 import com.railwayteam.railways.util.EntityUtils;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import com.railwayteam.railways.util.packet.TagCycleSelectionPacket;
 import net.createmod.catnip.gui.ScreenOpener;
 import net.neoforged.api.distmarker.Dist;
@@ -79,7 +81,8 @@ public class TagCycleHandlerClient {
             TagKey<Item> tag = CYCLE_TRACKER.getCycleTag(item);
             if (tag != null) {
                 cycleTag.setValue(tag);
-                stackTag.setValue(stack.getTag());
+                CustomData customData = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+                stackTag.setValue(customData.isEmpty() ? null : customData.copyTag());
             }
             return tag != null;
         })) return;

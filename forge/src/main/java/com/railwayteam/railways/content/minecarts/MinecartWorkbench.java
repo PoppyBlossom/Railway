@@ -64,7 +64,7 @@ public class MinecartWorkbench extends MinecartBlock implements MenuProvider {
     InteractionResult ret = super.interact(player, hand);
     if (ret.consumesAction()) return ret;
     player.openMenu(this);
-    if (!player.level.isClientSide) {
+    if (!player.level().isClientSide) {
       this.gameEvent(GameEvent.CONTAINER_OPEN, player);
       PiglinAi.angerNearbyPiglins(player, true);
       return InteractionResult.CONSUME;
@@ -76,10 +76,10 @@ public class MinecartWorkbench extends MinecartBlock implements MenuProvider {
   @Nullable
   @Override
   public AbstractContainerMenu createMenu (int p_39954_, @NotNull Inventory inv, @NotNull Player player) {
-    return new CraftingMenu(p_39954_, inv, ContainerLevelAccess.create(level, blockPosition())) {
+    return new CraftingMenu(p_39954_, inv, ContainerLevelAccess.create(player.level(), blockPosition())) {
       @Override
       public boolean stillValid(@NotNull Player player) {
-        return player.level.getEntities(
+        return player.level().getEntities(
         test, player.getBoundingBox().inflate(VALID_RANGE), Entity::isAlive
         ).stream().anyMatch((e) -> player.distanceToSqr(e) < VALID_RANGE);
       }

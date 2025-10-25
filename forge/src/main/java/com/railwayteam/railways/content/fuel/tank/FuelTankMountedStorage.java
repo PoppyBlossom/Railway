@@ -19,6 +19,7 @@
 package com.railwayteam.railways.content.fuel.tank;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.railwayteam.railways.content.fuel.tank.FuelTankMountedStorage.Handler;
 import com.railwayteam.railways.registry.forge.CRMountedStorageTypesImpl;
@@ -39,7 +40,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class FuelTankMountedStorage extends WrapperMountedFluidStorage<Handler> implements SyncedMountedStorage {
-	public static final Codec<FuelTankMountedStorage> CODEC = RecordCodecBuilder.create(i -> i.group(
+    public static final MapCodec<FuelTankMountedStorage> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
 			ExtraCodecs.NON_NEGATIVE_INT.fieldOf("capacity").forGetter(FuelTankMountedStorage::getCapacity),
 			FluidStack.CODEC.fieldOf("fluid").forGetter(FuelTankMountedStorage::getFluid)
 	).apply(i, FuelTankMountedStorage::new));
@@ -101,7 +102,9 @@ public class FuelTankMountedStorage extends WrapperMountedFluidStorage<Handler> 
 
 	public static FuelTankMountedStorage fromLegacy(CompoundTag nbt) {
 		int capacity = nbt.getInt("Capacity");
-		FluidStack fluid = FluidStack.loadFluidStackFromNBT(nbt);
+		FluidStack fluid = FluidStack.CODEC.parse(net.minecraft.nbt.NbtOps.INSTANCE, nbt)
+			.result()
+			.orElse(FluidStack.EMPTY);
 		return new FuelTankMountedStorage(capacity, fluid);
 	}
 

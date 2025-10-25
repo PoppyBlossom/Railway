@@ -205,6 +205,10 @@ public abstract class TrackSwitchBlock extends HorizontalDirectionalBlock implem
       CRBlockEntities.ANDESITE_SWITCH.get();
   }
 
+  protected boolean isAutomatic() {
+    return this.isAutomatic;
+  }
+
   @Override
   public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
     IBE.onRemove(state, level, pos, newState);
@@ -233,29 +237,6 @@ public abstract class TrackSwitchBlock extends HorizontalDirectionalBlock implem
     return hasCollision ? getShape(state, level, pos, context) : Shapes.empty();
   }
 
-  @SuppressWarnings("deprecation")
-  @Override
-  public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos,
-                                        @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
-    ItemStack itemInHand = player.getItemInHand(hand);
-    if (AllItems.WRENCH.isIn(itemInHand))
-      return InteractionResult.PASS;
-
-    if (level.isClientSide) {
-      return InteractionResult.SUCCESS;
-    }
-
-    TrackSwitchBlockEntity te = getBlockEntity(level, pos);
-    if (te != null) {
-      if (player.getGameProfile() == ConductorEntity.FAKE_PLAYER_PROFILE) {
-        return te.onProjectileHit() ? InteractionResult.CONSUME : InteractionResult.SUCCESS;
-      } else {
-        return te.onUse(player.isSteppingCarefully());
-      }
-    }
-
-    return InteractionResult.SUCCESS;
-  }
 
   @Override
   public void onProjectileHit(Level level, BlockState state, BlockHitResult hit, Projectile projectile) {

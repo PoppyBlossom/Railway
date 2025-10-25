@@ -54,7 +54,7 @@ public class ConductorDemoCommand {
                     int i = 0;
                     for (String name : customCapNames) {
                         ItemStack capStack = CRItems.ITEM_CONDUCTOR_CAP.get(DyeColor.values()[i++ % DyeColor.values().length]).asStack();
-                        capStack.setHoverName(Component.literal(name));
+                        capStack.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, Component.literal(name));
 
                         spawnConductor(ctx.getSource().getLevel(), pos, capStack, null);
                         pos.move(Direction.NORTH);

@@ -18,21 +18,12 @@
 
 package com.railwayteam.railways.content.handcar;
 
-import com.railwayteam.railways.Railways;
 import com.railwayteam.railways.mixin_interfaces.IDeployAnywayBlockItem;
-import com.railwayteam.railways.mixin_interfaces.IHandcarTrain;
-import com.railwayteam.railways.multiloader.PlayerSelection;
 import com.railwayteam.railways.registry.CRPackets;
 import com.railwayteam.railways.registry.CRTrackMaterials.CRTrackType;
 import com.railwayteam.railways.util.packet.CurvedTrackHandcarPlacementPacket;
 import com.simibubi.create.AllSoundEvents;
-import com.simibubi.create.Create;
-import com.simibubi.create.content.contraptions.AssemblyException;
-import com.simibubi.create.content.trains.entity.Carriage;
-import com.simibubi.create.content.trains.entity.CarriageBogey;
-import com.simibubi.create.content.trains.entity.CarriageContraption;
 import com.simibubi.create.content.trains.entity.Train;
-import com.simibubi.create.content.trains.entity.TrainPacket;
 import com.simibubi.create.content.trains.entity.TravellingPoint;
 import com.simibubi.create.content.trains.entity.TravellingPoint.SteerDirection;
 import com.simibubi.create.content.trains.graph.TrackEdge;
@@ -48,17 +39,14 @@ import com.simibubi.create.content.trains.track.TrackBlockOutline;
 import com.simibubi.create.content.trains.track.TrackMaterial.TrackType;
 import com.simibubi.create.content.trains.track.TrackTargetingBlockItem.OverlapResult;
 import com.simibubi.create.foundation.utility.CreateLang;
-import net.createmod.catnip.data.Couple;
-import net.createmod.catnip.levelWrappers.SchematicLevel;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import net.createmod.catnip.data.Couple;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Direction.Axis;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -68,15 +56,12 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.BiConsumer;
@@ -199,40 +184,8 @@ public class HandcarItem extends BlockItem implements IDeployAnywayBlockItem {
 
     private @Nullable Train makeTrain(UUID owner, TrackGraph graph, TravellingPoint tp1, TravellingPoint tp2,
                                       ServerLevel level) {
-        CarriageContraption contraption = new CarriageContraption(Direction.EAST);
-
-        /* Fake world for assembly */
-        SchematicLevel assemblyWorld = new SchematicLevel(level);
-        StructureTemplate template = level.getStructureManager().get(Railways.asResource("handcar/assembly")).orElse(null);
-        if (template == null) return null;
-        StructurePlaceSettings settings = new StructurePlaceSettings();
-        template.placeInWorld(assemblyWorld, BlockPos.ZERO, BlockPos.ZERO, settings, level.getRandom(), Block.UPDATE_CLIENTS);
-        assemblyWorld.getEntityList().forEach(e -> e.level = assemblyWorld);
-        try {
-            /*
-            Assembly schematic must be 3x3x3 with the bogey at the central block
-             */
-            contraption.assemble(assemblyWorld, new BlockPos(1, 1, 1));
-        } catch (AssemblyException e) {
-            return null;
-        }
-        /* Done assembling */
-
-        contraption.expandBoundsAroundAxis(Axis.Y);
-
-        CarriageBogey bogey = new CarriageBogey(getBogeyBlock(), false, null, tp1, tp2);
-        Carriage carriage = new Carriage(bogey, null, 0);
-        Train train = new Train(UUID.randomUUID(), owner, graph, List.of(carriage), new ArrayList<>(), true);
-
-        ((IHandcarTrain) train).railways$setHandcar(true);
-
-        carriage.setContraption(level, contraption);
-
-        train.name = Component.translatable("block.railways.handcar");
-        train.collectInitiallyOccupiedSignalBlocks();
-        Create.RAILWAYS.addTrain(train);
-        CRPackets.PACKETS.sendTo(PlayerSelection.all(), new TrainPacket(train, true));
-        return train;
+        // TODO 1.21: Handcar train creation API changed; temporarily disabled
+        return null;
     }
 
     public static void withGraphLocation(Level level, BlockPos pos, boolean front,

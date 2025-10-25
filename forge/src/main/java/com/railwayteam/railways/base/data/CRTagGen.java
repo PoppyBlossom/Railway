@@ -52,9 +52,9 @@ public class CRTagGen {
 	}
 
 	public static void generateBlockTags(RegistrateTagsProvider<Block> prov) {
-		prov.addTag(CRTags.AllBlockTags.SEMAPHORE_POLES.tag)
-				.add(AllBlocks.METAL_GIRDER.get(), AllBlocks.METAL_GIRDER_ENCASED_SHAFT.get())
-				.forceAddTag(BlockTags.FENCES);
+	prov.addTag(CRTags.AllBlockTags.SEMAPHORE_POLES.tag)
+		.add(AllBlocks.METAL_GIRDER.get().builtInRegistryHolder().key(), AllBlocks.METAL_GIRDER_ENCASED_SHAFT.get().builtInRegistryHolder().key())
+		.addTag(BlockTags.FENCES);
 
 		prov.addTag(CRTags.AllBlockTags.TRACK_CASING_BLACKLIST.tag);
 

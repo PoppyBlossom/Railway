@@ -135,8 +135,8 @@ public class MinecartJukebox extends MinecartBlock {
   protected void readAdditionalSaveData(CompoundTag compound) {
     super.readAdditionalSaveData(compound);
     if (compound.contains("Disc", Tag.TAG_COMPOUND)) {
-      // In 1.21, ItemStack.parse requires a HolderLookup.Provider
-      disc = ItemStack.parseOptional(level().registryAccess(), compound.getCompound("Disc")).orElse(ItemStack.EMPTY);
+      // In 1.21, ItemStack.parseOptional returns an ItemStack directly using a HolderLookup.Provider
+      disc = ItemStack.parseOptional(level().registryAccess(), compound.getCompound("Disc"));
     }
   }
 

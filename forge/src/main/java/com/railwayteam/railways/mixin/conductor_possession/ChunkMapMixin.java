@@ -78,10 +78,10 @@ public abstract class ChunkMapMixin {
 					for (int j = pos.z() - viewDistance - 1; j <= pos.z() + viewDistance + 1; ++j) {
 						if (oldPos != null) { // if we are updating from a previous position, only load / unload relevant chunks
 							updateChunkTracking(player, new ChunkPos(i, j), new MutableObject<>(),
-									ChunkMap.isChunkInRange(i, j, oldPos.x(), oldPos.z(), viewDistance), // was loaded
-									ChunkMap.isChunkInRange(i, j, pos.x(), pos.z(), viewDistance)        // is  loaded
+									(Math.abs(i - oldPos.x()) <= viewDistance && Math.abs(j - oldPos.z()) <= viewDistance),
+									(Math.abs(i - pos.x()) <= viewDistance && Math.abs(j - pos.z()) <= viewDistance)
 							);
-						} else if (ChunkMap.isChunkInRange(i, j, pos.x(), pos.z(), viewDistance))
+						} else if (Math.abs(i - pos.x()) <= viewDistance && Math.abs(j - pos.z()) <= viewDistance)
 							updateChunkTracking(player, new ChunkPos(i, j), new MutableObject<>(), false, true);
 					}
 				}

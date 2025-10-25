@@ -23,14 +23,14 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.railwayteam.railways.annotation.mixin.ConditionalMixin;
 import com.railwayteam.railways.compat.Mods;
 import com.railwayteam.railways.content.conductor.ConductorPossessionController;
-import de.maxhenkel.voicechat.voice.server.ServerWorldUtils;
 import net.minecraft.server.level.ServerPlayer;
+import org.spongepowered.asm.mixin.Mixin;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @ConditionalMixin(mods = Mods.VOICECHAT)
-@Mixin(ServerWorldUtils.class)
+@Mixin(targets = "de.maxhenkel.voicechat.voice.server.ServerWorldUtils")
 public class ServerWorldUtilsMixin {
     @WrapOperation(method = "getPlayersInRange", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;position()Lnet/minecraft/world/phys/Vec3;"))
     private static Vec3 useConductorSpyPosition(ServerPlayer instance, Operation<Vec3> original) {

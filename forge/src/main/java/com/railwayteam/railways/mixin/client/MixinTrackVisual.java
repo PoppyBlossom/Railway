@@ -133,6 +133,9 @@ public abstract class MixinTrackVisual extends AbstractBlockEntityVisual<TrackBl
                             .rotateXDegrees((float) -angle);
                         case XO -> TransformStack.of(ms)
                             .rotateZDegrees((float) angle);
+                        default -> {
+                            // No tilt transform needed for other shapes (e.g., custom CR_NDZ)
+                        }
                     }
                 }
                 TrackType trackType = null;
@@ -190,20 +193,24 @@ public abstract class MixinTrackVisual extends AbstractBlockEntityVisual<TrackBl
                             casingData.add(Pair.of(casingInstance, relativePos));
                         }
                     } else {
-                        BezierConnection.SegmentAngles[] segments = bc.getBakedSegments();
+                        // In 1.21, baked segment data is stored as arrays inside a single SegmentAngles
+                        BezierConnection.SegmentAngles segment = bc.getBakedSegments();
+                        int len = segment.tieTransform.length;
 
-                        for (int i = 1; i < segments.length; i++) {
+                        for (int i = 1; i < len; i++) {
                             if (i % 2 == 0) continue;
-                            BezierConnection.SegmentAngles segment = segments[i];
 
-                            TransformedInstance casingInstance = CasingRenderUtils.makeCasingInstance(heightDiff==0 ? CRBlockPartials.TRACK_CASING_FLAT :
+                            PoseStack.Pose tiePose = segment.tieTransform[i];
+                            BlockPos lightPos = segment.lightPosition[i];
+
+                            TransformedInstance casingInstance = CasingRenderUtils.makeCasingInstance(heightDiff == 0 ? CRBlockPartials.TRACK_CASING_FLAT :
                                 CRBlockPartials.TRACK_CASING_FLAT_THICK, casingBlock, instancerProvider());
                             casingInstance.setTransform(ms)
-                                .mul(segment.tieTransform)
+                                .mul(tiePose)
                                 .translate(0, (i % 4) * 0.001f, 0)
                                 .translate(0, shiftDown, 0)
                                 .scale(1.001f);
-                            BlockPos relativePos = segment.lightPosition.offset(this.pos);
+                            BlockPos relativePos = new BlockPos(this.pos.getX() + lightPos.getX(), this.pos.getY() + lightPos.getY(), this.pos.getZ() + lightPos.getZ());
                             updateLight(casingInstance, this.level, relativePos);
                             casingData.add(Pair.of(casingInstance, relativePos));
 
@@ -211,7 +218,7 @@ public abstract class MixinTrackVisual extends AbstractBlockEntityVisual<TrackBl
                             if (trackType == WIDE_GAUGE) {
                                 for (boolean first : Iterate.trueAndFalse) {
                                     for (boolean inner : Iterate.trueAndFalse) {
-                                        PoseStack.Pose transform = segment.railTransforms.get(first);
+                                        PoseStack.Pose transform = segment.railTransforms[i].get(first);
 
                                         TransformedInstance casingInstance2 = CasingRenderUtils.makeCasingInstance(heightDiff == 0 ? CRBlockPartials.TRACK_CASING_FLAT :
                                             CRBlockPartials.TRACK_CASING_FLAT_THICK, casingBlock, instancerProvider());
@@ -219,14 +226,14 @@ public abstract class MixinTrackVisual extends AbstractBlockEntityVisual<TrackBl
                                             .mul(transform)
                                             .translate(0, (i % 4) * 0.001f, 0)
                                             .translate((first ? -(61 / 64.) : -(1 / 32.)) + (inner ? 0 : (first ? 1 : -1)), shiftDown, 0);
-                                        BlockPos relativePos2 = segment.lightPosition.offset(this.pos);
+                                        BlockPos relativePos2 = new BlockPos(this.pos.getX() + lightPos.getX(), this.pos.getY() + lightPos.getY(), this.pos.getZ() + lightPos.getZ());
                                         updateLight(casingInstance2, this.level, relativePos2);
                                         casingData.add(Pair.of(casingInstance2, relativePos2));
                                     }
                                 }
                             } else {
                                 for (boolean first : Iterate.trueAndFalse) {
-                                    PoseStack.Pose transform = segment.railTransforms.get(first);
+                                    PoseStack.Pose transform = segment.railTransforms[i].get(first);
 
                                     TransformedInstance casingInstance2 = CasingRenderUtils.makeCasingInstance(heightDiff == 0 ? CRBlockPartials.TRACK_CASING_FLAT :
                                         CRBlockPartials.TRACK_CASING_FLAT_THICK, casingBlock, instancerProvider());
@@ -234,7 +241,7 @@ public abstract class MixinTrackVisual extends AbstractBlockEntityVisual<TrackBl
                                         .mul(transform)
                                         .translate(0, (i % 4) * 0.001f, 0)
                                         .translate(-0.5 + (trackType == NARROW_GAUGE ? (first ? 0.5 : -0.5) : 0), shiftDown, 0);
-                                    BlockPos relativePos2 = segment.lightPosition.offset(this.pos);
+                                    BlockPos relativePos2 = new BlockPos(this.pos.getX() + lightPos.getX(), this.pos.getY() + lightPos.getY(), this.pos.getZ() + lightPos.getZ());
                                     updateLight(casingInstance2, this.level, relativePos2);
                                     casingData.add(Pair.of(casingInstance2, relativePos2));
                                 }

@@ -551,7 +551,7 @@ public class TrackSwitchBlockEntity extends SmartBlockEntity implements Transfor
 
     @Override
     protected AABB createRenderBoundingBox() {
-        return new AABB(worldPosition, edgePoint.getGlobalPosition())
+        return new AABB(Vec3.atCenterOf(worldPosition), Vec3.atCenterOf(edgePoint.getGlobalPosition()))
             .inflate(2);
     }
 }

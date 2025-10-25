@@ -47,7 +47,6 @@ public class SecondaryTrackTargetingBehaviour<T extends TrackEdgePoint> extends 
         return TYPE;
     }
 
-    @Override
     public void write(CompoundTag nbt, boolean clientPacket) {
         AccessorTrackTargetingBehavior accessor = (AccessorTrackTargetingBehavior) this;
         nbt.putUUID("SecondaryId", accessor.getId());
@@ -69,11 +68,10 @@ public class SecondaryTrackTargetingBehaviour<T extends TrackEdgePoint> extends 
         }
     }
 
-    @Override
     public void read(CompoundTag nbt, boolean clientPacket) {
         AccessorTrackTargetingBehavior accessor = (AccessorTrackTargetingBehavior) this;
         accessor.setId(nbt.contains("SecondaryId") ? nbt.getUUID("SecondaryId") : UUID.randomUUID());
-        accessor.setTargetTrack(NbtUtils.readBlockPos(nbt.getCompound("SecondaryTargetTrack")));
+    accessor.setTargetTrack(NbtUtils.readBlockPos(nbt, "SecondaryTargetTrack").orElse(getPos()));
         accessor.setTargetDirection(nbt.getBoolean("SecondaryTargetDirection") ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE);
         accessor.setOrthogonal(nbt.getBoolean("SecondaryOrtho"));
         if (nbt.contains("SecondaryPrevAxis"))
@@ -86,7 +84,7 @@ public class SecondaryTrackTargetingBehaviour<T extends TrackEdgePoint> extends 
             accessor.setEdgePoint(null);
         if (nbt.contains("SecondaryBezier")) {
             CompoundTag bezierNbt = nbt.getCompound("SecondaryBezier");
-            BlockPos key = NbtUtils.readBlockPos(bezierNbt.getCompound("Key"));
+            BlockPos key = NbtUtils.readBlockPos(bezierNbt, "Key").orElse(getPos());
             accessor.setTargetBezier(new BezierTrackPointLocation(bezierNbt.contains("FromStack") ? key : key.offset(getPos()),
                 bezierNbt.getInt("Segment")));
         }

@@ -79,14 +79,14 @@ public class ConductorRenderer extends MobRenderer<ConductorEntity, ConductorEnt
 
   @SuppressWarnings({"unchecked", "rawtypes"})
   @Override
-  protected void setupRotations(ConductorEntity entityLiving, PoseStack matrixStack, float ageInTicks, float rotationYaw, float partialTicks) {
+  protected void setupRotations(ConductorEntity entityLiving, PoseStack matrixStack, float ageInTicks, float rotationYaw, float partialTicks, float scale) {
     if (entityLiving.visualBaseEntity != null) {
       EntityRenderer<?> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entityLiving.visualBaseEntity);
       if (renderer instanceof LivingEntityRenderer<?,?> livingRenderer) {
-        ((AccessorLivingEntityRenderer) livingRenderer).callSetupRotations(entityLiving.visualBaseEntity, matrixStack, ageInTicks, rotationYaw, partialTicks);
+        ((AccessorLivingEntityRenderer) livingRenderer).callSetupRotations(entityLiving.visualBaseEntity, matrixStack, ageInTicks, rotationYaw, partialTicks, entityLiving.getScale());
         return;
       }
     }
-    super.setupRotations(entityLiving, matrixStack, ageInTicks, rotationYaw, partialTicks);
+    super.setupRotations(entityLiving, matrixStack, ageInTicks, rotationYaw, partialTicks, scale);
   }
 }

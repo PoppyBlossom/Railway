@@ -81,8 +81,9 @@ public abstract class MixinTrackBlockEntity extends SmartBlockEntity implements 
           BlockState blockState = this.level.getBlockState(worldPosition);
           if (blockState.hasProperty(TrackBlock.HAS_BE))
             level.setBlockAndUpdate(worldPosition, blockState.setValue(TrackBlock.HAS_BE, false));
-          if (!(this.level instanceof SchematicLevel))
-            CRPackets.PACKETS.sendTo(PlayerSelection.tracking(this), new RemoveBlockEntityPacket(worldPosition));
+          if (!(this.level instanceof SchematicLevel)) {
+            // In 1.21, rely on block state updates to remove the BlockEntity client-side
+          }
         }
       } else if (trackCasing != null && !isAlternateModel) {
         CasingCollisionUtils.manageTracks((TrackBlockEntity) (Object) this, false);
@@ -157,7 +158,7 @@ public abstract class MixinTrackBlockEntity extends SmartBlockEntity implements 
     }
 
     if (tag.contains("TrackCasing")) {
-      ResourceLocation casingName = ResourceLocation.of(tag.getString("TrackCasing"), ':');
+      ResourceLocation casingName = ResourceLocation.tryParse(tag.getString("TrackCasing"));
       if (BuiltInRegistries.BLOCK.containsKey(casingName)) {
         Block casingBlock = BuiltInRegistries.BLOCK.get(casingName);
         if (casingBlock instanceof SlabBlock slab) {

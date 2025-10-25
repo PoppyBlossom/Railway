@@ -39,7 +39,7 @@ public class TravellingPointVisualizer {
             return;
         for (Carriage carriage : train.carriages) {
             Color color = Color.rainbowColor(carriage.hashCode());
-            AABB box = (carriage.getDimensional(cameraEntity.level).entity.get() == null) ? null : carriage.getDimensional(cameraEntity.level).entity.get().getBoundingBox();
+            AABB box = (carriage.getDimensional(cameraEntity.level()).entity.get() == null) ? null : carriage.getDimensional(cameraEntity.level()).entity.get().getBoundingBox();
             if (true || box == null || box.intersects(cameraEntity.getBoundingBox()
                 .inflate(50))) {
                 for (CarriageBogey bogey : carriage.bogeys) {

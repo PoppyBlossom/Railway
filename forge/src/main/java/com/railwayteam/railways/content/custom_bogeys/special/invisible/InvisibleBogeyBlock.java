@@ -97,11 +97,10 @@ public class InvisibleBogeyBlock extends AbstractBogeyBlock<InvisibleBogeyBlockE
 		return CRBogeyStyles.INVISIBLE;
 	}
 
-	@Override
-	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
-		return AllBlocks.RAILWAY_CASING.asStack();
-	}
-
+    @Override
+    public ItemStack getCloneItemStack(net.minecraft.world.level.LevelReader level, BlockPos pos, BlockState state) {
+        return AllBlocks.RAILWAY_CASING.asStack();
+    }
 	@Override
 	public Class<InvisibleBogeyBlockEntity> getBlockEntityClass() {
 		return InvisibleBogeyBlockEntity.class;

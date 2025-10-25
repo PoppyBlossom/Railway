@@ -27,5 +27,5 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(LivingEntityRenderer.class)
 public interface AccessorLivingEntityRenderer<T extends LivingEntity> {
     @Invoker
-    void callSetupRotations(T entityLiving, PoseStack matrixStack, float ageInTicks, float rotationYaw, float partialTicks);
+    void callSetupRotations(T entityLiving, PoseStack matrixStack, float bob, float bodyYaw, float partialTicks, float scale);
 }

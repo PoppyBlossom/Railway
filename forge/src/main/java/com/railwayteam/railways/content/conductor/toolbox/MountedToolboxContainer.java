@@ -27,7 +27,7 @@ import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour
 import com.simibubi.create.foundation.blockEntity.behaviour.animatedContainer.AnimatedContainerBehaviour;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -36,7 +36,7 @@ import net.minecraft.world.inventory.MenuType;
 public class MountedToolboxContainer extends ToolboxMenu {
   private ConductorEntity conductor;
 
-  public MountedToolboxContainer(MenuType<?> type, int id, Inventory inv, FriendlyByteBuf extraData) {
+  public MountedToolboxContainer(MenuType<?> type, int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
     super(type, id, inv, extraData);
   }
 
@@ -57,7 +57,7 @@ public class MountedToolboxContainer extends ToolboxMenu {
   }
 
   @Override
-  protected ToolboxBlockEntity createOnClient(FriendlyByteBuf extraData) {
+  protected ToolboxBlockEntity createOnClient(RegistryFriendlyByteBuf extraData) {
     int conductorId = extraData.readVarInt();
     ClientLevel world = Minecraft.getInstance().level;
     Entity entity = world.getEntity(conductorId);
@@ -66,7 +66,7 @@ public class MountedToolboxContainer extends ToolboxMenu {
       return null;
     }
     MountedToolbox toolbox = conductor.getOrCreateToolboxHolder();
-    toolbox.read(extraData.readNbt(), true);
+    toolbox.read(extraData.readNbt(), world.registryAccess(), true);
     return toolbox;
   }
 
