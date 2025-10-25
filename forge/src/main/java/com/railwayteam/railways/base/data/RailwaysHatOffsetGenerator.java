@@ -20,12 +20,15 @@ package com.railwayteam.railways.base.data;
 
 import com.railwayteam.railways.registry.CREntities;
 import com.simibubi.create.api.data.TrainHatInfoProvider;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.concurrent.CompletableFuture;
+
 public class RailwaysHatOffsetGenerator extends TrainHatInfoProvider {
-    public RailwaysHatOffsetGenerator(PackOutput output) {
-        super(output);
+    public RailwaysHatOffsetGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        super(output, lookupProvider);
     }
     
     @Override

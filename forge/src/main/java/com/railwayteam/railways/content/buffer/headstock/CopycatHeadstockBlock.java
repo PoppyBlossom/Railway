@@ -40,6 +40,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -48,6 +49,7 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -60,6 +62,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
@@ -211,14 +214,14 @@ public class CopycatHeadstockBlock extends WaterloggedCopycatBlock implements Bl
         return CRBlockEntities.COPYCAT_HEADSTOCK.get();
     }
 
-    @SuppressWarnings("deprecation")
+    @Override
     public BlockState rotate(BlockState state, Rotation rotation) {
         return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
     }
 
-    @SuppressWarnings("deprecation")
+    @Override
     public BlockState mirror(BlockState state, Mirror mirror) {
-        return state.rotate(mirror.getRotation(state.getValue(FACING)));
+        return rotate(state, mirror.getRotation(state.getValue(FACING)));
     }
 
     @Override
@@ -302,18 +305,20 @@ public class CopycatHeadstockBlock extends WaterloggedCopycatBlock implements Bl
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand,
-                                 BlockHitResult pHit) {
+    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos,
+                                              Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (AdventureUtils.isAdventure(pPlayer))
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         InteractionResult result = onBlockEntityUse(pLevel, pPos, be -> {
             if (be instanceof CopycatHeadstockBlockEntity copycatHeadstock) {
                 return copycatHeadstock.applyDyeIfValid(pPlayer.getItemInHand(pHand));
             }
             return InteractionResult.PASS;
         });
-        if (result.consumesAction()) return result;
-        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+        if (result.consumesAction())
+            return ItemInteractionResult.SUCCESS;
+        ItemInteractionResult superResult = super.useItemOn(pStack, pState, pLevel, pPos, pPlayer, pHand, pHit);
+        return superResult;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -332,7 +337,7 @@ public class CopycatHeadstockBlock extends WaterloggedCopycatBlock implements Bl
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
         return CRBlocks.COPYCAT_HEADSTOCK_GROUP.get(state.getValue(STYLE)).asStack();
     }
 }

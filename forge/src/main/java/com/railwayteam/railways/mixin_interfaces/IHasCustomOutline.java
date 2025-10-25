@@ -54,10 +54,10 @@ public interface IHasCustomOutline {
         yDiff /= length;
         zDiff /= length;
 
-        vb.vertex(transform.pose(), (float) (x1 / 16), (float) (y1 / 16), (float) (z1 / 16)).color(0F, 0F, 0F, 0.4F)
-                .normal(transform.normal(), xDiff, yDiff, zDiff).endVertex();
-        vb.vertex(transform.pose(), (float) (x2 / 16), (float) (y2 / 16), (float) (z2 / 16)).color(0F, 0F, 0F, 0.4F)
-                .normal(transform.normal(), xDiff, yDiff, zDiff).endVertex();
+        vb.addVertex(transform.pose(), (float) (x1 / 16), (float) (y1 / 16), (float) (z1 / 16)).setColor(0F, 0F, 0F, 0.4F)
+                .setNormal(transform, xDiff, yDiff, zDiff);
+        vb.addVertex(transform.pose(), (float) (x2 / 16), (float) (y2 / 16), (float) (z2 / 16)).setColor(0F, 0F, 0F, 0.4F)
+                .setNormal(transform, xDiff, yDiff, zDiff);
     }
 
     /**
