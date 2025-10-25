@@ -49,7 +49,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -187,14 +186,14 @@ public class MonorailTrackBlock extends TrackBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        InteractionResult result = super.use(state, world, pos, player, hand, hit);
+    public net.minecraft.world.ItemInteractionResult useItemOn(net.minecraft.world.item.ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        net.minecraft.world.ItemInteractionResult result = super.useItemOn(stack, state, world, pos, player, hand, hit);
         if (result.consumesAction())
             return result;
 
-        if (!world.isClientSide && AllItems.BRASS_HAND.isIn(player.getItemInHand(hand))) {
+        if (!world.isClientSide && AllItems.BRASS_HAND.isIn(stack)) {
             TrackPropagator.onRailAdded(world, pos, state);
-            return InteractionResult.SUCCESS;
+            return net.minecraft.world.ItemInteractionResult.sidedSuccess(false);
         }
         return result;
     }

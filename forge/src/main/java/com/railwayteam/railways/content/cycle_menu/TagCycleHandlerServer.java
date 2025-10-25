@@ -21,8 +21,10 @@ package com.railwayteam.railways.content.cycle_menu;
 import com.railwayteam.railways.Railways;
 import com.railwayteam.railways.annotation.event.MultiLoaderEvent;
 import com.railwayteam.railways.registry.CRPalettes;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.Item;
@@ -44,7 +46,10 @@ public class TagCycleHandlerServer {
         TagKey<Item> targetTag = CYCLE_TRACKER.getCycleTag(target);
         if (handTag == null || !handTag.equals(targetTag)) return false;
         ItemStack newStack = new ItemStack(target, handStack.getCount());
-        newStack.setTag(handStack.getTag());
+        CustomData customData = handStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+        if (!customData.isEmpty()) {
+            newStack.set(DataComponents.CUSTOM_DATA, customData);
+        }
         player.setItemInHand(hand, newStack);
         return true;
     }

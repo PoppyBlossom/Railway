@@ -40,7 +40,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
  *
  * Confirmed working with Security Craft
  */
-@Mixin(value = ChunkMap.TrackedEntity.class, priority = 1200)
+@Mixin(targets = "net.minecraft.server.level.ChunkMap$TrackedEntity", priority = 1200)
 public abstract class TrackedEntityMixin {
 	@Shadow
 	@Final

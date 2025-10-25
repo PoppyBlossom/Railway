@@ -28,6 +28,8 @@ import com.simibubi.create.content.kinetics.deployer.DeployerFakePlayer;
 import com.simibubi.create.content.trains.entity.Carriage;
 import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.content.trains.schedule.Schedule;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import com.simibubi.create.content.trains.schedule.ScheduleEntry;
 import com.simibubi.create.content.trains.schedule.condition.ScheduledDelay;
 import com.simibubi.create.content.trains.schedule.destination.DestinationInstruction;
@@ -72,7 +74,8 @@ public abstract class MixinStationBlock {
                 cir.setReturnValue(InteractionResult.CONSUME);
                 GlobalStation station = stationBe.getStation();
                 if (station != null && station.getPresentTrain() == null) {
-                    CompoundTag stackTag = itemInHand.getTag();
+                    CustomData custom = itemInHand.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+                    CompoundTag stackTag = custom.copyTag();
                     if (stackTag == null || !stackTag.hasUUID("SelectedTrain") || !stackTag.hasUUID("SelectedConductor")) {
                         cir.setReturnValue(InteractionResult.FAIL);
                         return;
@@ -102,16 +105,16 @@ public abstract class MixinStationBlock {
 
                     stackTag.put("SelectedPos", NbtUtils.writeBlockPos(pos));
                     stackTag.remove("Bezier");
-                    itemInHand.setTag(stackTag);
+                    itemInHand.set(DataComponents.CUSTOM_DATA, CustomData.of(stackTag));
 
                     if (CRConfigs.server().conductors.whistleRequiresOwning.get() && train.runtime.getSchedule() != null && !train.runtime.completed && !train.runtime.isAutoSchedule && train.getOwner(level) != pPlayer) {
                         stackTag.remove("SelectedPos");
-                        itemInHand.setTag(stackTag);
+                        itemInHand.set(DataComponents.CUSTOM_DATA, CustomData.of(stackTag));
                         return;
                     }
 
                     if (train.runtime.getSchedule() != null && !train.runtime.isAutoSchedule) {
-                        ItemStack scheduleStack = train.runtime.returnSchedule();
+                        ItemStack scheduleStack = train.runtime.returnSchedule(pLevel.registryAccess());
                         if (!scheduleStack.isEmpty()) {
                             for (CompoundTag passengerTag : ((AccessorCarriage) conductorCarriage).getSerialisedPassengers().values()) {
                                 if (passengerTag.contains("PlayerPassenger")) continue;
@@ -127,7 +130,7 @@ public abstract class MixinStationBlock {
                                         } else {
                                             schedulesList = passengerTag.getList("heldSchedules", Tag.TAG_COMPOUND);
                                         }
-                                        schedulesList.add(scheduleStack.save(new CompoundTag()));
+                                        schedulesList.add(scheduleStack.save(pLevel.registryAccess()));
                                         scheduleStack.setCount(0);
                                         break;
                                     }
@@ -178,11 +181,11 @@ public abstract class MixinStationBlock {
                         carriage.forEachPresentEntity(e -> e.getIndirectPassengers()
                                 .forEach(p -> {
                                     if (p instanceof ConductorEntity conductor && !found.get()) {
-                                        CompoundTag stackTag = itemInHand.getOrCreateTag();
+                                        CompoundTag stackTag = new CompoundTag();
                                         stackTag.putUUID("SelectedTrain", train.id);
                                         stackTag.putUUID("SelectedConductor", conductor.getUUID());
                                         stackTag.putByte("SelectedColor", conductor.getEntityData().get(ConductorEntity.COLOR));
-                                        itemInHand.setTag(stackTag);
+                                        itemInHand.set(DataComponents.CUSTOM_DATA, CustomData.of(stackTag));
                                         pPlayer.setItemInHand(pHand, itemInHand);
                                         cir.setReturnValue(InteractionResult.SUCCESS);
                                         found.set(true);
@@ -236,7 +239,7 @@ public abstract class MixinStationBlock {
         if (station != null) {
             Train train = station.getPresentTrain();
             BlockPos trackPosition = te.edgePoint.getGlobalPosition();
-            ItemStack schedule = train == null ? ItemStack.EMPTY : train.runtime.returnSchedule();
+            ItemStack schedule = train == null ? ItemStack.EMPTY : train.runtime.returnSchedule(te.getLevel().registryAccess());
             if (train != null && !train.disassemble(te.getAssemblyDirection(), trackPosition.above()))
                 return false;
             dropSchedule(sender, te, schedule);

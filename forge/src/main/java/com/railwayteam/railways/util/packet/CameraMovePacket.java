@@ -55,13 +55,14 @@ public class CameraMovePacket implements C2SPacket, S2CPacket {
     
     public CameraMovePacket(FriendlyByteBuf buf) {
         this.id = buf.readVarInt();
-        this.packet = ServerboundMovePlayerPacket.PosRot.read(buf);
+        // TODO 1.21 port: ServerboundMovePlayerPacket.PosRot.read is now private; need alternative deserialization
+        this.packet = null;
     }
 
     @Override
     public void write(FriendlyByteBuf buffer) {
         buffer.writeVarInt(id);
-        packet.write(buffer);
+        // TODO 1.21 port: ServerboundMovePlayerPacket.PosRot.write is now private; need alternative serialization
     }
 
     @Override
@@ -76,7 +77,7 @@ public class CameraMovePacket implements C2SPacket, S2CPacket {
                 conductor.setPos(d0, d1, d2);
                 float f = (float)(packet.getYRot(conductor.getYRot()) * 360) / 256.0F;
                 float f1 = (float)(packet.getXRot(conductor.getXRot()) * 360) / 256.0F;
-                conductor.lerpTo(d0, d1, d2, f, f1, 3, true);
+                conductor.lerpTo(d0, d1, d2, f, f1, 3);
                 conductor.setOnGround(packet.isOnGround());
             }
         }
@@ -121,12 +122,12 @@ public class CameraMovePacket implements C2SPacket, S2CPacket {
 
     @Override
     public void handle(ServerPlayer sender1) {
-        if (sender1.level.getEntity(id) instanceof ConductorEntity conductor && sender1.getCamera() == conductor) {
+        if (sender1.level().getEntity(id) instanceof ConductorEntity conductor && sender1.getCamera() == conductor) {
             if (containsInvalidValues(packet.getX(0.0), packet.getY(0.0), packet.getZ(0.0), packet.getYRot(0.0f), packet.getXRot(0.0f))) {
                 sender1.connection.disconnect(Component.translatable("multiplayer.disconnect.invalid_player_movement"));
                 return;
             }
-            if (!(conductor.level instanceof ServerLevel serverLevel))
+            if (!(conductor.level() instanceof ServerLevel serverLevel))
                 return;
             double d = clampHorizontal(packet.getX(conductor.getX()));
             double e = clampVertical(packet.getY(conductor.getY()));

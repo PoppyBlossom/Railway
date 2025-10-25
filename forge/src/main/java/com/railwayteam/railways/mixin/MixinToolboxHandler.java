@@ -96,7 +96,7 @@ public abstract class MixinToolboxHandler {
   @SuppressWarnings("InvalidInjectorMethodSignature")
   private static BlockEntity railways$getConductorToolbox(BlockEntity be,
                                                          Player player, int hotbarSlot, boolean keepItems) {
-    if (!(player.level instanceof ServerLevel level))
+    if (!(player.level() instanceof ServerLevel level))
       return be;
     CompoundTag toolboxData = EntityUtils.getPersistentData(player).getCompound("CreateToolboxData");
     String key = String.valueOf(hotbarSlot);

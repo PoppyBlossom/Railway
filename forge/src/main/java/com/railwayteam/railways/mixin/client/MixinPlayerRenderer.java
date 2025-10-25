@@ -66,7 +66,7 @@ public abstract class MixinPlayerRenderer extends LivingEntityRenderer<AbstractC
         ci.cancel();
 
         if (visualEntity == null) {
-            visualEntity = new ConductorEntity(CREntities.CONDUCTOR.get(), entity.level);
+            visualEntity = new ConductorEntity(CREntities.CONDUCTOR.get(), entity.level());
         }
 
         railways$transformVisualConductor(entity, visualEntity);
@@ -120,7 +120,7 @@ public abstract class MixinPlayerRenderer extends LivingEntityRenderer<AbstractC
         ci.cancel();
 
         if (visualEntity == null) {
-            visualEntity = new ConductorEntity(CREntities.CONDUCTOR.get(), player.level);
+            visualEntity = new ConductorEntity(CREntities.CONDUCTOR.get(), player.level());
         }
 
         railways$transformVisualConductor(player, visualEntity);
@@ -141,7 +141,7 @@ public abstract class MixinPlayerRenderer extends LivingEntityRenderer<AbstractC
         ci.cancel();
 
         if (visualEntity == null) {
-            visualEntity = new ConductorEntity(CREntities.CONDUCTOR.get(), player.level);
+            visualEntity = new ConductorEntity(CREntities.CONDUCTOR.get(), player.level());
         }
 
         railways$transformVisualConductor(player, visualEntity);

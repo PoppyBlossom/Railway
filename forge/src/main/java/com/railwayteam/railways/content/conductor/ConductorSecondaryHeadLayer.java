@@ -18,7 +18,6 @@
 
 package com.railwayteam.railways.content.conductor;
 
-import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
@@ -27,13 +26,10 @@ import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.AbstractSkullBlock;
@@ -79,12 +75,8 @@ public class ConductorSecondaryHeadLayer<T extends ConductorEntity, M extends En
         }
         ((HeadedModel)this.getParentModel()).getHead().translateAndRotate(matrixStack);
         if (item instanceof BlockItem && ((BlockItem)item).getBlock() instanceof AbstractSkullBlock) {
-            CompoundTag compoundTag;
             matrixStack.scale(1.1875f, -1.1875f, -1.1875f);
-            GameProfile gameProfile = null;
-            if (itemStack.hasTag() && (compoundTag = itemStack.getTag()).contains("SkullOwner", 10)) {
-                gameProfile = NbtUtils.readGameProfile(compoundTag.getCompound("SkullOwner"));
-            }
+            net.minecraft.world.item.component.ResolvableProfile gameProfile = itemStack.get(net.minecraft.core.component.DataComponents.PROFILE);
             matrixStack.translate(-0.5, 0.0, -0.5);
             SkullBlock.Type type = ((AbstractSkullBlock)((BlockItem)item).getBlock()).getType();
             SkullModelBase skullModelBase = this.skullModels.get(type);

@@ -18,6 +18,7 @@
 
 package com.railwayteam.railways.content.buffer;
 
+import com.mojang.serialization.MapCodec;
 import com.railwayteam.railways.registry.CRBlockEntities;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.Direction;
@@ -29,6 +30,13 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class WideTrackBufferBlock extends TrackBufferBlock<TrackBufferBlockEntity> {
+    public static final MapCodec<WideTrackBufferBlock> CODEC = simpleCodec(WideTrackBufferBlock::new);
+    
+    @Override
+    protected MapCodec<? extends WideTrackBufferBlock> codec() {
+        return CODEC;
+    }
+    
     public WideTrackBufferBlock(Properties pProperties) {
         super(pProperties);
     }

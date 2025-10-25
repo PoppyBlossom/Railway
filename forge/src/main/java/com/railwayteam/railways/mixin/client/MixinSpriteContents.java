@@ -26,7 +26,6 @@ import net.minecraft.client.renderer.texture.SpriteContents;
 import net.minecraft.client.resources.metadata.animation.AnimationMetadataSection;
 import net.minecraft.client.resources.metadata.animation.FrameSize;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -39,7 +38,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(SpriteContents.class)
 public abstract class MixinSpriteContents implements IPotentiallyInvisibleSpriteContents {
 
-    @Shadow @Final @Nullable private SpriteContents.AnimatedTexture animatedTexture;
+    // Avoid direct reference to non-public AnimatedTexture nested class; access via reflection when needed
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void railways$onInit(ResourceLocation name, FrameSize frameSize, NativeImage originalImage, AnimationMetadataSection metadata, CallbackInfo ci) {
@@ -56,8 +55,14 @@ public abstract class MixinSpriteContents implements IPotentiallyInvisibleSprite
     public void railways$uploadFrame(boolean visible) {
         this.railways$visible = visible;
         this.railways$shouldDoInvisibility = true;
-        if (this.animatedTexture != null)
-            ((AnimatedTextureDuck) this.animatedTexture).railways$uploadWithVisibility();
+        try {
+            java.lang.reflect.Field f = SpriteContents.class.getDeclaredField("animatedTexture");
+            f.setAccessible(true);
+            Object anim = f.get(this);
+            if (anim != null)
+                ((AnimatedTextureDuck) anim).railways$uploadWithVisibility();
+        } catch (ReflectiveOperationException ignored) {
+        }
     }
 
     public boolean railways$shouldDoInvisibility() {
@@ -68,7 +73,7 @@ public abstract class MixinSpriteContents implements IPotentiallyInvisibleSprite
         return railways$visible || !railways$shouldDoInvisibility;
     }
 
-    @Mixin(SpriteContents.AnimatedTexture.class)
+    @Mixin(targets = "net.minecraft.client.renderer.texture.SpriteContents$AnimatedTexture")
     public abstract static class MixinAnimatedTexture implements AnimatedTextureDuck {
 
         @Shadow(aliases = {"this$0", "field_28469", "f_uqrdoixj"})

@@ -118,7 +118,7 @@ public class Railways {
     REGISTRATE.addDataGenerator(ProviderType.LANG, CRLangGen::generate);
     gen.addProvider(EmiExcludedTagGen::new);
     gen.addProvider(EmiRecipeDefaultsGen::new);
-    gen.addProvider(RailwaysHatOffsetGenerator::new);
+  // Requires lookup provider; registered via Forge DataGenerators
   }
 
   public static CreateRegistrate registrate() {

@@ -21,7 +21,6 @@ package com.railwayteam.railways.content.fuel.tank;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
 import net.createmod.catnip.animation.LerpedFloat;
-import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.util.Mth;
@@ -46,7 +45,7 @@ public class FuelTankRenderer extends SafeBlockEntityRenderer<FuelTankBlockEntit
             return;
 
         float capHeight = 1 / 4f;
-        float tankHullWidth = 1 / 16f + 1 / 128f;
+    // float tankHullWidth = 1 / 16f + 1 / 128f; // unused while fluid rendering is disabled
         float minPuddleHeight = 1 / 16f;
         float totalHeight = be.height - 2 * capHeight - minPuddleHeight;
 
@@ -61,27 +60,13 @@ public class FuelTankRenderer extends SafeBlockEntityRenderer<FuelTankBlockEntit
         if (fluidStack.isEmpty())
             return;
 
-        boolean top = fluidStack.getFluid()
-                .getFluidType()
-                .isLighterThanAir();
-
-        float xMin = tankHullWidth;
-        float xMax = xMin + be.width - 2 * tankHullWidth;
-        float yMin = totalHeight + capHeight + minPuddleHeight - clampedLevel;
-        float yMax = yMin + clampedLevel;
-
-        if (top) {
-            yMin += totalHeight - clampedLevel;
-            yMax += totalHeight - clampedLevel;
-        }
-
-        float zMin = tankHullWidth;
-        float zMax = zMin + be.width - 2 * tankHullWidth;
+    // Coordinates for the fluid cuboid are intentionally omitted while the 1.21 renderer API is updated.
 
         ms.pushPose();
         ms.translate(0, clampedLevel - totalHeight, 0);
 
-        CatnipServices.FLUID_RENDERER.renderFluidBox(fluidStack, xMin, yMin, zMin, xMax, yMax, zMax, buffer, ms, light, false, true);
+    // TODO: Restore fluid rendering with updated Catnip/renderer API for 1.21
+    // CatnipServices.FLUID_RENDERER.renderFluidBox(fluidStack, xMin, yMin, zMin, xMax, yMax, zMax, buffer, ms, light, false, true);
         ms.popPose();
     }
 

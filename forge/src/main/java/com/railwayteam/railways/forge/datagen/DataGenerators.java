@@ -22,6 +22,7 @@ import com.railwayteam.railways.Railways;
 import com.railwayteam.railways.base.data.recipe.RailwaysSequencedAssemblyRecipeGen;
 import com.railwayteam.railways.base.data.recipe.RailwaysStandardRecipeGen;
 import com.railwayteam.railways.base.data.recipe.forge.RailwaysMechanicalCraftingRecipeGenImpl;
+import com.railwayteam.railways.base.data.RailwaysHatOffsetGenerator;
 import net.minecraft.data.DataGenerator;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
@@ -43,5 +44,6 @@ public class DataGenerators {
         generator.addProvider(runServer, RailwaysSequencedAssemblyRecipeGen.create(generator.getPackOutput(), event.getLookupProvider()));
         generator.addProvider(runServer, RailwaysStandardRecipeGen.create(generator.getPackOutput(), event.getLookupProvider()));
         generator.addProvider(runServer, RailwaysMechanicalCraftingRecipeGenImpl.create(generator.getPackOutput(), event.getLookupProvider()));
+        generator.addProvider(runServer, new RailwaysHatOffsetGenerator(generator.getPackOutput(), event.getLookupProvider()));
     }
 }

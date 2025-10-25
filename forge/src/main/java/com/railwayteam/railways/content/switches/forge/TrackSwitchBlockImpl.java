@@ -19,6 +19,7 @@
 package com.railwayteam.railways.content.switches.forge;
 
 import com.railwayteam.railways.content.switches.TrackSwitchBlock;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
@@ -37,6 +38,12 @@ public class TrackSwitchBlockImpl extends TrackSwitchBlock {
 
   public static TrackSwitchBlock automatic(Properties properties) {
     return new TrackSwitchBlockImpl(properties, true);
+  }
+
+  @Override
+  protected MapCodec<? extends TrackSwitchBlockImpl> codec() {
+    // Use the standard simpleCodec factory and preserve the automatic/manual setting of this instance
+    return simpleCodec(props -> new TrackSwitchBlockImpl(props, this.isAutomatic()));
   }
 
   @Override

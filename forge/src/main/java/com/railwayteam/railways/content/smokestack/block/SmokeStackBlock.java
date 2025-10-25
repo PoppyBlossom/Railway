@@ -35,8 +35,9 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.level.Level;
@@ -62,30 +63,30 @@ public class SmokeStackBlock extends AbstractSmokeStackBlock<SmokeStackBlockEnti
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if (pPlayer.getItemInHand(pHand).getItem() instanceof DyeItem dyeItem) {
+    public ItemInteractionResult useItemOn(ItemStack stack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+        if (stack.getItem() instanceof DyeItem dyeItem) {
             DyeColor color = dyeItem.getDyeColor();
             withBlockEntityDo(pLevel, pPos, te -> te.setColor(color));
             if (!pPlayer.isCreative()) {
-                pPlayer.getItemInHand(pHand).shrink(1);
+                stack.shrink(1);
             }
-            return InteractionResult.sidedSuccess(pLevel.isClientSide);
+            return ItemInteractionResult.sidedSuccess(pLevel.isClientSide);
         }
-        if (pPlayer.getItemInHand(pHand).is(ItemTags.SOUL_FIRE_BASE_BLOCKS)) {
+        if (stack.is(ItemTags.SOUL_FIRE_BASE_BLOCKS)) {
             withBlockEntityDo(pLevel, pPos, te -> te.setSoul(true));
             if (!pPlayer.isCreative()) {
-                pPlayer.getItemInHand(pHand).shrink(1);
+                stack.shrink(1);
             }
-            return InteractionResult.sidedSuccess(pLevel.isClientSide);
+            return ItemInteractionResult.sidedSuccess(pLevel.isClientSide);
         }
         if (pPlayer.isShiftKeyDown()) {
             withBlockEntityDo(pLevel, pPos, te -> {
                 te.setSoul(false);
                 te.setColor(null);
             });
-            return InteractionResult.sidedSuccess(pLevel.isClientSide);
+            return ItemInteractionResult.sidedSuccess(pLevel.isClientSide);
         }
-        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     public static void makeParticlesStationary(Level level, BlockPos pos, boolean isSignalFire, boolean spawnExtraSmoke, Vec3 spawnOffset, Vec3 spawnDelta) {
@@ -136,7 +137,7 @@ public class SmokeStackBlock extends AbstractSmokeStackBlock<SmokeStackBlockEnti
             case OLD -> {
                 ParticleOptions particleType;
                 if (color != null) {
-                    float[] c = color.getTextureDiffuseColors();
+                    float[] c = colorToDiffuse(color);
                     particleType = new SmokeParticleData(stationary, c[0], c[1], c[2]);
                 } else {
                     particleType = new SmokeParticleData(stationary);
@@ -171,6 +172,28 @@ public class SmokeStackBlock extends AbstractSmokeStackBlock<SmokeStackBlockEnti
                 0.0D, 0.005D*speedMultiplier, 0.0D);
         }
 
+    }
+
+    private static float[] colorToDiffuse(DyeColor color) {
+        // Approximated vanilla diffuse colors formerly provided by DyeColor.getTextureDiffuseColors()
+        return switch (color) {
+            case WHITE -> new float[]{1.0f, 1.0f, 1.0f};
+            case ORANGE -> new float[]{0.85f, 0.5f, 0.2f};
+            case MAGENTA -> new float[]{0.7f, 0.3f, 0.85f};
+            case LIGHT_BLUE -> new float[]{0.4f, 0.6f, 0.85f};
+            case YELLOW -> new float[]{0.9f, 0.9f, 0.2f};
+            case LIME -> new float[]{0.5f, 0.8f, 0.1f};
+            case PINK -> new float[]{0.95f, 0.5f, 0.65f};
+            case GRAY -> new float[]{0.3f, 0.3f, 0.3f};
+            case LIGHT_GRAY -> new float[]{0.6f, 0.6f, 0.6f};
+            case CYAN -> new float[]{0.3f, 0.5f, 0.6f};
+            case PURPLE -> new float[]{0.5f, 0.25f, 0.7f};
+            case BLUE -> new float[]{0.2f, 0.3f, 0.7f};
+            case BROWN -> new float[]{0.4f, 0.3f, 0.2f};
+            case GREEN -> new float[]{0.4f, 0.5f, 0.2f};
+            case RED -> new float[]{0.6f, 0.2f, 0.2f};
+            case BLACK -> new float[]{0.1f, 0.1f, 0.1f};
+        };
     }
 
     public void blockEntityAnimateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {

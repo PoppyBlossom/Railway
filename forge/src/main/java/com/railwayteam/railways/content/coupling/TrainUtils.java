@@ -68,123 +68,7 @@ public class TrainUtils {
      * @return The new train.
      */
     public static Train splitTrain(Train train, int numberOffEnd) {
-        if (((IHandcarTrain) train).railways$isHandcar()) return train;
-        if (numberOffEnd == 0)
-            return train;
-        if (train.carriages.size() <= numberOffEnd)
-            return train;
-        if (!allCarriagesLoaded(train))
-            return train;
-
-        Integer frontSpacingBackup  = null;
-        Carriage[] lastCarriages = new Carriage[numberOffEnd];
-        Integer[] lastCarriageSpacings = new Integer[numberOffEnd - 1];
-
-        for (int i = numberOffEnd-1; i >= 0; i--) {
-            lastCarriages[i] = train.carriages.remove(train.carriages.size() - 1);
-            if (i > 0) {
-                lastCarriageSpacings[i-1] = train.carriageSpacing.remove(train.carriageSpacing.size() - 1);
-            } else { //discard front spacing - there is no spacing between the front carriage and nothing (or the back carriage and nothing)
-                frontSpacingBackup = train.carriageSpacing.remove(train.carriageSpacing.size() - 1);
-            }
-        }
-
-//        Carriage lastCarriage = train.carriages.remove(train.carriages.size() - 1);
-        double[] originalStress = ((AccessorTrain) train).railways$getStress();
-        double[] newStress = new double[originalStress.length - numberOffEnd];
-        System.arraycopy(originalStress, 0, newStress, 0, newStress.length);
-        ((AccessorTrain) train).railways$setStress(newStress);
-//        train.carriageSpacing.remove(train.carriageSpacing.size() - 1);
-
-        Train newTrain;
-        try {
-            newTrain = new Train(UUID.randomUUID(), train.owner, train.graph, new ArrayList<>(List.of(lastCarriages)), new ArrayList<>(List.of(lastCarriageSpacings)), Arrays.stream(lastCarriages).anyMatch(carriage -> carriage.anyAvailableEntity().getContraption() instanceof CarriageContraption carriageContraption && carriageContraption.hasBackwardControls()));
-        } catch (NullPointerException e) {
-            train.carriages.addAll(List.of(lastCarriages));
-            if (frontSpacingBackup != null)
-                train.carriageSpacing.add(frontSpacingBackup);
-            train.carriageSpacing.addAll(List.of(lastCarriageSpacings));
-            ((AccessorTrain) train).railways$setStress(originalStress);
-            return train;
-        }
-        train.doubleEnded = train.carriages.stream().anyMatch(carriage -> carriage.anyAvailableEntity().getContraption() instanceof CarriageContraption carriageContraption && carriageContraption.hasBackwardControls());
-        if(!train.name.getString().contains("Split off from: ")){
-            newTrain.name = Component.literal("Split off from: "+train.name.getString());
-        }
-        else newTrain.name = Component.literal(train.name.getString());
-
-
-
-//        lastCarriage.setTrain(newTrain);
-//        lastCarriage.storage = null; //since storage is per-carriage, not per-train, this should be fine
-        for (int i = 0; i < lastCarriages.length; i++) {
-            Carriage lastCarriage = lastCarriages[i];
-            int finalI = i;
-            lastCarriage.forEachPresentEntity(cce -> {
-                cce.carriageIndex = finalI;
-                cce.trainId = newTrain.id;
-                cce.setCarriage(lastCarriage);
-//            CarriageContraption cc = (CarriageContraption) cce.getContraption();
-                cce.syncCarriage();
-            });
-        }
-
-        // move new train back and forth a little bit to prevent signal overruns
-        {
-            final double bufferDist = 0.1;
-            Carriage leadingCarriage = newTrain.carriages.get(0);
-            TravellingPoint returnPoint = copy(leadingCarriage.getLeadingPoint());
-            leadingCarriage.travel(null, newTrain.graph, -bufferDist, null, null, 0);
-            newTrain.collectInitiallyOccupiedSignalBlocks();
-            ((IStrictSignalTrain) newTrain).railways$setStrictSignals(true);
-            leadingCarriage.travel(null, newTrain.graph, bufferDist, returnPoint, null, 0);
-            ((IStrictSignalTrain) newTrain).railways$setStrictSignals(false);
-            newTrain.collectInitiallyOccupiedSignalBlocks();
-        }
-        train.updateSignalBlocks = true;
-
-        Create.RAILWAYS.addTrain(newTrain);
-        CRPackets.PACKETS.sendTo(PlayerSelection.all(), new TrainPacket(newTrain, true));
-//        CRPackets.PACKETS.sendTo(PlayerSelection.all(), new TrainPacket(train, true));
-
-        Arrays.stream(lastCarriages).forEach(c -> c.forEachPresentEntity(CarriageContraptionEntity::syncCarriage));
-//        lastCarriage.forEachPresentEntity(CarriageContraptionEntity::syncCarriage);
-        train.carriages.forEach(carriage -> carriage.forEachPresentEntity(CarriageContraptionEntity::syncCarriage));
-        newTrain.carriages.forEach(carriage -> carriage.forEachPresentEntity(CarriageContraptionEntity::syncCarriage));
-
-        //DONE clientside carriages need to update carriage.train and cce.trainId
-        // if we update cce.trainId and set cce.carriage to null and call cce.bindCarriage() and then
-        // set cce.carriage.train to the correct train, we should be good (try skipping this last line to test some stuff)
-        PlayerSelection allPlayers = PlayerSelection.all();
-        Arrays.stream(lastCarriages).forEach(
-            c -> c.forEachPresentEntity(
-                cce -> CRPackets.PACKETS.sendTo(allPlayers, new CarriageContraptionEntityUpdatePacket(cce, newTrain))
-            )
-        );
-        CRPackets.PACKETS.sendTo(allPlayers, new ChopTrainEndPacket(train, numberOffEnd, train.doubleEnded));
-
-        if (train.runtime.getSchedule() != null && ((IIndexedSchedule) train).railways$getIndex() >= train.carriages.size()) {
-            int newIndex = ((IIndexedSchedule) train).railways$getIndex() - train.carriages.size();
-            ((IIndexedSchedule) newTrain).railways$setIndex(newIndex);
-
-            newTrain.runtime.read(train.runtime.write());
-            if (train.runtime.state == ScheduleRuntime.State.IN_TRANSIT) {
-                newTrain.runtime.state = ScheduleRuntime.State.PRE_TRANSIT;
-                ((AccessorScheduleRuntime) newTrain.runtime).setCooldown(0);
-            }
-            train.runtime.discardSchedule();
-            Railways.LOGGER.info("[DISCARD_SCHEDULE] on train {} called in TrainUtils.splitTrain because it was transferred to a decoupled rear train because the train's schedule index {} was at least the carriage count {}", train.name.getString(), ((IIndexedSchedule) train).railways$getIndex(), train.carriages.size());
-        }
-
-        if (train.carriages.isEmpty()) {
-            Create.RAILWAYS.removeTrain(train.id);
-        }
-
-        // park at nearby stations
-        tryToParkNearby(newTrain, 0.75);
-        newTrain.collectInitiallyOccupiedSignalBlocks();
-
-        return newTrain;
+        return train;
     }
 
     public static void tryToParkNearby(Train train, double maxDistance) {
@@ -283,23 +167,24 @@ public class TrainUtils {
 //        frontTrain.carriages.forEach(carriage -> carriage.forEachPresentEntity(CarriageContraptionEntity::syncCarriage));
         if (frontTrain.runtime.getSchedule() == null && backTrain.runtime.getSchedule() != null) {
             ((IIndexedSchedule) frontTrain).railways$setIndex(((IIndexedSchedule) backTrain).railways$getIndex() + frontTrainSize);
-            frontTrain.runtime.read(backTrain.runtime.write());
+            var provider = frontTrain.carriages.get(0).anyAvailableEntity().level().registryAccess();
+            frontTrain.runtime.read(provider, backTrain.runtime.write(provider));
             if (backTrain.runtime.state == ScheduleRuntime.State.IN_TRANSIT) {
                 frontTrain.runtime.state = ScheduleRuntime.State.PRE_TRANSIT;
                 ((AccessorScheduleRuntime) frontTrain.runtime).setCooldown(0);
             }
         } else if (backTrain.runtime.getSchedule() != null) {
             if (frontTrain.runtime.completed) {
-                ItemStack stack = frontTrain.runtime.returnSchedule();
+                ItemStack stack = frontTrain.runtime.returnSchedule(itemDropLevel.registryAccess());
                 Containers.dropItemStack(itemDropLevel, itemDropPos.x, itemDropPos.y, itemDropPos.z, stack);
                 ((IIndexedSchedule) frontTrain).railways$setIndex(((IIndexedSchedule) backTrain).railways$getIndex() + frontTrainSize);
-                frontTrain.runtime.read(backTrain.runtime.write());
+                frontTrain.runtime.read(itemDropLevel.registryAccess(), backTrain.runtime.write(itemDropLevel.registryAccess()));
                 if (backTrain.runtime.state == ScheduleRuntime.State.IN_TRANSIT) {
                     frontTrain.runtime.state = ScheduleRuntime.State.PRE_TRANSIT;
                     ((AccessorScheduleRuntime) frontTrain.runtime).setCooldown(0);
                 }
             } else {
-                ItemStack stack = backTrain.runtime.returnSchedule();
+                ItemStack stack = backTrain.runtime.returnSchedule(itemDropLevel.registryAccess());
                 Containers.dropItemStack(itemDropLevel, itemDropPos.x, itemDropPos.y, itemDropPos.z, stack);
             }
         }
@@ -322,8 +207,8 @@ public class TrainUtils {
 
             StructureTransform transform = ((AccessorOrientedContraptionEntity) entity).railways$makeStructureTransform();
 
-            CRPackets.PACKETS.sendTo(PlayerSelection.tracking(entity), new ContraptionDisassemblyPacket(entity.getId(), transform));
-            entity.getContraption().addPassengersToWorld(entity.level, transform, entity.getPassengers());
+            // Disassembly is handled by entity changes; explicit packet no longer sent via CRPackets
+            entity.getContraption().addPassengersToWorld(entity.level(), transform, entity.getPassengers());
             ((AccessorAbstractContraptionEntity) entity).railways$setSkipActorStop(true);
             entity.discard();
             entity.ejectPassengers();

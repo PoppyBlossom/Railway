@@ -28,6 +28,8 @@ import com.simibubi.create.content.decoration.copycat.CopycatModel;
 import com.simibubi.create.content.decoration.copycat.CopycatSpecialCases;
 import com.simibubi.create.content.decoration.copycat.FilteredBlockAndTintGetter;
 import com.simibubi.create.foundation.model.BakedModelHelper;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import com.simibubi.create.foundation.model.BakedQuadHelper;
 import net.createmod.catnip.data.Iterate;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -281,8 +283,9 @@ public class CopycatHeadstockModel implements BakedModel {
         BlockState material = AllBlocks.COPYCAT_BASE.getDefaultState();
         UnaryOperator<TextureAtlasSprite> colorSwapper = null;
 
-        if (stack.hasTag()) {
-            CompoundTag tag = stack.getTag();
+        CustomData customData = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+        if (!customData.isEmpty()) {
+            CompoundTag tag = customData.copyTag();
             if (tag.contains("BlockEntityTag", Tag.TAG_COMPOUND)) {
                 CompoundTag blockEntityTag = tag.getCompound("BlockEntityTag");
                 if (blockEntityTag.contains("Material", Tag.TAG_COMPOUND)) {

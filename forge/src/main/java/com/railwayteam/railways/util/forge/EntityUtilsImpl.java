@@ -47,7 +47,8 @@ public class EntityUtilsImpl {
 	}
 
 	public static double getReachDistance(Player player) {
-		return player.getBlockReach();
+		// 1.21: Player.getBlockReach() removed; use blockInteractionRange attribute
+		return player.blockInteractionRange();
 	}
 
 	public static boolean handleUseEvent(Player player, InteractionHand hand, BlockHitResult hit) {

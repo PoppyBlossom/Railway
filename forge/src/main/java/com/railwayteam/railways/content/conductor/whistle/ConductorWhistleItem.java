@@ -64,6 +64,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -74,7 +76,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,14 +101,14 @@ public class ConductorWhistleItem extends TrackTargetingBlockItem {
     }
 
     @Override
-    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
-        super.appendHoverText(stack, level, tooltip, flag);
-        CompoundTag tag = stack.getTag();
+    public void appendHoverText(@NotNull ItemStack stack, @NotNull Item.TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
+        super.appendHoverText(stack, context, tooltip, flag);
+        CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
         if (tag != null && tag.hasUUID("SelectedTrain") && tag.hasUUID("SelectedConductor")) {
             UUID trainId = tag.getUUID("SelectedTrain");
             UUID conductorId = tag.getUUID("SelectedConductor");
             String trainName = "NOT FOUND";
-            GlobalRailwayManager railways = Create.RAILWAYS.sided(level);
+            GlobalRailwayManager railways = Create.RAILWAYS.sided(context.level());
             if (railways != null && railways.trains.containsKey(trainId))
                 trainName = railways.trains.get(trainId).name.getString();
 
@@ -125,19 +126,19 @@ public class ConductorWhistleItem extends TrackTargetingBlockItem {
     @Override
     public @NotNull InteractionResult interactLivingEntity(@NotNull ItemStack pStack, @NotNull Player pPlayer,
                                                            @NotNull LivingEntity pInteractionTarget, @NotNull InteractionHand pUsedHand) {
-        if (pPlayer.level.isClientSide)
+        if (pPlayer.level().isClientSide)
             return InteractionResult.PASS;
         if (pInteractionTarget instanceof ConductorEntity conductor && conductor.getVehicle() instanceof CarriageContraptionEntity cce) {
             Train train = cce.getCarriage().train;
             if (train.owner == pPlayer.getUUID() || !CRConfigs.server().conductors.whistleRequiresOwning.get()) {
-                CompoundTag stackTag = pStack.getOrCreateTag();
+                CompoundTag stackTag = pStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
                 stackTag.putUUID("SelectedTrain", train.id);
                 stackTag.putUUID("SelectedConductor", conductor.getUUID());
                 stackTag.putByte("SelectedColor", conductor.getEntityData().get(ConductorEntity.COLOR));
                 pPlayer.displayClientMessage(Component.translatable("railways.whistle.set"), true);
-                pStack.setTag(stackTag);
+                pStack.set(DataComponents.CUSTOM_DATA, CustomData.of(stackTag));
                 pPlayer.setItemInHand(pUsedHand, pStack);
-                AllSoundEvents.PECULIAR_BELL_USE.play(pPlayer.level, null, conductor.getX(), conductor.getY(), conductor.getZ(), .5f, 1.1f);
+                AllSoundEvents.PECULIAR_BELL_USE.play(pPlayer.level(), null, conductor.getX(), conductor.getY(), conductor.getZ(), .5f, 1.1f);
                 return InteractionResult.SUCCESS;
             } else {
                 pPlayer.displayClientMessage(Component.translatable("railways.whistle.not_owner").withStyle(ChatFormatting.RED), true);
@@ -149,12 +150,12 @@ public class ConductorWhistleItem extends TrackTargetingBlockItem {
 
     @Override
     public InteractionResult useOn(UseOnContext pContext) {
-        ItemStack stack = pContext.getItemInHand();
+    ItemStack stack = pContext.getItemInHand();
         BlockPos pos = pContext.getClickedPos();
         Level level = pContext.getLevel();
         BlockState state = level.getBlockState(pos);
         Player player = pContext.getPlayer();
-        CompoundTag stackTag = stack.getTag();
+    CompoundTag stackTag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
         if(stackTag == null) return InteractionResult.FAIL;
         UUID trainId = stackTag.getUUID("SelectedTrain");
         Train train = Create.RAILWAYS.trains.get(trainId);
@@ -162,14 +163,14 @@ public class ConductorWhistleItem extends TrackTargetingBlockItem {
         if (player == null || train == null)
             return InteractionResult.FAIL;
 
-        if (player instanceof DeployerFakePlayer && state.getBlock() instanceof AirBlock && train.runtime.isAutoSchedule) {train.runtime.discardSchedule();}
+    if (player instanceof DeployerFakePlayer && state.getBlock() instanceof AirBlock && train.runtime.isAutoSchedule) {train.runtime.discardSchedule();}
 
 
-        if (player.isSteppingCarefully() && stack.hasTag()) {
+        if (player.isSteppingCarefully() && !stackTag.isEmpty()) {
             if (level.isClientSide)
                 return InteractionResult.SUCCESS;
             player.displayClientMessage(Component.translatable("railways.whistle.clear"), true);
-            stack.setTag(null);
+            stack.set(DataComponents.CUSTOM_DATA, CustomData.of(new CompoundTag()));
             AllSoundEvents.CONTROLLER_CLICK.play(level, null, pos, 1, .5f);
             return InteractionResult.SUCCESS;
         }
@@ -214,7 +215,7 @@ public class ConductorWhistleItem extends TrackTargetingBlockItem {
                 stackTag.put("SelectedPos", NbtUtils.writeBlockPos(pos));
                 stackTag.putBoolean("SelectedDirection", front);
                 stackTag.remove("Bezier");
-                stack.setTag(stackTag);
+                stack.set(DataComponents.CUSTOM_DATA, CustomData.of(stackTag));
 
                 EdgePointType<?> type = getType(stack);
                 MutableObject<OverlapResult> result = new MutableObject<>(null);
@@ -245,7 +246,7 @@ public class ConductorWhistleItem extends TrackTargetingBlockItem {
                 if (successDirection == null) {
                     stackTag.remove("SelectedPos");
                     stackTag.remove("SelectedDirection");
-                    stack.setTag(stackTag);
+                    stack.set(DataComponents.CUSTOM_DATA, CustomData.of(stackTag));
                     return fail(player, "no_space");
                 }
 
@@ -259,16 +260,16 @@ public class ConductorWhistleItem extends TrackTargetingBlockItem {
                 teTag.putString("Name", stationName);
                 teTag.putByte("SelectedColor", stackTag.getByte("SelectedColor"));
                 teTag.putBoolean("TargetDirection", stackTag.getBoolean("SelectedDirection"));
-                BlockPos selectedPos = NbtUtils.readBlockPos(stackTag.getCompound("SelectedPos"));
+                BlockPos selectedPos = NbtUtils.readBlockPos(stackTag, "SelectedPos").orElse(pos);
                 teTag.put("TargetTrack", NbtUtils.writeBlockPos(selectedPos.subtract(placePos)));
                 stackTag.put("BlockEntityTag", teTag);
-                stack.setTag(stackTag);
+                stack.set(DataComponents.CUSTOM_DATA, CustomData.of(stackTag));
 
                 updateCustomBlockEntityTag(placePos, level, player, stack, placeState);
                 stackTag.remove("SelectedPos");
                 stackTag.remove("SelectedDirection");
                 stackTag.remove("BlockEntityTag");
-                stack.setTag(stackTag);
+                stack.set(DataComponents.CUSTOM_DATA, CustomData.of(stackTag));
 
             }
 
@@ -280,12 +281,12 @@ public class ConductorWhistleItem extends TrackTargetingBlockItem {
             if (CRConfigs.server().conductors.whistleRequiresOwning.get() && train.runtime.getSchedule() != null && !train.runtime.completed && !train.runtime.isAutoSchedule && train.getOwner(level) != player) {
                 stackTag.remove("SelectedPos");
                 stackTag.remove("SelectedDirection");
-                stack.setTag(stackTag);
+                stack.set(DataComponents.CUSTOM_DATA, CustomData.of(stackTag));
                 return fail(player, "not_owner");
             }
 
             if (train.runtime.getSchedule() != null && !train.runtime.isAutoSchedule) {
-                ItemStack scheduleStack = train.runtime.returnSchedule();
+                ItemStack scheduleStack = train.runtime.returnSchedule(level.registryAccess());
                 if (!scheduleStack.isEmpty()) {
                     for (CompoundTag passengerTag : ((AccessorCarriage) conductorCarriage).getSerialisedPassengers().values()) {
                         if (passengerTag.contains("PlayerPassenger")) continue;
@@ -301,7 +302,7 @@ public class ConductorWhistleItem extends TrackTargetingBlockItem {
                                 } else {
                                     schedulesList = passengerTag.getList("heldSchedules", Tag.TAG_COMPOUND);
                                 }
-                                schedulesList.add(scheduleStack.save(new CompoundTag()));
+                                schedulesList.add(scheduleStack.save(level.registryAccess()));
                                 scheduleStack.setCount(0);
                                 break;
                             }
@@ -354,7 +355,7 @@ public class ConductorWhistleItem extends TrackTargetingBlockItem {
     public void inventoryTick(@NotNull ItemStack stack, @NotNull Level level, @NotNull Entity entity, int slotId, boolean isSelected) {
         if (isSelected && level instanceof ServerLevel serverLevel
             && (serverLevel.getGameTime() + entity.hashCode() + slotId) % CRConfigs.server().conductors.whistleRebindRate.get() == 0) {
-            CompoundTag tag = stack.getTag();
+            CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
             if (tag != null && tag.hasUUID("SelectedTrain") && tag.hasUUID("SelectedConductor")) {
                 UUID trainId = tag.getUUID("SelectedTrain");
                 UUID conductorId = tag.getUUID("SelectedConductor");
@@ -362,6 +363,7 @@ public class ConductorWhistleItem extends TrackTargetingBlockItem {
                 if (serverLevel.getEntity(conductorId) instanceof ConductorEntity conductor) {
                     if (conductor.getVehicle() instanceof CarriageContraptionEntity cce && !trainId.equals(cce.trainId)) {
                         tag.putUUID("SelectedTrain", cce.trainId);
+                        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
                     }
                 }
             }

@@ -18,7 +18,6 @@
 
 package com.railwayteam.railways.ponder.scenes;
 
-import com.mojang.authlib.GameProfile;
 import com.railwayteam.railways.content.conductor.ConductorEntity;
 import com.railwayteam.railways.registry.CREntities;
 import com.railwayteam.railways.registry.CRItems;
@@ -33,9 +32,10 @@ import net.createmod.ponder.api.scene.SceneBuildingUtil;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.core.Rotations;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.WalkAnimationState;
@@ -44,7 +44,6 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.piston.PistonBaseBlock;
 import net.minecraft.world.level.block.piston.PistonHeadBlock;
 import net.minecraft.world.phys.Vec3;
@@ -53,15 +52,13 @@ public class ConductorScenes {
 
   public static ElementLink<EntityElement> makePlayerStand(SceneBuilder scene, String playerName, int leatherColor, Vec3 pos) {
     ItemStack playerHead = new ItemStack(Items.PLAYER_HEAD);
-    GameProfile gameprofile = new GameProfile(null, playerName);
-    /*try {
-      Minecraft.getInstance().getSkinManager().registerSkins(gameprofile, null, false);
-    } catch (NullPointerException ignored) {}*/
-    SkullBlockEntity.updateGameprofile(gameprofile, (profile) -> {
-      CompoundTag itemTag = playerHead.getOrCreateTag();
-      itemTag.put("SkullOwner", NbtUtils.writeGameProfile(new CompoundTag(), profile));
-      playerHead.setTag(itemTag);
-    });
+    // 1.21 port: SkullBlockEntity.updateGameprofile and NbtUtils.writeGameProfile removed/changed
+    // For now, use the direct game profile name; skull skinning can be re-enabled later
+    CompoundTag itemTag = new CompoundTag();
+    CompoundTag profileTag = new CompoundTag();
+    profileTag.putString("Name", playerName);
+    itemTag.put("SkullOwner", profileTag);
+    playerHead.set(DataComponents.CUSTOM_DATA, CustomData.of(itemTag));
 
     ElementLink<EntityElement> player = scene.world().createEntity(w -> {
       ArmorStand entity = EntityType.ARMOR_STAND.create(w);
@@ -81,7 +78,8 @@ public class ConductorScenes {
     });
 
     scene.world().modifyEntity(player, entity -> {
-      entity.setItemSlot(EquipmentSlot.HEAD, playerHead);
+      ArmorStand armorStand = (ArmorStand) entity;
+      armorStand.setItemSlot(EquipmentSlot.HEAD, playerHead);
       CompoundTag leatherTag = new CompoundTag();
       {
         CompoundTag displayTag = new CompoundTag();
@@ -91,12 +89,12 @@ public class ConductorScenes {
       ItemStack chestplate = new ItemStack(Items.LEATHER_CHESTPLATE);
       ItemStack leggings = new ItemStack(Items.LEATHER_LEGGINGS);
       ItemStack boots = new ItemStack(Items.LEATHER_BOOTS);
-      chestplate.setTag(leatherTag);
-      leggings.setTag(leatherTag);
-      boots.setTag(leatherTag);
-      entity.setItemSlot(EquipmentSlot.CHEST, chestplate);
-      entity.setItemSlot(EquipmentSlot.LEGS, leggings);
-      entity.setItemSlot(EquipmentSlot.FEET, boots);
+      chestplate.set(DataComponents.CUSTOM_DATA, CustomData.of(leatherTag));
+      leggings.set(DataComponents.CUSTOM_DATA, CustomData.of(leatherTag));
+      boots.set(DataComponents.CUSTOM_DATA, CustomData.of(leatherTag));
+      armorStand.setItemSlot(EquipmentSlot.CHEST, chestplate);
+      armorStand.setItemSlot(EquipmentSlot.LEGS, leggings);
+      armorStand.setItemSlot(EquipmentSlot.FEET, boots);
     });
     return player;
   }
@@ -299,7 +297,8 @@ public class ConductorScenes {
     scene.idle(10);
 
     scene.world().modifyEntity(player, entity -> {
-      entity.setItemSlot(EquipmentSlot.HEAD, CRItems.ITEM_CONDUCTOR_CAP.get(DyeColor.RED).asStack());
+      ArmorStand armorStand = (ArmorStand) entity;
+      armorStand.setItemSlot(EquipmentSlot.HEAD, CRItems.ITEM_CONDUCTOR_CAP.get(DyeColor.RED).asStack());
     });
 
     scene.overlay().showText(30)

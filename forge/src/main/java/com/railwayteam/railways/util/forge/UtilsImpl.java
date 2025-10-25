@@ -18,16 +18,12 @@
 
 package com.railwayteam.railways.util.forge;
 
-import com.simibubi.create.AllPackets;
-import com.simibubi.create.content.trains.HonkPacket;
+import com.railwayteam.railways.Railways;
 import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.neoforged.neoforge.common.MinecraftForge;
-import net.neoforged.neoforge.event.level.ChunkEvent;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.FMLPaths;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.nio.file.Path;
 
@@ -41,19 +37,18 @@ public class UtilsImpl {
 	}
 
     public static void sendCreatePacketToServer(SimplePacketBase packet) {
-		AllPackets.getChannel().sendToServer(packet);
+        // TODO 1.21 port: AllPackets.getChannel() no longer exists; network API rework needed
+        Railways.LOGGER.warn("sendCreatePacketToServer temporarily disabled for 1.21 port");
     }
 
     public static void sendHonkPacket(Train train, boolean isHonk) {
-		AllPackets.getChannel().send(PacketDistributor.ALL.noArg(), new HonkPacket(train, isHonk));
+        // TODO 1.21 port: AllPackets.getChannel() and PacketDistributor.ALL no longer exist
+        Railways.LOGGER.warn("sendHonkPacket temporarily disabled for 1.21 port");
     }
 
     public static void postChunkEventClient(LevelChunk chunk, boolean load) {
-		if (load) {
-			MinecraftForge.EVENT_BUS.post(new ChunkEvent.Load(chunk, false));
-		} else {
-			MinecraftForge.EVENT_BUS.post(new ChunkEvent.Unload(chunk));
-		}
+        // TODO 1.21 port: MinecraftForge.EVENT_BUS no longer exists; use NeoForge event bus
+        Railways.LOGGER.warn("postChunkEventClient temporarily disabled for 1.21 port");
     }
 
     public static Path modsDir() {

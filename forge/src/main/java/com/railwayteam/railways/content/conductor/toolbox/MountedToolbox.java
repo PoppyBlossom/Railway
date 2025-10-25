@@ -30,6 +30,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -55,12 +56,9 @@ public class MountedToolbox extends ToolboxBlockEntity {
     CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
     if (tag.isEmpty())
       return;
-    // Restore inventory from NBT if present (Create 1.21+)
-    if (tag.contains("Inventory", CompoundTag.TAG_COMPOUND)) {
-      CompoundTag inventoryTag = tag.getCompound("Inventory");
-      // ToolboxBlockEntity.readInventory(CompoundTag) is available in 1.21
-      this.readInventory(inventoryTag);
-    }
+    // Restore inventory and other data from NBT (Create 1.21+)
+    // The parent's read() method handles inventory deserialization
+    read(tag, parent.level().registryAccess(), false);
     if (tag.contains("UniqueId"))
       setUniqueId(tag.getUUID("UniqueId"));
     if (stack.has(DataComponents.CUSTOM_NAME))
@@ -151,12 +149,13 @@ public class MountedToolbox extends ToolboxBlockEntity {
     return stack;
   }
 
-  @Override
   public void sendToMenu(FriendlyByteBuf buffer) {
     buffer.writeVarInt(parent.getId());
     buffer.writeNbt(getUpdateTag(parent.level().registryAccess()));
-  }    public static void openMenu(ServerPlayer player, MountedToolbox toolbox) {
-    player.openMenu(new AbstractContainerMenu.MenuProvider() {
+  }
+
+  public static void openMenu(ServerPlayer player, MountedToolbox toolbox) {
+    MenuProvider provider = new MenuProvider() {
       @Override
       public AbstractContainerMenu createMenu(int id, Inventory inv, Player ply) {
         return MountedToolboxContainer.create(id, inv, toolbox);
@@ -166,8 +165,7 @@ public class MountedToolbox extends ToolboxBlockEntity {
       public net.minecraft.network.chat.Component getDisplayName() {
         return toolbox.getDisplayName();
       }
-    }, (buffer) -> {
-      toolbox.sendToMenu(buffer);
-    });
+    };
+    player.openMenu(provider, (buffer) -> toolbox.sendToMenu(buffer));
   }
 }

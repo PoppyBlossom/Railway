@@ -18,6 +18,7 @@
 
 package com.railwayteam.railways.ponder;
 
+import com.railwayteam.railways.Railways;
 import com.railwayteam.railways.ponder.scenes.ConductorScenes;
 import com.railwayteam.railways.ponder.scenes.DoorScenes;
 import com.railwayteam.railways.ponder.scenes.TrainScenes;
@@ -33,8 +34,11 @@ import net.minecraft.resources.ResourceLocation;
 
 public class CRPonderIndex {
     public static void register(PonderSceneRegistrationHelper<ResourceLocation> helper) {
-        PonderSceneRegistrationHelper<ItemProviderEntry<?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
+        // TODO 1.21 port: Ponder registration API changed; needs correct generic signature
+        // PonderSceneRegistrationHelper<ItemProviderEntry<?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
+        Railways.LOGGER.warn("Ponder scene registration temporarily disabled for 1.21 port");
 
+        /* Disabled until Ponder API types are resolved
         HELPER.forComponents(CRBlocks.SEMAPHORE)
                 .addStoryBoard("semaphore", TrainScenes::signaling);
 
@@ -57,5 +61,6 @@ public class CRPonderIndex {
 
         HELPER.forComponents(CRBlocks.ANDESITE_SWITCH, CRBlocks.BRASS_SWITCH)
                 .addStoryBoard("switch", TrainScenes::trackSwitch);
+        */
     }
 }

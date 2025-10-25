@@ -109,7 +109,8 @@ public class RadialTagCycleMenu extends AbstractSimiScreen {
             if (slot < cycle.size()) {
                 ItemStack stack = new ItemStack(cycle.get(slot));
                 if (stackTag != null) {
-                    stack.setTag(stackTag.copy());
+                    stack.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
+                        net.minecraft.world.item.component.CustomData.of(stackTag.copy()));
                 }
 
                 if (minecraft != null) {
@@ -179,10 +180,7 @@ public class RadialTagCycleMenu extends AbstractSimiScreen {
         ms.popPose();
     }
 
-    @Override
     public void renderBackground(GuiGraphics guiGraphics) {
-        PoseStack ms = guiGraphics.pose();
-
         int a = ((int) (0x50 * Math.min(1, (ticksOpen + AnimationTickHolder.getPartialTicks()) / 20f))) << 24;
         guiGraphics.fillGradient(0, 0, this.width, this.height, 0x101010 | a, 0x101010 | a);
     }
@@ -213,13 +211,14 @@ public class RadialTagCycleMenu extends AbstractSimiScreen {
 
     @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
         Window window = Minecraft.getInstance().getWindow();
         double hoveredX = mouseX - window.getGuiScaledWidth() / 2;
         double hoveredY = mouseY - window.getGuiScaledHeight() / 2;
         double distance = hoveredX * hoveredX + hoveredY * hoveredY;
         if (distance <= 150) {
             scrollMode = true;
+            double delta = scrollY;
             scrollSlot = (((int) (scrollSlot - delta)) + 8) % 8;
             for (int i = 0; i < 10; i++) {
 
@@ -232,7 +231,7 @@ public class RadialTagCycleMenu extends AbstractSimiScreen {
             return true;
         }
 
-        return super.mouseScrolled(mouseX, mouseY, delta);
+        return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
     }
 
     @Override

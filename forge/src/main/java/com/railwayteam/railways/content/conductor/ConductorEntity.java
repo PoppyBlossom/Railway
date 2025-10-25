@@ -791,7 +791,6 @@ public class ConductorEntity extends AbstractGolem {
 
   public ConductorEntity(EntityType<? extends AbstractGolem> type, Level level) {
     super(type, level);
-    this.setMaxUpStep(0.5f);
   }
 
   public boolean isHoldingSchedules() {
@@ -884,6 +883,11 @@ public class ConductorEntity extends AbstractGolem {
   public boolean canReach(Vec3i pos) {
     return pos.distToCenterSqr(position()) <= REACH.distSqr(Vec3i.ZERO);
   }
+
+    @Override
+    public float maxUpStep() {
+      return 0.5f;
+    }
 
   protected boolean isToolbox(ItemStack stack) {
     return stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof ToolboxBlock;

@@ -29,6 +29,7 @@ import com.simibubi.create.foundation.fluid.SmartFluidTank;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -348,8 +349,8 @@ public class FuelTankBlockEntity extends SmartBlockEntity implements IHaveGoggle
     }
 
     @Override
-    protected void read(CompoundTag compound, boolean clientPacket) {
-        super.read(compound, clientPacket);
+    protected void read(CompoundTag compound, HolderLookup.Provider provider, boolean clientPacket) {
+        super.read(compound, provider, clientPacket);
 
         BlockPos controllerBefore = controller;
         int prevSize = width;
@@ -362,16 +363,16 @@ public class FuelTankBlockEntity extends SmartBlockEntity implements IHaveGoggle
         lastKnownPos = null;
 
         if (compound.contains("LastKnownPos"))
-            lastKnownPos = NbtUtils.readBlockPos(compound.getCompound("LastKnownPos"));
+            lastKnownPos = NbtUtils.readBlockPos(compound, "LastKnownPos").orElse(null);
         if (compound.contains("Controller"))
-            controller = NbtUtils.readBlockPos(compound.getCompound("Controller"));
+            controller = NbtUtils.readBlockPos(compound, "Controller").orElse(null);
 
         if (isController()) {
             window = compound.getBoolean("Window");
             width = compound.getInt("Size");
             height = compound.getInt("Height");
             tankInventory.setCapacity(getTotalTankSize() * getCapacityMultiplier());
-            tankInventory.readFromNBT(compound.getCompound("TankContent"));
+            tankInventory.readFromNBT(provider, compound.getCompound("TankContent"));
             if (tankInventory.getSpace() < 0)
                 tankInventory.drain(-tankInventory.getSpace(), IFluidHandler.FluidAction.EXECUTE);
         }
@@ -414,7 +415,7 @@ public class FuelTankBlockEntity extends SmartBlockEntity implements IHaveGoggle
     }
 
     @Override
-    public void write(CompoundTag compound, boolean clientPacket) {
+    public void write(CompoundTag compound, HolderLookup.Provider provider, boolean clientPacket) {
         if (updateConnectivity)
             compound.putBoolean("Uninitialized", true);
         if (lastKnownPos != null)
@@ -423,12 +424,12 @@ public class FuelTankBlockEntity extends SmartBlockEntity implements IHaveGoggle
             compound.put("Controller", NbtUtils.writeBlockPos(controller));
         if (isController()) {
             compound.putBoolean("Window", window);
-            compound.put("TankContent", tankInventory.writeToNBT(new CompoundTag()));
+            compound.put("TankContent", tankInventory.writeToNBT(provider, new CompoundTag()));
             compound.putInt("Size", width);
             compound.putInt("Height", height);
         }
         compound.putInt("Luminosity", luminosity);
-        super.write(compound, clientPacket);
+        super.write(compound, provider, clientPacket);
 
         if (!clientPacket)
             return;

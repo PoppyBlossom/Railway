@@ -96,7 +96,7 @@ public class GenericTrackCompat {
                 .lang(langName(name))
                 .block(() -> BLOCKS.get(name))
                 .particle(asResource("block/track/"+name+"/standard_track_crossing_"+name))
-                .sleeper(baseBlock.map(Ingredient::of).orElseGet(() -> SoftIngredient.of(getSlabLocation(name))))
+                .sleeper(baseBlock.map(Ingredient::of).orElse(Ingredient.EMPTY))
                 .rails(getIngredientForRail())
             );
             MATERIALS.put(name, standardMaterial);

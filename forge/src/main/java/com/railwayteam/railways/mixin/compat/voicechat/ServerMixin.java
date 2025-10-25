@@ -23,7 +23,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.railwayteam.railways.annotation.mixin.ConditionalMixin;
 import com.railwayteam.railways.compat.Mods;
 import com.railwayteam.railways.content.conductor.ConductorPossessionController;
-import de.maxhenkel.voicechat.voice.server.Server;
+import org.spongepowered.asm.mixin.Mixin;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,7 +33,7 @@ import org.spongepowered.asm.mixin.injection.Slice;
 import java.util.UUID;
 
 @ConditionalMixin(mods = Mods.VOICECHAT)
-@Mixin(Server.class)
+@Mixin(targets = "de.maxhenkel.voicechat.voice.server.Server")
 public class ServerMixin {
     @WrapOperation(method = "processProximityPacket", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;position()Lnet/minecraft/world/phys/Vec3;"))
     private Vec3 useConductorSpyPosition(ServerPlayer instance, Operation<Vec3> original) {

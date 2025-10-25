@@ -189,7 +189,7 @@ public abstract class MixinCarriageContraptionEntity extends OrientedContraption
     @Inject(method = "tickContraption", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/trains/entity/CarriageContraptionEntity;tickActors()V"))
     private void setupBufferDistanceData(CallbackInfo ci) {
         ICarriageBufferDistanceTracker distanceTracker = (ICarriageBufferDistanceTracker) carriage;
-        if (level.isClientSide) return;
+        if (level().isClientSide) return;
 
         if (distanceTracker.railways$getLeadingDistance() != null && distanceTracker.railways$getTrailingDistance() != null) return;
 
@@ -204,7 +204,7 @@ public abstract class MixinCarriageContraptionEntity extends OrientedContraption
         for (Map.Entry<BlockPos, StructureBlockInfo> info : contraption.getBlocks().entrySet()) {
             minPos = BlockPosUtils.min(minPos, info.getKey());
             maxPos = BlockPosUtils.max(maxPos, info.getKey());
-            if (info.getValue().state.getBlock() instanceof AbstractBogeyBlock<?>) {
+            if (info.getValue().state().getBlock() instanceof AbstractBogeyBlock<?>) {
                 if (leadingBogeyPos == null) {
                     leadingBogeyPos = info.getKey();
                 } else if (trailingBogeyPos == null) {

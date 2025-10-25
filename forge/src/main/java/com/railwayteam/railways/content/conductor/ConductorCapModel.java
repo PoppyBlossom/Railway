@@ -107,7 +107,7 @@ public class ConductorCapModel<T extends LivingEntity> extends Model implements 
 				.addBox(-4.5F, -9.0F, -4.0F, 9.0F, 3.0F, 9.0F, new CubeDeformation(0.0F)),
 			PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		PartDefinition brim = hat.addOrReplaceChild("brim",
+		hat.addOrReplaceChild("brim",
 			CubeListBuilder.create().texOffs(6, 12)
 				.addBox(-4.5F, 3.8F, -3.0F, 9.0F, 0.02F, 3.0F, new CubeDeformation(0.0F)),
 			PartPose.offsetAndRotation(0.0F, -10.0F, -4.0F, 0.2618F, 0.0F, 0.0F));
@@ -116,7 +116,17 @@ public class ConductorCapModel<T extends LivingEntity> extends Model implements 
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+		// Decode ABGR or ARGB int color into RGBA floats expected by our helper
+		float a = ((color >> 24) & 0xFF) / 255.0f;
+		float r = ((color >> 16) & 0xFF) / 255.0f;
+		float g = ((color >> 8) & 0xFF) / 255.0f;
+		float b = (color & 0xFF) / 255.0f;
+		renderToBufferRGBA(poseStack, vertexConsumer, packedLight, packedOverlay, r, g, b, a);
+	}
+    
+	@SuppressWarnings("deprecation")
+	private void renderToBufferRGBA(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		if (override != null) {
 			poseStack.pushPose();
 			cap.translateAndRotate(poseStack);
@@ -135,7 +145,13 @@ public class ConductorCapModel<T extends LivingEntity> extends Model implements 
 				.renderInto(poseStack, Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.translucent()));
 			poseStack.popPose();
 		} else {
-			cap.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+			// ModelPart now renders using a packed ARGB color int rather than RGBA floats
+			int ri = (int) (red * 255.0f) & 0xFF;
+			int gi = (int) (green * 255.0f) & 0xFF;
+			int bi = (int) (blue * 255.0f) & 0xFF;
+			int ai = (int) (alpha * 255.0f) & 0xFF;
+			int argb = (ai << 24) | (ri << 16) | (gi << 8) | bi;
+			cap.render(poseStack, vertexConsumer, packedLight, packedOverlay, argb);
 		}
 	}
 

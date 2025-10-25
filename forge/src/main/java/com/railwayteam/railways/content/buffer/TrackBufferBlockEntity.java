@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class TrackBufferBlockEntity extends DyeableBlockEntity implements Transf
 
     @Override
     protected AABB createRenderBoundingBox() {
-        return new AABB(worldPosition, edgePoint.getGlobalPosition()).inflate(2);
+        return new AABB(Vec3.atCenterOf(worldPosition), Vec3.atCenterOf(edgePoint.getGlobalPosition())).inflate(2);
     }
 
     @Override

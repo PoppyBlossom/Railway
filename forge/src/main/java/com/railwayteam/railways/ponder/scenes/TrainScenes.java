@@ -47,6 +47,7 @@ import net.createmod.ponder.foundation.instruction.PonderInstruction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ButtonBlock;
@@ -566,28 +567,33 @@ public class TrainScenes {
         scene.idle(20);
 
         for (int i = 0; i < 3; i++) {
-            scene.world().createEntity((level) -> new Arrow(level, switchPos.getX() + 0.5, 30, switchPos.getZ() + 0.5) {
-                @Override
-                protected void onHitBlock(@NotNull BlockHitResult result) {
-                    super.onHitBlock(result);
-                    if (level.getBlockEntity(result.getBlockPos()) instanceof TrackSwitchBlockEntity switchBE) {
-                        switchBE.setStatePonder(switchBE.getState().nextStateForPonder(SwitchConstraint.NONE));
-
-                        int output = switchBE.getTargetAnalogOutput();
-                        level.setBlockAndUpdate(comparatorPos, level.getBlockState(comparatorPos)
-                                .setValue(ComparatorBlock.POWERED, output != 0));
-                        level.setBlockAndUpdate(redstonePos, level.getBlockState(redstonePos)
-                                .setValue(RedStoneWireBlock.POWER, output));
-                        if (level.getBlockEntity(nixiePos) instanceof NixieTubeBlockEntity nixieBE) {
-                            nixieBE.updateRedstoneStrength(output);
-                            nixieBE.updateDisplayedStrings();
-                        }
-
-                        if (level instanceof PonderLevel ponderLevel)
-                            ponderLevel.scene.forEach(WorldSectionElement.class, WorldSectionElement::queueRedraw);
+            scene.world().createEntity((level) -> {
+                return new Arrow(EntityType.ARROW, level) {
+                    {
+                        setPos(switchPos.getX() + 0.5, 30, switchPos.getZ() + 0.5);
                     }
-                    discard();
-                }
+                    @Override
+                    protected void onHitBlock(@NotNull BlockHitResult result) {
+                        super.onHitBlock(result);
+                        if (level.getBlockEntity(result.getBlockPos()) instanceof TrackSwitchBlockEntity switchBE) {
+                            switchBE.setStatePonder(switchBE.getState().nextStateForPonder(SwitchConstraint.NONE));
+
+                            int output = switchBE.getTargetAnalogOutput();
+                            level.setBlockAndUpdate(comparatorPos, level.getBlockState(comparatorPos)
+                                    .setValue(ComparatorBlock.POWERED, output != 0));
+                            level.setBlockAndUpdate(redstonePos, level.getBlockState(redstonePos)
+                                    .setValue(RedStoneWireBlock.POWER, output));
+                            if (level.getBlockEntity(nixiePos) instanceof NixieTubeBlockEntity nixieBE) {
+                                nixieBE.updateRedstoneStrength(output);
+                                nixieBE.updateDisplayedStrings();
+                            }
+
+                            if (level instanceof PonderLevel ponderLevel)
+                                ponderLevel.scene.forEach(WorldSectionElement.class, WorldSectionElement::queueRedraw);
+                        }
+                        discard();
+                    }
+                };
             });
             scene.idle(20);
 

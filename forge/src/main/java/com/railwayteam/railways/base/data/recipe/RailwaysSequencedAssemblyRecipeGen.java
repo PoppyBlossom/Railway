@@ -19,7 +19,6 @@
 package com.railwayteam.railways.base.data.recipe;
 
 import com.railwayteam.railways.Railways;
-import com.railwayteam.railways.mixin.AccessorIngredient$TagValue;
 import com.railwayteam.railways.registry.CRItems;
 import com.railwayteam.railways.registry.CRTrackMaterials;
 import com.railwayteam.railways.util.TextUtils;
@@ -120,20 +119,7 @@ public class RailwaysSequencedAssemblyRecipeGen extends RailwaysRecipeProvider {
                     if (sleeperIngredient.isEmpty()) continue;
                     if (baseMaterial.railsIngredient.isEmpty()) continue;
 
-                    Ingredient railsIngredient = baseMaterial.railsIngredient;
-                    if (railsIngredient.values.length == 2 && Arrays.stream(railsIngredient.values).allMatch((value) -> {
-                        return value instanceof Ingredient.TagValue tagValue
-                            && (((AccessorIngredient$TagValue)tagValue).getTag().equals(AllTags.forgeItemTag("nuggets/iron"))
-                            || ((AccessorIngredient$TagValue)tagValue).getTag().equals(AllTags.forgeItemTag("nuggets/zinc"))
-                            || ((AccessorIngredient$TagValue)tagValue).getTag().equals(AllTags.forgeItemTag("iron_nuggets"))
-                            || ((AccessorIngredient$TagValue)tagValue).getTag().equals(AllTags.forgeItemTag("zinc_nuggets"))); // TODO wait until create fabric merge such difference between 1.18 and 1.19
-                    })) {
-                        railsIngredient = Ingredient.fromValues(Stream.of(
-                            AccessorIngredient$TagValue.railways$create(Ingredients.ironNugget()),
-                            AccessorIngredient$TagValue.railways$create(Ingredients.zincNugget())));
-                    }
-
-                    Ingredient finalRailsIngredient = railsIngredient;
+                    Ingredient finalRailsIngredient = baseMaterial.railsIngredient;
                     TRACKS.put(material, create(
                         "track_" + (material.id.getNamespace().equals(Railways.MOD_ID)
                             ? "" : material.id.getNamespace()+"_") + material.resourceName(),
@@ -149,20 +135,7 @@ public class RailwaysSequencedAssemblyRecipeGen extends RailwaysRecipeProvider {
                 continue;
             }
 
-            Ingredient railsIngredient = material.railsIngredient;
-            if (railsIngredient.values.length == 2 && Arrays.stream(railsIngredient.values).allMatch((value) -> {
-                return value instanceof Ingredient.TagValue tagValue
-                    && (((AccessorIngredient$TagValue) tagValue).getTag().equals(AllTags.forgeItemTag("nuggets/iron"))
-                    || ((AccessorIngredient$TagValue) tagValue).getTag().equals(AllTags.forgeItemTag("nuggets/zinc"))
-                    || ((AccessorIngredient$TagValue) tagValue).getTag().equals(AllTags.forgeItemTag("iron_nuggets"))
-                    || ((AccessorIngredient$TagValue) tagValue).getTag().equals(AllTags.forgeItemTag("zinc_nuggets"))); // TODO wait until create fabric merge such difference between 1.18 and 1.19
-            })) {
-                railsIngredient = Ingredient.fromValues(Stream.of(
-                    AccessorIngredient$TagValue.railways$create(Ingredients.ironNugget()),
-                    AccessorIngredient$TagValue.railways$create(Ingredients.zincNugget())));
-            }
-
-            Ingredient finalRailsIngredient = railsIngredient;
+            Ingredient finalRailsIngredient = material.railsIngredient;
 
             TRACKS.put(material, create(
                 "track_" + (material.id.getNamespace().equals(Railways.MOD_ID)

@@ -264,17 +264,10 @@ public class BogeyMenuScreen extends AbstractSimiScreen {
             AbstractBogeyBlock<?> bogeyBlock = style.getBlockForSize(renderSize);
             BlockState bogeyState = bogeyBlock.defaultBlockState().setValue(AbstractBogeyBlock.AXIS, Direction.Axis.Z);
 
-            float defaultScale = BogeyMenuManagerImpl.defaultScale;
-            float scalePercentage = bogeyScale / defaultScale;
+            // float defaultScale = BogeyMenuManagerImpl.defaultScale; // unused after 1.21 migration
 
-            // Push current pose and Setup model view
+            // Push current pose; model view manipulation removed for 1.21 migration
             ms.pushPose();
-            PoseStack modelViewStack = RenderSystem.getModelViewStack();
-            modelViewStack.pushPose();
-            modelViewStack.translate(18 * scalePercentage, 6 * scalePercentage, 0);
-            modelViewStack.translate(x + 189.5, y + 86, 1500);
-            modelViewStack.scale(1, 1, -1);
-            RenderSystem.applyModelViewMatrix();
 
             // Setup pose and lighting correctly
             ms.translate(0, 0, 1000);
@@ -304,8 +297,6 @@ public class BogeyMenuScreen extends AbstractSimiScreen {
             
             // End batch, pop modelViewStack & apply and pop the pose
             bufferSource.endBatch();
-            modelViewStack.popPose();
-            RenderSystem.applyModelViewMatrix();
             ms.popPose();
 
             // Clear depth rectangle to allow proper tooltips
@@ -413,14 +404,14 @@ public class BogeyMenuScreen extends AbstractSimiScreen {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-        super.mouseScrolled(mouseX, mouseY, delta);
+    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+        super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
         if (!canScroll()) return false;
         if (insideCategorySelector(mouseX, mouseY)) return false;
         if (selectedCategory.getBogeyEntryList().size() < 6) return false;
 
         double listSize = selectedCategory.getBogeyEntryList().size() - 6;
-        float scrollFactor = (float) (delta / listSize);
+        float scrollFactor = (float) (scrollY / listSize);
 
         final float oldScrollOffs = scrollOffs;
 

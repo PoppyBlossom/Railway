@@ -30,9 +30,7 @@ import com.simibubi.create.content.trains.track.TrackMaterial.TrackType;
 import dev.engine_room.flywheel.api.instance.InstancerProvider;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
-import dev.engine_room.flywheel.lib.model.ModelUtil;
-import dev.engine_room.flywheel.lib.model.SimpleModel;
-import dev.engine_room.flywheel.lib.model.baked.BakedModelBuilder;
+import dev.engine_room.flywheel.lib.model.Models;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import dev.engine_room.flywheel.lib.transform.TransformStack;
 import net.createmod.catnip.data.Iterate;
@@ -40,7 +38,6 @@ import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.render.CachedBuffers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -101,20 +98,23 @@ public abstract class CasingRenderUtils {
         } else {
             ms.pushPose();
             BlockPos tePosition = bc.bePositions.getFirst();
-            SegmentAngles[] segments = bc.getBakedSegments();
+            // In 1.21, baked segment data is stored as arrays inside a single SegmentAngles
+            SegmentAngles segment = bc.getBakedSegments();
+            int len = segment.tieTransform.length;
 
             TransformStack.of(ms)
                     .nudge((int) tePosition.asLong());
 
-            for (int i = 1; i < segments.length; i++) {
+            for (int i = 1; i < len; i++) {
                 if (i % 2 == 0) continue;
-                SegmentAngles segment = segments[i];
-                int light = LevelRenderer.getLightColor(level, segment.lightPosition.offset(tePosition));
-                Matrix4f pose = copy(segment.tieTransform.pose());
+                BlockPos lightPos = segment.lightPosition[i];
+                int light = LevelRenderer.getLightColor(level, lightPos.offset(tePosition));
+                Pose tiePose = segment.tieTransform[i];
+                Matrix4f pose = copy(tiePose.pose());
                 pose.translate(new Vector3f(0, (i % 4) * 0.001f, 0));
                 CachedBuffers.partial(texturedPartial, state)
                         .mulPose(pose)
-                        .mulNormal(segment.tieTransform.normal())
+                        .mulNormal(tiePose.normal())
                         .translate(0, shiftDown, 0)
                         .scale(1.02f)
                         .light(light)
@@ -124,7 +124,7 @@ public abstract class CasingRenderUtils {
                 if (trackType == WIDE_GAUGE) {
                     for (boolean first : Iterate.trueAndFalse) {
                         for (boolean inner : Iterate.trueAndFalse) {
-                            Pose transform = segment.railTransforms.get(first);
+                            Pose transform = segment.railTransforms[i].get(first);
                             Matrix4f pose2 = copy(transform.pose());
                             pose2.translate(new Vector3f(0, (i % 4) * 0.001f, 0));
                             CachedBuffers.partial(texturedPartial, state)
@@ -137,7 +137,7 @@ public abstract class CasingRenderUtils {
                     }
                 } else {
                     for (boolean first : Iterate.trueAndFalse) {
-                        Pose transform = segment.railTransforms.get(first);
+                        Pose transform = segment.railTransforms[i].get(first);
                         Matrix4f pose2 = copy(transform.pose());
                         pose2.translate(new Vector3f(0, (i % 4) * 0.001f, 0));
                         CachedBuffers.partial(texturedPartial, state)
@@ -185,10 +185,7 @@ public abstract class CasingRenderUtils {
 
     public static TransformedInstance makeCasingInstance(PartialModel baseModel, SlabBlock slabBlock, InstancerProvider instancerProvider) {
         PartialModel texturedPartial = reTexture(baseModel, slabBlock);
-        SimpleModel model = BakedModelBuilder.create(texturedPartial.get())
-                .materialFunc((renderType, aBoolean) -> ModelUtil.getMaterial(RenderType.cutoutMipped(), aBoolean))
-                .build();
-        return instancerProvider.instancer(InstanceTypes.TRANSFORMED, model)
+        return instancerProvider.instancer(InstanceTypes.TRANSFORMED, Models.partial(texturedPartial))
                 .createInstance();
     }
 }

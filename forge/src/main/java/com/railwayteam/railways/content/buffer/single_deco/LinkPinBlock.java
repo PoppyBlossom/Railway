@@ -118,7 +118,7 @@ public class LinkPinBlock extends AbstractDyeableSingleBufferBlock implements Bl
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+    public ItemStack getCloneItemStack(net.minecraft.world.level.LevelReader level, BlockPos pos, BlockState state) {
         return CRBlocks.LINK_AND_PIN_GROUP.get(state.getValue(STYLE)).asStack();
     }
 }

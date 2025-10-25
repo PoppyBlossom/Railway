@@ -19,7 +19,6 @@
 package com.railwayteam.railways.mixin.client;
 
 import com.google.common.collect.ImmutableList;
-import com.railwayteam.railways.content.smokestack.particles.legacy.SmokeParticle;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.particle.ParticleRenderType;
 import org.spongepowered.asm.mixin.Final;
@@ -39,9 +38,9 @@ public class MixinParticleEngine {
 
     @Inject(method = "<clinit>", at = @At("RETURN"))
     private static void railways$addRenderType(CallbackInfo ci) {
+        // 1.21: Using built-in translucent particle sheet; no custom render type injection needed
         RENDER_ORDER = ImmutableList.<ParticleRenderType>builder()
             .addAll(RENDER_ORDER)
-            .add(SmokeParticle.TRANSPARENT_SMOKE)
             .build();
     }
 }
