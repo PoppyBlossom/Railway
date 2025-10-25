@@ -4,21 +4,23 @@
         ".",
         "tmp_mod"
     ],
-    "java.project.referencedLibraries": [],
     "java.compile.nullAnalysis.mode": "disabled",
     "java.configuration.runtimes": [
         {
             "name": "JavaSE-21",
-            "path": "/usr/lib/jvm/java-21-openjdk-amd64",
+            "path": "/usr/lib/jvm/msopenjdk-current",
             "default": true
         }
     ],
-    "java.jdt.ls.java.home": "/usr/lib/jvm/java-21-openjdk-amd64",
-    "java.import.gradle.java.home": "/usr/lib/jvm/java-21-openjdk-amd64"
-    ,
+    "java.jdt.ls.java.home": "/usr/lib/jvm/msopenjdk-current",
+    "java.import.gradle.java.home": "/usr/lib/jvm/msopenjdk-current",  
+    "java.project.referencedLibraries": [
+        "/usr/lib/jvm/msopenjdk-current/lib",
+        "/usr/lib/jvm/msopenjdk-current/lib/modules"
+    ],
     "terminal.integrated.env.linux": {
-        "JAVA_HOME": "/usr/lib/jvm/java-21-openjdk-amd64",
-        "PATH": "/usr/lib/jvm/java-21-openjdk-amd64/bin:${env:PATH}"
+        "JAVA_HOME": "/usr/lib/jvm/msopenjdk-current",
+        "PATH": "/usr/lib/jvm/msopenjdk-current/bin:${env:PATH}"
     },
     "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx4G -Xms100m -Xlog:disable"
 }
