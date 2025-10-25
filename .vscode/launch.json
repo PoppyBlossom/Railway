@@ -45,7 +45,7 @@
         "--add-exports",
         "jdk.naming.dns/com.sun.jndi.dns\u003djava.naming",
         "-Dneoforge.enableGameTest\u003dtrue",
-        "-DlegacyClassPath.file\u003d/workspaces/Railway/common/.gradle/configuration/neoForm/neoFormJoined1.21.1-20240808.144430/steps/writeMinecraftClasspathClient/classpath.txt",
+        "-DlegacyClassPath.file\u003d/workspaces/Railway-1.21.1/common/.gradle/configuration/neoForm/neoFormJoined1.21.1-20240808.144430/steps/writeMinecraftClasspathClient/classpath.txt",
         "-DignoreList\u003dsecurejarhandler-3.0.8.jar,asm-9.7.jar,asm-commons-9.7.jar,asm-tree-9.7.jar,asm-util-9.7.jar,asm-analysis-9.7.jar,bootstraplauncher-2.0.2.jar,JarJarFileSystems-0.4.1.jar,mixinextras-neoforge-0.4.1.jar,client-extra,neoforge-",
         "-Dfml.gameLayerLibraries",
         "-DmergeModules\u003djna-5.10.0.jar,jna-platform-5.10.0.jar",
@@ -54,7 +54,7 @@
       ],
       "cwd": "${workspaceFolder}/common/runs/client",
       "env": {
-        "MOD_CLASSES": "common%%/workspaces/Railway/common/bin/main"
+        "MOD_CLASSES": "common%%/workspaces/Railway-1.21.1/common/bin/main"
       },
       "shortenCommandLine": "argfile"
     },
@@ -99,7 +99,7 @@
         "java.base/sun.security.util\u003dcpw.mods.securejarhandler",
         "--add-exports",
         "jdk.naming.dns/com.sun.jndi.dns\u003djava.naming",
-        "-DlegacyClassPath.file\u003d/workspaces/Railway/common/.gradle/configuration/neoForm/neoFormJoined1.21.1-20240808.144430/steps/writeMinecraftClasspathData/classpath.txt",
+        "-DlegacyClassPath.file\u003d/workspaces/Railway-1.21.1/common/.gradle/configuration/neoForm/neoFormJoined1.21.1-20240808.144430/steps/writeMinecraftClasspathData/classpath.txt",
         "-DignoreList\u003dsecurejarhandler-3.0.8.jar,asm-9.7.jar,asm-commons-9.7.jar,asm-tree-9.7.jar,asm-util-9.7.jar,asm-analysis-9.7.jar,bootstraplauncher-2.0.2.jar,JarJarFileSystems-0.4.1.jar,mixinextras-neoforge-0.4.1.jar,client-extra,neoforge-",
         "-Dfml.gameLayerLibraries",
         "-DmergeModules\u003djna-5.10.0.jar,jna-platform-5.10.0.jar",
@@ -108,7 +108,7 @@
       ],
       "cwd": "${workspaceFolder}/common/runs/data",
       "env": {
-        "MOD_CLASSES": "common%%/workspaces/Railway/common/bin/main"
+        "MOD_CLASSES": "common%%/workspaces/Railway-1.21.1/common/bin/main"
       },
       "shortenCommandLine": "argfile"
     },
@@ -151,7 +151,7 @@
         "jdk.naming.dns/com.sun.jndi.dns\u003djava.naming",
         "-Dneoforge.enableGameTest\u003dtrue",
         "-Dneoforge.gameTestServer\u003dtrue",
-        "-DlegacyClassPath.file\u003d/workspaces/Railway/common/.gradle/configuration/neoForm/neoFormJoined1.21.1-20240808.144430/steps/writeMinecraftClasspathGameTestServer/classpath.txt",
+        "-DlegacyClassPath.file\u003d/workspaces/Railway-1.21.1/common/.gradle/configuration/neoForm/neoFormJoined1.21.1-20240808.144430/steps/writeMinecraftClasspathGameTestServer/classpath.txt",
         "-DignoreList\u003dsecurejarhandler-3.0.8.jar,asm-9.7.jar,asm-commons-9.7.jar,asm-tree-9.7.jar,asm-util-9.7.jar,asm-analysis-9.7.jar,bootstraplauncher-2.0.2.jar,JarJarFileSystems-0.4.1.jar,mixinextras-neoforge-0.4.1.jar,client-extra,neoforge-",
         "-Dfml.gameLayerLibraries",
         "-DmergeModules\u003djna-5.10.0.jar,jna-platform-5.10.0.jar",
@@ -160,7 +160,7 @@
       ],
       "cwd": "${workspaceFolder}/common/runs/gameTestServer",
       "env": {
-        "MOD_CLASSES": "common%%/workspaces/Railway/common/bin/main"
+        "MOD_CLASSES": "common%%/workspaces/Railway-1.21.1/common/bin/main"
       },
       "shortenCommandLine": "argfile"
     },
@@ -207,7 +207,7 @@
         "java.base/sun.security.util\u003dcpw.mods.securejarhandler",
         "--add-exports",
         "jdk.naming.dns/com.sun.jndi.dns\u003djava.naming",
-        "-DlegacyClassPath.file\u003d/workspaces/Railway/common/.gradle/configuration/neoForm/neoFormJoined1.21.1-20240808.144430/steps/writeMinecraftClasspathJunit/classpath.txt",
+        "-DlegacyClassPath.file\u003d/workspaces/Railway-1.21.1/common/.gradle/configuration/neoForm/neoFormJoined1.21.1-20240808.144430/steps/writeMinecraftClasspathJunit/classpath.txt",
         "-DignoreList\u003dsecurejarhandler-3.0.8.jar,asm-9.7.jar,asm-commons-9.7.jar,asm-tree-9.7.jar,asm-util-9.7.jar,asm-analysis-9.7.jar,bootstraplauncher-2.0.2.jar,JarJarFileSystems-0.4.1.jar,mixinextras-neoforge-0.4.1.jar,client-extra,neoforge-",
         "-Dfml.gameLayerLibraries",
         "-DmergeModules\u003djna-5.10.0.jar,jna-platform-5.10.0.jar",
@@ -216,7 +216,7 @@
       ],
       "cwd": "${workspaceFolder}/common/runs/junit",
       "env": {
-        "MOD_CLASSES": "common%%/workspaces/Railway/common/bin/main",
+        "MOD_CLASSES": "common%%/workspaces/Railway-1.21.1/common/bin/main",
         "MCP_MAPPINGS": "UNUSED_DEPRECATED"
       },
       "shortenCommandLine": "argfile"
@@ -258,7 +258,7 @@
         "java.base/sun.security.util\u003dcpw.mods.securejarhandler",
         "--add-exports",
         "jdk.naming.dns/com.sun.jndi.dns\u003djava.naming",
-        "-DlegacyClassPath.file\u003d/workspaces/Railway/common/.gradle/configuration/neoForm/neoFormJoined1.21.1-20240808.144430/steps/writeMinecraftClasspathServer/classpath.txt",
+        "-DlegacyClassPath.file\u003d/workspaces/Railway-1.21.1/common/.gradle/configuration/neoForm/neoFormJoined1.21.1-20240808.144430/steps/writeMinecraftClasspathServer/classpath.txt",
         "-DignoreList\u003dsecurejarhandler-3.0.8.jar,asm-9.7.jar,asm-commons-9.7.jar,asm-tree-9.7.jar,asm-util-9.7.jar,asm-analysis-9.7.jar,bootstraplauncher-2.0.2.jar,JarJarFileSystems-0.4.1.jar,mixinextras-neoforge-0.4.1.jar,client-extra,neoforge-",
         "-Dfml.gameLayerLibraries",
         "-DmergeModules\u003djna-5.10.0.jar,jna-platform-5.10.0.jar",
@@ -267,7 +267,7 @@
       ],
       "cwd": "${workspaceFolder}/common/runs/server",
       "env": {
-        "MOD_CLASSES": "common%%/workspaces/Railway/common/bin/main"
+        "MOD_CLASSES": "common%%/workspaces/Railway-1.21.1/common/bin/main"
       },
       "shortenCommandLine": "argfile"
     },
@@ -315,7 +315,7 @@
         "--add-exports",
         "jdk.naming.dns/com.sun.jndi.dns\u003djava.naming",
         "-Dneoforge.enableGameTest\u003dtrue",
-        "-DlegacyClassPath.file\u003d/workspaces/Railway/forge/.gradle/configuration/neoForm/neoFormJoined1.21.1-20240808.144430/steps/writeMinecraftClasspathClient/classpath.txt",
+        "-DlegacyClassPath.file\u003d/workspaces/Railway-1.21.1/forge/.gradle/configuration/neoForm/neoFormJoined1.21.1-20240808.144430/steps/writeMinecraftClasspathClient/classpath.txt",
         "-DignoreList\u003dsecurejarhandler-3.0.8.jar,asm-9.7.jar,asm-commons-9.7.jar,asm-tree-9.7.jar,asm-util-9.7.jar,asm-analysis-9.7.jar,bootstraplauncher-2.0.2.jar,JarJarFileSystems-0.4.1.jar,mixinextras-neoforge-0.4.1.jar,client-extra,neoforge-",
         "-Dfml.gameLayerLibraries",
         "-DmergeModules\u003djna-5.10.0.jar,jna-platform-5.10.0.jar",
@@ -324,7 +324,7 @@
       ],
       "cwd": "${workspaceFolder}/forge/runs/client",
       "env": {
-        "MOD_CLASSES": "forge%%/workspaces/Railway/forge/bin/main"
+        "MOD_CLASSES": "forge%%/workspaces/Railway-1.21.1/forge/bin/main"
       },
       "shortenCommandLine": "argfile"
     },
@@ -369,7 +369,7 @@
         "java.base/sun.security.util\u003dcpw.mods.securejarhandler",
         "--add-exports",
         "jdk.naming.dns/com.sun.jndi.dns\u003djava.naming",
-        "-DlegacyClassPath.file\u003d/workspaces/Railway/forge/.gradle/configuration/neoForm/neoFormJoined1.21.1-20240808.144430/steps/writeMinecraftClasspathData/classpath.txt",
+        "-DlegacyClassPath.file\u003d/workspaces/Railway-1.21.1/forge/.gradle/configuration/neoForm/neoFormJoined1.21.1-20240808.144430/steps/writeMinecraftClasspathData/classpath.txt",
         "-DignoreList\u003dsecurejarhandler-3.0.8.jar,asm-9.7.jar,asm-commons-9.7.jar,asm-tree-9.7.jar,asm-util-9.7.jar,asm-analysis-9.7.jar,bootstraplauncher-2.0.2.jar,JarJarFileSystems-0.4.1.jar,mixinextras-neoforge-0.4.1.jar,client-extra,neoforge-",
         "-Dfml.gameLayerLibraries",
         "-DmergeModules\u003djna-5.10.0.jar,jna-platform-5.10.0.jar",
@@ -378,7 +378,7 @@
       ],
       "cwd": "${workspaceFolder}/forge/runs/data",
       "env": {
-        "MOD_CLASSES": "forge%%/workspaces/Railway/forge/bin/main"
+        "MOD_CLASSES": "forge%%/workspaces/Railway-1.21.1/forge/bin/main"
       },
       "shortenCommandLine": "argfile"
     },
@@ -421,7 +421,7 @@
         "jdk.naming.dns/com.sun.jndi.dns\u003djava.naming",
         "-Dneoforge.enableGameTest\u003dtrue",
         "-Dneoforge.gameTestServer\u003dtrue",
-        "-DlegacyClassPath.file\u003d/workspaces/Railway/forge/.gradle/configuration/neoForm/neoFormJoined1.21.1-20240808.144430/steps/writeMinecraftClasspathGameTestServer/classpath.txt",
+        "-DlegacyClassPath.file\u003d/workspaces/Railway-1.21.1/forge/.gradle/configuration/neoForm/neoFormJoined1.21.1-20240808.144430/steps/writeMinecraftClasspathGameTestServer/classpath.txt",
         "-DignoreList\u003dsecurejarhandler-3.0.8.jar,asm-9.7.jar,asm-commons-9.7.jar,asm-tree-9.7.jar,asm-util-9.7.jar,asm-analysis-9.7.jar,bootstraplauncher-2.0.2.jar,JarJarFileSystems-0.4.1.jar,mixinextras-neoforge-0.4.1.jar,client-extra,neoforge-",
         "-Dfml.gameLayerLibraries",
         "-DmergeModules\u003djna-5.10.0.jar,jna-platform-5.10.0.jar",
@@ -430,7 +430,7 @@
       ],
       "cwd": "${workspaceFolder}/forge/runs/gameTestServer",
       "env": {
-        "MOD_CLASSES": "forge%%/workspaces/Railway/forge/bin/main"
+        "MOD_CLASSES": "forge%%/workspaces/Railway-1.21.1/forge/bin/main"
       },
       "shortenCommandLine": "argfile"
     },
@@ -477,7 +477,7 @@
         "java.base/sun.security.util\u003dcpw.mods.securejarhandler",
         "--add-exports",
         "jdk.naming.dns/com.sun.jndi.dns\u003djava.naming",
-        "-DlegacyClassPath.file\u003d/workspaces/Railway/forge/.gradle/configuration/neoForm/neoFormJoined1.21.1-20240808.144430/steps/writeMinecraftClasspathJunit/classpath.txt",
+        "-DlegacyClassPath.file\u003d/workspaces/Railway-1.21.1/forge/.gradle/configuration/neoForm/neoFormJoined1.21.1-20240808.144430/steps/writeMinecraftClasspathJunit/classpath.txt",
         "-DignoreList\u003dsecurejarhandler-3.0.8.jar,asm-9.7.jar,asm-commons-9.7.jar,asm-tree-9.7.jar,asm-util-9.7.jar,asm-analysis-9.7.jar,bootstraplauncher-2.0.2.jar,JarJarFileSystems-0.4.1.jar,mixinextras-neoforge-0.4.1.jar,client-extra,neoforge-",
         "-Dfml.gameLayerLibraries",
         "-DmergeModules\u003djna-5.10.0.jar,jna-platform-5.10.0.jar",
@@ -486,7 +486,7 @@
       ],
       "cwd": "${workspaceFolder}/forge/runs/junit",
       "env": {
-        "MOD_CLASSES": "forge%%/workspaces/Railway/forge/bin/main",
+        "MOD_CLASSES": "forge%%/workspaces/Railway-1.21.1/forge/bin/main",
         "MCP_MAPPINGS": "UNUSED_DEPRECATED"
       },
       "shortenCommandLine": "argfile"
@@ -528,7 +528,7 @@
         "java.base/sun.security.util\u003dcpw.mods.securejarhandler",
         "--add-exports",
         "jdk.naming.dns/com.sun.jndi.dns\u003djava.naming",
-        "-DlegacyClassPath.file\u003d/workspaces/Railway/forge/.gradle/configuration/neoForm/neoFormJoined1.21.1-20240808.144430/steps/writeMinecraftClasspathServer/classpath.txt",
+        "-DlegacyClassPath.file\u003d/workspaces/Railway-1.21.1/forge/.gradle/configuration/neoForm/neoFormJoined1.21.1-20240808.144430/steps/writeMinecraftClasspathServer/classpath.txt",
         "-DignoreList\u003dsecurejarhandler-3.0.8.jar,asm-9.7.jar,asm-commons-9.7.jar,asm-tree-9.7.jar,asm-util-9.7.jar,asm-analysis-9.7.jar,bootstraplauncher-2.0.2.jar,JarJarFileSystems-0.4.1.jar,mixinextras-neoforge-0.4.1.jar,client-extra,neoforge-",
         "-Dfml.gameLayerLibraries",
         "-DmergeModules\u003djna-5.10.0.jar,jna-platform-5.10.0.jar",
@@ -537,7 +537,7 @@
       ],
       "cwd": "${workspaceFolder}/forge/runs/server",
       "env": {
-        "MOD_CLASSES": "forge%%/workspaces/Railway/forge/bin/main"
+        "MOD_CLASSES": "forge%%/workspaces/Railway-1.21.1/forge/bin/main"
       },
       "shortenCommandLine": "argfile"
     }

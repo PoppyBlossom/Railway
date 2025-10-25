@@ -105,14 +105,14 @@ public class ConductorWhistleFlagBlockEntity extends SmartBlockEntity implements
     }
 
     @Override
-    protected void write(CompoundTag tag, boolean clientPacket) {
-        super.write(tag, clientPacket);
+    protected void write(CompoundTag tag, net.minecraft.core.HolderLookup.Provider lookupProvider, boolean clientPacket) {
+        super.write(tag, lookupProvider, clientPacket);
         tag.putByte("SelectedColor", ConductorEntity.idFrom(color));
     }
 
     @Override
-    protected void read(CompoundTag tag, boolean clientPacket) {
-        super.read(tag, clientPacket);
+    protected void read(CompoundTag tag, net.minecraft.core.HolderLookup.Provider lookupProvider, boolean clientPacket) {
+        super.read(tag, lookupProvider, clientPacket);
         color = ConductorEntity.colorFrom(tag.getByte("SelectedColor"));
     }
 }

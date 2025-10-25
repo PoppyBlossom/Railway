@@ -299,15 +299,16 @@ public class GenericCrossingBlock extends Block implements IBE<GenericCrossingBl
     }
 
     @Override
-    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+    public BlockState playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
         if (pLevel.isClientSide())
-            return;
+            return pState;
         if (!pPlayer.isCreative())
-            return;
+            return pState;
         withBlockEntityDo(pLevel, pPos, be -> {
             be.cancelDrops = true;
         });
+        return pState;
     }
 
     @Override

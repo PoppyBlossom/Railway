@@ -70,8 +70,8 @@ public class GenericCrossingBlockEntity extends SmartBlockEntity implements IMer
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {}
 
     @Override
-    protected void read(CompoundTag tag, boolean clientPacket) {
-        super.read(tag, clientPacket);
+    protected void read(CompoundTag tag, net.minecraft.core.HolderLookup.Provider lookupProvider, boolean clientPacket) {
+        super.read(tag, lookupProvider, clientPacket);
 
         boolean updateMesh = false;
         TrackMaterial primary = TrackMaterial.deserialize(tag.getString("PrimaryMaterial"));
@@ -91,8 +91,8 @@ public class GenericCrossingBlockEntity extends SmartBlockEntity implements IMer
     }
 
     @Override
-    protected void write(CompoundTag tag, boolean clientPacket) {
-        super.write(tag, clientPacket);
+    protected void write(CompoundTag tag, net.minecraft.core.HolderLookup.Provider lookupProvider, boolean clientPacket) {
+        super.write(tag, lookupProvider, clientPacket);
 
         tag.putString("PrimaryMaterial", getPrimary().id.toString());
         tag.putString("SecondaryMaterial", getSecondary().id.toString());

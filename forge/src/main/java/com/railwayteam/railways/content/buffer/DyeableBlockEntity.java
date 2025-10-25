@@ -22,6 +22,7 @@ import com.railwayteam.railways.util.BlockStateUtils;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.DyeColor;
@@ -52,15 +53,15 @@ public class DyeableBlockEntity extends SmartBlockEntity implements IDyedBuffer 
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {}
 
     @Override
-    protected void write(CompoundTag tag, boolean clientPacket) {
-        super.write(tag, clientPacket);
+    protected void write(CompoundTag tag, HolderLookup.Provider lookupProvider, boolean clientPacket) {
+        super.write(tag, lookupProvider, clientPacket);
         if (color != null)
             tag.putInt("Color", color.getId());
     }
 
     @Override
-    protected void read(CompoundTag tag, boolean clientPacket) {
-        super.read(tag, clientPacket);
+    protected void read(CompoundTag tag, HolderLookup.Provider lookupProvider, boolean clientPacket) {
+        super.read(tag, lookupProvider, clientPacket);
         DyeColor prevColor = color;
 
         if (tag.contains("Color"))

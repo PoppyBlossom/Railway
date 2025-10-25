@@ -31,6 +31,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -38,6 +39,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -93,7 +95,7 @@ public abstract class AbstractSmokeStackBlock<T extends SmartBlockEntity> extend
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+        public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
         if (variant.equals("diesel") || variant.equals("caboosestyle"))
             return super.getCloneItemStack(level, pos, state);
         return CRBlocks.SMOKESTACK_GROUP.get(variant).get(state.getValue(STYLE)).asStack();
@@ -128,16 +130,16 @@ public abstract class AbstractSmokeStackBlock<T extends SmartBlockEntity> extend
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand,
-                                 BlockHitResult pHit) {
+        protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand,
+                                         BlockHitResult pHit) {
         if (AllTags.AllItemTags.WRENCH.matches(pPlayer.getItemInHand(pHand))) {
-            return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+              return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
         pState = pState.cycle(ENABLED);
         pLevel.setBlock(pPos, pState, 2);
         if (pState.getValue(WATERLOGGED))
             pLevel.scheduleTick(pPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
-        return InteractionResult.sidedSuccess(pLevel.isClientSide);
+           return ItemInteractionResult.sidedSuccess(pLevel.isClientSide);
     }
 
     @Override

@@ -47,7 +47,7 @@ import java.util.Arrays;
 
 public class ConductorPossessionController {
     @OnlyIn(Dist.CLIENT)
-    private static ClientChunkCache.Storage cameraStorage;
+    private static Object cameraStorage;
     private static boolean wasUpPressed;
     private static boolean wasDownPressed;
     private static boolean wasLeftPressed;
@@ -277,12 +277,12 @@ public class ConductorPossessionController {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static ClientChunkCache.Storage getCameraStorage() {
+    public static Object getCameraStorage() {
         return cameraStorage;
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static void setCameraStorage(ClientChunkCache.Storage newStorage) {
+    public static void setCameraStorage(Object newStorage) {
         cameraStorage = newStorage;
     }
 
@@ -291,8 +291,18 @@ public class ConductorPossessionController {
         if (entity instanceof ConductorEntity) {
             SectionPos cameraPos = SectionPos.of(entity);
 
-            cameraStorage.viewCenterX = cameraPos.x();
-            cameraStorage.viewCenterZ = cameraPos.z();
+            if (cameraStorage != null) {
+                try {
+                    Class<?> storClass = cameraStorage.getClass();
+                    java.lang.reflect.Field fx = storClass.getDeclaredField("viewCenterX");
+                    java.lang.reflect.Field fz = storClass.getDeclaredField("viewCenterZ");
+                    fx.setAccessible(true);
+                    fz.setAccessible(true);
+                    fx.setInt(cameraStorage, cameraPos.x());
+                    fz.setInt(cameraStorage, cameraPos.z());
+                } catch (Exception ignored) {
+                }
+            }
         }
     }
 

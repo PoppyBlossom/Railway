@@ -18,6 +18,7 @@
 
 package com.railwayteam.railways.content.buffer.single_deco;
 
+import com.mojang.serialization.MapCodec;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.createmod.catnip.math.VoxelShaper;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -32,11 +33,17 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class GenericDyeableSingleBufferBlock extends AbstractDyeableSingleBufferBlock {
+    public static final MapCodec<GenericDyeableSingleBufferBlock> CODEC = simpleCodec(p -> new GenericDyeableSingleBufferBlock(p, null));
     protected final VoxelShaper shaper;
 
     public GenericDyeableSingleBufferBlock(Properties properties, VoxelShaper shaper) {
         super(properties);
         this.shaper = shaper;
+    }
+
+    @Override
+    protected MapCodec<? extends GenericDyeableSingleBufferBlock> codec() {
+        return CODEC;
     }
 
     public static NonNullFunction<Properties, GenericDyeableSingleBufferBlock> createFactory(VoxelShaper shaper) {

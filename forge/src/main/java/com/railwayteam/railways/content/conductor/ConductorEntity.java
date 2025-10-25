@@ -161,7 +161,7 @@ public class ConductorEntity extends AbstractGolem {
       this.key = key;
       this.frequency = ConductorEntity.this.frequencies.entries().get(this.key).orElse(null);
       if (frequency != null)
-        Create.REDSTONE_LINK_NETWORK_HANDLER.addToNetwork(ConductorEntity.this.level, this);
+        Create.REDSTONE_LINK_NETWORK_HANDLER.addToNetwork(ConductorEntity.this.level(), this);
     }
 
     @Override
@@ -275,24 +275,24 @@ public class ConductorEntity extends AbstractGolem {
       );
     }
 
-    public CompoundTag write() {
+    public CompoundTag write(net.minecraft.core.HolderLookup.Provider lookupProvider) {
       CompoundTag tag = new CompoundTag();
       for (var freq : this.entries().entrySet()) {
         if (freq.getValue().isPresent()) {
           CompoundTag subTag = new CompoundTag();
-          subTag.put("first", freq.getValue().get().getFirst().getStack().save(new CompoundTag()));
-          subTag.put("second", freq.getValue().get().getSecond().getStack().save(new CompoundTag()));
+          subTag.put("first", freq.getValue().get().getFirst().getStack().save(lookupProvider));
+          subTag.put("second", freq.getValue().get().getSecond().getStack().save(lookupProvider));
           tag.put(freq.getKey(), subTag);
         }
       }
       return tag;
     }
 
-    public FrequencyHolder read(CompoundTag tag) {
+    public FrequencyHolder read(CompoundTag tag, net.minecraft.core.HolderLookup.Provider lookupProvider) {
       for (var freq : this.setters().entrySet()) {
         if (tag.contains(freq.getKey(), Tag.TAG_COMPOUND)) {
-          ItemStack first = ItemStack.of(tag.getCompound(freq.getKey()).getCompound("first"));
-          ItemStack second = ItemStack.of(tag.getCompound(freq.getKey()).getCompound("second"));
+          ItemStack first = ItemStack.parseOptional(lookupProvider, tag.getCompound(freq.getKey()).getCompound("first"));
+          ItemStack second = ItemStack.parseOptional(lookupProvider, tag.getCompound(freq.getKey()).getCompound("second"));
           freq.getValue().accept(Optional.of(Couple.create(Frequency.of(first), Frequency.of(second))));
         } else {
           freq.getValue().accept(Optional.empty());
@@ -436,7 +436,7 @@ public class ConductorEntity extends AbstractGolem {
       return;
     }
     BlockPos blockPos = this.getOnPos();
-    super.checkFallDamage(y, onGround, this.level.getBlockState(blockPos), blockPos);
+    super.checkFallDamage(y, onGround, this.level().getBlockState(blockPos), blockPos);
   }
 
   // make public
@@ -453,7 +453,7 @@ public class ConductorEntity extends AbstractGolem {
       }
     });
 
-    if (level instanceof ServerLevel serverLevel) {
+    if (this.level() instanceof ServerLevel serverLevel) {
       serverLevel.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, new ChunkPos(this.blockPosition()), 5, this.getId());
     }
 
@@ -501,7 +501,7 @@ public class ConductorEntity extends AbstractGolem {
       return false;
     }
     ServerLevel serverLevel = player.serverLevel();
-    if (serverLevel != level) {
+    if (serverLevel != this.getCommandSenderWorld()) {
       return false;
     }
     currentlyViewing = new WeakReference<>(player);
@@ -521,7 +521,7 @@ public class ConductorEntity extends AbstractGolem {
     }*/ // put chunkloading tickets in #tick
 
     //can't use ServerPlayer#setCamera here because it also teleports the player
-    player.camera = this;
+    ((com.railwayteam.railways.mixin.conductor_possession.ServerPlayerAccessor) player).setCamera(this);
     CRPackets.PACKETS.sendTo(player, new SetCameraViewPacket(this));
     resetPosition();
     // update ConductorPossessionController.setRenderPosition in #tick
@@ -529,9 +529,9 @@ public class ConductorEntity extends AbstractGolem {
   }
 
   public void stopViewing(ServerPlayer player) {
-    if (!level.isClientSide) {
+    if (!level().isClientSide) {
       currentlyViewing.clear();
-      player.camera = player;
+      ((com.railwayteam.railways.mixin.conductor_possession.ServerPlayerAccessor) player).setCamera(player);
       CRPackets.PACKETS.sendTo(player, new SetCameraViewPacket(player));
       RECENTLY_DISMOUNTED_PLAYERS.add(player);
     }
@@ -540,19 +540,19 @@ public class ConductorEntity extends AbstractGolem {
   @SuppressWarnings("DuplicatedCode")
   public void onSpyInteract(BlockPos pos) {
     BlockState state;
-    if (this.canReach(pos) && canSpyInteract((state = this.level.getBlockState(pos))) && fakePlayer != null) {
+    if (this.canReach(pos) && canSpyInteract((state = this.level().getBlockState(pos))) && fakePlayer != null) {
       ClipContext context = new ClipContext(this.getEyePosition(), new Vec3(pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5),
               ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, fakePlayer);
-      BlockHitResult hitResult = level.clip(context);
+      BlockHitResult hitResult = this.level().clip(context);
       //Railways.LOGGER.info("pos: "+pos+", Hpos: "+hitResult.getBlockPos());
       if (!pos.equals(hitResult.getBlockPos()))
         return;
-      boolean canUse = state.getShape(level, pos).isEmpty() || EntityUtils.handleUseEvent(fakePlayer, InteractionHand.MAIN_HAND, hitResult);
+      boolean canUse = state.getShape(this.level(), pos).isEmpty() || EntityUtils.handleUseEvent(fakePlayer, InteractionHand.MAIN_HAND, hitResult);
       if (canUse) {
         if (state.getBlock() instanceof VentBlock ventBlock) {
-          ventBlock.teleportConductor(level, pos, this, hitResult.getDirection().getOpposite());
+          ventBlock.teleportConductor(this.level(), pos, this, hitResult.getDirection().getOpposite());
         } else {
-          state.use(level, fakePlayer, InteractionHand.MAIN_HAND, hitResult);
+          state.useItemOn(fakePlayer.getItemInHand(InteractionHand.MAIN_HAND), this.level(), fakePlayer, InteractionHand.MAIN_HAND, hitResult);
         }
       }
     }
@@ -578,7 +578,7 @@ public class ConductorEntity extends AbstractGolem {
 
   @Override
   public boolean isCrouching() {
-    return level.isClientSide ? (visualBaseEntity != null ? visualBaseEntity.isCrouching() : super.isCrouching()) : super.isCrouching();
+    return this.level().isClientSide ? (visualBaseEntity != null ? visualBaseEntity.isCrouching() : super.isCrouching()) : super.isCrouching();
   }
 
   // make public
@@ -589,11 +589,11 @@ public class ConductorEntity extends AbstractGolem {
   }
 
   public boolean isPossessed() {
-    return level.isClientSide ? ClientHandler.isPossessed(this) : currentlyViewing.get() != null;
+    return this.level().isClientSide ? ClientHandler.isPossessed(this) : currentlyViewing.get() != null;
   }
 
   public boolean isPossessedAndClient() {
-    return level.isClientSide && isPossessed();
+    return this.level().isClientSide && isPossessed();
   }
 
   // only used by MouseHandler
@@ -710,7 +710,7 @@ public class ConductorEntity extends AbstractGolem {
   private boolean suffocatesAt(BlockPos pos) {
     AABB aabb = this.getBoundingBox();
     AABB aabb1 = new AABB(pos.getX(), aabb.minY, pos.getZ(), (double)pos.getX() + 1.0, aabb.maxY, (double)pos.getZ() + 1.0).deflate(1.0E-7);
-    return this.level.collidesWithSuffocatingBlock(this, aabb1);
+    return this.level().collidesWithSuffocatingBlock(this, aabb1);
   }
 
   private void moveTowardsClosestSpace(double x, double z) {
@@ -809,15 +809,15 @@ public class ConductorEntity extends AbstractGolem {
   }
 
   @Override
-  protected void defineSynchedData() {
-    super.defineSynchedData();
-    this.entityData.define(COLOR, idFrom(defaultColor()));
-    this.entityData.define(BLOCK, this.blockPosition());
-    this.entityData.define(JOB, Job.DEFAULT.ordinal());
-    this.entityData.define(HOLDING_SCHEDULES, this.isHoldingSchedules());
+  protected void defineSynchedData(SynchedEntityData.Builder builder) {
+    super.defineSynchedData(builder);
+    builder.define(COLOR, idFrom(defaultColor()));
+    builder.define(BLOCK, this.blockPosition());
+    builder.define(JOB, Job.DEFAULT.ordinal());
+    builder.define(HOLDING_SCHEDULES, this.isHoldingSchedules());
     for (Map.Entry<String, Couple<EntityDataAccessor<ItemStack>>> entry : FREQUENCY_DATA.entrySet()) {
       for (boolean first : Iterate.trueAndFalse) {
-        this.entityData.define(entry.getValue().get(first), ItemStack.EMPTY);
+        builder.define(entry.getValue().get(first), ItemStack.EMPTY);
       }
     }
   }
@@ -855,12 +855,12 @@ public class ConductorEntity extends AbstractGolem {
   @Override
   public void remove(@NotNull RemovalReason reason) {
     super.remove(reason);
-    WITH_TOOLBOXES.get(level).remove(this);
+    WITH_TOOLBOXES.get(this.level()).remove(this);
   }
 
   @Override
   public void onClientRemoval() {
-    WITH_TOOLBOXES.get(level).remove(this);
+    WITH_TOOLBOXES.get(this.level()).remove(this);
   }
 
   @Override
@@ -877,9 +877,8 @@ public class ConductorEntity extends AbstractGolem {
     return pAir;
   }
 
-  @Override
   protected float getStandingEyeHeight(@NotNull Pose pPose, @NotNull EntityDimensions pDimensions) {
-    return pDimensions.height * 0.76f;
+    return pDimensions.height() * 0.76f;
   }
 
   public boolean canReach(Vec3i pos) {
@@ -904,9 +903,9 @@ public class ConductorEntity extends AbstractGolem {
   protected void setToolbox(@Nullable MountedToolbox toolbox) {
     this.toolbox = toolbox;
     if (toolbox != null) {
-      WITH_TOOLBOXES.get(level).add(this);
+      WITH_TOOLBOXES.get(this.level()).add(this);
     } else {
-      WITH_TOOLBOXES.get(level).remove(this);
+      WITH_TOOLBOXES.get(this.level()).remove(this);
     }
   }
 
@@ -949,7 +948,7 @@ public class ConductorEntity extends AbstractGolem {
 
   public ItemStack unequipToolbox() {
     setJob(Job.DEFAULT);
-    if (level.isClientSide || toolbox == null) {
+    if (this.level().isClientSide || toolbox == null) {
       if (toolbox != null)
         toolbox.setRemoved();
       setToolbox(null);
@@ -986,7 +985,7 @@ public class ConductorEntity extends AbstractGolem {
     } else if (this.isCarryingToolbox()) {
       if (player.isShiftKeyDown() && player.getItemInHand(hand).isEmpty()) {
         player.setItemInHand(hand, this.unequipToolbox());
-      } else if (!level.isClientSide) {
+      } else if (!level().isClientSide) {
         openToolbox(player);
       }
       return InteractionResult.SUCCESS;
@@ -1054,14 +1053,14 @@ public class ConductorEntity extends AbstractGolem {
     if (!sectionPos.equals(oldSectionPos)) {
         setHasSentChunks(false);
     }
-    if (level.isClientSide) {
+    if (this.level().isClientSide) {
       ConductorPossessionController.tryUpdatePossession(this);
       updatePossessionInputs();
     }
     super.tick();
     if (ventCooldown > 0)
       ventCooldown--;
-    if (level instanceof ServerLevel serverLevel) {
+    if (this.level() instanceof ServerLevel serverLevel) {
       if (fakePlayer == null) {
         fakePlayer = EntityUtils.createConductorFakePlayer(serverLevel, this);
       }
@@ -1141,8 +1140,8 @@ public class ConductorEntity extends AbstractGolem {
   }
 
   @Override
-  protected void dropCustomDeathLoot(@NotNull DamageSource pSource, int pLooting, boolean pRecentlyHit) {
-    super.dropCustomDeathLoot(pSource, pLooting, pRecentlyHit);
+  public void die(@NotNull DamageSource pSource) {
+    super.die(pSource);
     Job job = getJob();
     ItemStack holdingStack = this.unequipToolbox();
     if (!holdingStack.isEmpty()) {
@@ -1239,9 +1238,9 @@ public class ConductorEntity extends AbstractGolem {
 
     protected double getGroundY(Vec3 vec) {
       BlockPos blockPos = BlockPos.containing(vec);
-      return this.conductor.level.getBlockState(blockPos.below()).isAir() ?
+      return this.conductor.level().getBlockState(blockPos.below()).isAir() ?
               vec.y :
-              WalkNodeEvaluator.getFloorLevel(this.conductor.level, blockPos);
+              WalkNodeEvaluator.getFloorLevel(this.conductor.level(), blockPos);
     }
 
     private int honkPacketCooldown = 0;
@@ -1294,7 +1293,7 @@ public class ConductorEntity extends AbstractGolem {
 
         Train train = cce.getCarriage().train;
         if (isSprintKeyPressed && honkPacketCooldown-- <= 0) {
-          train.determineHonk(conductor.level);
+          train.determineHonk(conductor.level());
           if (train.lowHonk != null) {
             Utils.sendHonkPacket(train, true);
             honkPacketCooldown = 5;
@@ -1404,7 +1403,7 @@ public class ConductorEntity extends AbstractGolem {
     public boolean canUse() {
       if (!super.canUse())
         return false;
-      for (Player player : this.conductor.level.players()) {
+      for (Player player : this.conductor.level().players()) {
         if (player.hasLineOfSight(this.conductor)) {
           return ((conductor.distanceToSqr(player)) < 256) && conductor.isLookingAtMe(player);
         }
@@ -1414,7 +1413,7 @@ public class ConductorEntity extends AbstractGolem {
 
     public void start() {
     //  Railways.LOGGER.info("Player looked at me!");
-      Level level      = this.conductor.level;
+      Level level      = this.conductor.level();
       BlockPos pos     = this.conductor.getEntityData().get(BLOCK);
       BlockState state = level.getBlockState(pos);
       Block block      = state.getBlock();
@@ -1432,7 +1431,7 @@ public class ConductorEntity extends AbstractGolem {
           return;
         boolean canUse = state.getShape(level, pos).isEmpty() || EntityUtils.handleUseEvent(fake, InteractionHand.MAIN_HAND, hitResult);
         if (canUse) {
-          state.use(level, fake, InteractionHand.MAIN_HAND, hitResult);
+          state.useItemOn(fake.getItemInHand(InteractionHand.MAIN_HAND), level, fake, InteractionHand.MAIN_HAND, hitResult);
         }
       }
     }
@@ -1455,17 +1454,17 @@ public class ConductorEntity extends AbstractGolem {
       if (!super.canUse())
         return false;
       this.target = conductor.entityData.get(BLOCK);
-      if (this.conductor.canReach(target) && this.conductor.canUseBlock(this.conductor.level.getBlockState(this.target))) return true;
+      if (this.conductor.canReach(target) && this.conductor.canUseBlock(this.conductor.level().getBlockState(this.target))) return true;
       // else search
       for (int y= -REACH.getY(); y< REACH.getY(); y++) {
         for (int x= -REACH.getX(); x< REACH.getX(); x++) {
           for (int z= -REACH.getZ(); z< REACH.getZ(); z++) {
             BlockPos at = this.conductor.blockPosition().offset(x, y, z);
-            BlockState state = this.conductor.level.getBlockState(at);
+            BlockState state = this.conductor.level().getBlockState(at);
             if (this.conductor.canUseBlock(state)) {
               ClipContext context = new ClipContext(this.conductor.getEyePosition(), new Vec3(at.getX(), at.getY(), at.getZ()),
-                  ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, null);
-              BlockHitResult hitResult = this.conductor.level.clip(context);
+                  ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, (Entity) null);
+              BlockHitResult hitResult = this.conductor.level().clip(context);
               if (hitResult.getBlockPos().equals(at)) {
                 this.target = at;
                 conductor.entityData.set(BLOCK, this.target);
@@ -1490,7 +1489,7 @@ public class ConductorEntity extends AbstractGolem {
     nbt.putByte("color", getEntityData().get(COLOR));
     if (toolbox != null) {
       CompoundTag toolboxTag = new CompoundTag();
-      toolbox.write(toolboxTag, false);
+      toolbox.write(toolboxTag, level().registryAccess(), false);
       nbt.put("toolboxHolder", toolboxTag);
     }
     if (!getHeldSchedules().isEmpty()) {
@@ -1498,7 +1497,7 @@ public class ConductorEntity extends AbstractGolem {
       boolean hasItem = false;
       for (ItemStack heldSchedule : heldSchedules) {
         if (!heldSchedule.isEmpty()) {
-          schedulesTag.add(heldSchedule.save(new CompoundTag()));
+          schedulesTag.add(heldSchedule.save(level().registryAccess()));
           hasItem = true;
         }
       }
@@ -1506,7 +1505,7 @@ public class ConductorEntity extends AbstractGolem {
         nbt.put("heldSchedules", schedulesTag);
     }
     nbt.putString("job", getJob().name());
-    nbt.put("frequencies", frequencies.write());
+    nbt.put("frequencies", frequencies.write(level().registryAccess()));
   }
 
   @Override
@@ -1516,7 +1515,7 @@ public class ConductorEntity extends AbstractGolem {
       getEntityData().set(COLOR, nbt.getByte("color"));
     }
     if (nbt.contains("target", Tag.TAG_COMPOUND)) {
-      getEntityData().set(BLOCK, NbtUtils.readBlockPos(nbt.getCompound("target")));
+      getEntityData().set(BLOCK, NbtUtils.readBlockPos(nbt.getCompound("target"), "").orElse(BlockPos.ZERO));
     }
     if (nbt.contains("toolboxHolder", Tag.TAG_COMPOUND)) {
       setToolbox(MountedToolbox.read(this, nbt.getCompound("toolboxHolder")));
@@ -1532,14 +1531,14 @@ public class ConductorEntity extends AbstractGolem {
     if (nbt.contains("heldSchedules", Tag.TAG_LIST)) {
       ListTag schedulesTag = nbt.getList("heldSchedules", Tag.TAG_COMPOUND);
       for (int i = 0; i < schedulesTag.size(); i++) {
-        ItemStack stack = ItemStack.of(schedulesTag.getCompound(i));
+        ItemStack stack = ItemStack.parseOptional(level().registryAccess(), schedulesTag.getCompound(i));
         if (!stack.isEmpty())
           getHeldSchedules().add(stack);
       }
     }
-    if (!level.isClientSide) {
-      getEntityData().set(HOLDING_SCHEDULES, isHoldingSchedules());
-      frequencies.read(nbt.getCompound("frequencies"));
+    if (!this.getCommandSenderWorld().isClientSide) {
+      getEntityData().set(HOLDING_SCHEDULES, Boolean.valueOf(isHoldingSchedules()));
+      frequencies.read(nbt.getCompound("frequencies"), level().registryAccess());
       updateFrequencyListeners();
     }
   }

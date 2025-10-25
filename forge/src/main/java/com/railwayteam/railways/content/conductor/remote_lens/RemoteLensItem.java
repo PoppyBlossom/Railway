@@ -22,7 +22,9 @@ import com.railwayteam.railways.content.conductor.ConductorEntity;
 import com.railwayteam.railways.util.TextUtils;
 import com.simibubi.create.AllSoundEvents;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -38,7 +40,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.UUID;
@@ -49,10 +50,11 @@ public class RemoteLensItem extends Item {
     }
 
     @Override
-    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
-        super.appendHoverText(stack, level, tooltip, flag);
-        CompoundTag tag = stack.getTag();
-        if (tag != null && tag.hasUUID("SelectedConductor")) {
+    public void appendHoverText(@NotNull ItemStack stack, @NotNull Item.TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
+        super.appendHoverText(stack, context, tooltip, flag);
+        CustomData customData = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+        CompoundTag tag = customData.copyTag();
+        if (tag.hasUUID("SelectedConductor")) {
             UUID conductorId = tag.getUUID("SelectedConductor");
 
             tooltip.add(Component.translatable("railways.whistle.tool.bound").withStyle(ChatFormatting.DARK_GREEN));
@@ -66,15 +68,16 @@ public class RemoteLensItem extends Item {
     @Override
     public @NotNull InteractionResult interactLivingEntity(@NotNull ItemStack pStack, @NotNull Player pPlayer,
                                                            @NotNull LivingEntity pInteractionTarget, @NotNull InteractionHand pUsedHand) {
-        if (pPlayer.level.isClientSide)
+        if (pPlayer.level().isClientSide)
             return InteractionResult.CONSUME;
         if (pInteractionTarget instanceof ConductorEntity conductor && conductor.getJob() == ConductorEntity.Job.SPY) {
-            CompoundTag stackTag = pStack.getOrCreateTag();
+            CustomData customData = pStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+            CompoundTag stackTag = customData.copyTag();
             stackTag.putUUID("SelectedConductor", conductor.getUUID());
             pPlayer.displayClientMessage(Component.translatable("railways.remote_lens.set"), true);
-            pStack.setTag(stackTag);
+            pStack.set(DataComponents.CUSTOM_DATA, CustomData.of(stackTag));
             pPlayer.setItemInHand(pUsedHand, pStack);
-            AllSoundEvents.PECULIAR_BELL_USE.play(pPlayer.level, null, conductor.getX(), conductor.getY(), conductor.getZ(), .5f, 1.1f);
+            AllSoundEvents.PECULIAR_BELL_USE.play(pPlayer.level(), null, conductor.getX(), conductor.getY(), conductor.getZ(), .5f, 1.1f);
             return InteractionResult.SUCCESS;
         }
         return super.interactLivingEntity(pStack, pPlayer, pInteractionTarget, pUsedHand);
@@ -91,12 +94,14 @@ public class RemoteLensItem extends Item {
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand usedHand) {
         ItemStack stack = player.getItemInHand(usedHand);
         if (level instanceof ServerLevel serverLevel && player instanceof ServerPlayer serverPlayer) {
-            CompoundTag stackTag = stack.getTag();
-            if (stackTag == null || !stackTag.hasUUID("SelectedConductor"))
+            CustomData customData = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+            CompoundTag stackTag = customData.copyTag();
+            if (!stackTag.hasUUID("SelectedConductor"))
                 return InteractionResultHolder.fail(stack);
             UUID conductorId = stackTag.getUUID("SelectedConductor");
             if (player.isShiftKeyDown()) {
-                stack.removeTagKey("SelectedConductor");
+                stackTag.remove("SelectedConductor");
+                stack.set(DataComponents.CUSTOM_DATA, CustomData.of(stackTag));
                 AllSoundEvents.CONTROLLER_CLICK.play(level, null, player.blockPosition(), .5f, 1.1f);
                 player.displayClientMessage(Component.translatable("railways.remote_lens.clear"), true);
                 return InteractionResultHolder.success(stack);

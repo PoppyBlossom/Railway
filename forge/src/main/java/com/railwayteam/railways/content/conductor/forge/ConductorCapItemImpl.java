@@ -57,7 +57,6 @@ public class ConductorCapItemImpl extends ConductorCapItem {
 	}
 
 	@Nullable
-	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		return textureStr;
 	}
