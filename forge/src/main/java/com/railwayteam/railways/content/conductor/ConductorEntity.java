@@ -813,8 +813,8 @@ public class ConductorEntity extends AbstractGolem {
     super.defineSynchedData(builder);
     builder.define(COLOR, idFrom(defaultColor()));
     builder.define(BLOCK, this.blockPosition());
-    builder.define(JOB, Integer.valueOf(Job.DEFAULT.ordinal()));
-    builder.define(HOLDING_SCHEDULES, Boolean.valueOf(this.isHoldingSchedules()));
+    builder.define(JOB, Job.DEFAULT.ordinal());
+    builder.define(HOLDING_SCHEDULES, this.isHoldingSchedules());
     for (Map.Entry<String, Couple<EntityDataAccessor<ItemStack>>> entry : FREQUENCY_DATA.entrySet()) {
       for (boolean first : Iterate.trueAndFalse) {
         builder.define(entry.getValue().get(first), ItemStack.EMPTY);

@@ -55,9 +55,12 @@ public class MountedToolbox extends ToolboxBlockEntity {
     CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
     if (tag.isEmpty())
       return;
-    // In 1.21, readInventory expects different parameters - we might need to access inventory directly
-    // For now, skip readInventory call if it doesn't match signature
-    // TODO: Check Create's ToolboxBlockEntity.readInventory signature in 1.21
+    // Restore inventory from NBT if present (Create 1.21+)
+    if (tag.contains("Inventory", CompoundTag.TAG_COMPOUND)) {
+      CompoundTag inventoryTag = tag.getCompound("Inventory");
+      // ToolboxBlockEntity.readInventory(CompoundTag) is available in 1.21
+      this.readInventory(inventoryTag);
+    }
     if (tag.contains("UniqueId"))
       setUniqueId(tag.getUUID("UniqueId"));
     if (stack.has(DataComponents.CUSTOM_NAME))
@@ -148,11 +151,23 @@ public class MountedToolbox extends ToolboxBlockEntity {
     return stack;
   }
 
-  // sendToMenu method - may not be an override in 1.21
+  @Override
   public void sendToMenu(FriendlyByteBuf buffer) {
     buffer.writeVarInt(parent.getId());
     buffer.writeNbt(getUpdateTag(parent.level().registryAccess()));
-  }  public static void openMenu(ServerPlayer player, MountedToolbox toolbox) {
-    throw new AssertionError();
+  }    public static void openMenu(ServerPlayer player, MountedToolbox toolbox) {
+    player.openMenu(new AbstractContainerMenu.MenuProvider() {
+      @Override
+      public AbstractContainerMenu createMenu(int id, Inventory inv, Player ply) {
+        return MountedToolboxContainer.create(id, inv, toolbox);
+      }
+
+      @Override
+      public net.minecraft.network.chat.Component getDisplayName() {
+        return toolbox.getDisplayName();
+      }
+    }, (buffer) -> {
+      toolbox.sendToMenu(buffer);
+    });
   }
 }
