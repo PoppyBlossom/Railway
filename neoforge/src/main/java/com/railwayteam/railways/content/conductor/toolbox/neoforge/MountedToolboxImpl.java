@@ -1,6 +1,6 @@
 /*
  * Steam 'n' Rails
- * Copyright (c) 2025 The Railways Team
+ * Copyright (c) 2022-2024 The Railways Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,15 +16,13 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-pluginManagement {
-    repositories {
-        maven { url = uri("https://maven.neoforged.net/releases") }
-        gradlePluginPortal()
-    }
+package com.railwayteam.railways.content.conductor.toolbox.neoforge;
+
+import com.railwayteam.railways.content.conductor.toolbox.MountedToolbox;
+import net.minecraft.server.level.ServerPlayer;
+
+public class MountedToolboxImpl {
+	public static void openMenu(ServerPlayer player, MountedToolbox toolbox) {
+		player.openMenu(toolbox, toolbox::sendToMenu);
+	}
 }
-
-// Single-loader NeoForge mod with common/ for shared game logic
-include("common")
-include("neoforge")
-
-rootProject.name = "Railway"

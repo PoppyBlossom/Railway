@@ -16,15 +16,17 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-pluginManagement {
-    repositories {
-        maven { url = uri("https://maven.neoforged.net/releases") }
-        gradlePluginPortal()
-    }
+package com.railwayteam.railways.registry.neoforge;
+
+import com.railwayteam.railways.Railways;
+import com.railwayteam.railways.content.fuel.tank.FuelTankMountedStorageType;
+import com.simibubi.create.api.contraption.storage.fluid.MountedFluidStorageType;
+import com.tterrag.registrate.util.entry.RegistryEntry;
+
+public class CRMountedStorageTypesImpl {
+	public static RegistryEntry<MountedFluidStorageType<?>, FuelTankMountedStorageType> FUEL_TANK = Railways.registrate()
+			.mountedFluidStorage("fuel_tank", FuelTankMountedStorageType::new)
+			.register();
+	
+	public static void init() {}
 }
-
-// Single-loader NeoForge mod with common/ for shared game logic
-include("common")
-include("neoforge")
-
-rootProject.name = "Railway"

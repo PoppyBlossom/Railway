@@ -1,6 +1,6 @@
 /*
  * Steam 'n' Rails
- * Copyright (c) 2025 The Railways Team
+ * Copyright (c) 2022-2024 The Railways Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,15 +16,12 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-pluginManagement {
-    repositories {
-        maven { url = uri("https://maven.neoforged.net/releases") }
-        gradlePluginPortal()
-    }
-}
+package com.railwayteam.railways.neoforge.mixin;
 
-// Single-loader NeoForge mod with common/ for shared game logic
-include("common")
-include("neoforge")
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import org.spongepowered.asm.mixin.Mixin;
 
-rootProject.name = "Railway"
+// Empty mixin to get this to pass through the mixin config plugin, so we can do some asm on it :3
+// Priority of 2000 to be applied after any other @Overwrite's
+@Mixin(value = ContainerLevelAccess.class, priority = 2000)
+public interface ContainerLevelAccessMixin { }

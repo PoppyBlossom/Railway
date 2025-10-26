@@ -1,6 +1,6 @@
 /*
  * Steam 'n' Rails
- * Copyright (c) 2025 The Railways Team
+ * Copyright (c) 2022-2024 The Railways Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,15 +16,16 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-pluginManagement {
-    repositories {
-        maven { url = uri("https://maven.neoforged.net/releases") }
-        gradlePluginPortal()
-    }
+package com.railwayteam.railways.util.neoforge;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+
+public class BlockStateUtilsImpl {
+	public static SoundType getSoundType(BlockState state, LevelReader level, BlockPos pos, Entity entity) {
+		return state.getSoundType(level, pos, entity);
+	}
 }
-
-// Single-loader NeoForge mod with common/ for shared game logic
-include("common")
-include("neoforge")
-
-rootProject.name = "Railway"

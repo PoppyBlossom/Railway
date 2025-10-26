@@ -1,6 +1,6 @@
 /*
  * Steam 'n' Rails
- * Copyright (c) 2025 The Railways Team
+ * Copyright (c) 2022-2024 The Railways Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,15 +16,24 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-pluginManagement {
-    repositories {
-        maven { url = uri("https://maven.neoforged.net/releases") }
-        gradlePluginPortal()
+package com.railwayteam.railways.neoforge.mixin;
+
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import net.minecraft.server.level.ChunkMap;
+import net.minecraft.server.network.ServerPlayerConnection;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
+
+import java.util.Set;
+
+@Mixin(ChunkMap.class)
+public interface ChunkMapAccessor {
+    @Accessor
+    Int2ObjectMap<?> getEntityMap();
+
+    @Mixin(targets = "net.minecraft.server.level.ChunkMap$TrackedEntity")
+    interface TrackedEntityAccessor {
+        @Accessor
+        Set<ServerPlayerConnection> getSeenBy();
     }
 }
-
-// Single-loader NeoForge mod with common/ for shared game logic
-include("common")
-include("neoforge")
-
-rootProject.name = "Railway"

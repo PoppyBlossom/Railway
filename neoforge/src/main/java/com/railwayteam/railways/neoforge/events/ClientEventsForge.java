@@ -1,0 +1,78 @@
+/*
+ * Steam 'n' Rails
+ * Copyright (c) 2022-2024 The Railways Team
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package com.railwayteam.railways.neoforge.events;
+
+import com.railwayteam.railways.content.custom_tracks.casing.CasingResourceReloadListener;
+import com.railwayteam.railways.events.ClientEvents;
+import com.railwayteam.railways.registry.neoforge.CRKeysImpl;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.level.Level;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.event.TagsUpdatedEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+
+@EventBusSubscriber(Dist.CLIENT)
+public class ClientEventsForge {
+	@SubscribeEvent
+	public static void onClientTick(ClientTickEvent.Pre event) {
+		ClientEvents.onClientTickStart(Minecraft.getInstance());
+	}
+
+	@SubscribeEvent
+	public static void onClientTickPost(ClientTickEvent.Post event) {
+		ClientEvents.onClientTickEnd(Minecraft.getInstance());
+	}
+
+	@SubscribeEvent
+	public static void onWorldLoad(LevelEvent.Load event) {
+		ClientEvents.onClientWorldLoad((Level) event.getLevel());
+	}
+
+	@SubscribeEvent
+	public static void onKeyInput(InputEvent.Key event) {
+		int key = event.getKey();
+		boolean pressed = event.getAction() != 0;
+		ClientEvents.onKeyInput(key, pressed);
+	}
+
+	@SubscribeEvent
+	public static void onTagsUpdated(TagsUpdatedEvent event) {
+		if (event.getUpdateCause() == TagsUpdatedEvent.UpdateCause.CLIENT_PACKET_RECEIVED)
+			ClientEvents.onTagsUpdated();
+	}
+
+	@EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
+	public static class ModBusEvents {
+		@SubscribeEvent
+		public static void onRegisterKeyMappings(RegisterKeyMappingsEvent event) {
+			CRKeysImpl.onRegisterKeyMappings(event);
+		}
+
+		@SubscribeEvent
+		public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
+			event.registerReloadListener(CasingResourceReloadListener.INSTANCE);
+		}
+	}
+}

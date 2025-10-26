@@ -1,6 +1,6 @@
 /*
  * Steam 'n' Rails
- * Copyright (c) 2025 The Railways Team
+ * Copyright (c) 2022-2025 The Railways Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,15 +16,16 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-pluginManagement {
-    repositories {
-        maven { url = uri("https://maven.neoforged.net/releases") }
-        gradlePluginPortal()
+package com.railwayteam.railways.content.roller_extensions.neoforge;
+
+import com.simibubi.create.content.contraptions.behaviour.MovementContext;
+import com.simibubi.create.content.logistics.filter.FilterItemStack;
+import com.simibubi.create.foundation.item.ItemHelper;
+import net.minecraft.world.item.ItemStack;
+
+public class TrackReplacePaverImpl {
+    public static ItemStack extract(FilterItemStack filter, MovementContext context, int amt) {
+        return ItemHelper.extract(context.contraption.getStorage().getMountedItems(),
+                stack -> filter.test(context.world, stack), amt, false);
     }
 }
-
-// Single-loader NeoForge mod with common/ for shared game logic
-include("common")
-include("neoforge")
-
-rootProject.name = "Railway"

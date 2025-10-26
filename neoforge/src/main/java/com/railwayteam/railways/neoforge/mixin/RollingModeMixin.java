@@ -1,6 +1,6 @@
 /*
  * Steam 'n' Rails
- * Copyright (c) 2025 The Railways Team
+ * Copyright (c) 2022-2024 The Railways Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,15 +16,10 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-pluginManagement {
-    repositories {
-        maven { url = uri("https://maven.neoforged.net/releases") }
-        gradlePluginPortal()
-    }
-}
+package com.railwayteam.railways.neoforge.mixin;
 
-// Single-loader NeoForge mod with common/ for shared game logic
-include("common")
-include("neoforge")
+import org.spongepowered.asm.mixin.Mixin;
 
-rootProject.name = "Railway"
+// empty mixin to pass class through the mixin plugin (can't just implement enum adding in mixin because we can't access the RollingMode class)
+@Mixin(targets = "com.simibubi.create.content.contraptions.actors.roller.RollerBlockEntity$RollingMode", remap = false)
+public class RollingModeMixin { }

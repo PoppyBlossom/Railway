@@ -40,7 +40,7 @@ repositories {
 dependencies {
     implementation("net.neoforged:neoforge:${"neoforge_version"()}")
 
-    // Create and its dependencies (compileOnly for common, implementation in forge)
+    // Create and its dependencies (compileOnly for common, implementation in neoforge)
     compileOnly("com.simibubi.create:create-${"minecraft_version"()}:${"create_forge_version"()}")
     
     // Catnip - Create utility library (compileOnly for common)

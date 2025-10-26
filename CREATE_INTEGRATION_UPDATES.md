@@ -5,7 +5,7 @@ This document summarizes the changes made to update Create mod integrations for 
 ## Changes Made
 
 ### 1. Catnip Services API Update
-**File**: `forge/src/main/java/com/railwayteam/railways/content/fuel/tank/FuelTankRenderer.java`
+**File**: `neoforge/src/main/java/com/railwayteam/railways/content/fuel/tank/FuelTankRenderer.java`
 
 **Change**: Replaced `ForgeCatnipServices` with `CatnipServices`
 - Old: `import net.createmod.catnip.platform.ForgeCatnipServices;`
@@ -15,7 +15,7 @@ This document summarizes the changes made to update Create mod integrations for 
 **Reason**: Catnip unified the platform services API. The `ForgeCatnipServices` class was merged into the common `CatnipServices` interface, removing the need for platform-specific service classes.
 
 ### 2. NeoForge 1.21 Pack API Update
-**File**: `forge/src/main/java/com/railwayteam/railways/forge/RailwaysClientImpl.java`
+**File**: `neoforge/src/main/java/com/railwayteam/railways/neoforge/RailwaysClientImpl.java`
 
 **Changes**:
 - Uncommented and updated imports for NeoForge 1.21 Pack API
@@ -82,7 +82,7 @@ Pack.readMetaAndCreate(
 - Feature flags are no longer part of pack creation (handled elsewhere)
 
 ### 3. TrainPacket Stub Enhancement
-**File**: `forge/src/main/java/com/simibubi/create/content/trains/entity/TrainPacket.java`
+**File**: `neoforge/src/main/java/com/simibubi/create/content/trains/entity/TrainPacket.java`
 
 **Changes**:
 - Added fields: `train`, `trainId`
@@ -93,8 +93,8 @@ Pack.readMetaAndCreate(
 
 ### 4. TrainPacket Mixin Documentation
 **Files**:
-- `forge/src/main/java/com/railwayteam/railways/mixin/MixinTrainPacket.java`
-- `forge/src/main/java/com/railwayteam/railways/mixin/client/MixinTrainPacket.java`
+- `neoforge/src/main/java/com/railwayteam/railways/mixin/MixinTrainPacket.java`
+- `neoforge/src/main/java/com/railwayteam/railways/mixin/client/MixinTrainPacket.java`
 
 **Changes**: Added comments explaining:
 - The purpose of each injection point

@@ -1,0 +1,123 @@
+/*
+ * Steam 'n' Rails
+ * Copyright (c) 2022-2025 The Railways Team
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package com.railwayteam.railways.content.custom_tracks.generic_crossing.neoforge;
+
+import com.google.common.collect.ImmutableList;
+import com.railwayteam.railways.mixin_interfaces.IGenericCrossingTrackBE;
+import com.simibubi.create.content.trains.track.TrackMaterial;
+import com.simibubi.create.content.trains.track.TrackShape;
+import net.createmod.catnip.data.Pair;
+import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.ItemOverrides;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.data.ModelProperty;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Collections;
+import java.util.List;
+
+@MethodsReturnNonnullByDefault
+public class GenericCrossingModel implements BakedModel {
+
+    private final BakedModel wrapped;
+
+    public GenericCrossingModel(BakedModel wrapped) {
+        this.wrapped = wrapped;
+    }
+
+    private static final ModelProperty<@Nullable Pair<TrackMaterial, TrackShape>> FIRST_PIECE = new ModelProperty<>();
+    private static final ModelProperty<@Nullable Pair<TrackMaterial, TrackShape>> SECOND_PIECE = new ModelProperty<>();
+
+    @Override
+    public @NotNull ModelData getModelData(@NotNull BlockAndTintGetter level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull ModelData modelData) {
+        if (level.getBlockEntity(pos) instanceof IGenericCrossingTrackBE genericCrossing) {
+            return modelData.derive()
+                .with(FIRST_PIECE, genericCrossing.railways$getFirstCrossingPiece())
+                .with(SECOND_PIECE, genericCrossing.railways$getSecondCrossingPiece())
+                .build();
+        } else {
+            return modelData;
+        }
+    }
+
+    @Override
+    public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData data, @Nullable RenderType renderType) {
+        Pair<TrackMaterial, TrackShape> first;
+        Pair<TrackMaterial, TrackShape> second;
+        if ((first = data.get(FIRST_PIECE)) != null && (second = data.get(SECOND_PIECE)) != null) {
+            return ImmutableList.<BakedQuad>builder()
+                .addAll(IGenericCrossingTrackBE.getQuads(first, side, rand))
+                .addAll(IGenericCrossingTrackBE.getQuads(second, side, rand))
+                .build();
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction direction, @NotNull RandomSource random) {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public boolean useAmbientOcclusion() {
+        return false;
+    }
+
+    @Override
+    public boolean isGui3d() {
+        return false;
+    }
+
+    @Override
+    public boolean usesBlockLight() {
+        return true;
+    }
+
+    @Override
+    public boolean isCustomRenderer() {
+        return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public TextureAtlasSprite getParticleIcon() {
+        return wrapped.getParticleIcon();
+    }
+
+    @Override
+    public TextureAtlasSprite getParticleIcon(@NotNull ModelData data) {
+        return wrapped.getParticleIcon(data);
+    }
+
+    @Override
+    public ItemOverrides getOverrides() {
+        return ItemOverrides.EMPTY;
+    }
+}

@@ -68,7 +68,7 @@ allprojects {
     }
 }
 
-// Repository setup function (called from forge/build.gradle.kts)
+// Repository setup function (called from neoforge/build.gradle.kts)
 fun Project.setupRepositories() {
     repositories {
         mavenCentral()
@@ -146,7 +146,7 @@ fun hasUnstaged(): Boolean {
 }
 
 // Publishing configuration (for mod distribution platforms)
-// Platform-specific publishing config is in forge/build.gradle.kts
+// Platform-specific publishing config is in neoforge/build.gradle.kts
 
 // IDE configuration
 apply(plugin = "org.jetbrains.gradle.plugin.idea-ext")
