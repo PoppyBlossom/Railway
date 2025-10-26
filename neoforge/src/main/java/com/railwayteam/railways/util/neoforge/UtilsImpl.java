@@ -20,7 +20,6 @@ package com.railwayteam.railways.util.neoforge;
 
 import com.railwayteam.railways.Railways;
 import com.simibubi.create.content.trains.entity.Train;
-import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.FMLPaths;
@@ -36,7 +35,7 @@ public class UtilsImpl {
 		return !FMLLoader.isProduction();
 	}
 
-    public static void sendCreatePacketToServer(SimplePacketBase packet) {
+    public static void sendCreatePacketToServer(Object packet) {
         // TODO 1.21 port: AllPackets.getChannel() no longer exists; network API rework needed
         Railways.LOGGER.warn("sendCreatePacketToServer temporarily disabled for 1.21 port");
     }

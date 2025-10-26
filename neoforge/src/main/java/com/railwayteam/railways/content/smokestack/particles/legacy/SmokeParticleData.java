@@ -18,8 +18,6 @@
 
 package com.railwayteam.railways.content.smokestack.particles.legacy;
 
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -46,26 +44,7 @@ public class SmokeParticleData implements ParticleOptions, ICustomParticleDataWi
 				.forGetter(p -> p.blue))
 		.apply(i, SmokeParticleData::new));
 
-	public static final Deserializer<SmokeParticleData> DESERIALIZER =
-		new Deserializer<SmokeParticleData>() {
-			public SmokeParticleData fromCommand(ParticleType<SmokeParticleData> particleTypeIn,
-												 StringReader reader) throws CommandSyntaxException {
-				reader.expect(' ');
-				boolean stationary = reader.readBoolean();
-				reader.expect(' ');
-				float red = reader.readFloat();
-				reader.expect(' ');
-				float green = reader.readFloat();
-				reader.expect(' ');
-				float blue = reader.readFloat();
-				return new SmokeParticleData(stationary, red, green, blue);
-			}
-
-			public SmokeParticleData fromNetwork(ParticleType<SmokeParticleData> particleTypeIn,
-												 FriendlyByteBuf buffer) {
-				return new SmokeParticleData(buffer.readBoolean(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
-			}
-		};
+	// Legacy 1.20.x Deserializer removed in 1.21; use MapCodec and StreamCodec instead
 
 	public static final StreamCodec<FriendlyByteBuf, SmokeParticleData> STREAM_CODEC = new StreamCodec<>() {
 		@Override
@@ -125,9 +104,7 @@ public class SmokeParticleData implements ParticleOptions, ICustomParticleDataWi
 		return String.format(Locale.ROOT, "%s %b %f %f %f", CRParticleTypes.SMOKE.parameter(), stationary, red, green, blue);
 	}
 
-	public Deserializer<SmokeParticleData> getDeserializer() {
-		return DESERIALIZER;
-	}
+	// No Deserializer in 1.21
 
 	@Override
 	public MapCodec<SmokeParticleData> getCodec(ParticleType<SmokeParticleData> type) {

@@ -21,7 +21,6 @@ package com.railwayteam.railways.util;
 import com.railwayteam.railways.Railways;
 import com.railwayteam.railways.util.neoforge.UtilsImpl;
 import com.simibubi.create.content.trains.entity.Train;
-import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.minecraft.world.level.chunk.LevelChunk;
 import org.jetbrains.annotations.Nullable;
 
@@ -61,7 +60,7 @@ public class Utils {
 		}
 	}
 
-	public static void sendCreatePacketToServer(SimplePacketBase packet) {
+	public static void sendCreatePacketToServer(Object packet) {
 		UtilsImpl.sendCreatePacketToServer(packet);
 	}
 
