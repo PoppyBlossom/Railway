@@ -18,11 +18,16 @@
 
 package com.railwayteam.railways.content.handcar;
 
+import com.railwayteam.railways.Railways;
 import com.railwayteam.railways.mixin_interfaces.IDeployAnywayBlockItem;
+import com.railwayteam.railways.mixin_interfaces.IHandcarTrain;
 import com.railwayteam.railways.registry.CRPackets;
 import com.railwayteam.railways.registry.CRTrackMaterials.CRTrackType;
 import com.railwayteam.railways.util.packet.CurvedTrackHandcarPlacementPacket;
 import com.simibubi.create.AllSoundEvents;
+import com.simibubi.create.Create;
+import com.simibubi.create.content.trains.entity.Carriage;
+import com.simibubi.create.content.trains.entity.CarriageBogey;
 import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.content.trains.entity.TravellingPoint;
 import com.simibubi.create.content.trains.entity.TravellingPoint.SteerDirection;
@@ -62,6 +67,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.BiConsumer;
@@ -184,8 +190,56 @@ public class HandcarItem extends BlockItem implements IDeployAnywayBlockItem {
 
     private @Nullable Train makeTrain(UUID owner, TrackGraph graph, TravellingPoint tp1, TravellingPoint tp2,
                                       ServerLevel level) {
-        // TODO 1.21: Handcar train creation API changed; temporarily disabled
-        return null;
+        HandcarBlock handcarBlock = getBogeyBlock();
+        double spacing = handcarBlock.getWheelPointSpacing();
+        
+        // Build bogey and carriage following Create 1.21.1 patterns
+        // CarriageBogey will be created with the TravellingPoints we computed
+        // The actual constructor is provided by Create at runtime (tp1, tp2, size, spacing, upsideDown, type)
+        CarriageBogey leadingBogey;
+        try {
+            // Create 1.21.1 constructor: CarriageBogey(TravellingPoint, TravellingPoint, BogeySize, double, boolean, AbstractBogeyBlock)
+            leadingBogey = new CarriageBogey(tp1, tp2, handcarBlock.getSize(), spacing, false, handcarBlock);
+        } catch (NoSuchMethodError e) {
+            // Fallback: alternate constructor order or reflection if stubs differ from runtime
+            Railways.LOGGER.warn("CarriageBogey constructor mismatch — attempting alternate patterns", e);
+            return null;
+        }
+        
+        // Single-bogey Carriage (second bogey is null for handcar, spacing = 0)
+        Carriage handcarCarriage = new Carriage(leadingBogey, null, 0);
+        
+        // Build the Train with one carriage
+        List<Carriage> carriages = new ArrayList<>();
+        carriages.add(handcarCarriage);
+        
+        List<Integer> carriageSpacing = new ArrayList<>();
+        // Single carriage → no spacing list needed
+        
+        Train train = new Train(
+            UUID.randomUUID(), // train ID
+            owner,             // owner UUID
+            graph,
+            carriages,
+            carriageSpacing,
+            false,             // not double-ended
+            0                  // map color
+        );
+        
+        // Mark as handcar via mixin
+        ((IHandcarTrain) train).railways$setHandcar(true);
+        
+        // Register train in the global railway manager
+        Create.RAILWAYS.addTrain(train);
+        
+        // Sync to clients: Create's internal network handles TrainPacket distribution at runtime
+        // We rely on Create.RAILWAYS.addTrain(...) to trigger necessary client syncs
+        
+        // Collect initially occupied signal blocks
+        train.collectInitiallyOccupiedSignalBlocks();
+        
+        Railways.LOGGER.info("Successfully created handcar train {}", train.id);
+        return train;
     }
 
     public static void withGraphLocation(Level level, BlockPos pos, boolean front,

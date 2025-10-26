@@ -18,14 +18,25 @@
 
 package com.railwayteam.railways.util.packet;
 
-import com.railwayteam.railways.Railways;
+import com.railwayteam.railways.content.handcar.HandcarItem;
 import com.railwayteam.railways.multiloader.C2SPacket;
+import com.railwayteam.railways.registry.CRTrackMaterials.CRTrackType;
+import com.simibubi.create.AllSoundEvents;
+import com.simibubi.create.content.trains.graph.TrackGraphLocation;
+import com.simibubi.create.content.trains.track.BezierConnection;
+import com.simibubi.create.content.trains.track.BezierTrackPointLocation;
+import com.simibubi.create.content.trains.track.TrackBlockEntity;
+import com.simibubi.create.content.trains.track.TrackMaterial;
+import com.simibubi.create.content.trains.track.TrackTargetingBlockItem.OverlapResult;
+import com.simibubi.create.foundation.utility.CreateLang;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import com.simibubi.create.content.trains.track.TrackBlockEntity;
+import org.apache.commons.lang3.mutable.MutableObject;
 
 public class CurvedTrackHandcarPlacementPacket implements C2SPacket {
 
@@ -61,8 +72,56 @@ public class CurvedTrackHandcarPlacementPacket implements C2SPacket {
     }
 
     protected void actuallyHandle(ServerPlayer player, TrackBlockEntity be) {
-        // TODO 1.21 port: Handcar train creation is disabled; this packet body requires rework
-        Railways.LOGGER.warn("CurvedTrackHandcarPlacementPacket.actuallyHandle temporarily disabled for 1.21 port");
+        // Resolve bezier track location on the server
+        BezierTrackPointLocation targetLocation = new BezierTrackPointLocation(targetPos, segment);
+        BezierConnection bc = be.getConnections().get(targetPos);
+        
+        if (bc == null)
+            return;
+        
+        TrackMaterial.TrackType trackType = bc.getMaterial().trackType;
+        if (!(trackType == TrackMaterial.TrackType.STANDARD || trackType == CRTrackType.UNIVERSAL))
+            return;
+        
+        // Get the handcar item from player inventory
+        ItemStack stack = player.getInventory().getItem(slot);
+        if (!(stack.getItem() instanceof HandcarItem handcarItem))
+            return;
+        
+        // Resolve graph location for this bezier segment
+        MutableObject<OverlapResult> result = new MutableObject<>(null);
+        MutableObject<TrackGraphLocation> resultLoc = new MutableObject<>(null);
+        
+        HandcarItem.withGraphLocation(
+            player.level(),
+            pos,
+            front,
+            targetLocation,
+            (overlap, location) -> {
+                result.setValue(overlap);
+                resultLoc.setValue(location);
+            }
+        );
+        
+        if (result.getValue() != OverlapResult.VALID || resultLoc.getValue() == null) {
+            if (result.getValue() != null && result.getValue().feedback != null) {
+                player.displayClientMessage(
+                    CreateLang.translateDirect(result.getValue().feedback).withStyle(ChatFormatting.RED),
+                    true
+                );
+                AllSoundEvents.DENY.play(player.level(), null, pos, .5f, 1);
+            }
+            return;
+        }
+        
+        TrackGraphLocation loc = resultLoc.getValue();
+        
+        // Place the handcar using the resolved location
+        boolean success = handcarItem.placeHandcar(loc, player.level(), player, pos);
+        
+        if (success) {
+            stack.shrink(1);
+        }
     }
 
     @Override
