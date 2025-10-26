@@ -33,6 +33,8 @@ jars/
 **/recent_changelog.html
 .DS_Store
 .vscode/
+neoforge/runs/
+common/runs/
 
 ##################
 # Dev's Personal #
