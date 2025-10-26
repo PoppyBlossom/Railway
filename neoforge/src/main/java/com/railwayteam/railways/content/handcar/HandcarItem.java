@@ -52,6 +52,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -191,18 +192,17 @@ public class HandcarItem extends BlockItem implements IDeployAnywayBlockItem {
     private @Nullable Train makeTrain(UUID owner, TrackGraph graph, TravellingPoint tp1, TravellingPoint tp2,
                                       ServerLevel level) {
         HandcarBlock handcarBlock = getBogeyBlock();
-        double spacing = handcarBlock.getWheelPointSpacing();
         
         // Build bogey and carriage following Create 1.21.1 patterns
         // CarriageBogey will be created with the TravellingPoints we computed
-        // The actual constructor is provided by Create at runtime (tp1, tp2, size, spacing, upsideDown, type)
+        // Actual Create constructor: CarriageBogey(AbstractBogeyBlock<?>, boolean, CompoundTag, TravellingPoint, TravellingPoint)
         CarriageBogey leadingBogey;
         try {
-            // Create 1.21.1 constructor: CarriageBogey(TravellingPoint, TravellingPoint, BogeySize, double, boolean, AbstractBogeyBlock)
-            leadingBogey = new CarriageBogey(tp1, tp2, handcarBlock.getSize(), spacing, false, handcarBlock);
-        } catch (NoSuchMethodError e) {
-            // Fallback: alternate constructor order or reflection if stubs differ from runtime
-            Railways.LOGGER.warn("CarriageBogey constructor mismatch — attempting alternate patterns", e);
+            // Create 1.21.1 constructor: type, upsideDown, data, leading point, trailing point
+            leadingBogey = new CarriageBogey(handcarBlock, false, new CompoundTag(), tp1, tp2);
+        } catch (Exception e) {
+            // Fallback: log error if constructor fails
+            Railways.LOGGER.warn("CarriageBogey constructor failed for handcar", e);
             return null;
         }
         

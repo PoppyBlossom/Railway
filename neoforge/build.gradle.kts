@@ -123,7 +123,12 @@ dependencies {
     implementation("net.neoforged:neoforge:${neoforgeVersion}")
 
     // Create and its dependencies (NeoForge)
-    implementation("com.simibubi.create:create-${minecraftVersion}:${createForgeVersion}") {
+    // Use compileOnly for compile-time API access; runtime implementation still comes from the mod
+    compileOnly("com.simibubi.create:create-${minecraftVersion}:${createForgeVersion}") {
+        exclude(group = "dev.ftb.mods")
+        exclude(group = "net.createmod.ponder")
+    }
+    runtimeOnly("com.simibubi.create:create-${minecraftVersion}:${createForgeVersion}") {
         exclude(group = "dev.ftb.mods")
         exclude(group = "net.createmod.ponder")
     }
