@@ -45,40 +45,83 @@ import java.util.Set;
 
 public class CameraMovePacket implements C2SPacket, S2CPacket {
     final int id;
-    final ServerboundMovePlayerPacket.PosRot packet;
+    final MoveData move;
 
+    // Simple value holder to avoid using private PosRot read/write
+    static final class MoveData {
+        final double x, y, z;
+        final float yaw, pitch;
+        final boolean onGround;
+
+        MoveData(double x, double y, double z, float yaw, float pitch, boolean onGround) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.yaw = yaw;
+            this.pitch = pitch;
+            this.onGround = onGround;
+        }
+
+        double getX(double base) { return x; }
+        double getY(double base) { return y; }
+        double getZ(double base) { return z; }
+        float getYRot(float base) { return yaw; }
+        float getXRot(float base) { return pitch; }
+        boolean isOnGround() { return onGround; }
+    }
 
     public CameraMovePacket(ConductorEntity entity, ServerboundMovePlayerPacket.PosRot packet) {
         this.id = entity.getId();
-        this.packet = packet;
+        // Snapshot absolute values using public getters; don't serialize PosRot directly
+        this.move = new MoveData(
+            packet.getX(entity.getX()),
+            packet.getY(entity.getY()),
+            packet.getZ(entity.getZ()),
+            packet.getYRot(entity.getYRot()),
+            packet.getXRot(entity.getXRot()),
+            packet.isOnGround()
+        );
     }
-    
+
     public CameraMovePacket(FriendlyByteBuf buf) {
         this.id = buf.readVarInt();
-        // TODO 1.21 port: ServerboundMovePlayerPacket.PosRot.read is now private; need alternative deserialization
-        this.packet = null;
+        // Public-safe deserialization of absolute values
+        double x = buf.readDouble();
+        double y = buf.readDouble();
+        double z = buf.readDouble();
+        float yaw = buf.readFloat();
+        float pitch = buf.readFloat();
+        boolean onGround = buf.readBoolean();
+        this.move = new MoveData(x, y, z, yaw, pitch, onGround);
     }
 
     @Override
     public void write(FriendlyByteBuf buffer) {
         buffer.writeVarInt(id);
-        // TODO 1.21 port: ServerboundMovePlayerPacket.PosRot.write is now private; need alternative serialization
+        // Public-safe serialization: write absolute values directly
+        buffer.writeDouble(move.x);
+        buffer.writeDouble(move.y);
+        buffer.writeDouble(move.z);
+        buffer.writeFloat(move.yaw);
+        buffer.writeFloat(move.pitch);
+        buffer.writeBoolean(move.onGround);
     }
 
     @Override
     public void handle(Minecraft mc) {
         if (mc.level != null && mc.level.getEntity(id) instanceof ConductorEntity conductor && mc.cameraEntity == conductor) {
 //            conductor.absMoveTo(packet.getX(mc.cameraEntity.getX()), packet.getY(mc.cameraEntity.getY()), packet.getZ(mc.cameraEntity.getZ()), packet.getYRot(mc.cameraEntity.getYRot()), packet.getXRot(mc.cameraEntity.getXRot()));
-            double d0 = packet.getX(conductor.getX());
-            double d1 = packet.getY(conductor.getY());
-            double d2 = packet.getZ(conductor.getZ());
+            double d0 = move.getX(conductor.getX());
+            double d1 = move.getY(conductor.getY());
+            double d2 = move.getZ(conductor.getZ());
             conductor.syncPacketPositionCodec(d0, d1, d2);
             if (true) {
                 conductor.setPos(d0, d1, d2);
-                float f = (float)(packet.getYRot(conductor.getYRot()) * 360) / 256.0F;
-                float f1 = (float)(packet.getXRot(conductor.getXRot()) * 360) / 256.0F;
+                // Rotations are in degrees already
+                float f = move.getYRot(conductor.getYRot());
+                float f1 = move.getXRot(conductor.getXRot());
                 conductor.lerpTo(d0, d1, d2, f, f1, 3);
-                conductor.setOnGround(packet.isOnGround());
+                conductor.setOnGround(move.isOnGround());
             }
         }
     }
@@ -123,17 +166,17 @@ public class CameraMovePacket implements C2SPacket, S2CPacket {
     @Override
     public void handle(ServerPlayer sender1) {
         if (sender1.level().getEntity(id) instanceof ConductorEntity conductor && sender1.getCamera() == conductor) {
-            if (containsInvalidValues(packet.getX(0.0), packet.getY(0.0), packet.getZ(0.0), packet.getYRot(0.0f), packet.getXRot(0.0f))) {
+            if (containsInvalidValues(move.getX(0.0), move.getY(0.0), move.getZ(0.0), move.getYRot(0.0f), move.getXRot(0.0f))) {
                 sender1.connection.disconnect(Component.translatable("multiplayer.disconnect.invalid_player_movement"));
                 return;
             }
             if (!(conductor.level() instanceof ServerLevel serverLevel))
                 return;
-            double d = clampHorizontal(packet.getX(conductor.getX()));
-            double e = clampVertical(packet.getY(conductor.getY()));
-            double f = clampHorizontal(packet.getZ(conductor.getZ()));
-            float g = Mth.wrapDegrees(packet.getYRot(conductor.getYRot()));
-            float h = Mth.wrapDegrees(packet.getXRot(conductor.getXRot()));
+            double d = clampHorizontal(move.getX(conductor.getX()));
+            double e = clampVertical(move.getY(conductor.getY()));
+            double f = clampHorizontal(move.getZ(conductor.getZ()));
+            float g = Mth.wrapDegrees(move.getYRot(conductor.getYRot()));
+            float h = Mth.wrapDegrees(move.getXRot(conductor.getXRot()));
             if (conductor.isPassenger()) {
                 conductor.absMoveTo(conductor.getX(), conductor.getY(), conductor.getZ(), g, h);
                 return;
@@ -168,7 +211,7 @@ public class CameraMovePacket implements C2SPacket, S2CPacket {
             n = e - conductor.lastGoodY;
             o = f - conductor.lastGoodZ;
             boolean bl2 = n > 0.0;
-            if (conductor.onGround() && !packet.isOnGround() && bl2) {
+            if (conductor.onGround() && !move.isOnGround() && bl2) {
                 conductor.jumpFromGround();
             }
             boolean bl22 = conductor.verticalCollisionBelow;
@@ -193,8 +236,8 @@ public class CameraMovePacket implements C2SPacket, S2CPacket {
                 return;
             }
 
-            conductor.doCheckFallDamage(conductor.getY() - l, packet.isOnGround());
-            conductor.setOnGround(packet.isOnGround());
+            conductor.doCheckFallDamage(conductor.getY() - l, move.isOnGround());
+            conductor.setOnGround(move.isOnGround());
             if (bl2) {
                 conductor.resetFallDistance();
             }
