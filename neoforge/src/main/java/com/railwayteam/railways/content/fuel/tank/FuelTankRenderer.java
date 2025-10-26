@@ -21,6 +21,7 @@ package com.railwayteam.railways.content.fuel.tank;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
 import net.createmod.catnip.animation.LerpedFloat;
+import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.util.Mth;
@@ -45,7 +46,7 @@ public class FuelTankRenderer extends SafeBlockEntityRenderer<FuelTankBlockEntit
             return;
 
         float capHeight = 1 / 4f;
-    // float tankHullWidth = 1 / 16f + 1 / 128f; // unused while fluid rendering is disabled
+        float tankHullWidth = 1 / 16f + 1 / 128f;
         float minPuddleHeight = 1 / 16f;
         float totalHeight = be.height - 2 * capHeight - minPuddleHeight;
 
@@ -60,13 +61,17 @@ public class FuelTankRenderer extends SafeBlockEntityRenderer<FuelTankBlockEntit
         if (fluidStack.isEmpty())
             return;
 
-    // Coordinates for the fluid cuboid are intentionally omitted while the 1.21 renderer API is updated.
+        float xMin = tankHullWidth;
+        float xMax = be.width - tankHullWidth;
+        float yMin = totalHeight - clampedLevel + capHeight + minPuddleHeight / 2;
+        float yMax = totalHeight + capHeight + minPuddleHeight / 2;
+        float zMin = tankHullWidth;
+        float zMax = be.width - tankHullWidth;
 
         ms.pushPose();
         ms.translate(0, clampedLevel - totalHeight, 0);
 
-    // TODO: Restore fluid rendering with updated Catnip/renderer API for 1.21
-    // CatnipServices.FLUID_RENDERER.renderFluidBox(fluidStack, xMin, yMin, zMin, xMax, yMax, zMax, buffer, ms, light, false, true);
+        CatnipServices.FLUID_RENDERER.renderFluidBox(fluidStack.getFluid().defaultFluidState(), xMin, yMin, zMin, xMax, yMax, zMax, buffer, ms, light, false, true);
         ms.popPose();
     }
 
