@@ -42,12 +42,17 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public class CRCreativeModeTabs {    public static ResourceKey<CreativeModeTab> getBaseTabKey() {
-        throw new AssertionError();
-    }    public static ResourceKey<CreativeModeTab> getTracksTabKey() {
-        throw new AssertionError();
-    }    public static ResourceKey<CreativeModeTab> getPalettesTabKey() {
-        throw new AssertionError();
+import com.railwayteam.railways.registry.neoforge.CRCreativeModeTabsImpl;
+
+public class CRCreativeModeTabs {
+    public static ResourceKey<CreativeModeTab> getBaseTabKey() {
+        return CRCreativeModeTabsImpl.getBaseTabKey();
+    }
+    public static ResourceKey<CreativeModeTab> getTracksTabKey() {
+        return CRCreativeModeTabsImpl.getTracksTabKey();
+    }
+    public static ResourceKey<CreativeModeTab> getPalettesTabKey() {
+        return CRCreativeModeTabsImpl.getPalettesTabKey();
     }
 
     public static void register() {

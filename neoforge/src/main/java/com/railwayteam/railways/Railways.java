@@ -18,7 +18,6 @@
 
 package com.railwayteam.railways;
 
-import com.mojang.brigadier.CommandDispatcher;
 import com.railwayteam.railways.base.data.CRTagGen;
 import com.railwayteam.railways.base.data.RailwaysHatOffsetGenerator;
 import com.railwayteam.railways.base.data.compat.emi.EmiExcludedTagGen;
@@ -30,6 +29,7 @@ import com.railwayteam.railways.base.data.recipe.RailwaysStandardRecipeGen;
 import com.railwayteam.railways.compat.Mods;
 import com.railwayteam.railways.config.CRConfigs;
 import com.railwayteam.railways.multiloader.Loader;
+import com.railwayteam.railways.neoforge.RailwaysImpl;
 import com.railwayteam.railways.registry.CRCommands;
 import com.railwayteam.railways.registry.CRPackets;
 import com.railwayteam.railways.util.Utils;
@@ -40,7 +40,6 @@ import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import com.tterrag.registrate.providers.ProviderType;
 import net.createmod.catnip.lang.FontHelper;
-import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
@@ -98,9 +97,9 @@ public class Railways {
     migrateConfig(commonConfigDir, CRConfigs::migrateCommon);
     
     ModSetup.register();
-    finalizeRegistrate();
+    RailwaysImpl.finalizeRegistrate();
 
-    registerCommands(CRCommands::register);
+    RailwaysImpl.registerCommands(CRCommands::register);
     CRPackets.PACKETS.registerC2SListener();
 
     // TODO - Forge entirely breaks with mixin audit, truly incredible
@@ -123,11 +122,5 @@ public class Railways {
 
   public static CreateRegistrate registrate() {
     return REGISTRATE;
-  }  public static void finalizeRegistrate() {
-    throw new AssertionError();
-  }  public static void registerCommands(BiConsumer<CommandDispatcher<CommandSourceStack>, Boolean> consumer) {
-    throw new AssertionError();
-  }  public static void platformBasedRegistration() {
-    throw new AssertionError();
   }
 }

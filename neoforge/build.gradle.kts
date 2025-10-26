@@ -17,13 +17,30 @@
  */
 
 plugins {
-    id("net.neoforged.gradle.userdev")
-    id("net.kyori.blossom")
+    id("java")
+    id("net.neoforged.moddev")
 }
 
-operator fun String.invoke(): String = rootProject.ext[this] as? String ?: error("Property $this not found")
+// Resolve commonly used Gradle properties eagerly to avoid task name ambiguities inside task scopes
+val modId: String = (rootProject.findProperty("mod_id") as String)
+val minecraftVersion: String = (rootProject.findProperty("minecraft_version") as String)
+val neoforgeVersion: String = (rootProject.findProperty("neoforge_version") as String)
+val createForgeVersion: String = (rootProject.findProperty("create_forge_version") as String)
+val ponderVersion: String = (rootProject.findProperty("ponder_version") as String)
+val flywheelVersion: String = (rootProject.findProperty("flywheel_version") as String)
+val registrateForgeVersion: String = (rootProject.findProperty("registrate_forge_version") as String)
+val mixinExtrasVersion: String = (rootProject.findProperty("mixin_extras_version") as String)
+val voicechatApiVersion: String = (rootProject.findProperty("voicechat_api_version") as String)
+val modName: String = (rootProject.findProperty("mod_name") as String)
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+base {
+    archivesName.set(modId)
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    withSourcesJar()
+}
 
 repositories {
     // Local maven for vendored dependencies
@@ -36,98 +53,138 @@ repositories {
     maven("https://mvn.devos.one/snapshots/")
     maven("https://maven.blamejared.com/")
     maven("https://maven.tterrag.com/")
-    // FTB Maven - for FTB Chunks, Teams, and Library (required by Create)
-        maven("https://maven.ftb.dev/")
-        // Architectury Maven - for Architectury API (required by Create)
-        maven("https://maven.architectury.dev/")
-        // Fuzs' Maven - for Forge Config API Port (required by Ponder)
-        maven("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/")
+    maven("https://maven.ftb.dev/")
+    maven("https://maven.architectury.dev/")
+    maven("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/")
     maven("https://jitpack.io")
     maven("https://maven.parchmentmc.org")
     maven("https://modmaven.dev/")
     maven("https://maven.theillusivec4.top/")
-    // MaxHenkel's repo hosts the voicechat API
     maven("https://maven.maxhenkel.de/releases")
-    // Modrinth for mods
     maven("https://api.modrinth.com/maven")
 }
 
-// Force consistent ASM versions to avoid module path conflicts
-configurations.all {
-    resolutionStrategy {
-        force("org.ow2.asm:asm:9.7")
-        force("org.ow2.asm:asm-tree:9.7")
-        force("org.ow2.asm:asm-analysis:9.7")
-        force("org.ow2.asm:asm-commons:9.7")
-        force("org.ow2.asm:asm-util:9.7")
-        // Force single Registrate version to avoid module conflicts
-        force("com.tterrag.registrate:Registrate:${"registrate_forge_version"()}")
+// NeoForge ModDev configuration
+neoForge {
+    // NeoForge version from properties
+    version.set(neoforgeVersion)
+    
+    // Note: Parchment overlay disabled for now; fall back to Mojang mappings (stable in ModDev)
+    // To re-enable later, ensure a valid parchment artifact exists for the current MC version
+    // parchment {
+    //     minecraftVersion.set("minecraft_version"())
+    //     mappingsVersion.set("parchment_version"())
+    // }
+    
+    // Add access transformers and mixins
+    accessTransformers {
+        file("src/main/resources/META-INF/accesstransformer.cfg")
+    }
+    
+    runs {
+        // Client run configuration
+        create("client") {
+            client()
+        }
+        
+        // Server run configuration
+        create("server") {
+            server()
+            programArgument("--nogui")
+        }
+        
+        // Data generation run
+        create("data") {
+            data()
+            programArguments.addAll(
+                "--mod", modId,
+                "--all",
+                "--output", file("src/generated/resources").absolutePath,
+                "--existing", file("src/main/resources").absolutePath
+            )
+        }
+        
+        configureEach {
+            systemProperty("forge.logging.markers", "REGISTRIES")
+            systemProperty("forge.logging.console.level", "debug")
+        }
+    }
+    
+    mods {
+        create(modId) {
+            sourceSet(sourceSets.main.get())
+        }
     }
 }
 
+
 dependencies {
-    implementation("net.neoforged:neoforge:${"neoforge_version"()}")
+    // NeoForge
+    implementation("net.neoforged:neoforge:${neoforgeVersion}")
 
     // Create and its dependencies (NeoForge)
-    implementation("com.simibubi.create:create-${"minecraft_version"()}:${"create_forge_version"()}") {
-        // Exclude optional FTB dependencies that aren't available in public Maven repos
-        exclude(group = "dev.ftb.mods", module = "ftb-chunks-neoforge")
-        exclude(group = "dev.ftb.mods", module = "ftb-teams-neoforge")
-        exclude(group = "dev.ftb.mods", module = "ftb-library-neoforge")
-        // Exclude Ponder from Create to add it separately with proper version
+    implementation("com.simibubi.create:create-${minecraftVersion}:${createForgeVersion}") {
+        exclude(group = "dev.ftb.mods")
         exclude(group = "net.createmod.ponder")
     }
     
-    // Ponder - Create's in-game documentation system (includes Catnip as a dependency)
-    implementation("net.createmod.ponder:Ponder-NeoForge-${"minecraft_version"()}:${"ponder_version"()}")
+    // Ponder - Create's in-game documentation system
+    implementation("net.createmod.ponder:Ponder-NeoForge-${minecraftVersion}:${ponderVersion}")
     
-    // Flywheel - rendering engine (must be added explicitly)
-    implementation("dev.engine-room.flywheel:flywheel-neoforge-${"minecraft_version"()}:${"flywheel_version"()}")
+    // Flywheel - rendering engine
+    implementation("dev.engine-room.flywheel:flywheel-neoforge-${minecraftVersion}:${flywheelVersion}")
     
     // Registrate
-    implementation("com.tterrag.registrate:Registrate:${"registrate_forge_version"()}")
+    implementation("com.tterrag.registrate:Registrate:${registrateForgeVersion}")
     
     // MixinExtras
-    implementation("io.github.llamalad7:mixinextras-neoforge:${"mixin_extras_version"()}")
+    implementation("io.github.llamalad7:mixinextras-neoforge:${mixinExtrasVersion}")
     
     // Annotations
     compileOnly("com.google.code.findbugs:jsr305:3.0.2")
-    // Voice chat API (compileOnly so builds succeed even when the runtime mod isn't present)
-    compileOnly("de.maxhenkel.voicechat:voicechat-api:${"voicechat_api_version"()}")
-    // Voice chat mod itself (only when explicitly enabled)
-    if ("enable_simple_voice_chat"().toBoolean()) {
-        // compileOnly for mixin compilation when targeting internal classes; skip by default
+    
+    // Voice chat API
+    compileOnly("de.maxhenkel.voicechat:voicechat-api:${voicechatApiVersion}")
+    if ((rootProject.findProperty("enable_simple_voice_chat") as String).toBoolean()) {
         compileOnly("de.maxhenkel.voicechat:voicechat-neoforge:1.21.1-2.6.6")
     }
-    
-    // Note: @ExpectPlatform from Architectury no longer used
-    // Platform-specific implementations are directly in neoforge/ package
 }
 
 sourceSets.main {
     resources.srcDir("src/generated/resources")
 }
 
-tasks.processResources {
-    val props = mapOf(
-        "version" to project.version.toString(),
-        "minecraft_version" to "minecraft_version"(),
-        "neoforge_version" to "neoforge_version"(),
-        "mod_id" to "mod_id"(),
-        "mod_name" to "mod_name"(),
-        // Additional placeholders used in neoforge.mods.toml
-        "create_forge_version" to "create_forge_version"(),
-        "voicechat_api_version" to "voicechat_api_version"()
-    )
-    inputs.properties(props)
-    filesMatching("META-INF/neoforge.mods.toml") { expand(props) }
-}
-
-tasks.jar {
-    manifest {
-        attributes(mapOf(
-            "Specification-Title" to "railways",
-            "Implementation-Version" to project.version
-        ))
+tasks {
+    processResources {
+        val props = mapOf(
+            "version" to project.version.toString(),
+            "minecraft_version" to minecraftVersion,
+            "neoforge_version" to neoforgeVersion,
+            "mod_id" to modId,
+            "mod_name" to modName,
+            "create_forge_version" to createForgeVersion,
+            "voicechat_api_version" to voicechatApiVersion
+        )
+        inputs.properties(props)
+        filesMatching("META-INF/neoforge.mods.toml") {
+            expand(props)
+        }
+    }
+    
+    withType<JavaCompile>().configureEach {
+        options.encoding = "UTF-8"
+    }
+    
+    jar {
+        manifest {
+            attributes(mapOf(
+                "Specification-Title" to modId,
+                "Specification-Vendor" to "The Railways Team",
+                "Specification-Version" to "1",
+                "Implementation-Title" to project.name,
+                "Implementation-Version" to project.version,
+                "Implementation-Vendor" to "The Railways Team"
+            ))
+        }
     }
 }

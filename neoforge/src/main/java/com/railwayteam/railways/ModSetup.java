@@ -21,14 +21,13 @@ package com.railwayteam.railways;
 import com.railwayteam.railways.compat.tracks.mods.*;
 import com.railwayteam.railways.content.custom_tracks.casing.CasingCollisionUtils;
 import com.railwayteam.railways.registry.*;
+import com.railwayteam.railways.neoforge.RailwaysImpl;
 
-public class ModSetup {  public static void useBaseTab() {
-    throw new AssertionError();
-  }  public static void useTracksTab() {
-    throw new AssertionError();
-  }  public static void usePalettesTab() {
-    throw new AssertionError();
-  }
+public class ModSetup {
+  // Single-loader NeoForge: these no-ops remain for legacy call sites
+  public static void useBaseTab() {}
+  public static void useTracksTab() {}
+  public static void usePalettesTab() {}
 
   public static void register() {
     useBaseTab();
@@ -41,7 +40,8 @@ public class ModSetup {  public static void useBaseTab() {
     CRDisplayTargets.register();
     CRBlockEntities.register();
     CRBlocks.register();
-    Railways.platformBasedRegistration();
+  // Platform-specific registrations (NeoForge)
+  RailwaysImpl.platformBasedRegistration();
     CRPalettes.register();
     CRContainerTypes.register();
     CREntities.register();

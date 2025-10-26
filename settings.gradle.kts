@@ -20,11 +20,15 @@ pluginManagement {
     repositories {
         maven { url = uri("https://maven.neoforged.net/releases") }
         gradlePluginPortal()
+        mavenCentral()
     }
 }
 
-// Single-loader NeoForge mod with common/ for shared game logic
-include("common")
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
+}
+
+// Single-loader NeoForge mod
 include("neoforge")
 
 rootProject.name = "Railway"

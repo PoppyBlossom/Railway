@@ -27,7 +27,7 @@ import me.modmuss50.mpp.ReleaseType
 plugins {
     java
     `maven-publish`
-    id("net.neoforged.gradle.userdev") version "7.0.152" apply false
+    id("net.neoforged.moddev") version "2.0.28-beta" apply false
     id("me.modmuss50.mod-publish-plugin") version "0.7.4" apply false
     id("dev.ithundxr.silk") version "0.11.15"
     id("net.kyori.blossom") version "2.1.0" apply false
