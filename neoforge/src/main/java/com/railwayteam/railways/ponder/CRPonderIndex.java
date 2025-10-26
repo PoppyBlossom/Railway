@@ -25,8 +25,6 @@ import com.railwayteam.railways.ponder.scenes.TrainScenes;
 import com.railwayteam.railways.registry.CRBlocks;
 import com.railwayteam.railways.registry.CRItems;
 import com.simibubi.create.AllBlocks;
-import com.tterrag.registrate.util.entry.ItemEntry;
-import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.createmod.ponder.api.registration.PonderSceneRegistrationHelper;
 import net.minecraft.resources.ResourceLocation;
@@ -34,33 +32,34 @@ import net.minecraft.resources.ResourceLocation;
 
 public class CRPonderIndex {
     public static void register(PonderSceneRegistrationHelper<ResourceLocation> helper) {
-        // TODO 1.21 port: Ponder registration API changed; needs correct generic signature
-        // PonderSceneRegistrationHelper<ItemProviderEntry<?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
-        Railways.LOGGER.warn("Ponder scene registration temporarily disabled for 1.21 port");
+        // 1.21+: Ponder helpers are keyed by ResourceLocation; adapt registrate entries via key function
+        PonderSceneRegistrationHelper<RegistryEntry<?, ?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
 
-        /* Disabled until Ponder API types are resolved
+        // Train semaphore overview
         HELPER.forComponents(CRBlocks.SEMAPHORE)
-                .addStoryBoard("semaphore", TrainScenes::signaling);
+            .addStoryBoard("train_semaphore", TrainScenes::signaling);
 
+        // Train coupler usage
         HELPER.forComponents(CRBlocks.TRACK_COUPLER)
-                .addStoryBoard("coupler", TrainScenes::coupling);
+            .addStoryBoard("train_coupler", TrainScenes::coupling);
 
-        HELPER.forComponents(CRItems.ITEM_CONDUCTOR_CAP.values().toArray(ItemEntry[]::new))
-            .addStoryBoard("conductor", ConductorScenes::constructing)
-            .addStoryBoard("conductor_redstone", ConductorScenes::redstoning)
-            .addStoryBoard("conductor", ConductorScenes::toolboxing);
+        // Conductor showcase scenes (constructed from all colored caps)
+        HELPER.forComponents(CRItems.ITEM_CONDUCTOR_CAP.values().toArray(RegistryEntry[]::new))
+            .addStoryBoard("conductor_constructing", ConductorScenes::constructing)
+            .addStoryBoard("conductor_redstoning", ConductorScenes::redstoning)
+            .addStoryBoard("conductor_toolboxing", ConductorScenes::toolboxing);
 
+        // Sliding and train doors: mode explanation
         HELPER.forComponents(
             AllBlocks.ANDESITE_DOOR,
             AllBlocks.BRASS_DOOR,
             AllBlocks.COPPER_DOOR,
             AllBlocks.TRAIN_DOOR,
             AllBlocks.FRAMED_GLASS_DOOR
-        )
-                .addStoryBoard("door_modes", DoorScenes::modes);
+        ).addStoryBoard("door_modes", DoorScenes::modes);
 
+        // Track switches
         HELPER.forComponents(CRBlocks.ANDESITE_SWITCH, CRBlocks.BRASS_SWITCH)
-                .addStoryBoard("switch", TrainScenes::trackSwitch);
-        */
+            .addStoryBoard("train_switch", TrainScenes::trackSwitch);
     }
 }
