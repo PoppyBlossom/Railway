@@ -21,7 +21,6 @@ package com.railwayteam.railways.util;
 import com.railwayteam.railways.Railways;
 import com.railwayteam.railways.util.neoforge.UtilsImpl;
 import com.simibubi.create.content.trains.entity.Train;
-import net.minecraft.world.level.chunk.LevelChunk;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
@@ -66,9 +65,5 @@ public class Utils {
 
 	public static void sendHonkPacket(Train train, boolean isHonk) {
 		UtilsImpl.sendHonkPacket(train, isHonk);
-	}
-
-	public static void postChunkEventClient(LevelChunk chunk, boolean load) {
-		UtilsImpl.postChunkEventClient(chunk, load);
 	}
 }

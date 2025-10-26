@@ -20,7 +20,6 @@ package com.railwayteam.railways.util.neoforge;
 
 import com.railwayteam.railways.Railways;
 import com.simibubi.create.content.trains.entity.Train;
-import net.minecraft.world.level.chunk.LevelChunk;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.FMLPaths;
 
@@ -36,18 +35,14 @@ public class UtilsImpl {
 	}
 
     public static void sendCreatePacketToServer(Object packet) {
-        // TODO 1.21 port: AllPackets.getChannel() no longer exists; network API rework needed
-        Railways.LOGGER.warn("sendCreatePacketToServer temporarily disabled for 1.21 port");
+        // Unused in current codebase; reserved for future Create packet forwarding if needed
+        Railways.LOGGER.warn("sendCreatePacketToServer not implemented for 1.21.1 (Create networking API pending)");
     }
 
     public static void sendHonkPacket(Train train, boolean isHonk) {
-        // TODO 1.21 port: AllPackets.getChannel() and PacketDistributor.ALL no longer exist
-        Railways.LOGGER.warn("sendHonkPacket temporarily disabled for 1.21 port");
-    }
-
-    public static void postChunkEventClient(LevelChunk chunk, boolean load) {
-        // TODO 1.21 port: MinecraftForge.EVENT_BUS no longer exists; use NeoForge event bus
-        Railways.LOGGER.warn("postChunkEventClient temporarily disabled for 1.21 port");
+        // TODO 1.21.1: Implement train honking via Create's networking API once packet structure is stable
+        // Used in ConductorEntity for train horn control during possession
+        Railways.LOGGER.warn("sendHonkPacket not implemented for 1.21.1 (Create networking API pending)");
     }
 
     public static Path modsDir() {

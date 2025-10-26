@@ -28,6 +28,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.UUID;
 
+/**
+ * EXCLUDED FROM COMPILATION (see neoforge/build.gradle.kts).
+ * 
+ * This client-side mixin injects into Create's TrainPacket to notify JourneyMap when trains are removed.
+ * It's currently excluded because TrainPacket's structure in Create 1.21.1 is still stabilizing.
+ * 
+ * When re-enabling:
+ * 1. Verify Create's TrainPacket.handle() still uses a lambda for train removal (lambda$handle$0)
+ * 2. Note: Lambda method names are compiler-generated and may change with Create updates
+ * 3. Alternative: Consider targeting handle() directly or using @ModifyVariable
+ * 4. Test with JourneyMap integration to ensure train markers are removed correctly
+ */
 @Mixin(value = TrainPacket.class, remap = false)
 public class MixinTrainPacket {
     @Shadow

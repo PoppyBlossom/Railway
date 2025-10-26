@@ -152,24 +152,10 @@ dependencies {
 
 sourceSets.main {
     resources.srcDir("src/generated/resources")
-    // Exclude temporary compile-time stubs/shims so the real classes from
-    // NeoForge/Minecraft/Create dependencies are used instead.
+    // Exclude TrainPacket mixins from compilation until Create's packet API is stable
     java {
-        exclude("com/simibubi/create/foundation/networking/SimplePacketBase.java")
-        exclude("com/simibubi/create/content/trains/entity/TrainPacket.java")
         exclude("com/railwayteam/railways/mixin/client/MixinTrainPacket.java")
-    exclude("com/railwayteam/railways/mixin/MixinTrainPacket.java")
-        exclude("net/neoforged/neoforge/registries/RegistryObject.java")
-        exclude("net/neoforged/neoforge/registries/ForgeRegistries.java")
-        exclude("net/neoforged/neoforge/common/ForgeConfigSpec.java")
-        exclude("net/neoforged/neoforge/api/distmarker/Dist.java")
-        exclude("net/neoforged/neoforge/api/distmarker/OnlyIn.java")
-        exclude("net/neoforged/neoforge/common/MinecraftForge.java")
-        exclude("net/neoforged/neoforge/common/util/LazyOptional.java")
-        exclude("net/neoforged/neoforge/common/capabilities/Capability.java")
-        exclude("net/neoforged/neoforge/common/capabilities/ICapabilityProvider.java")
-        exclude("net/neoforged/neoforge/common/capabilities/ForgeCapabilities.java")
-        exclude("net/minecraft/core/particles/ParticleOptions.java")
+        exclude("com/railwayteam/railways/mixin/MixinTrainPacket.java")
     }
 }
 

@@ -28,6 +28,19 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+/**
+ * EXCLUDED FROM COMPILATION (see neoforge/build.gradle.kts).
+ * 
+ * This mixin injects into Create's TrainPacket to sync handcar status between client and server.
+ * It's currently excluded because TrainPacket's structure in Create 1.21.1 is still stabilizing.
+ * 
+ * When re-enabling:
+ * 1. Verify Create's TrainPacket.write() still has the expected structure (two RETURN points)
+ * 2. Verify the constructor still accepts FriendlyByteBuf with expected structure
+ * 3. Test handcar placement and synchronization in multiplayer
+ * 
+ * The ordinal = 1 targets are fragile and may break if Create changes their packet structure.
+ */
 @Mixin(value = TrainPacket.class, priority = 523) // random priority to ensure consistent order if another mod changes packets as well
 public class MixinTrainPacket {
     @Shadow(remap = false) Train train;
