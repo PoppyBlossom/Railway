@@ -32,20 +32,20 @@ side = "BOTH"
 [[dependencies.railways]]
 modId="create"
 mandatory=true
-versionRange="[${create_forge_version},)"
+versionRange="[6.0,)"
 ordering="NONE"
 side="BOTH"
 
 [[dependencies.railways]]
 modId="hexcasting"
-mandatory=false
-versionRange="," # Any version
+type="optional"
+versionRange="[0,)"
 ordering="AFTER" # Steam 'n' Rails should load after hexcasting
 side="BOTH"
 
 [[dependencies.railways]]
 modId="voicechat"
-mandatory=false
-versionRange="[${minecraft_version}-${voicechat_api_version},)"
+type="optional"
+versionRange="[0,)"
 ordering="AFTER"
 side="BOTH"

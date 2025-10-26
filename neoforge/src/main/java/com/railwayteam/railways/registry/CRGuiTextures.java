@@ -21,9 +21,10 @@ package com.railwayteam.railways.registry;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.railwayteam.railways.Railways;
 import com.railwayteam.railways.content.switches.TrackSwitchBlock;
-import net.createmod.catnip.gui.UIRenderHelper;
 import net.createmod.catnip.gui.element.ScreenElement;
-import net.createmod.catnip.utility.theme.Color;
+// Catnip's Color and UIRenderHelper APIs have changed; not used currently
+// import net.createmod.catnip.gui.UIRenderHelper;
+// import net.createmod.catnip.theme.Color;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.minecraft.client.gui.GuiGraphics;
@@ -105,9 +106,14 @@ public enum CRGuiTextures implements ScreenElement {
         graphics.blit(location, x, y, startX, startY, width, height, textureWidth, textureHeight);
     }
 
+    // Commented out due to Catnip API changes in 1.21.1
+    // The Color class has moved and UIRenderHelper signature has changed
+    // This method appears to be unused based on grep search
+    /*
     @OnlyIn(Dist.CLIENT)
     public void render(GuiGraphics graphics, int x, int y, Color c) {
         bind();
         UIRenderHelper.drawColoredTexture(graphics, c, x, y, startX, startY, width, height);
     }
+    */
 }

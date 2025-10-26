@@ -36,6 +36,12 @@ repositories {
     maven("https://mvn.devos.one/snapshots/")
     maven("https://maven.blamejared.com/")
     maven("https://maven.tterrag.com/")
+    // FTB Maven - for FTB Chunks, Teams, and Library (required by Create)
+        maven("https://maven.ftb.dev/")
+        // Architectury Maven - for Architectury API (required by Create)
+        maven("https://maven.architectury.dev/")
+        // Fuzs' Maven - for Forge Config API Port (required by Ponder)
+        maven("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/")
     maven("https://jitpack.io")
     maven("https://maven.parchmentmc.org")
     maven("https://modmaven.dev/")
@@ -46,18 +52,33 @@ repositories {
     maven("https://api.modrinth.com/maven")
 }
 
-
+// Force consistent ASM versions to avoid module path conflicts
+configurations.all {
+    resolutionStrategy {
+        force("org.ow2.asm:asm:9.7")
+        force("org.ow2.asm:asm-tree:9.7")
+        force("org.ow2.asm:asm-analysis:9.7")
+        force("org.ow2.asm:asm-commons:9.7")
+        force("org.ow2.asm:asm-util:9.7")
+        // Force single Registrate version to avoid module conflicts
+        force("com.tterrag.registrate:Registrate:${"registrate_forge_version"()}")
+    }
+}
 
 dependencies {
     implementation("net.neoforged:neoforge:${"neoforge_version"()}")
 
     // Create and its dependencies (NeoForge)
-    implementation("com.simibubi.create:create-${"minecraft_version"()}:${"create_forge_version"()}")
+    implementation("com.simibubi.create:create-${"minecraft_version"()}:${"create_forge_version"()}") {
+        // Exclude optional FTB dependencies that aren't available in public Maven repos
+        exclude(group = "dev.ftb.mods", module = "ftb-chunks-neoforge")
+        exclude(group = "dev.ftb.mods", module = "ftb-teams-neoforge")
+        exclude(group = "dev.ftb.mods", module = "ftb-library-neoforge")
+        // Exclude Ponder from Create to add it separately with proper version
+        exclude(group = "net.createmod.ponder")
+    }
     
-    // Catnip - Create utility library (must be added explicitly, shaded into Create)
-    implementation("net.createmod.catnip:Catnip-NeoForge-${"minecraft_version"()}:${"catnip_version"()}")
-    
-    // Ponder - Create's in-game documentation system (must be added explicitly)
+    // Ponder - Create's in-game documentation system (includes Catnip as a dependency)
     implementation("net.createmod.ponder:Ponder-NeoForge-${"minecraft_version"()}:${"ponder_version"()}")
     
     // Flywheel - rendering engine (must be added explicitly)
@@ -94,12 +115,12 @@ tasks.processResources {
         "neoforge_version" to "neoforge_version"(),
         "mod_id" to "mod_id"(),
         "mod_name" to "mod_name"(),
-        // Additional placeholders used in mods.toml
+        // Additional placeholders used in neoforge.mods.toml
         "create_forge_version" to "create_forge_version"(),
         "voicechat_api_version" to "voicechat_api_version"()
     )
     inputs.properties(props)
-    filesMatching("META-INF/mods.toml") { expand(props) }
+    filesMatching("META-INF/neoforge.mods.toml") { expand(props) }
 }
 
 tasks.jar {
