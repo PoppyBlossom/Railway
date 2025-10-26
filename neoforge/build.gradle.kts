@@ -154,8 +154,7 @@ sourceSets.main {
     resources.srcDir("src/generated/resources")
     // Exclude TrainPacket mixins from compilation until Create's packet API is stable
     java {
-        exclude("com/railwayteam/railways/mixin/client/MixinTrainPacket.java")
-        exclude("com/railwayteam/railways/mixin/MixinTrainPacket.java")
+        // TrainPacket mixins re-enabled on this branch (Create networking integration)
     }
 }
 
