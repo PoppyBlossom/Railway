@@ -40,9 +40,15 @@ public class UtilsImpl {
     }
 
     public static void sendHonkPacket(Train train, boolean isHonk) {
-        // TODO 1.21.1: Implement train honking via Create's networking API once packet structure is stable
         // Used in ConductorEntity for train horn control during possession
-        Railways.LOGGER.warn("sendHonkPacket not implemented for 1.21.1 (Create networking API pending)");
+        try {
+            // send a simple C2S packet handled by our mod which will invoke Create's train honk on the server
+            java.util.UUID id = train.id;
+            com.railwayteam.railways.util.packet.HonkTrainPacket packet = new com.railwayteam.railways.util.packet.HonkTrainPacket(id, isHonk);
+            com.railwayteam.railways.registry.CRPackets.PACKETS.send(packet);
+        } catch (Throwable t) {
+            Railways.LOGGER.warn("sendHonkPacket: failed to send honk packet (falling back to no-op): {}", t.toString());
+        }
     }
 
     public static Path modsDir() {
