@@ -86,8 +86,6 @@
     "client.MixinTrackGraphVisualizer",
     "client.MixinTrackRenderer",
     "client.MixinTrackTargetingClient",
-    "client.MixinTrackVisual",
-    "client.MixinTrackVisual$BezierTrackVisual",
     "client.MixinTrainHUD",
     "compat.malilib.MixinGuiTextFieldGeneric",
     "compat.voicechat.FreecamUtilMixin",

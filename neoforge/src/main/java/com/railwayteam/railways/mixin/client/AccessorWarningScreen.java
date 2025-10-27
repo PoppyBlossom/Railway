@@ -23,12 +23,12 @@ import net.minecraft.client.gui.screens.multiplayer.WarningScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(WarningScreen.class)
+@Mixin(value = WarningScreen.class, remap = false)
 public interface AccessorWarningScreen {
 
-    @Accessor("message")
+    @Accessor(value = "message", remap = false)
     MultiLineLabel getMessageText();
 
-    @Accessor("message")
+    @Accessor(value = "message", remap = false)
     void setMessageText(MultiLineLabel messageText);
 }
