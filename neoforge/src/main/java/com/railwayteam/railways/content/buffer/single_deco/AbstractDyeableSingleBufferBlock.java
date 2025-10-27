@@ -68,7 +68,6 @@ public abstract class AbstractDyeableSingleBufferBlock extends HorizontalDirecti
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void onRemove(@NotNull BlockState state, @NotNull Level worldIn,
                          @NotNull BlockPos pos, @NotNull BlockState newState, boolean isMoving) {
         IBE.onRemove(state, worldIn, pos, newState);
@@ -85,7 +84,6 @@ public abstract class AbstractDyeableSingleBufferBlock extends HorizontalDirecti
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public FluidState getFluidState(BlockState state) {
         return fluidState(state);
@@ -107,20 +105,16 @@ public abstract class AbstractDyeableSingleBufferBlock extends HorizontalDirecti
 
     protected abstract VoxelShaper getShaper(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context);
 
-    @SuppressWarnings("deprecation")
-    @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return getShaper(state, level, pos, context).get(state.getValue(FACING));
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos) {
         updateWater(level, state, currentPos);
         return state;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public ItemInteractionResult useItemOn(ItemStack stack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand,
                                  BlockHitResult pHit) {

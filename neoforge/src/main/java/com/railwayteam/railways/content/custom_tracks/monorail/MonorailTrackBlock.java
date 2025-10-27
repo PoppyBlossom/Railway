@@ -171,7 +171,6 @@ public class MonorailTrackBlock extends TrackBlock {
     }
 
     @Override
-    @SuppressWarnings("deprecation") // deprecated to call, fine to implement
     public void randomTick(BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
         if (!state.hasProperty(SHAPE)) return;
         TrackGraphLocation location = TrackGraphHelper.getGraphLocationAt(level, pos,

@@ -18,7 +18,6 @@
 
 package com.railwayteam.railways.mixin.conductor_possession;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.railwayteam.railways.content.conductor.ClientHandler;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;

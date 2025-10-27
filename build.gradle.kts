@@ -109,7 +109,8 @@ operator fun String.invoke(): String = rootProject.ext[this] as String
 fun calculateGitHash(): String {
     return try {
         val stdout = ByteArrayOutputStream()
-        exec {
+        // Gradle 8+ replacement for deprecated Project.exec
+        providers.exec {
             commandLine("git", "rev-parse", "--short", "HEAD")
             standardOutput = stdout
         }
@@ -122,7 +123,8 @@ fun calculateGitHash(): String {
 fun calculateGitBranch(): String {
     return try {
         val stdout = ByteArrayOutputStream()
-        exec {
+        // Gradle 8+ replacement for deprecated Project.exec
+        providers.exec {
             commandLine("git", "rev-parse", "--abbrev-ref", "HEAD")
             standardOutput = stdout
         }
@@ -135,7 +137,8 @@ fun calculateGitBranch(): String {
 fun hasUnstaged(): Boolean {
     return try {
         val stdout = ByteArrayOutputStream()
-        exec {
+        // Gradle 8+ replacement for deprecated Project.exec
+        providers.exec {
             commandLine("git", "status", "--porcelain")
             standardOutput = stdout
         }

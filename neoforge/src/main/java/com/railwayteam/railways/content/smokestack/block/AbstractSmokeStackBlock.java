@@ -30,7 +30,6 @@ import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -75,7 +74,6 @@ public abstract class AbstractSmokeStackBlock<T extends SmartBlockEntity> extend
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return shape.get();
     }
@@ -102,7 +100,6 @@ public abstract class AbstractSmokeStackBlock<T extends SmartBlockEntity> extend
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public @NotNull FluidState getFluidState(BlockState state) {
         return fluidState(state);
     }
@@ -123,7 +120,6 @@ public abstract class AbstractSmokeStackBlock<T extends SmartBlockEntity> extend
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos) {
         updateWater(level, state, currentPos);
         return state;
@@ -143,7 +139,6 @@ public abstract class AbstractSmokeStackBlock<T extends SmartBlockEntity> extend
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
         super.neighborChanged(state, level, pos, block, fromPos, isMoving);
         if (!level.isClientSide) {

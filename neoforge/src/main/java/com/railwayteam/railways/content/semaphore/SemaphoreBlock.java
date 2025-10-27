@@ -80,7 +80,6 @@ public class SemaphoreBlock extends HorizontalDirectionalBlock implements IBE<Se
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         super.createBlockStateDefinition(pBuilder.add(FACING).add(FLIPPED).add(FULL).add(UPSIDE_DOWN));
     }
-    @SuppressWarnings("deprecation")
     @Override
     public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
                                  BlockHitResult ray) {
@@ -170,7 +169,6 @@ public class SemaphoreBlock extends HorizontalDirectionalBlock implements IBE<Se
         return InteractionResult.SUCCESS;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean isMoving) {
         super.onPlace(state, world, pos, oldState, isMoving);
@@ -310,7 +308,6 @@ public class SemaphoreBlock extends HorizontalDirectionalBlock implements IBE<Se
         return CRBlockEntities.SEMAPHORE.get();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return CRShapes.SEMAPHORE.get(pState.getValue(FACING));

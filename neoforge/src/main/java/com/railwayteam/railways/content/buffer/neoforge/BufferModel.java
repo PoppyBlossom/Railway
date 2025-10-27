@@ -158,7 +158,6 @@ public class BufferModel implements BakedModel {
         final UnaryOperator<TextureAtlasSprite> finalMaterialSwapper = materialSwapper;
         final UnaryOperator<TextureAtlasSprite> finalColorSwapper = colorSwapper;
         return List.of(new BufferModel(wrapped) {
-            @SuppressWarnings("deprecation")
             @Override
             public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction direction, @NotNull RandomSource random) {
                 if (finalMaterialSwapper != null || finalColorSwapper != null) {

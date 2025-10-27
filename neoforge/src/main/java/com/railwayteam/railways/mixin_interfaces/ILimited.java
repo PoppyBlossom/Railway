@@ -18,8 +18,6 @@
 
 package com.railwayteam.railways.mixin_interfaces;
 
-import net.minecraft.core.BlockPos;
-
 public interface ILimited {
     void setLimitEnabled(boolean limitEnabled);
     boolean isLimitEnabled();

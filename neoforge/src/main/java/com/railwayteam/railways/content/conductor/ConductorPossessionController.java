@@ -30,7 +30,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
-import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.SectionPos;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;

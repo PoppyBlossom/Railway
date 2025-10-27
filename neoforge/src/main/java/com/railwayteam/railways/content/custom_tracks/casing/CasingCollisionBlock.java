@@ -57,19 +57,16 @@ public abstract class CasingCollisionBlock extends Block implements EntityBlock,
         throw new AssertionError();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
         return Shapes.empty();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return CRShapes.BOTTOM_SLAB;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public RenderShape getRenderShape(BlockState pState) {
         return RenderShape.ENTITYBLOCK_ANIMATED;
@@ -85,7 +82,6 @@ public abstract class CasingCollisionBlock extends Block implements EntityBlock,
         return withWater(super.getStateForPlacement(pContext), pContext);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public @NotNull BlockState updateShape(BlockState pState, Direction pDirection, BlockState pNeighborState,
                                            LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pNeighborPos) {
@@ -93,13 +89,11 @@ public abstract class CasingCollisionBlock extends Block implements EntityBlock,
         return pState;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public FluidState getFluidState(BlockState pState) {
         return fluidState(pState);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
         if (pLevel.getBlockEntity(pPos) instanceof CasingCollisionBlockEntity be)

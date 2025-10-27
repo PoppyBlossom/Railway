@@ -18,7 +18,6 @@
 
 package com.railwayteam.railways.content.coupling;
 
-import com.railwayteam.railways.Railways;
 import com.railwayteam.railways.mixin.AccessorAbstractContraptionEntity;
 import com.railwayteam.railways.mixin.AccessorOrientedContraptionEntity;
 import com.railwayteam.railways.mixin.AccessorScheduleRuntime;
@@ -30,9 +29,7 @@ import com.railwayteam.railways.multiloader.PlayerSelection;
 import com.railwayteam.railways.registry.CRPackets;
 import com.railwayteam.railways.util.packet.AddTrainEndPacket;
 import com.railwayteam.railways.util.packet.CarriageContraptionEntityUpdatePacket;
-import com.railwayteam.railways.util.packet.ChopTrainEndPacket;
 import com.simibubi.create.Create;
-import com.simibubi.create.content.contraptions.ContraptionDisassemblyPacket;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.trains.entity.Carriage;
 import com.simibubi.create.content.trains.entity.CarriageContraption;

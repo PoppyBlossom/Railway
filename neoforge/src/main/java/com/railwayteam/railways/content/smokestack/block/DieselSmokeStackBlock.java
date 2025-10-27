@@ -51,13 +51,11 @@ public class DieselSmokeStackBlock extends AbstractSmokeStackBlock<DieselSmokeSt
         registerDefaultState(defaultBlockState().setValue(FACING, Direction.DOWN));
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public BlockState rotate(BlockState state, Rotation rotation) {
         return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public BlockState mirror(BlockState state, Mirror mirror) {
         return state.setValue(FACING, mirror.mirror(state.getValue(FACING)));

@@ -18,25 +18,15 @@
 
 package com.railwayteam.railways.mixin.client;
 
-import com.google.common.collect.ImmutableList;
-import com.railwayteam.railways.mixin_interfaces.ILimited;
-import com.railwayteam.railways.registry.CRPackets;
-import com.railwayteam.railways.util.Utils;
 import com.simibubi.create.content.trains.entity.Train;
-import com.simibubi.create.content.trains.entity.TrainIconType;
 import com.simibubi.create.content.trains.station.AbstractStationScreen;
 import com.simibubi.create.content.trains.station.GlobalStation;
 import com.simibubi.create.content.trains.station.StationBlockEntity;
 import com.simibubi.create.content.trains.station.StationScreen;
-import com.simibubi.create.content.trains.station.TrainEditPacket;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
-import com.simibubi.create.foundation.utility.CreateLang;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

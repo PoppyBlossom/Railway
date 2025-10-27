@@ -18,21 +18,15 @@
 
 package com.railwayteam.railways.registry;
 
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.mojang.datafixers.DataFixerBuilder;
 import com.mojang.datafixers.schemas.Schema;
 import com.railwayteam.railways.Railways;
-import com.railwayteam.railways.base.datafixerapi.DataFixesInternals;
 import com.railwayteam.railways.base.datafixers.CompatCherryTrackFix;
 import com.railwayteam.railways.base.datafixers.LocoMetalSmokeboxFacingFix;
 import com.railwayteam.railways.base.datafixers.StreamlinedSmokeStackFacingFix;
 import com.railwayteam.railways.base.datafixers.UpsideDownMonoBogeyFix;
-import com.railwayteam.railways.config.CRConfigs;
-import net.minecraft.SharedConstants;
 import net.minecraft.util.datafix.schemas.NamespacedSchema;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.function.BiFunction;
 
 import static com.railwayteam.railways.base.datafixerapi.DataFixesInternals.BASE_SCHEMA;

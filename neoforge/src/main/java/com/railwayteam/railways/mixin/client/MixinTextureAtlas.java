@@ -19,7 +19,6 @@
 package com.railwayteam.railways.mixin.client;
 
 import com.railwayteam.railways.content.custom_tracks.phantom.PhantomSpriteManager;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;

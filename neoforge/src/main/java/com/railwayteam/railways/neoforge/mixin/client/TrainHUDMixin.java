@@ -18,7 +18,6 @@
 
 package com.railwayteam.railways.neoforge.mixin.client;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.railwayteam.railways.content.switches.TrainHUDSwitchExtension;
 import com.simibubi.create.content.trains.TrainHUD;
 import net.minecraft.client.gui.Gui;

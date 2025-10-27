@@ -22,7 +22,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.railwayteam.railways.mixin_interfaces.IHasCustomOutline;
 import com.railwayteam.railways.registry.CRShapes;
-import com.simibubi.create.content.equipment.extendoGrip.ExtendoGripItem;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IHaveBigOutline;
 import com.simibubi.create.foundation.placement.PoleHelper;
@@ -40,7 +39,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
@@ -100,7 +98,6 @@ public class BoilerBlock extends Block implements IWrenchable, IHasCustomOutline
         return IWrenchable.super.getRotatedBlockState(originalState, targetedFace);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean skipRendering(@NotNull BlockState state, BlockState adjacentBlockState, @NotNull Direction direction) {
         return adjacentBlockState.is(this)
@@ -108,19 +105,16 @@ public class BoilerBlock extends Block implements IWrenchable, IHasCustomOutline
                 && adjacentBlockState.getValue(RAISED) == state.getValue(RAISED);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getOcclusionShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos) {
         return Shapes.empty();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public float getShadeBrightness(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos) {
         return 1.0f;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public @NotNull BlockState rotate(@NotNull BlockState state, Rotation rotation) {
         return switch (rotation) {

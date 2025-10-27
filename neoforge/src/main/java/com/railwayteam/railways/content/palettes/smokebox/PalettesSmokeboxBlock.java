@@ -37,7 +37,6 @@ public class PalettesSmokeboxBlock extends Block {
         registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH));
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public @NotNull BlockState rotate(BlockState state, Rotation rotation) {
         return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
