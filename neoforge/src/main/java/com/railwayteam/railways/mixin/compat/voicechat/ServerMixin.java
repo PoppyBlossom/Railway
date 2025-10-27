@@ -26,7 +26,6 @@ import com.railwayteam.railways.content.conductor.ConductorPossessionController;
 import org.spongepowered.asm.mixin.Mixin;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
-import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Slice;
 

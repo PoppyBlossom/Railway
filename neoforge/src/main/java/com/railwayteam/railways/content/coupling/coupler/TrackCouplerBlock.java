@@ -67,7 +67,6 @@ public abstract class TrackCouplerBlock extends Block implements IBE<TrackCouple
 	 * BlockStateBase#hasAnalogOutputSignal} whenever possible.
 	 * Implementing/overriding is fine.
 	 */
-	@SuppressWarnings("deprecation")
 	@Deprecated
 	@Override
 	public boolean hasAnalogOutputSignal(@NotNull BlockState state) {
@@ -79,7 +78,6 @@ public abstract class TrackCouplerBlock extends Block implements IBE<TrackCouple
 	 * BlockStateBase#getAnalogOutputSignal} whenever possible.
 	 * Implementing/overriding is fine.
 	 */
-	@SuppressWarnings("deprecation")
 	@Deprecated
     @Override
 	public int getAnalogOutputSignal(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos) {

@@ -18,10 +18,8 @@
 
 package com.railwayteam.railways.content.switches;
 
-import com.railwayteam.railways.content.conductor.ConductorEntity;
 import com.railwayteam.railways.registry.CRBlockEntities;
 import com.railwayteam.railways.registry.CRShapes;
-import com.simibubi.create.AllItems;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.content.trains.entity.TravellingPoint;
 import com.simibubi.create.foundation.block.IBE;
@@ -29,12 +27,8 @@ import net.createmod.catnip.lang.Lang;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -214,7 +208,6 @@ public abstract class TrackSwitchBlock extends HorizontalDirectionalBlock implem
     IBE.onRemove(state, level, pos, newState);
   }
 
-  @SuppressWarnings("deprecation")
   @Override
   public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level,
                                       @NotNull BlockPos pos, @NotNull CollisionContext context) {
@@ -230,7 +223,6 @@ public abstract class TrackSwitchBlock extends HorizontalDirectionalBlock implem
       CRShapes.ANDESITE_SWITCH.get(state.getValue(FACING));
   }
 
-  @SuppressWarnings("deprecation")
   @Override
   public @NotNull VoxelShape getCollisionShape(@NotNull BlockState state, @NotNull BlockGetter level,
                                                @NotNull BlockPos pos, @NotNull CollisionContext context) {
@@ -266,7 +258,6 @@ public abstract class TrackSwitchBlock extends HorizontalDirectionalBlock implem
    * BlockStateBase#hasAnalogOutputSignal} whenever possible.
    * Implementing/overriding is fine.
    */
-  @SuppressWarnings("deprecation")
   @Deprecated
   @Override
   public boolean hasAnalogOutputSignal(@NotNull BlockState state) {
@@ -278,7 +269,6 @@ public abstract class TrackSwitchBlock extends HorizontalDirectionalBlock implem
    * BlockStateBase#getAnalogOutputSignal} whenever possible.
    * Implementing/overriding is fine.
    */
-  @SuppressWarnings("deprecation")
   @Deprecated
   @Override
   public int getAnalogOutputSignal(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos) {

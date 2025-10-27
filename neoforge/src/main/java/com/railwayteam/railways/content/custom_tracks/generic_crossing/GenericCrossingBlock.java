@@ -104,7 +104,6 @@ public class GenericCrossingBlock extends Block implements IBE<GenericCrossingBl
         builder.add(SHAPE, WATERLOGGED);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public FluidState getFluidState(BlockState state) {
         return fluidState(state);
@@ -116,7 +115,6 @@ public class GenericCrossingBlock extends Block implements IBE<GenericCrossingBl
         return withWater(super.getStateForPlacement(context), context);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos) {
         updateWater(level, state, currentPos);
@@ -189,13 +187,11 @@ public class GenericCrossingBlock extends Block implements IBE<GenericCrossingBl
         return CRBlockEntities.GENERIC_CROSSING.get();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) {
         return getFullShape(state);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public VoxelShape getInteractionShape(BlockState state, BlockGetter pLevel, BlockPos pPos) {
         return getFullShape(state);
@@ -245,7 +241,6 @@ public class GenericCrossingBlock extends Block implements IBE<GenericCrossingBl
         return AllShapes.TRACK_FALLBACK;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public VoxelShape getCollisionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos,
                                         CollisionContext pContext) {
@@ -255,13 +250,11 @@ public class GenericCrossingBlock extends Block implements IBE<GenericCrossingBl
         };
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource p_60465_) {
         TrackPropagator.onRailAdded(level, pos, state);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onPlace(BlockState pState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pIsMoving) {
         if (pOldState.getBlock() == this)
@@ -331,7 +324,6 @@ public class GenericCrossingBlock extends Block implements IBE<GenericCrossingBl
         return IWrenchable.super.onSneakWrenched(state, context);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (!state.is(newState.getBlock())) {

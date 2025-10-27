@@ -75,7 +75,6 @@ public class InvisibleMonoBogeyBlock extends AbstractMonoBogeyBlock<InvisibleMon
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
         if (state.hasProperty(UPSIDE_DOWN) && state.getValue(UPSIDE_DOWN)) {
             return shape(0, 0, 0, 16, 16-7, 16).build();

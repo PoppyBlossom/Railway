@@ -72,8 +72,6 @@ public class MonorailTrackVoxelShapes extends TrackVoxelShapes {
         shape = Shapes.join(shape, Block.box(off, 0, off, 16 + off, 16, 16 + off), BooleanOp.ONLY_FIRST);
         shape = Shapes.join(shape, Block.box(-off, 0, -off, 16 - off, 16, 16 - off), BooleanOp.ONLY_FIRST);
 
-        if (false) return shape.optimize();
-
         off = 0;
         shape = Shapes.or(shape, Block.box(off, 0, off, 16 + off, 16, 16 + off));
         shape = Shapes.or(shape, Block.box(-off, 0, -off, 16 - off, 16, 16 - off));

@@ -20,7 +20,6 @@ package com.railwayteam.railways.util;
 
 import java.lang.invoke.MethodHandles;
 
-@SuppressWarnings("unchecked")
 public class MethodVarHandleUtils {
     private static final MethodHandles.Lookup lookup = MethodHandles.lookup();
     

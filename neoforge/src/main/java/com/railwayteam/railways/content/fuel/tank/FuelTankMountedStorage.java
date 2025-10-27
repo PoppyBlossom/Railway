@@ -18,7 +18,6 @@
 
 package com.railwayteam.railways.content.fuel.tank;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.railwayteam.railways.content.fuel.tank.FuelTankMountedStorage.Handler;

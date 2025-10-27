@@ -39,6 +39,7 @@ public class CRPackets {
         .c2s(ConfigureDevCapeC2SPacket.class, ConfigureDevCapeC2SPacket::new)
         .c2s(TagCycleSelectionPacket.class, TagCycleSelectionPacket::new)
         .c2s(CurvedTrackHandcarPlacementPacket.class, CurvedTrackHandcarPlacementPacket::new)
+    .c2s(HonkTrainPacket.class, HonkTrainPacket::new)
 
         .s2c(JukeboxCartPacket.class, JukeboxCartPacket::new)
         .s2c(MountedToolboxSyncPacket.class, MountedToolboxSyncPacket::new)

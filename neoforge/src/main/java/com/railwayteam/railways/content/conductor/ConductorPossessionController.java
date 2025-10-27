@@ -30,7 +30,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
-import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.SectionPos;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
@@ -293,15 +292,10 @@ public class ConductorPossessionController {
             SectionPos cameraPos = SectionPos.of(entity);
 
             if (cameraStorage != null) {
-                try {
-                    Class<?> storClass = cameraStorage.getClass();
-                    java.lang.reflect.Field fx = storClass.getDeclaredField("viewCenterX");
-                    java.lang.reflect.Field fz = storClass.getDeclaredField("viewCenterZ");
-                    fx.setAccessible(true);
-                    fz.setAccessible(true);
-                    fx.setInt(cameraStorage, cameraPos.x());
-                    fz.setInt(cameraStorage, cameraPos.z());
-                } catch (Exception ignored) {
+                // Use mixin accessor to avoid fragile reflection and visibility issues
+                if (cameraStorage instanceof com.railwayteam.railways.mixin.conductor_possession.AccessorClientChunkCacheStorage storage) {
+                    storage.railways$setViewCenterX(cameraPos.x());
+                    storage.railways$setViewCenterZ(cameraPos.z());
                 }
             }
         }

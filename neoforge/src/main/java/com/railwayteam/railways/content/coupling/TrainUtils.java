@@ -18,7 +18,6 @@
 
 package com.railwayteam.railways.content.coupling;
 
-import com.railwayteam.railways.Railways;
 import com.railwayteam.railways.mixin.AccessorAbstractContraptionEntity;
 import com.railwayteam.railways.mixin.AccessorOrientedContraptionEntity;
 import com.railwayteam.railways.mixin.AccessorScheduleRuntime;
@@ -30,16 +29,13 @@ import com.railwayteam.railways.multiloader.PlayerSelection;
 import com.railwayteam.railways.registry.CRPackets;
 import com.railwayteam.railways.util.packet.AddTrainEndPacket;
 import com.railwayteam.railways.util.packet.CarriageContraptionEntityUpdatePacket;
-import com.railwayteam.railways.util.packet.ChopTrainEndPacket;
 import com.simibubi.create.Create;
-import com.simibubi.create.content.contraptions.ContraptionDisassemblyPacket;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.trains.entity.Carriage;
 import com.simibubi.create.content.trains.entity.CarriageContraption;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import com.simibubi.create.content.trains.entity.Navigation;
 import com.simibubi.create.content.trains.entity.Train;
-import com.simibubi.create.content.trains.entity.TrainPacket;
 import com.simibubi.create.content.trains.entity.TravellingPoint;
 import com.simibubi.create.content.trains.graph.TrackNode;
 import com.simibubi.create.content.trains.schedule.ScheduleRuntime;
@@ -48,17 +44,13 @@ import com.simibubi.create.content.trains.station.GlobalStation;
 import net.createmod.catnip.data.Couple;
 import net.createmod.catnip.data.Pair;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.mutable.MutableObject;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+// (no additional util imports required)
 
 public class TrainUtils {
     /**

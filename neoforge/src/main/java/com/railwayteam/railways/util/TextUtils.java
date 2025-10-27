@@ -18,13 +18,10 @@
 
 package com.railwayteam.railways.util;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import org.apache.commons.lang3.StringUtils;
-import org.joml.Matrix4f;
-
 import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Stream;

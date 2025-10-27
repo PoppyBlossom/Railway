@@ -30,7 +30,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -191,7 +190,6 @@ public abstract class VentBlock extends CopycatBlock implements IWrenchable {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void entityInside(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Entity entity) {
         super.entityInside(state, level, pos, entity);
         teleportConductor(level, pos, entity, null);
@@ -211,7 +209,6 @@ public abstract class VentBlock extends CopycatBlock implements IWrenchable {
     public static final VoxelShape OUTLINE_SHAPE = CRShapes.BLOCK;
 
     @Override
-    @SuppressWarnings("deprecation")
     public @NotNull VoxelShape getCollisionShape(@NotNull BlockState state, @NotNull BlockGetter level,
                                                  @NotNull BlockPos pos, @NotNull CollisionContext context) {
         if (context instanceof EntityCollisionContext ec && ec.getEntity() instanceof ConductorEntity)
@@ -220,7 +217,6 @@ public abstract class VentBlock extends CopycatBlock implements IWrenchable {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos,
                                         @NotNull CollisionContext context) {
         return OUTLINE_SHAPE;

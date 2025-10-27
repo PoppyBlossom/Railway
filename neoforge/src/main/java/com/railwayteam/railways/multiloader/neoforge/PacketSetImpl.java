@@ -23,7 +23,6 @@ import com.railwayteam.railways.multiloader.C2SPacket;
 import com.railwayteam.railways.multiloader.PacketSet;
 import com.railwayteam.railways.multiloader.PlayerSelection;
 import com.railwayteam.railways.multiloader.S2CPacket;
-import com.simibubi.create.foundation.networking.SimplePacketBase;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
@@ -64,17 +63,17 @@ public class PacketSetImpl extends PacketSet {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void send(SimplePacketBase packet) {
+	public void send(Object packet) {
 		throw new UnsupportedOperationException("Create packet forwarding is not wired for NeoForge 21 yet");
 	}
 
 	@Override
-	public void sendTo(ServerPlayer player, SimplePacketBase packet) {
+	public void sendTo(ServerPlayer player, Object packet) {
 		throw new UnsupportedOperationException("Create packet forwarding is not wired for NeoForge 21 yet");
 	}
 
 	@Override
-	public void sendTo(PlayerSelection selection, SimplePacketBase packet) {
+	public void sendTo(PlayerSelection selection, Object packet) {
 		throw new UnsupportedOperationException("Create packet forwarding is not wired for NeoForge 21 yet");
 	}
 

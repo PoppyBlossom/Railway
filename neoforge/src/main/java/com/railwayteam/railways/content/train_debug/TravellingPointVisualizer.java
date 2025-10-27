@@ -26,7 +26,6 @@ import net.createmod.catnip.theme.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
@@ -39,9 +38,7 @@ public class TravellingPointVisualizer {
             return;
         for (Carriage carriage : train.carriages) {
             Color color = Color.rainbowColor(carriage.hashCode());
-            AABB box = (carriage.getDimensional(cameraEntity.level()).entity.get() == null) ? null : carriage.getDimensional(cameraEntity.level()).entity.get().getBoundingBox();
-            if (true || box == null || box.intersects(cameraEntity.getBoundingBox()
-                .inflate(50))) {
+            if (true) {
                 for (CarriageBogey bogey : carriage.bogeys) {
                     if (bogey != null && bogey.leading() != null && bogey.trailing() != null && bogey.leading().edge != null && bogey.trailing().edge != null) {
                     /*for (TravellingPoint travellingPoint : new TravellingPoint[]{bogey.leading(), bogey.trailing()}) {

@@ -51,7 +51,6 @@ public abstract class WoodVariantTrackBufferBlock extends TrackBufferBlock<WoodV
         return CRBlockEntities.TRACK_BUFFER_WOOD_VARIANT.get();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public ItemInteractionResult useItemOn(ItemStack stack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand,
                                  BlockHitResult pHit) {

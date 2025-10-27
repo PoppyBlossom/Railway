@@ -26,7 +26,6 @@ import com.railwayteam.railways.content.conductor.ConductorPossessionController;
 import net.minecraft.server.level.ServerPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import net.minecraft.world.phys.Vec3;
-import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @ConditionalMixin(mods = Mods.VOICECHAT)

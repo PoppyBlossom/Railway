@@ -20,8 +20,6 @@ package com.railwayteam.railways.util.neoforge;
 
 import com.railwayteam.railways.Railways;
 import com.simibubi.create.content.trains.entity.Train;
-import com.simibubi.create.foundation.networking.SimplePacketBase;
-import net.minecraft.world.level.chunk.LevelChunk;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.FMLPaths;
 
@@ -36,19 +34,21 @@ public class UtilsImpl {
 		return !FMLLoader.isProduction();
 	}
 
-    public static void sendCreatePacketToServer(SimplePacketBase packet) {
-        // TODO 1.21 port: AllPackets.getChannel() no longer exists; network API rework needed
-        Railways.LOGGER.warn("sendCreatePacketToServer temporarily disabled for 1.21 port");
+    public static void sendCreatePacketToServer(Object packet) {
+        // Unused in current codebase; reserved for future Create packet forwarding if needed
+        Railways.LOGGER.warn("sendCreatePacketToServer not implemented for 1.21.1 (Create networking API pending)");
     }
 
     public static void sendHonkPacket(Train train, boolean isHonk) {
-        // TODO 1.21 port: AllPackets.getChannel() and PacketDistributor.ALL no longer exist
-        Railways.LOGGER.warn("sendHonkPacket temporarily disabled for 1.21 port");
-    }
-
-    public static void postChunkEventClient(LevelChunk chunk, boolean load) {
-        // TODO 1.21 port: MinecraftForge.EVENT_BUS no longer exists; use NeoForge event bus
-        Railways.LOGGER.warn("postChunkEventClient temporarily disabled for 1.21 port");
+        // Used in ConductorEntity for train horn control during possession
+        try {
+            // send a simple C2S packet handled by our mod which will invoke Create's train honk on the server
+            java.util.UUID id = train.id;
+            com.railwayteam.railways.util.packet.HonkTrainPacket packet = new com.railwayteam.railways.util.packet.HonkTrainPacket(id, isHonk);
+            com.railwayteam.railways.registry.CRPackets.PACKETS.send(packet);
+        } catch (Throwable t) {
+            Railways.LOGGER.warn("sendHonkPacket: failed to send honk packet (falling back to no-op): {}", t.toString());
+        }
     }
 
     public static Path modsDir() {

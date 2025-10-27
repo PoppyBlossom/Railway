@@ -45,13 +45,11 @@ public class HandcarBlock extends CRBogeyBlock {
         return new Vec3(0, 7 / 32f, 8 / 32f);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public RenderShape getRenderShape(BlockState state) {
         return RenderShape.INVISIBLE;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return CRShapes.HANDCAR;

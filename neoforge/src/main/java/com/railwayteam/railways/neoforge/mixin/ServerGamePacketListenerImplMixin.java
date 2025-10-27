@@ -21,7 +21,6 @@ package com.railwayteam.railways.neoforge.mixin;
 import com.railwayteam.railways.multiloader.PacketSet;
 import com.railwayteam.railways.multiloader.neoforge.PacketSetImpl;
 import net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import org.spongepowered.asm.mixin.Mixin;

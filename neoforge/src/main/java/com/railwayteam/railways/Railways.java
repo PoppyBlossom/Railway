@@ -19,13 +19,9 @@
 package com.railwayteam.railways;
 
 import com.railwayteam.railways.base.data.CRTagGen;
-import com.railwayteam.railways.base.data.RailwaysHatOffsetGenerator;
 import com.railwayteam.railways.base.data.compat.emi.EmiExcludedTagGen;
 import com.railwayteam.railways.base.data.compat.emi.EmiRecipeDefaultsGen;
 import com.railwayteam.railways.base.data.lang.CRLangGen;
-import com.railwayteam.railways.base.data.recipe.RailwaysMechanicalCraftingRecipeGen;
-import com.railwayteam.railways.base.data.recipe.RailwaysSequencedAssemblyRecipeGen;
-import com.railwayteam.railways.base.data.recipe.RailwaysStandardRecipeGen;
 import com.railwayteam.railways.compat.Mods;
 import com.railwayteam.railways.config.CRConfigs;
 import com.railwayteam.railways.multiloader.Loader;
@@ -50,7 +46,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public class Railways {

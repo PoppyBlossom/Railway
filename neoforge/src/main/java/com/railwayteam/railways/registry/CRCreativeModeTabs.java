@@ -268,11 +268,14 @@ public class CRCreativeModeTabs {
                 items.add(item);
         }
         return items;
-    }        private static boolean isInCreativeTab(RegistryEntry<?, ?> entry, ResourceKey<CreativeModeTab> tab) {
-        // Best-effort check: Registrate's RegistryEntry has two type parameters; accept any entry and allow it.
-        // Precise creative-tab resolution can be implemented later if needed, but returning true avoids the compile error.
-        return true;
-    }        private static void applyOrderings(List<Item> items, List<ItemOrdering> orderings) {
+    }
+
+    private static boolean isInCreativeTab(RegistryEntry<?, ?> entry, ResourceKey<CreativeModeTab> tab) {
+        // Delegate to the neoforge-specific implementation which adapts Registrate's API to Neoforge's DeferredHolder
+        return com.railwayteam.railways.registry.neoforge.CRCreativeModeTabsRegistrateDisplayItemsGeneratorImpl.isInCreativeTab(entry, tab);
+    }
+
+    private static void applyOrderings(List<Item> items, List<ItemOrdering> orderings) {
             for (ItemOrdering ordering : orderings) {
                 int anchorIndex = items.indexOf(ordering.anchor());
                 if (anchorIndex != -1) {

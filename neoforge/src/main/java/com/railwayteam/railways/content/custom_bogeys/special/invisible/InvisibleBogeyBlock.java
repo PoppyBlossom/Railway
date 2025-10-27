@@ -111,7 +111,6 @@ public class InvisibleBogeyBlock extends AbstractBogeyBlock<InvisibleBogeyBlockE
 		return CRBlockEntities.INVISIBLE_BOGEY.get();
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
 		return CRShapes.INVISIBLE_BOGEY;

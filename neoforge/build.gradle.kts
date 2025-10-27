@@ -123,7 +123,12 @@ dependencies {
     implementation("net.neoforged:neoforge:${neoforgeVersion}")
 
     // Create and its dependencies (NeoForge)
-    implementation("com.simibubi.create:create-${minecraftVersion}:${createForgeVersion}") {
+    // Use compileOnly for compile-time API access; runtime implementation still comes from the mod
+    compileOnly("com.simibubi.create:create-${minecraftVersion}:${createForgeVersion}") {
+        exclude(group = "dev.ftb.mods")
+        exclude(group = "net.createmod.ponder")
+    }
+    runtimeOnly("com.simibubi.create:create-${minecraftVersion}:${createForgeVersion}") {
         exclude(group = "dev.ftb.mods")
         exclude(group = "net.createmod.ponder")
     }
@@ -152,6 +157,10 @@ dependencies {
 
 sourceSets.main {
     resources.srcDir("src/generated/resources")
+    // Exclude TrainPacket mixins from compilation until Create's packet API is stable
+    java {
+        // TrainPacket mixins re-enabled on this branch (Create networking integration)
+    }
 }
 
 tasks {

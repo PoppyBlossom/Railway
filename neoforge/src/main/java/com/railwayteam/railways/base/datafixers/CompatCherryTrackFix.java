@@ -27,7 +27,6 @@ import com.mojang.serialization.Dynamic;
 import com.railwayteam.railways.mixin.MixinTrackMaterial;
 import net.minecraft.util.datafix.fixes.References;
 
-import java.util.List;
 import java.util.Optional;
 
 /**

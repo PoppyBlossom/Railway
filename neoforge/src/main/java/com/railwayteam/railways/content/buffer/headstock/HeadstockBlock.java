@@ -86,13 +86,11 @@ public class HeadstockBlock extends HorizontalDirectionalBlock implements IBE<He
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void onRemove(@NotNull BlockState state, @NotNull Level worldIn,
                          @NotNull BlockPos pos, @NotNull BlockState newState, boolean isMoving) {
         IBE.onRemove(state, worldIn, pos, newState);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public FluidState getFluidState(BlockState state) {
         return fluidState(state);
@@ -115,7 +113,6 @@ public class HeadstockBlock extends HorizontalDirectionalBlock implements IBE<He
         return withWater(state, context);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         Direction dir = state.getValue(FACING);
@@ -137,14 +134,12 @@ public class HeadstockBlock extends HorizontalDirectionalBlock implements IBE<He
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos) {
         updateWater(level, state, currentPos);
         return state;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public ItemInteractionResult useItemOn(ItemStack stack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand,
                                  BlockHitResult pHit) {

@@ -20,7 +20,6 @@ package com.railwayteam.railways.content.fuel.psi;
 
 import com.railwayteam.railways.mixin.AccessorPortableStorageInterfaceBlockEntity;
 import com.railwayteam.railways.registry.neoforge.CRBlockEntitiesImpl;
-import com.simibubi.create.AllBlockEntityTypes;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
 import com.simibubi.create.foundation.block.IBE;
