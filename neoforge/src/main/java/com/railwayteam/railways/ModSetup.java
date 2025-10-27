@@ -22,12 +22,13 @@ import com.railwayteam.railways.compat.tracks.mods.*;
 import com.railwayteam.railways.content.custom_tracks.casing.CasingCollisionUtils;
 import com.railwayteam.railways.registry.*;
 import com.railwayteam.railways.neoforge.RailwaysImpl;
+import com.railwayteam.railways.neoforge.ModSetupImpl;
 
 public class ModSetup {
-  // Single-loader NeoForge: these no-ops remain for legacy call sites
-  public static void useBaseTab() {}
-  public static void useTracksTab() {}
-  public static void usePalettesTab() {}
+  // Single-loader NeoForge: delegate to the NeoForge implementation to wire Registrate creative tabs
+  public static void useBaseTab() { ModSetupImpl.useBaseTab(); }
+  public static void useTracksTab() { ModSetupImpl.useTracksTab(); }
+  public static void usePalettesTab() { ModSetupImpl.usePalettesTab(); }
 
   public static void register() {
     useBaseTab();
@@ -39,9 +40,15 @@ public class ModSetup {
     CRDisplaySources.register();
     CRDisplayTargets.register();
     CRBlockEntities.register();
+
+    // Switch to the Tracks tab before registering track blocks so they appear in the Tracks tab
+    useTracksTab();
     CRBlocks.register();
   // Platform-specific registrations (NeoForge)
   RailwaysImpl.platformBasedRegistration();
+
+    // Switch to the Palettes tab before registering palette items so they appear in the Palettes tab
+    usePalettesTab();
     CRPalettes.register();
     CRContainerTypes.register();
     CREntities.register();
@@ -55,8 +62,8 @@ public class ModSetup {
     CRInteractionBehaviours.register();
     CRPortalTracks.register();
 
-    // Compat
-    useTracksTab();
+  // Compat (tracks) - ensure Tracks tab is active for compat track registrations
+  useTracksTab();
     HexCastingTrackCompat.register();
     BygTrackCompat.register();
     BlueSkiesTrackCompat.register();

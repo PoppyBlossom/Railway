@@ -30,14 +30,11 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeColor;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.EventBusSubscriber.Bus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import static com.railwayteam.railways.registry.CRItems.ITEM_CONDUCTOR_CAP;
 
-@EventBusSubscriber(bus = Bus.MOD)
 public class CRCreativeModeTabsImpl {
 
     private static final DeferredRegister<CreativeModeTab> TAB_REGISTER =

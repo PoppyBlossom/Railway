@@ -59,7 +59,7 @@ public abstract class VentBlock extends CopycatBlock implements IWrenchable {
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder.add(CONDUCTOR_VISIBLE));
     }    public static VentBlock create(Properties properties) {
-        throw new AssertionError();
+    return com.railwayteam.railways.content.conductor.vent.neoforge.VentBlockImpl.create(properties);
     }
 
 /*    @Nullable

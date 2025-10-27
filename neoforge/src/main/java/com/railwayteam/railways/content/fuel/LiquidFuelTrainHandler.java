@@ -25,7 +25,7 @@ import com.simibubi.create.api.contraption.storage.fluid.MountedFluidStorageWrap
 import net.minecraft.world.level.material.Fluid;
 
 public class LiquidFuelTrainHandler {    public static int handleFuelDraining(MountedFluidStorageWrapper fluidFuels) {
-        throw new AssertionError();
+    return com.railwayteam.railways.content.fuel.neoforge.LiquidFuelTrainHandlerImpl.handleFuelDraining(fluidFuels);
     }
 
     public static int handleFuelChecking(Object o) {

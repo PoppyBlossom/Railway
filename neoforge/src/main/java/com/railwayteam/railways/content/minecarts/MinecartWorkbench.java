@@ -40,7 +40,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class MinecartWorkbench extends MinecartBlock implements MenuProvider {
-  public static final Type TYPE = Type.valueOf("RAILWAY_WORKBENCH");
+  // Don't initialize during class load - mixins may not have run yet
+  public static Type TYPE = null;
+  
+  public static Type getWorkbenchType() {
+    if (TYPE == null) {
+      TYPE = Type.valueOf("RAILWAY_WORKBENCH");
+    }
+    return TYPE;
+  }
 
   private final double VALID_RANGE = 32d;
   private static final EntityTypeTest<Entity, MinecartWorkbench> test = EntityTypeTest.forClass(MinecartWorkbench.class);

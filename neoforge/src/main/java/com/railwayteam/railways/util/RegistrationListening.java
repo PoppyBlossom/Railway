@@ -40,7 +40,7 @@ public class RegistrationListening {
 		addListener(dual.listener1);
 		addListener(dual.listener2);
 	}	public static <T> void addListener(Listener<T> listener) {
-		throw new AssertionError();
+    com.railwayteam.railways.util.neoforge.RegistrationListeningImpl.addListener(listener);
 	}
 
 	public record Listener<T>(Registry<T> registry, ResourceLocation id, Consumer<T> consumer) {

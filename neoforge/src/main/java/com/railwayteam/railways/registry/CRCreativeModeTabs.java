@@ -59,6 +59,36 @@ public class CRCreativeModeTabs {
         // just to load class
     }
 
+    // Dev helper: log counts of entries assigned to each creative tab at startup
+    public static void devLogTabCounts() {
+        try {
+            var reg = Railways.registrate();
+            var mainKey = getBaseTabKey();
+            var tracksKey = getTracksTabKey();
+            var palettesKey = getPalettesTabKey();
+
+            int mainItems = 0, mainBlocks = 0;
+            int tracksItems = 0, tracksBlocks = 0;
+            int palettesItems = 0, palettesBlocks = 0;
+
+            for (var e : reg.getAll(Registries.ITEM)) {
+                if (com.railwayteam.railways.registry.neoforge.CRCreativeModeTabsRegistrateDisplayItemsGeneratorImpl.isInCreativeTab(e, mainKey)) mainItems++;
+                if (com.railwayteam.railways.registry.neoforge.CRCreativeModeTabsRegistrateDisplayItemsGeneratorImpl.isInCreativeTab(e, tracksKey)) tracksItems++;
+                if (com.railwayteam.railways.registry.neoforge.CRCreativeModeTabsRegistrateDisplayItemsGeneratorImpl.isInCreativeTab(e, palettesKey)) palettesItems++;
+            }
+            for (var e : reg.getAll(Registries.BLOCK)) {
+                if (com.railwayteam.railways.registry.neoforge.CRCreativeModeTabsRegistrateDisplayItemsGeneratorImpl.isInCreativeTab(e, mainKey)) mainBlocks++;
+                if (com.railwayteam.railways.registry.neoforge.CRCreativeModeTabsRegistrateDisplayItemsGeneratorImpl.isInCreativeTab(e, tracksKey)) tracksBlocks++;
+                if (com.railwayteam.railways.registry.neoforge.CRCreativeModeTabsRegistrateDisplayItemsGeneratorImpl.isInCreativeTab(e, palettesKey)) palettesBlocks++;
+            }
+
+            Railways.LOGGER.info("[Dev] Creative tab assignment -> main: {} items, {} blocks | tracks: {} items, {} blocks | palettes: {} items, {} blocks",
+                mainItems, mainBlocks, tracksItems, tracksBlocks, palettesItems, palettesBlocks);
+        } catch (Throwable t) {
+            Railways.LOGGER.debug("[Dev] Failed to log creative tab assignment counts", t);
+        }
+    }
+
     public enum Tabs {
         MAIN(CRCreativeModeTabs::getBaseTabKey),
         TRACK(CRCreativeModeTabs::getTracksTabKey),
@@ -216,6 +246,9 @@ public class CRCreativeModeTabs {
             items.addAll(collectItems(tab, is3d, true, exclusionPredicate));
             items.addAll(collectBlocks(tab, exclusionPredicate));
             items.addAll(collectItems(tab, is3d, false, exclusionPredicate));
+
+            // Debug: log how many items we are about to output for this tab
+            com.railwayteam.railways.Railways.LOGGER.info("[Dev] Creative tab {} will display {} entries", tab.location(), items.size());
 
             applyOrderings(items, orderings);
             outputAll(output, items, stackFunc, visibilityFunc);

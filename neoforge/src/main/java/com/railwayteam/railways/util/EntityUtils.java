@@ -33,17 +33,17 @@ import org.jetbrains.annotations.Contract;
 import java.util.function.Predicate;
 
 public class EntityUtils {	public static CompoundTag getPersistentData(Entity entity) {
-		throw new AssertionError();
+    return com.railwayteam.railways.util.neoforge.EntityUtilsImpl.getPersistentData(entity);
 	}
 
 	/**
 	 * Gives a player an item. Plays the pickup sound, and drops whatever can't be picked up.
 	 */	public static void givePlayerItem(Player player, ItemStack stack) {
-		throw new AssertionError();
+    com.railwayteam.railways.util.neoforge.EntityUtilsImpl.givePlayerItem(player, stack);
 	}	public static ServerPlayer createConductorFakePlayer(ServerLevel level, ConductorEntity conductor) {
-		throw new AssertionError();
+    return com.railwayteam.railways.util.neoforge.EntityUtilsImpl.createConductorFakePlayer(level, conductor);
 	}	public static double getReachDistance(Player player) {
-		throw new AssertionError();
+    return com.railwayteam.railways.util.neoforge.EntityUtilsImpl.getReachDistance(player);
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class EntityUtils {	public static CompoundTag getPersistentData(Entity en
 	 * @return true if the use is allowed, false otherwise
 	 */	@Contract // shut
 	public static boolean handleUseEvent(Player player, InteractionHand hand, BlockHitResult hit) {
-		throw new AssertionError();
+    return com.railwayteam.railways.util.neoforge.EntityUtilsImpl.handleUseEvent(player, hand, hit);
 	}
 
 	public static boolean isHolding(Player player, Predicate<ItemStack> predicate) {

@@ -292,7 +292,7 @@ public class BoilerBlock extends Block implements IWrenchable, IHasCustomOutline
 
             return offset;
         }        public static Holder<Attribute> getAttribute() {
-            throw new AssertionError();
+    return com.railwayteam.railways.content.palettes.boiler.neoforge.BoilerBlockPlacementHelperImpl.getAttribute();
         }
     }
 }

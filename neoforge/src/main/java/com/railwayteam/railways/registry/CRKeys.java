@@ -108,8 +108,8 @@ public enum CRKeys {
     public static boolean altDown() {
         return Screen.hasAltDown();
     }    private static void registerKeyBinding(KeyMapping keyMapping) {
-        throw new AssertionError();
+        com.railwayteam.railways.registry.neoforge.CRKeysImpl.registerKeyBinding(keyMapping);
     }    private static int getBoundCode(KeyMapping keyMapping) {
-        throw new AssertionError();
+        return com.railwayteam.railways.registry.neoforge.CRKeysImpl.getBoundCode(keyMapping);
     }
 }

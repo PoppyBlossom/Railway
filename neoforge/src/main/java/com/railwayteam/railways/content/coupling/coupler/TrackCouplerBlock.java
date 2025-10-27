@@ -48,7 +48,7 @@ public abstract class TrackCouplerBlock extends Block implements IBE<TrackCouple
 		super(pProperties);
 		registerDefaultState(defaultBlockState().setValue(POWERED, false).setValue(MODE, TrackCouplerBlockEntity.AllowedOperationMode.BOTH));
 	}	public static TrackCouplerBlock create(Properties properties) {
-		throw new AssertionError();
+    return com.railwayteam.railways.content.coupling.coupler.neoforge.TrackCouplerBlockImpl.create(properties);
 	}
 
 	@Override

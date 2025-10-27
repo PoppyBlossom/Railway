@@ -25,6 +25,6 @@ import org.jetbrains.annotations.Contract;
 
 public class ItemUtils {	@Contract // shut
 	public static boolean blocksEndermanView(ItemStack stack, Player wearer, EnderMan enderman) {
-		throw new AssertionError();
+    return com.railwayteam.railways.util.neoforge.ItemUtilsImpl.blocksEndermanView(stack, wearer, enderman);
 	}
 }

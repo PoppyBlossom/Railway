@@ -28,14 +28,14 @@ import net.minecraft.world.level.block.state.BlockState;
  * basis, usually due to doing fluids
  */
 public class AbstractionUtils {    public static BlockEntry<?> getFluidTankBlockEntry() {
-        throw new AssertionError();
+    return com.railwayteam.railways.util.neoforge.AbstractionUtilsImpl.getFluidTankBlockEntry();
     }    public static boolean isInstanceOfFuelTankBlockEntity(BlockEntity blockEntity) {
-        throw new AssertionError();
+    return com.railwayteam.railways.util.neoforge.AbstractionUtilsImpl.isInstanceOfFuelTankBlockEntity(blockEntity);
     }    public static boolean isInstanceOfFuelTankMountedStorageType(MountedFluidStorageType<?> type) {
-        throw new AssertionError();
+    return com.railwayteam.railways.util.neoforge.AbstractionUtilsImpl.isInstanceOfFuelTankMountedStorageType(type);
     }    public static BlockEntry<?> getPortableFuelInterfaceBlockEntry() {
-        throw new AssertionError();
+    return com.railwayteam.railways.util.neoforge.AbstractionUtilsImpl.getPortableFuelInterfaceBlockEntry();
     }    public static boolean portableFuelInterfaceBlockHasState(BlockState state) {
-        throw new AssertionError();
+    return com.railwayteam.railways.util.neoforge.AbstractionUtilsImpl.portableFuelInterfaceBlockHasState(state);
     }
 }

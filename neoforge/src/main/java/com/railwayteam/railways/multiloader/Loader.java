@@ -51,7 +51,9 @@ public enum Loader {
 		return CURRENT;
 	}
 
-	@Internal	private static Loader getCurrent() {
-		throw new AssertionError();
+	@Internal	
+	private static Loader getCurrent() {
+		// Platform-specific implementation
+		return com.railwayteam.railways.multiloader.neoforge.LoaderImpl.getCurrent();
 	}
 }

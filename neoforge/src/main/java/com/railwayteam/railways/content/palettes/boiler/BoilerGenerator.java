@@ -32,7 +32,7 @@ public abstract class BoilerGenerator extends SpecialBlockStateGen {
         this.color = color;
         this.wrapping = wrapping;
     }    public static BoilerGenerator create(@Nullable DyeColor color, @Nullable Wrapping wrapping) {
-        throw new AssertionError();
+    return com.railwayteam.railways.content.palettes.boiler.neoforge.BoilerGeneratorImpl.create(color, wrapping);
     }
 
     @Override

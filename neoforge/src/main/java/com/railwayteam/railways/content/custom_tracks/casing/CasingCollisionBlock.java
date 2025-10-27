@@ -54,7 +54,7 @@ public abstract class CasingCollisionBlock extends Block implements EntityBlock,
             .noOcclusion());
         registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
     }    public static CasingCollisionBlock create(Properties properties) {
-        throw new AssertionError();
+    return com.railwayteam.railways.content.custom_tracks.casing.neoforge.CasingCollisionBlockImpl.create(properties);
     }
 
     @Override

@@ -75,11 +75,11 @@ import java.util.function.Function;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 
 public class BuilderTransformers {    public static <B extends MonoBogeyBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> monobogey() {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.monobogey();
     }    public static <B extends InvisibleBogeyBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> invisibleBogey() {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.invisibleBogey();
     }    public static <B extends InvisibleMonoBogeyBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> invisibleMonoBogey() {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.invisibleMonoBogey();
     }
 
     @ApiStatus.Internal
@@ -91,39 +91,39 @@ public class BuilderTransformers {    public static <B extends MonoBogeyBlock, P
             .tag(AllTags.AllBlockTags.SAFE_NBT.tag)
             .loot((p, l) -> p.dropOther(l, AllBlocks.RAILWAY_CASING.get()));
     }    public static <B extends CRBogeyBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> standardBogey() {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.standardBogey();
     }    public static <B extends CRBogeyBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> wideBogey() {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.wideBogey();
     }    public static <B extends CRBogeyBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> narrowBogey() {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.narrowBogey();
     }    public static <B extends SmokeStackBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> smokestack(boolean rotates, ResourceLocation modelLoc) {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.smokestack(rotates, modelLoc);
     }    public static <B extends SemaphoreBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> semaphore() {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.semaphore();
     }    public static <B extends TrackCouplerBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> trackCoupler() {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.trackCoupler();
     }    public static <B extends TrackSwitchBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> trackSwitch(boolean andesite) {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.trackSwitch(andesite);
     }    public static <B extends ConductorWhistleFlagBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> conductorWhistleFlag() {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.conductorWhistleFlag();
     }    public static <B extends DieselSmokeStackBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> dieselSmokeStack() {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.dieselSmokeStack();
     }    public static <B extends VentBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> conductorVent() {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.conductorVent();
     }    public static NonNullBiConsumer<DataGenContext<Block, SmokeStackBlock>, RegistrateBlockstateProvider> defaultSmokeStack(String variant, SmokeStackBlock.RotationType rotType) {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.defaultSmokeStack(variant, rotType);
     }    public static <B extends CasingCollisionBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> casingCollision() {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.casingCollision();
     }    public static <B extends HandcarBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> handcar() {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.handcar();
     }    public static <B extends GenericCrossingBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> genericCrossing() {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.genericCrossing();
     }    public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> locoMetalBase(@Nullable DyeColor color, @Nullable String type) {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.locoMetalBase(color, type);
     }    public static <B extends RotatedPillarBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locoMetalPillar(@Nullable DyeColor color) {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.locoMetalPillar(color);
     }    public static <B extends PalettesSmokeboxBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locoMetalSmokeBox(@Nullable DyeColor color) {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.locoMetalSmokeBox(color);
     }
 
     public static <B extends BoilerBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locoMetalBoiler(@Nullable DyeColor color, @Nullable Wrapping wrapping) {
@@ -144,28 +144,28 @@ public class BuilderTransformers {    public static <B extends MonoBogeyBlock, P
     public static String colorNameUnderscore(@Nullable DyeColor color) {
         return color == null ? "" : color.name().toLowerCase(Locale.ROOT) + "_";
     }    public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> variantBuffer() {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.variantBuffer();
     }    public static <I extends Item, P> NonNullUnaryOperator<ItemBuilder<I, P>> variantBufferItem() {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.variantBufferItem();
     }    public static <B extends CopycatHeadstockBarsBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> copycatHeadstockBars() {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.copycatHeadstockBars();
     }    public static <B extends TrackBufferBlock<?>, P> NonNullUnaryOperator<BlockBuilder<B, P>> bufferBlockState(Function<BlockState, ResourceLocation> modelFunc, Function<BlockState, Direction> facingFunc) {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.bufferBlockState(modelFunc, facingFunc);
     }    public static <B extends MonoTrackBufferBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> monoBuffer() {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.monoBuffer();
     }    public static <B extends LinkPinBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> linkAndPin() {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.linkAndPin();
     }    public static <B extends HeadstockBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> headstock() {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.headstock();
     }    public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> invisibleBlockState() {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.invisibleBlockState();
     }    public static <B extends CopycatHeadstockBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> copycatHeadstock() {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.copycatHeadstock();
     }    public static <I extends Item, P> NonNullUnaryOperator<ItemBuilder<I, P>> copycatHeadstockItem() {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.copycatHeadstockItem();
     }    public static <B extends GenericDyeableSingleBufferBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> bigBuffer() {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.bigBuffer();
     }    public static <B extends GenericDyeableSingleBufferBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> smallBuffer() {
-        throw new AssertionError();
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.smallBuffer();
     }
 }

@@ -51,7 +51,15 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 
 public class MinecartJukebox extends MinecartBlock {
-  public static final Type TYPE = Type.valueOf("RAILWAY_JUKEBOX");
+  // Don't initialize during class load - mixins may not have run yet
+  public static Type TYPE = null;
+  
+  public static Type getJukeboxType() {
+    if (TYPE == null) {
+      TYPE = Type.valueOf("RAILWAY_JUKEBOX");
+    }
+    return TYPE;
+  }
 
   private static final int COOLDOWN = 100; // ticks
   private int cooldownCount = 0;

@@ -100,6 +100,6 @@ public enum Mods {
 	public static boolean isModLoaded(String id) {
 		return isModLoaded(id, null);
 	}	public static boolean isModLoaded(String id, @Nullable String fabricId) {
-		throw new AssertionError();
+    return com.railwayteam.railways.compat.neoforge.ModsImpl.isModLoaded(id, fabricId);
 	}
 }

@@ -118,6 +118,6 @@ public class MountedToolboxEquipPacket implements C2SPacket {
 		toolbox.connectPlayer(slot, player, hotbarSlot);
 		ToolboxHandler.syncData(player);
 	}	public static void doEquip(ServerPlayer player, int hotbarSlot, ItemStack held, ToolboxInventory inv) {
-		throw new AssertionError();
+    com.railwayteam.railways.content.conductor.toolbox.neoforge.MountedToolboxEquipPacketImpl.doEquip(player, hotbarSlot, held, inv);
 	}
 }

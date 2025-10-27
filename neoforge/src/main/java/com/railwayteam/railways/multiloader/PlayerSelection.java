@@ -33,20 +33,20 @@ import java.util.function.Predicate;
  */
 public abstract class PlayerSelection {
 	public abstract void accept(ResourceLocation id, FriendlyByteBuf buffer);	public static PlayerSelection all() {
-		throw new AssertionError();
+    return com.railwayteam.railways.multiloader.neoforge.PlayerSelectionImpl.all();
 	}	public static PlayerSelection allWith(Predicate<ServerPlayer> condition) {
-		throw new AssertionError();
+    return com.railwayteam.railways.multiloader.neoforge.PlayerSelectionImpl.allWith(condition);
 	}	public static PlayerSelection of(ServerPlayer player) {
-		throw new AssertionError();
+    return com.railwayteam.railways.multiloader.neoforge.PlayerSelectionImpl.of(player);
 	}	public static PlayerSelection tracking(Entity entity) {
-		throw new AssertionError();
+    return com.railwayteam.railways.multiloader.neoforge.PlayerSelectionImpl.tracking(entity);
 	}	public static PlayerSelection trackingWith(Entity entity, Predicate<ServerPlayer> condition) {
-		throw new AssertionError();
+    return com.railwayteam.railways.multiloader.neoforge.PlayerSelectionImpl.trackingWith(entity, condition);
 	}	public static PlayerSelection tracking(BlockEntity be) {
-		throw new AssertionError();
+    return com.railwayteam.railways.multiloader.neoforge.PlayerSelectionImpl.tracking(be);
 	}	public static PlayerSelection tracking(ServerLevel level, BlockPos pos) {
-		throw new AssertionError();
+    return com.railwayteam.railways.multiloader.neoforge.PlayerSelectionImpl.tracking(level, pos);
 	}	public static PlayerSelection trackingAndSelf(ServerPlayer player) {
-		throw new AssertionError();
+    return com.railwayteam.railways.multiloader.neoforge.PlayerSelectionImpl.trackingAndSelf(player);
 	}
 }
