@@ -1,7 +1,7 @@
 {
   "parent": "railways:block/palettes/boiler/boiler",
   "flip_v": true,
-  "loader": "forge:obj",
+  "loader": "neoforge:obj",
   "model": "railways:models/block/palettes/boiler/boiler_z_raised.obj",
   "porting_lib:loader": "porting_lib:obj",
   "textures": {

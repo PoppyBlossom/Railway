@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench by StarFluxie",
 	"parent": "block/block",
 	"texture_size": [32, 32],
-	"loader": "forge:obj",
+	"loader": "neoforge:obj",
 	"porting_lib:loader": "porting_lib:obj",
 	"flip_v": true,
 	"model": "railways:models/block/buffer/monorail_mono_buffer_stop.obj",

@@ -1,6 +1,6 @@
 {
 	"parent": "railways:block/wide_gauge_base/obj_track",
-	"loader": "forge:obj",
+	"loader": "neoforge:obj",
 	"porting_lib:loader": "porting_lib:obj",
 	"flip_v": true,
 	"render_type": "minecraft:cutout_mipped",

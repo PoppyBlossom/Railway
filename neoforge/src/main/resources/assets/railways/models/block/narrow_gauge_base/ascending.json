@@ -1,5 +1,5 @@
 {
-	"loader": "forge:obj",
+	"loader": "neoforge:obj",
 	"porting_lib:loader": "porting_lib:obj",
 	"ambientocclusion": false,
 	"flip_v": true,

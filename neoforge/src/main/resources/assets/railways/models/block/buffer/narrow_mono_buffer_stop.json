@@ -1,7 +1,7 @@
 {
 	"credit": "Made with Blockbench by StarFluxie",
 	"ambientocclusion": false,
-	"loader": "forge:obj",
+	"loader": "neoforge:obj",
 	"porting_lib:loader": "porting_lib:obj",
 	"flip_v": true,
 	"model": "railways:models/block/buffer/narrow_mono_buffer_stop.obj",

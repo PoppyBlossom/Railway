@@ -1,6 +1,6 @@
 {
 	"credit": "Made with Blockbench",
-	"loader": "forge:obj",
+	"loader": "neoforge:obj",
 	"porting_lib:loader": "porting_lib:obj",
 	"flip_v": true,
 	"model": "railways:models/block/buffer/wide_buffer_stop.obj",
