@@ -49,7 +49,6 @@
     "client.AccessorTrackBlockOutline",
     "client.AccessorVisualizedBogey",
     "client.AccessorWalkAnimationState",
-    "client.AccessorWarningScreen",
     "client.HotbarStorageMixin",
     "client.MixinBezierConnectionClient",
     "client.MixinBigOutlines",
