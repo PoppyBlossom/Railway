@@ -95,7 +95,7 @@ STUB_TO_IMPL = {
         "com/railwayteam/railways/content/conductor/vent/neoforge/CopycatVentModelImpl.java",
 }
 
-ROOT = Path(r"C:\Users\Emergency\OneDrive\Documents\GitHub\Railway-1.21.1\neoforge\src\main\java")
+ROOT = Path(__file__).parent / "neoforge" / "src" / "main" / "java"
 
 
 def get_impl_class(stub_path):

@@ -1,7 +1,7 @@
 modLoader = "javafml"
 # The loader version doesn't matter. Modify the NeoForge and/or Minecraft version ranges instead.
 loaderVersion = "[0,)"
-issueTrackerURL = "https://github.com/Creators-of-Create/Create/issues"
+issueTrackerURL = "https://github.com/RailwayTeam/Steam-n-Rails/issues"
 license = "MIT"
 
 [[mods]]
@@ -48,7 +48,7 @@ side = "BOTH"
 [[dependencies."create"]]
 modId = "sodium"
 type = "optional"
-reason = "Versions before 0.6.9 do not include the neccesary APIs Create needs to work properly with Sodium."
+reason = "Versions before 0.6.9 do not include the necessary APIs Create needs to work properly with Sodium."
 versionRange = "[0.6.9,)"
 ordering = "NONE"
 side = "CLIENT"
