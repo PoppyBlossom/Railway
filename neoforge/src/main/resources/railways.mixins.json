@@ -1,9 +1,9 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.railwayteam.railways.forge.mixin",
-  "compatibilityLevel": "JAVA_17",
-  "refmap": "Steam_Rails-forge-refmap.json",
+  "package": "com.railwayteam.railways.neoforge.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "refmap": "Steam_Rails-neoforge-refmap.json",
   "client": [
     "client.ClientPacketListenerMixin",
     "client.TrackBlockOutlineMixin",
@@ -24,5 +24,5 @@
     "defaultRequire": 1,
     "maxShiftBy": 5
   },
-  "plugin": "com.railwayteam.railways.forge.mixin.CRMixinPlugin"
+  "plugin": "com.railwayteam.railways.neoforge.mixin.CRMixinPlugin"
 }

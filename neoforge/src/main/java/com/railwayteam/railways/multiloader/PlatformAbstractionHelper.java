@@ -21,6 +21,6 @@ package com.railwayteam.railways.multiloader;
 import net.minecraft.world.item.Item;
 
 public class PlatformAbstractionHelper {    public static int getBurnTime(Item item) {
-        throw new AssertionError();
+    return com.railwayteam.railways.multiloader.neoforge.PlatformAbstractionHelperImpl.getBurnTime(item);
     }
 }

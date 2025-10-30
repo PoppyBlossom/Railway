@@ -76,7 +76,7 @@ public abstract class ConductorCapItem extends ArmorItem {
     // Wrap in a direct holder for 1.21; avoid mutating registries at runtime
     return Holder.direct(material);
   }  public static ConductorCapItem create(Properties props, DyeColor color) {
-    throw new AssertionError();
+    return com.railwayteam.railways.content.conductor.neoforge.ConductorCapItemImpl.create(props, color);
   }
 
   static boolean isCasing (Block block) { return block.equals( AllBlocks.ANDESITE_CASING.get()); }

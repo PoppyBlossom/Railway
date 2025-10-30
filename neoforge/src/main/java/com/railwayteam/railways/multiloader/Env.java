@@ -44,6 +44,6 @@ public enum Env {
 	}
 
 	@Internal	private static Env getCurrent() {
-		throw new AssertionError();
+		return com.railwayteam.railways.multiloader.neoforge.EnvImpl.getCurrent();
 	}
 }

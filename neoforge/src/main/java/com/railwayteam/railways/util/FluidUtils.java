@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluid;
 
 public class FluidUtils {    public static boolean canUseAsFuelStorage(BlockEntity be) {
-        throw new AssertionError();
+    return com.railwayteam.railways.util.neoforge.FluidUtilsImpl.canUseAsFuelStorage(be);
     }
 
     /**
@@ -30,6 +30,6 @@ public class FluidUtils {    public static boolean canUseAsFuelStorage(BlockEnti
      * @return The fluid
      * @throws IllegalArgumentException If any object that isn't an instance of FluidStack or FluidVariant is passed.
      */    public static Fluid getFluid(Object o) {
-        throw new AssertionError();
+    return com.railwayteam.railways.util.neoforge.FluidUtilsImpl.getFluid(o);
     }
 }

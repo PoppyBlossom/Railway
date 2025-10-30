@@ -25,6 +25,6 @@ import net.minecraft.client.KeyMapping;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientUtils {    public static boolean isActiveAndMatches(KeyMapping mapping, InputConstants.Key keyCode) {
-        throw new AssertionError();
+    return com.railwayteam.railways.util.client.neoforge.ClientUtilsImpl.isActiveAndMatches(mapping, keyCode);
     }
 }

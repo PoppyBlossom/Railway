@@ -20,7 +20,7 @@ package com.railwayteam.railways.multiloader;
 
 
 public abstract class EntityTypeConfigurator {	public static EntityTypeConfigurator of(Object builder) {
-		throw new AssertionError();
+    return com.railwayteam.railways.multiloader.neoforge.EntityTypeConfiguratorImpl.of(builder);
 	}
 
 	public abstract EntityTypeConfigurator size(float width, float height);

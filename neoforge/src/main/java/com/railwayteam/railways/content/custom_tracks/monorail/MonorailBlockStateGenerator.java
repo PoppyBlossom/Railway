@@ -21,6 +21,6 @@ package com.railwayteam.railways.content.custom_tracks.monorail;
 import com.railwayteam.railways.content.custom_tracks.CustomTrackBlockStateGenerator;
 
 public abstract class MonorailBlockStateGenerator extends CustomTrackBlockStateGenerator {    public static MonorailBlockStateGenerator create() {
-        throw new AssertionError();
+    return com.railwayteam.railways.content.custom_tracks.monorail.neoforge.MonorailBlockStateGeneratorImpl.create();
     }
 }

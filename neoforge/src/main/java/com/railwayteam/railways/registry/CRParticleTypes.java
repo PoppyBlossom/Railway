@@ -77,7 +77,7 @@ public enum CRParticleTypes {
 			object = this.typeFactory.get().createType();
 			register(name, () -> object);
 		}		private static void register(String id, Supplier<ParticleType<?>> supplier) {
-			throw new AssertionError();//REGISTER.register(id, supplier);
+			com.railwayteam.railways.registry.neoforge.CRParticleTypesParticleEntryImpl.register(id, supplier);
 		}
 
 		@OnlyIn(Dist.CLIENT)
@@ -86,7 +86,7 @@ public enum CRParticleTypes {
 		}
 
 		@OnlyIn(Dist.CLIENT)		private static <T extends ParticleOptions> void registerFactory(ParticleType<T> object, ParticleEngine engine, ICustomParticleData<T> customParticleData) {
-			throw new AssertionError();
+			com.railwayteam.railways.registry.neoforge.CRParticleTypesParticleEntryImpl.registerFactory(object, engine, customParticleData);
 		}
 	}
 }

@@ -32,8 +32,8 @@ public class ClientCommands {
 	public static <T> RequiredArgumentBuilder<SharedSuggestionProvider, T> argument(String name, ArgumentType<T> type) {
 		return RequiredArgumentBuilder.argument(name, type);
 	}	public static void sendSuccess(SharedSuggestionProvider provider, Component text) {
-		throw new AssertionError();
+    com.railwayteam.railways.multiloader.neoforge.ClientCommandsImpl.sendSuccess(provider, text);
 	}	public static void sendFailure(SharedSuggestionProvider provider, Component text) {
-		throw new AssertionError();
+    com.railwayteam.railways.multiloader.neoforge.ClientCommandsImpl.sendFailure(provider, text);
 	}
 }

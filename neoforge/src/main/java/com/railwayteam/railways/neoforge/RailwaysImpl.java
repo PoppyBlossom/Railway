@@ -50,10 +50,15 @@ import java.util.function.BiConsumer;
 
 @Mod(Railways.MOD_ID)
 @EventBusSubscriber
-public class RailwaysImpl {
+public class RailwaysImpl {	
 	static IEventBus bus;
 
 	public RailwaysImpl(IEventBus modEventBus, ModContainer modContainer) {
+		System.err.println("[CRITICAL DEBUG] =============== RailwaysImpl constructor START ===============");
+		System.err.println("[CRITICAL DEBUG] mod ID: " + Railways.MOD_ID);
+		System.err.println("[CRITICAL DEBUG] modEventBus: " + modEventBus);
+		System.err.println("[CRITICAL DEBUG] modContainer: " + modContainer);
+		
 		bus = modEventBus;
 		CRCreativeModeTabsImpl.register(RailwaysImpl.bus);
 		Railways.init();
@@ -61,6 +66,8 @@ public class RailwaysImpl {
 		CRParticleTypesParticleEntryImpl.register(bus);
 		//noinspection Convert2MethodRef
 		Env.CLIENT.runIfCurrent(() -> () -> RailwaysClientImpl.init());
+		
+		System.err.println("[CRITICAL DEBUG] =============== RailwaysImpl constructor END ===============");
 	}
 
 	public static void finalizeRegistrate() {

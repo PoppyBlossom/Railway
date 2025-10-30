@@ -49,7 +49,7 @@ public class BlockStateUtils {
         .setValue(HAS_BE, state.getValue(HAS_BE))
         .setValue(WATERLOGGED, state.getValue(WATERLOGGED));
   }  public static SoundType getSoundType(BlockState state, LevelReader level, BlockPos pos, Entity entity) {
-    throw new AssertionError();
+    return com.railwayteam.railways.util.neoforge.BlockStateUtilsImpl.getSoundType(state, level, pos, entity);
   }
 
   private static final Map<Block, DyeColor> WOOL_MAP = ImmutableMap.<Block, DyeColor>builder()

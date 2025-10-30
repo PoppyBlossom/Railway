@@ -37,7 +37,7 @@ public abstract class MixinPlayer extends LivingEntity {
         super(entityType, level);
     }
 
-    @Inject(method = "getStandingEyeHeight", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "getEyeHeight", at = @At("RETURN"), cancellable = true, require = 0)
     private void conductorsAreSmaller(Pose pose, EntityDimensions dimensions, CallbackInfoReturnable<Float> cir) {
         if (ConductorEntity.isPlayerDisguised((Player) (Object) this)) {
             if (pose == Pose.SLEEPING || pose == Pose.FALL_FLYING || pose == Pose.SPIN_ATTACK || pose == Pose.SWIMMING || pose == Pose.DYING)

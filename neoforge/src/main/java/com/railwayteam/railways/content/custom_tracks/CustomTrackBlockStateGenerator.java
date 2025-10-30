@@ -23,7 +23,7 @@ import com.simibubi.create.foundation.data.SpecialBlockStateGen;
 import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class CustomTrackBlockStateGenerator extends SpecialBlockStateGen {  public static CustomTrackBlockStateGenerator create() {
-    throw new AssertionError();
+    return com.railwayteam.railways.content.custom_tracks.neoforge.CustomTrackBlockStateGeneratorImpl.create();
   }
 
   @Override

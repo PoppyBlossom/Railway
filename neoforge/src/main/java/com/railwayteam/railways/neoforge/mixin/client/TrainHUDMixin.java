@@ -20,7 +20,7 @@ package com.railwayteam.railways.neoforge.mixin.client;
 
 import com.railwayteam.railways.content.switches.TrainHUDSwitchExtension;
 import com.simibubi.create.content.trains.TrainHUD;
-import net.minecraft.client.gui.Gui;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,8 +29,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = TrainHUD.class, remap = false)
 public class TrainHUDMixin {
-    @Inject(method = "renderOverlay", at = @At("HEAD"))
-    private static void renderOverlayHook(Gui gui, GuiGraphics graphics, float partialTicks, int width, int height, CallbackInfo ci) {
+    @Inject(method = "renderOverlay", at = @At("HEAD"), require = 0)
+    private static void renderOverlayHook(GuiGraphics graphics, DeltaTracker deltaTracker, CallbackInfo ci) {
+        // In 1.21.1, DeltaTracker provides partial ticks and screen dimensions are in GuiGraphics
+        float partialTicks = deltaTracker.getGameTimeDeltaPartialTick(false);
+        int width = graphics.guiWidth();
+        int height = graphics.guiHeight();
         TrainHUDSwitchExtension.renderOverlay(graphics, partialTicks, width, height);
     }
 }

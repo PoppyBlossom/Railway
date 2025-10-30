@@ -65,10 +65,10 @@ public class RailwaysClient {
 
     DevCapeUtils.INSTANCE.init();
   }  public static void registerClientCommands(Consumer<CommandDispatcher<SharedSuggestionProvider>> consumer) {
-    throw new AssertionError();
+    com.railwayteam.railways.neoforge.RailwaysClientImpl.registerClientCommands(consumer);
   }  public static void registerModelLayer(ModelLayerLocation layer, Supplier<LayerDefinition> definition) {
-    throw new AssertionError();
+    com.railwayteam.railways.neoforge.RailwaysClientImpl.registerModelLayer(layer, definition);
   }  public static void registerBuiltinPack(String id, String name) {
-    throw new AssertionError();
+    com.railwayteam.railways.neoforge.RailwaysClientImpl.registerBuiltinPack(id, name);
   }
 }

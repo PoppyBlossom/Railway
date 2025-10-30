@@ -58,8 +58,8 @@ public class CRItems {
     return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(mod, path));
   }
 
-  private static ItemBuilder<? extends Item, ?> makeMinecart(String name, AbstractMinecart.Type type) {
-    return REGISTRATE.item(name, (props) -> new MinecartItem(type, props))
+  private static ItemBuilder<? extends Item, ?> makeMinecart(String name, java.util.function.Supplier<AbstractMinecart.Type> typeSupplier) {
+    return REGISTRATE.item(name, (props) -> new MinecartItem(typeSupplier.get(), props))
     .model((ctx,prov)-> prov.withExistingParent(name, prov.mcLoc("item/minecart")).texture("layer0", prov.modLoc("item/" + name)));
   }
 
@@ -84,12 +84,12 @@ public class CRItems {
     };
   }
 
-  public static final ItemEntry<? extends Item> ITEM_BENCHCART = makeMinecart("benchcart", MinecartWorkbench.TYPE)
+  public static final ItemEntry<? extends Item> ITEM_BENCHCART = makeMinecart("benchcart", () -> MinecartWorkbench.getWorkbenchType())
       .recipe((ctx,prov)-> ShapelessRecipeBuilder.shapeless(RecipeCategory.TRANSPORTATION, ctx.get()).requires(Items.MINECART).requires(CommonTags.WORKBENCH.tag)
         .unlockedBy("hasitem", InventoryChangeTrigger.TriggerInstance.hasItems(Items.MINECART)).save(prov))
       .lang("Minecart with Workbench")
       .register();
-  public static final ItemEntry<? extends Item> ITEM_JUKEBOXCART = makeMinecart("jukeboxcart", MinecartJukebox.TYPE)
+  public static final ItemEntry<? extends Item> ITEM_JUKEBOXCART = makeMinecart("jukeboxcart", () -> MinecartJukebox.getJukeboxType())
       .recipe((ctx,prov)-> ShapelessRecipeBuilder.shapeless(RecipeCategory.TRANSPORTATION, ctx.get()).requires(Items.MINECART).requires(Items.JUKEBOX)
           .unlockedBy("hasitem", InventoryChangeTrigger.TriggerInstance.hasItems(Items.MINECART)).save(prov))
       .lang("Minecart with Jukebox")

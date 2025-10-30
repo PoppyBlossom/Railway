@@ -20,9 +20,11 @@ package com.railwayteam.railways.mixin;
 
 import com.railwayteam.railways.content.minecarts.MinecartJukebox;
 import com.railwayteam.railways.content.minecarts.MinecartWorkbench;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.AbstractMinecart.Type;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -35,7 +37,7 @@ public class MixinAbstractMinecart {
 			at = @At("HEAD"),
 			cancellable = true
 	)
-	private static void railways$createCustomMinecarts(Level level, double x, double y, double z, Type type, CallbackInfoReturnable<AbstractMinecart> cir) {
+	private static void railways$createCustomMinecarts(ServerLevel level, double x, double y, double z, Type type, ItemStack stack, Player player, CallbackInfoReturnable<AbstractMinecart> cir) {
 		if (type == MinecartJukebox.TYPE)
 			cir.setReturnValue(new MinecartJukebox(level, x, y, z));
 		if (type == MinecartWorkbench.TYPE)

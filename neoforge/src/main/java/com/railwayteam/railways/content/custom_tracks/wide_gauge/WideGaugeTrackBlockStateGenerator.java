@@ -21,7 +21,7 @@ package com.railwayteam.railways.content.custom_tracks.wide_gauge;
 import com.railwayteam.railways.content.custom_tracks.CustomTrackBlockStateGenerator;
 
 public abstract class WideGaugeTrackBlockStateGenerator extends CustomTrackBlockStateGenerator {    public static WideGaugeTrackBlockStateGenerator create() {
-        throw new AssertionError();
+    return com.railwayteam.railways.content.custom_tracks.wide_gauge.neoforge.WideGaugeTrackBlockStateGeneratorImpl.create();
     }
 }
 

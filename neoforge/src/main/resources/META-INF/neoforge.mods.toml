@@ -1,4 +1,4 @@
-modLoader = "lowcodefml"
+modLoader = "javafml"
 loaderVersion = "[4,)"
 issueTrackerURL = "https://github.com/Layers-of-Railways/Railway/issues"
 license = "MIT"
@@ -14,6 +14,12 @@ description = '''Customization and extension of Create rail systems and steam sy
         Conductors that can operate redstone and carry toolboxes
         and more to come...'''
 logoFile = "icon.png"
+
+[[mixins]]
+config = "railways-common.mixins.json"
+
+[[mixins]]
+config = "railways.mixins.json"
 
 [[dependencies.railways]]
 modId = "neoforge"

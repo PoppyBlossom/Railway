@@ -29,7 +29,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class HotbarStorageMixin {
     @Inject(
             method = "save",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/NbtIo;write(Lnet/minecraft/nbt/CompoundTag;Ljava/io/File;)V")
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/NbtIo;write(Lnet/minecraft/nbt/CompoundTag;Ljava/nio/file/Path;)V"),
+            require = 0
     )
     private void addModDataVersions(CallbackInfo ci, @Local CompoundTag compound) {
         DataFixesInternals.get().addModDataVersions(compound);

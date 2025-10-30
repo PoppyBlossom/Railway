@@ -56,6 +56,6 @@ public class CRExtraRegistration {
         DisplaySource.BY_BLOCK.add(block, source);
         registeredSignalSource = true;
     }    public static void platformSpecificRegistration() {
-        throw new AssertionError();
+    com.railwayteam.railways.registry.neoforge.CRExtraRegistrationImpl.platformSpecificRegistration();
     }
 }

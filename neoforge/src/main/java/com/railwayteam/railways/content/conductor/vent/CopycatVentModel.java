@@ -28,6 +28,6 @@ public abstract class CopycatVentModel extends CopycatModel {
     public CopycatVentModel(BakedModel originalModel) {
         super(originalModel);
     }    public static CopycatVentModel create(BakedModel bakedModel) {
-        throw new AssertionError();
+    return com.railwayteam.railways.content.conductor.vent.neoforge.CopycatVentModelImpl.create(bakedModel);
     }
 }

@@ -172,7 +172,7 @@ public abstract class PacketSet {
 								   Object2IntMap<Class<? extends S2CPacket>> s2cTypes,
 								   List<Function<FriendlyByteBuf, C2SPacket>> c2sPackets,
 								   Object2IntMap<Class<? extends C2SPacket>> c2sTypes) {
-		throw new AssertionError();
+    return com.railwayteam.railways.multiloader.neoforge.PacketSetImpl.create(id, version, s2cPackets, s2cTypes, c2sPackets, c2sTypes);
 	}
 
 	/**

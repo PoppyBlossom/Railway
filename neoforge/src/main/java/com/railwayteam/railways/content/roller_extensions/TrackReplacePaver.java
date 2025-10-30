@@ -143,6 +143,6 @@ public class TrackReplacePaver {
     public static ItemStack extract(FilterItemStack filter, MovementContext context) {
         return extract(filter, context, 1);
     }    public static ItemStack extract(FilterItemStack filter, MovementContext context, int amt) {
-        throw new AssertionError();
+    return com.railwayteam.railways.content.roller_extensions.neoforge.TrackReplacePaverImpl.extract(filter, context, amt);
     }
 }

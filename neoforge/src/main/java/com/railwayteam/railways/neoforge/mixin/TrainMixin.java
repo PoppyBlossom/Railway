@@ -28,7 +28,12 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(Train.class)
 public class TrainMixin {
-    @ModifyArg(method = "burnFuel", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/common/ForgeHooks;getBurnTime(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/crafting/RecipeType;)I"), remap = false)
+    @ModifyArg(
+            method = "burnFuel", 
+            at = @At(value = "INVOKE", target = "Lnet/neoforged/neoforge/common/NeoForgeHooks;getBurnTime(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/crafting/RecipeType;)I"), 
+            remap = false,
+            require = 0
+    )
     private ItemStack railways$disableFuelConsumptionBasedOnTag(ItemStack stack) {
         if (stack.is(CRTags.AllItemTags.NOT_TRAIN_FUEL.tag)) {
             return Items.AIR.getDefaultInstance();

@@ -156,9 +156,9 @@ public abstract class TrackSwitchBlock extends HorizontalDirectionalBlock implem
         return this;
       }
   }  public static TrackSwitchBlock manual(Properties properties) {
-    throw new AssertionError();
+    return com.railwayteam.railways.content.switches.neoforge.TrackSwitchBlockImpl.manual(properties);
   }  public static TrackSwitchBlock automatic(Properties properties) {
-    throw new AssertionError();
+    return com.railwayteam.railways.content.switches.neoforge.TrackSwitchBlockImpl.automatic(properties);
   }
 
   protected TrackSwitchBlock(Properties properties, boolean isAutomatic) {

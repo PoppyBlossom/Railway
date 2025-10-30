@@ -61,6 +61,6 @@ public class MountedToolboxDisposeAllPacket implements C2SPacket {
 				ToolboxHandler.syncData(player);
 		}
 	}	public static boolean doDisposal(MountedToolbox toolbox, ServerPlayer player, ConductorEntity conductor) {
-		throw new AssertionError();
+    return com.railwayteam.railways.content.conductor.toolbox.neoforge.MountedToolboxDisposeAllPacketImpl.doDisposal(toolbox, player, conductor);
 	}
 }

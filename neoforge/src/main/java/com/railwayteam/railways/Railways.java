@@ -37,6 +37,7 @@ import com.simibubi.create.foundation.item.TooltipModifier;
 import com.tterrag.registrate.providers.ProviderType;
 import net.createmod.catnip.lang.FontHelper;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,11 +95,24 @@ public class Railways {
     ModSetup.register();
     RailwaysImpl.finalizeRegistrate();
 
+    // Dev aid: report how many items/blocks Registrate has recorded and per-tab assignment
+    if (Utils.isDevEnv()) {
+      try {
+        int itemCount = Railways.registrate().getAll(Registries.ITEM).size();
+        int blockCount = Railways.registrate().getAll(Registries.BLOCK).size();
+        LOGGER.info("[Dev] Registrate entries -> items: {}, blocks: {}", itemCount, blockCount);
+        // Also log creative tab assignment counts
+        com.railwayteam.railways.registry.CRCreativeModeTabs.devLogTabCounts();
+      } catch (Throwable t) {
+        LOGGER.debug("[Dev] Failed to count Registrate entries", t);
+      }
+    }
+
     RailwaysImpl.registerCommands(CRCommands::register);
     CRPackets.PACKETS.registerC2SListener();
 
-    // TODO - Forge entirely breaks with mixin audit, truly incredible
-    if (Utils.isDevEnv() && !Loader.FORGE.isCurrent() && !Mods.BYG.isLoaded && !Mods.SODIUM.isLoaded && !Utils.isEnvVarTrue("DATAGEN")) // force all mixins to load in dev
+    // TODO - Forge/NeoForge entirely breaks with mixin audit due to registry timing issues
+    if (Utils.isDevEnv() && !Loader.FORGE.isCurrent() && !Loader.NEOFORGE.isCurrent() && !Mods.BYG.isLoaded && !Mods.SODIUM.isLoaded && !Utils.isEnvVarTrue("DATAGEN")) // force all mixins to load in dev
       MixinEnvironment.getCurrentEnvironment().audit();
   }
 
