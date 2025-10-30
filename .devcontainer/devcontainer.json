@@ -7,11 +7,24 @@
 
 	"features": {
 		"ghcr.io/devcontainers/features/java:1": {
-			"version": "none",
-			"installMaven": "true",
-			"installGradle": "true"
+			"installGradle": true,
+			"version": "21",
+			"jdkDistro": "ms",
+			"gradleVersion": "latest",
+			"mavenVersion": "latest",
+			"antVersion": "latest",
+			"groovyVersion": "latest"
+		},
+		"ghcr.io/devcontainers/features/desktop-lite:1": {
+			"version": "latest",
+			"noVncVersion": "1.6.0",
+			"password": "vscode",
+			"webPort": "6080",
+			"vncPort": "5901"
 		}
-	}
+	},
+
+	"forwardPorts": [6080] // Forward the VNC port
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
