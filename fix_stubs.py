@@ -116,6 +116,14 @@ def fix_static_method(content, class_name):
     impl_class = get_impl_class(class_name)
     
     # Pattern: static method that throws AssertionError
+    # Breakdown of the regex pattern:
+    # (public\s+static\s+         # Match 'public static' modifiers
+    #   (?:<[^>]+>\s+)?           # Optional generics, e.g. <T>
+    #   (?:\w+(?:<[^>]+>)?)       # Return type, possibly with generics
+    #   \s+(\w+)                  # Method name (captured group 2)
+    #   \([^)]*\)                 # Parameter list (anything inside parentheses)
+    #   \s*\{)                    # Opening brace of method body (captured group 1)
+    # \s*throw\s+new\s+AssertionError\(\); # The body: throw new AssertionError();
     pattern = r'(public\s+static\s+(?:<[^>]+>\s+)?(?:\w+(?:<[^>]+>)?)\s+(\w+)\([^)]*\)\s*\{)\s*throw\s+new\s+AssertionError\(\);'
     
     def replace(match):
@@ -137,7 +145,10 @@ def fix_static_method(content, class_name):
                         param_names.append(parts[-1])
         
         param_call = ", ".join(param_names)
-        return f"{signature}\n    return {impl_class}.{method_name}({param_call});"
+        # Extract indentation from the method signature line
+        indent_match = re.match(r"([ \t]*)", signature)
+        indent = indent_match.group(1) if indent_match else ""
+        return f"{signature}\n{indent}    return {impl_class}.{method_name}({param_call});"
     
     return re.sub(pattern, replace, content)
 
