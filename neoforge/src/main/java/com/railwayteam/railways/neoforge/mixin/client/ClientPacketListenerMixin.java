@@ -22,37 +22,39 @@ import com.railwayteam.railways.multiloader.PacketSet;
 import com.railwayteam.railways.multiloader.neoforge.PacketSetImpl;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
-import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
-import org.spongepowered.asm.mixin.Final;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientPacketListener.class)
 public class ClientPacketListenerMixin {
-	@Shadow
-	@Final
-	private Minecraft minecraft;
+	/*
+	 * 1.21.x note:
+	 * Targeting ClientPacketListener (game-phase subclass) ensures we only intercept payloads
+	 * during active gameplay, not during configuration handshake. This avoids interfering with
+	 * NeoForge's own custom payloads (e.g., neoforge:custom_time_packet) that arrive before the
+	 * client level is initialized. The method signature is handleCustomPayload(CustomPacketPayload)
+	 * in the game phase, which differs from the base class packet-wrapping method.
+	 */
 
 	@Inject(
-			method = "handleCustomPayload",
-			at = @At(
-					value = "INVOKE",
-					target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V",
-					remap = false
-			),
+			method = "handleCustomPayload(Lnet/minecraft/network/protocol/common/custom/CustomPacketPayload;)V",
+			at = @At("HEAD"),
 			cancellable = true
 	)
-	private void railways$handleS2C(ClientboundCustomPayloadPacket packet, CallbackInfo ci) {
-		var payload = packet.payload();
+	private void railways$handleS2C(CustomPacketPayload payload, CallbackInfo ci) {
+		// Only intercept our CustomPayloadWrapper packets; let all others (including NeoForge's) pass through
 		if (payload instanceof com.railwayteam.railways.multiloader.neoforge.CustomPayloadWrapper wrapper) {
 			PacketSet handler = PacketSetImpl.HANDLERS.get(wrapper.id());
 			if (handler != null) {
-				handler.handleS2CPacket(minecraft, wrapper.data());
-				ci.cancel();
+				// Use the global Minecraft instance; level is guaranteed to exist in game phase
+				handler.handleS2CPacket(Minecraft.getInstance(), wrapper.data());
+				ci.cancel(); // Cancel only after successfully handling our packet
 			}
+			// If no handler registered for this wrapper ID, let it fall through (don't cancel)
 		}
+		// For all non-wrapper payloads, do nothing and let vanilla/NeoForge handle them
 	}
 }

@@ -32,11 +32,11 @@
     "compat.voicechat.EntityAudioChannelImplMixin",
     "compat.voicechat.ServerMixin",
     "compat.voicechat.ServerWorldUtilsMixin",
-    "conductor_possession.ChunkMapMixin",
     "conductor_possession.MixinEntity",
     "conductor_possession.PlayerListMixin",
     "conductor_possession.ServerPlayerMixin",
-    "conductor_possession.TrackedEntityMixin"
+    "conductor_possession.TrackedEntityMixin",
+    "conductor_possession.CameraChunkTrackingMixin"
   ],
   "client": [
     "client.AccessorBogeyStyle",
