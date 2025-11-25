@@ -90,9 +90,10 @@ public abstract class ClientChunkCacheMixin {
 
 	/**
 	 * Handles chunks that are dropped in range of the camera storage
+	 * 1.21.1 note: Method signature changed from (int x, int z) to (ChunkPos pos)
 	 */
 	@Inject(method = "drop", at = @At(value = "HEAD"))
-	public void railways$securitycraft$onDrop(int x, int z, CallbackInfo ci) {
+	public void railways$securitycraft$onDrop(net.minecraft.world.level.ChunkPos pos, CallbackInfo ci) {
 		if (ClientHandler.isPlayerMountedOnCamera()) {
 			// Disabled for 1.21 migration: camera chunk drop handling uses private Storage internals
 			return;

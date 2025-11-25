@@ -64,6 +64,10 @@ public class RailwaysImpl {
 		Railways.init();
 		CRConfigsImpl.register(modContainer);
 		CRParticleTypesParticleEntryImpl.register(bus);
+		
+		// Register network payloads for NeoForge 1.21.1+
+		modEventBus.addListener(RailwaysNetworking::registerPayloads);
+		
 		//noinspection Convert2MethodRef
 		Env.CLIENT.runIfCurrent(() -> () -> RailwaysClientImpl.init());
 		

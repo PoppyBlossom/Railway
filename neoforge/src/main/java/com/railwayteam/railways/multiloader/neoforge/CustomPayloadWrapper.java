@@ -33,6 +33,10 @@ public record CustomPayloadWrapper(Type<CustomPayloadWrapper> type, FriendlyByte
         return new CustomPayloadWrapper(new Type<>(id), data);
     }
     
+    public static Type<CustomPayloadWrapper> type(ResourceLocation id) {
+        return new Type<>(id);
+    }
+    
     public ResourceLocation id() {
         return type.id();
     }
@@ -51,9 +55,14 @@ public record CustomPayloadWrapper(Type<CustomPayloadWrapper> type, FriendlyByte
      */
     public static StreamCodec<FriendlyByteBuf, CustomPayloadWrapper> codec(ResourceLocation id) {
         return StreamCodec.of(
-            (buf, payload) -> buf.writeBytes(payload.data),
+            (buf, payload) -> {
+                // Write all readable bytes from the payload data buffer
+                buf.writeBytes(payload.data, payload.data.readerIndex(), payload.data.readableBytes());
+            },
             (buf) -> {
-                FriendlyByteBuf data = new FriendlyByteBuf(buf.readRetainedSlice(buf.readableBytes()));
+                // Read all available bytes into a new retained buffer slice
+                int readableBytes = buf.readableBytes();
+                FriendlyByteBuf data = new FriendlyByteBuf(buf.readRetainedSlice(readableBytes));
                 return new CustomPayloadWrapper(new Type<>(id), data);
             }
         );

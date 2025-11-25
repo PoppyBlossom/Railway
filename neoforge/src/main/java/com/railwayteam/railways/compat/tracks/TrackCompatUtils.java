@@ -75,17 +75,8 @@ public abstract class TrackCompatUtils {
         return false;
     }
 
-    @ApiStatus.Internal
-    public static boolean mixinSkipLootLoading(ResourceLocation resourceLocation) {
-        if (resourceLocation.getNamespace().equals(Railways.MOD_ID)) {
-            for (String compatMod : TRACK_COMPAT_MODS) {
-                if (resourceLocation.getPath().startsWith("blocks/track_"+compatMod)) {
-                    return !GenericTrackCompat.get(compatMod).shouldRegisterMissing();
-                }
-            }
-        }
-        return false;
-    }
+    // Removed obsolete loot skipping hook (was used by a mixin targeting a removed lambda in ReloadableServerResources 1.21.1)
+    // If selective loot table suppression is needed again, implement via a data pack condition instead of a mixin.
 
     private static final CreateRegistrate REGISTRATE = Railways.registrate();
 

@@ -31,6 +31,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerGamePacketListenerImpl.class)
 public class ServerGamePacketListenerImplMixin {
+	/*
+	 * 1.21.x note:
+	 * The per-player connection class still exposes a 'player' field; targeting the subclass
+	 * ensures we can @Shadow it safely. The base ServerCommonPacketListenerImpl lacks this field
+	 * and caused a mixin failure. We inject at HEAD of handleCustomPayload to intercept our wrapper
+	 * before vanilla dispatch. This preserves player context without brittle reflection.
+	 */
 	@Shadow
 	public ServerPlayer player;
 
