@@ -53,6 +53,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.common.EventBusSubscriber;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InaccessibleObjectException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -91,6 +92,17 @@ public class RailwaysImpl {
 		registrate.registerEventListeners(bus);
 	}
 
+	/**
+	 * Suppresses Registrate's automatic creative tab modifier registration to prevent duplicate tab content.
+	 * <p>
+	 * This uses reflection to replace the internal creativeModeTabModifiers multimap with a no-op implementation.
+	 * This is necessary because Registrate (version MC1.21-1.3.0+62) automatically adds items to creative tabs
+	 * via .tab() calls, which would duplicate our custom tab population logic in RegistrateDisplayItemsGenerator
+	 * and cause inventory crashes (issue #70).
+	 * </p>
+	 *
+	 * @param registrate the registrate instance to modify
+	 */
 	private static void suppressRegistrateTabModifiers(CreateRegistrate registrate) {
 		try {
 			Field field = AbstractRegistrate.class.getDeclaredField("creativeModeTabModifiers");
@@ -100,13 +112,25 @@ public class RailwaysImpl {
 				multimap.clear();
 			}
 			field.set(registrate, new NoOpCreativeTabMultimap());
+		} catch (InaccessibleObjectException | SecurityException e) {
+			// Module access restriction - provide guidance on JVM flags
+			throw new IllegalStateException(
+				"Failed to access Registrate creative tab modifiers field. " +
+				"If running on Java 9+, you may need to add JVM flag: " +
+				"--add-opens com.tterrag.registrate/com.tterrag.registrate=ALL-UNNAMED", e);
 		} catch (ReflectiveOperationException e) {
 			throw new IllegalStateException("Failed to clear Registrate creative tab modifiers", e);
 		}
 	}
 
 	/**
-	 * Drops all future creative tab modifier registrations so Registrate cannot duplicate our tab content.
+	 * A no-op multimap that drops all future creative tab modifier registrations so Registrate cannot duplicate our tab content.
+	 * <p>
+	 * This class intentionally maintains an internal delegate multimap but all mutation methods (put, putAll, etc.)
+	 * return false without actually storing data. This creates a discrepancy where read operations (get, size, containsKey)
+	 * will always return empty results even if callers attempt to store data. This is the intended behavior to suppress
+	 * Registrate's automatic tab registration while maintaining a valid Multimap interface.
+	 * </p>
 	 */
 	private static final class NoOpCreativeTabMultimap extends ForwardingMultimap<ResourceKey<CreativeModeTab>, Consumer<CreativeModeTabModifier>> {
 		private final Multimap<ResourceKey<CreativeModeTab>, Consumer<CreativeModeTabModifier>> delegate = ArrayListMultimap.create();
