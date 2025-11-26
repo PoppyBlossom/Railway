@@ -229,7 +229,6 @@ public class CRBlocks {
             .lang(description)
             .item(BlockStateBlockItem.create(SmokeStackBlock.STYLE, SmokestackStyle.STEEL, true))
                 .lang(description)
-                .tab(CRCreativeModeTabs.getBaseTabKey())
                 .model((c, p) -> p.withExistingParent(c.getName(), Railways.asResource("block/smokestack_" + variant + "_steel")))
                 .tag(cycleTag)
             .onRegisterAfter(Registries.ITEM, v -> {
@@ -241,8 +240,7 @@ public class CRBlocks {
 
         if (!variant.equals("caboosestyle")) {
             BlockStateBlockItemGroup<Couple<String>, SmokestackStyle> group = new BlockStateBlockItemGroup<>(Couple.create("smokestack_" + variant + "_", description), SmokeStackBlock.STYLE, SmokestackStyle.values(), BLOCK,
-                i -> i.tab(null)
-                    .onRegisterAfter(Registries.ITEM, v -> ItemDescription.useKey(v, "block.railways.smokestack")),
+                i -> i.onRegisterAfter(Registries.ITEM, v -> ItemDescription.useKey(v, "block.railways.smokestack")),
                 cycleTag, SmokestackStyle.STEEL, null);
             SMOKESTACK_GROUP.put(variant, group);
             group.registerDefaultEntry(SmokestackStyle.STEEL, ItemEntry.cast(REGISTRATE.get("smokestack_" + variant, Registries.ITEM)));

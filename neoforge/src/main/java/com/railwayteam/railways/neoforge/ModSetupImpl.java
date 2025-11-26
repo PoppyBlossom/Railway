@@ -2,17 +2,23 @@ package com.railwayteam.railways.neoforge;
 
 import com.railwayteam.railways.Railways;
 import com.railwayteam.railways.registry.neoforge.CRCreativeModeTabsImpl;
+import net.minecraft.world.item.CreativeModeTab;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class ModSetupImpl {
     public static void useBaseTab() {
-        Railways.registrate().setCreativeTab(CRCreativeModeTabsImpl.MAIN_TAB);
+        setTab(CRCreativeModeTabsImpl.MAIN_TAB);
     }
 
     public static void useTracksTab() {
-        Railways.registrate().setCreativeTab(CRCreativeModeTabsImpl.TRACKS_TAB);
+        setTab(CRCreativeModeTabsImpl.TRACKS_TAB);
     }
 
     public static void usePalettesTab() {
-        Railways.registrate().setCreativeTab(CRCreativeModeTabsImpl.PALETTES_TAB);
+        setTab(CRCreativeModeTabsImpl.PALETTES_TAB);
+    }
+
+    private static void setTab(DeferredHolder<CreativeModeTab, CreativeModeTab> tab) {
+        Railways.registrate().setCreativeTab(tab);
     }
 }

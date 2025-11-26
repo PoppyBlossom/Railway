@@ -18,6 +18,9 @@
 
 package com.railwayteam.railways.neoforge;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ForwardingMultimap;
+import com.google.common.collect.Multimap;
 import com.mojang.brigadier.CommandDispatcher;
 import com.railwayteam.railways.Railways;
 import com.railwayteam.railways.config.neoforge.CRConfigsImpl;
@@ -31,12 +34,17 @@ import com.railwayteam.railways.registry.neoforge.CRParticleTypesParticleEntryIm
 import com.simibubi.create.api.connectivity.ConnectivityHandler;
 import com.simibubi.create.api.contraption.BlockMovementChecks;
 import com.simibubi.create.api.contraption.BlockMovementChecks.CheckResult;
+import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.tterrag.registrate.AbstractRegistrate;
+import com.tterrag.registrate.util.CreativeModeTabModifier;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands.CommandSelection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -44,9 +52,13 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.common.EventBusSubscriber;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InaccessibleObjectException;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 @Mod(Railways.MOD_ID)
 @EventBusSubscriber
@@ -75,7 +87,80 @@ public class RailwaysImpl {
 	}
 
 	public static void finalizeRegistrate() {
-		Railways.registrate().registerEventListeners(bus);
+		CreateRegistrate registrate = Railways.registrate();
+		suppressRegistrateTabModifiers(registrate);
+		registrate.registerEventListeners(bus);
+	}
+
+	/**
+	 * Suppresses Registrate's automatic creative tab modifier registration to prevent duplicate tab content.
+	 * <p>
+	 * This uses reflection to replace the internal creativeModeTabModifiers multimap with a no-op implementation.
+	 * This is necessary because Registrate (version MC1.21-1.3.0+62) automatically adds items to creative tabs
+	 * via .tab() calls, which would duplicate our custom tab population logic in RegistrateDisplayItemsGenerator
+	 * and cause inventory crashes (issue #70).
+	 * </p>
+	 *
+	 * @param registrate the registrate instance to modify
+	 */
+	private static void suppressRegistrateTabModifiers(CreateRegistrate registrate) {
+		try {
+			Field field = AbstractRegistrate.class.getDeclaredField("creativeModeTabModifiers");
+			field.setAccessible(true);
+			Object value = field.get(registrate);
+			if (value instanceof Multimap<?, ?> multimap) {
+				multimap.clear();
+			}
+			field.set(registrate, new NoOpCreativeTabMultimap());
+		} catch (InaccessibleObjectException | SecurityException e) {
+			// Module access restriction - provide guidance on JVM flags
+			throw new IllegalStateException(
+				"Failed to access Registrate creative tab modifiers field. " +
+				"If running on Java 9+, you may need to add JVM flag: " +
+				"--add-opens com.tterrag.registrate/com.tterrag.registrate=ALL-UNNAMED", e);
+		} catch (ReflectiveOperationException e) {
+			throw new IllegalStateException("Failed to clear Registrate creative tab modifiers", e);
+		}
+	}
+
+	/**
+	 * A no-op multimap that drops all future creative tab modifier registrations so Registrate cannot duplicate our tab content.
+	 * <p>
+	 * This class intentionally maintains an internal delegate multimap but all mutation methods (put, putAll, etc.)
+	 * return false without actually storing data. This creates a discrepancy where read operations (get, size, containsKey)
+	 * will always return empty results even if callers attempt to store data. This is the intended behavior to suppress
+	 * Registrate's automatic tab registration while maintaining a valid Multimap interface.
+	 * </p>
+	 */
+	private static final class NoOpCreativeTabMultimap extends ForwardingMultimap<ResourceKey<CreativeModeTab>, Consumer<CreativeModeTabModifier>> {
+		private final Multimap<ResourceKey<CreativeModeTab>, Consumer<CreativeModeTabModifier>> delegate = ArrayListMultimap.create();
+
+		@Override
+		protected Multimap<ResourceKey<CreativeModeTab>, Consumer<CreativeModeTabModifier>> delegate() {
+			return delegate;
+		}
+
+		@Override
+		public boolean put(ResourceKey<CreativeModeTab> key, Consumer<CreativeModeTabModifier> value) {
+			return false;
+		}
+
+		@Override
+		public boolean putAll(ResourceKey<CreativeModeTab> key, Iterable<? extends Consumer<CreativeModeTabModifier>> values) {
+			return false;
+		}
+
+		@Override
+		public boolean putAll(Multimap<? extends ResourceKey<CreativeModeTab>, ? extends Consumer<CreativeModeTabModifier>> multimap) {
+			return false;
+		}
+
+		@Override
+		public Collection<Consumer<CreativeModeTabModifier>> replaceValues(ResourceKey<CreativeModeTab> key, Iterable<? extends Consumer<CreativeModeTabModifier>> values) {
+			Collection<Consumer<CreativeModeTabModifier>> removed = delegate().get(key);
+			delegate().removeAll(key);
+			return removed;
+		}
 	}
 
 	private static final Set<BiConsumer<CommandDispatcher<CommandSourceStack>, Boolean>> commandConsumers = new HashSet<>();
