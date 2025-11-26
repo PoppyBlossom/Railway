@@ -9,6 +9,8 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 public class CRCreativeModeTabsRegistrateDisplayItemsGeneratorImpl {
     public static boolean isInCreativeTab(RegistryEntry<?, ?> entry, ResourceKey<CreativeModeTab> tab) {
         DeferredHolder<CreativeModeTab, CreativeModeTab> holder = resolveHolder(tab);
+        // If tab is unknown, return true to include the entry (should not occur in normal operation,
+        // but ensures entries are not silently dropped during development if new tabs are added)
         if (holder == null)
             return true;
         return CreateRegistrate.isInCreativeTab(entry, holder);
