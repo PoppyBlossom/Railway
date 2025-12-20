@@ -121,7 +121,7 @@ public abstract class MixinCarriage implements ICarriageConductors, ICarriageBuf
     }
 
     @Inject(method = "write", at = @At("RETURN"))
-    private void writeControllingConductors(DimensionPalette dimensions, CallbackInfoReturnable<CompoundTag> cir) {
+    private void writeControllingConductors(DimensionPalette dimensions, net.minecraft.core.HolderLookup.Provider registries, CallbackInfoReturnable<CompoundTag> cir) {
         CompoundTag tag = cir.getReturnValue();
         ListTag listTag = new ListTag();
         for (UUID uuid : railways$controllingConductors) {
@@ -138,7 +138,7 @@ public abstract class MixinCarriage implements ICarriageConductors, ICarriageBuf
     }
 
     @Inject(method = "read", at = @At("RETURN"))
-    private static void readControllingConductors(CompoundTag tag, TrackGraph graph, DimensionPalette dimensions, CallbackInfoReturnable<Carriage> cir) {
+    private static void readControllingConductors(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries, TrackGraph graph, DimensionPalette dimensions, CallbackInfoReturnable<Carriage> cir) {
         Carriage carriage = cir.getReturnValue();
         List<UUID> controllingConductors = ((ICarriageConductors) carriage).railways$getControllingConductors();
         controllingConductors.clear();

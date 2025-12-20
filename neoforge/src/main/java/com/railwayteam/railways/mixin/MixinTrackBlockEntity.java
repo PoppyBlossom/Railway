@@ -42,6 +42,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.minecraft.core.HolderLookup;
+
 import java.util.Map;
 
 @Mixin(value = TrackBlockEntity.class, remap = false)
@@ -139,7 +141,7 @@ public abstract class MixinTrackBlockEntity extends SmartBlockEntity implements 
   }
 
   @Inject(method = "write", at = @At("RETURN"))
-  private void writeCasing(CompoundTag tag, boolean clientPacket, CallbackInfo ci) {
+  private void writeCasing(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket, CallbackInfo ci) {
     if (this.getTrackCasing() != null) {
       tag.putString("TrackCasing", BuiltInRegistries.BLOCK.getKey(getTrackCasing()).toString());
     }
@@ -147,7 +149,7 @@ public abstract class MixinTrackBlockEntity extends SmartBlockEntity implements 
   }
 
   @Inject(method = "read", at = @At("RETURN"))
-  private void readCasing(CompoundTag tag, boolean clientPacket, CallbackInfo ci) {
+  private void readCasing(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket, CallbackInfo ci) {
     if (tag.contains("AlternateModel")) {
       this.setAlternate(tag.getBoolean("AlternateModel"));
     } else {

@@ -26,6 +26,7 @@ import com.simibubi.create.content.trains.signal.TrackEdgePoint;
 import com.simibubi.create.content.trains.track.TrackTargetingBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.LevelAccessor;
 import org.spongepowered.asm.mixin.Mixin;
@@ -37,7 +38,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = TrackEdgePoint.class, remap = false)
 public abstract class MixinTrackEdgePoint {
-    @Shadow public abstract void write(CompoundTag nbt, DimensionPalette dimensions);
+    @Shadow public abstract void write(CompoundTag nbt, HolderLookup.Provider registries, DimensionPalette dimensions);
 
     @Shadow public abstract EdgePointType<?> getType();
 
@@ -48,7 +49,7 @@ public abstract class MixinTrackEdgePoint {
             return;
         CompoundTag migrationData = new CompoundTag();
         DimensionPalette dimensions = new DimensionPalette();
-        write(migrationData, dimensions);
+        write(migrationData, level.registryAccess(), dimensions);
         dimensions.write(migrationData);
         behaviour.invalidateEdgePoint(migrationData);
     }
