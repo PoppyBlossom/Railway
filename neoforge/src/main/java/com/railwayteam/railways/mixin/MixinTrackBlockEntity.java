@@ -31,6 +31,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -139,7 +140,7 @@ public abstract class MixinTrackBlockEntity extends SmartBlockEntity implements 
   }
 
   @Inject(method = "write", at = @At("RETURN"))
-  private void writeCasing(CompoundTag tag, boolean clientPacket, CallbackInfo ci) {
+  private void writeCasing(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket, CallbackInfo ci) {
     if (this.getTrackCasing() != null) {
       tag.putString("TrackCasing", BuiltInRegistries.BLOCK.getKey(getTrackCasing()).toString());
     }
@@ -147,7 +148,7 @@ public abstract class MixinTrackBlockEntity extends SmartBlockEntity implements 
   }
 
   @Inject(method = "read", at = @At("RETURN"))
-  private void readCasing(CompoundTag tag, boolean clientPacket, CallbackInfo ci) {
+  private void readCasing(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket, CallbackInfo ci) {
     if (tag.contains("AlternateModel")) {
       this.setAlternate(tag.getBoolean("AlternateModel"));
     } else {

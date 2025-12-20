@@ -44,7 +44,9 @@ public abstract class CameraChunkTrackingMixin {
     private void railways$redirectToCamera(ServerPlayer player, CallbackInfo ci) {
         if (ConductorPossessionController.isPossessingConductor(player)) {
             // Center on the camera entity rather than the player itself.
-            ChunkPos cameraChunk = player.getCamera().chunkPosition();
+            var camera = player.getCamera();
+            if (camera == null) return; // Safety check for null camera
+            ChunkPos cameraChunk = camera.chunkPosition();
             int dist = this.getPlayerViewDistance(player);
 
             // Avoid unnecessary updates if already centered correctly.

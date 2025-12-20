@@ -34,15 +34,17 @@ import dev.engine_room.flywheel.lib.instance.FlatLit;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import dev.engine_room.flywheel.lib.transform.TransformStack;
-import dev.engine_room.flywheel.lib.visual.AbstractBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.AbstractVisual;
 import net.createmod.catnip.data.Iterate;
 import net.createmod.catnip.data.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -59,18 +61,28 @@ import static com.railwayteam.railways.registry.CRTrackMaterials.CRTrackType.NAR
 import static com.railwayteam.railways.registry.CRTrackMaterials.CRTrackType.WIDE_GAUGE;
 
 @Mixin(value = TrackVisual.class, remap = false)
-public abstract class MixinTrackVisual extends AbstractBlockEntityVisual<TrackBlockEntity> implements IGetBezierConnection {
-    public MixinTrackVisual(VisualizationContext ctx, TrackBlockEntity blockEntity, float partialTick) {
-        super(ctx, blockEntity, partialTick);
+public abstract class MixinTrackVisual extends AbstractVisual implements IGetBezierConnection {
+    // Shadow fields from TrackVisual
+    @Shadow @Final protected TrackBlockEntity blockEntity;
+    @Shadow @Final protected BlockPos pos;
+    @Shadow @Final protected BlockPos visualPos;
+
+    public MixinTrackVisual(VisualizationContext ctx, Level level, float partialTick) {
+        super(ctx, level, partialTick);
     }
 
     @Shadow
     public abstract void _delete();
 
-	@Shadow
-	private static void updateLight(FlatLit instance, Level level, BlockPos pos) {
-        throw new AssertionError();
-	}
+    @Unique
+    private static void railways$updateLightHelper(FlatLit instance, Level level, BlockPos pos) {
+        instance.light(net.minecraft.client.renderer.LevelRenderer.getLightColor(level, pos)).setChanged();
+    }
+
+    @Unique
+    private BlockState railways$getBlockState() {
+        return blockEntity.getBlockState();
+    }
 
 	@Nullable
     private BezierConnection bezierConnection = null;
@@ -103,11 +115,6 @@ public abstract class MixinTrackVisual extends AbstractBlockEntityVisual<TrackBl
         railways$makeCasingData(true);
     }
 
-    @Inject(method = "updateLight(F)V", at = @At("HEAD"))
-    private void railways$updateLight(CallbackInfo ci) {
-        casingData.forEach((data) -> updateLight(data.getFirst(), this.level, data.getSecond()));
-    }
-
     @Inject(method = "_delete", at = @At("HEAD"))
     private void railways$_delete(CallbackInfo ci) {
         casingData.forEach((data) -> data.getFirst().delete());
@@ -118,12 +125,13 @@ public abstract class MixinTrackVisual extends AbstractBlockEntityVisual<TrackBl
     private void railways$makeCasingData(boolean connections) {
         PoseStack ms = new PoseStack();
         TransformStack.of(ms)
-            .translate(getVisualPosition())
+            .translate(visualPos)
             .nudge((int) this.pos.asLong());
 
         SlabBlock casingBlock = ((IHasTrackCasing) this.blockEntity).getTrackCasing();
         if (casingBlock != null) {
-            TrackShape shape = this.blockState.getValue(TrackBlock.SHAPE);
+            BlockState blockState = railways$getBlockState();
+            TrackShape shape = blockState.getValue(TrackBlock.SHAPE);
             if (CRBlockPartials.TRACK_CASINGS.containsKey(shape)) {
                 ms.pushPose();
                 if (this.blockEntity.isTilted()) {
@@ -139,7 +147,7 @@ public abstract class MixinTrackVisual extends AbstractBlockEntityVisual<TrackBl
                     }
                 }
                 TrackType trackType = null;
-                if (this.blockState.getBlock() instanceof TrackBlock trackBlock)
+                if (blockState.getBlock() instanceof TrackBlock trackBlock)
                     trackType = trackBlock.getMaterial().trackType;
 
                 CRBlockPartials.TrackCasingSpec spec = CRBlockPartials.TRACK_CASINGS.get(shape);
@@ -156,7 +164,7 @@ public abstract class MixinTrackVisual extends AbstractBlockEntityVisual<TrackBl
                     .rotateY(transform.ry())
                     .rotateZ(transform.rz())
                     .translate(transform.x(), transform.y(), transform.z());
-                updateLight(casingInstance, this.level, this.pos);
+                railways$updateLightHelper(casingInstance, this.level, this.pos);
                 casingData.add(Pair.of(casingInstance, this.pos));
 
                 for (CRBlockPartials.ModelTransform additionalTransform : spec.additionalTransforms) {
@@ -166,7 +174,7 @@ public abstract class MixinTrackVisual extends AbstractBlockEntityVisual<TrackBl
                         .rotateY(additionalTransform.ry())
                         .rotateZ(additionalTransform.rz())
                         .translate(additionalTransform.x(), additionalTransform.y(), additionalTransform.z());
-                    updateLight(additionalInstance, this.level, this.pos);
+                    railways$updateLightHelper(additionalInstance, this.level, this.pos);
                     casingData.add(Pair.of(additionalInstance, this.pos.offset(Mth.floor(additionalTransform.x()), Mth.floor(additionalTransform.y()), Mth.floor(additionalTransform.z()))));
                 }
                 ms.popPose();
@@ -189,7 +197,7 @@ public abstract class MixinTrackVisual extends AbstractBlockEntityVisual<TrackBl
                                 .translate(pos.x, pos.y, pos.z)
                                 .scale(1.001f);
                             BlockPos relativePos = BlockPos.containing(this.pos.getX() + pos.x, this.pos.getY() + pos.y, this.pos.getZ() + pos.z);
-                            updateLight(casingInstance, this.level, relativePos);
+                            railways$updateLightHelper(casingInstance, this.level, relativePos);
                             casingData.add(Pair.of(casingInstance, relativePos));
                         }
                     } else {
@@ -211,7 +219,7 @@ public abstract class MixinTrackVisual extends AbstractBlockEntityVisual<TrackBl
                                 .translate(0, shiftDown, 0)
                                 .scale(1.001f);
                             BlockPos relativePos = new BlockPos(this.pos.getX() + lightPos.getX(), this.pos.getY() + lightPos.getY(), this.pos.getZ() + lightPos.getZ());
-                            updateLight(casingInstance, this.level, relativePos);
+                            railways$updateLightHelper(casingInstance, this.level, relativePos);
                             casingData.add(Pair.of(casingInstance, relativePos));
 
                             TrackType trackType = bc.getMaterial().trackType;
@@ -227,7 +235,7 @@ public abstract class MixinTrackVisual extends AbstractBlockEntityVisual<TrackBl
                                             .translate(0, (i % 4) * 0.001f, 0)
                                             .translate((first ? -(61 / 64.) : -(1 / 32.)) + (inner ? 0 : (first ? 1 : -1)), shiftDown, 0);
                                         BlockPos relativePos2 = new BlockPos(this.pos.getX() + lightPos.getX(), this.pos.getY() + lightPos.getY(), this.pos.getZ() + lightPos.getZ());
-                                        updateLight(casingInstance2, this.level, relativePos2);
+                                        railways$updateLightHelper(casingInstance2, this.level, relativePos2);
                                         casingData.add(Pair.of(casingInstance2, relativePos2));
                                     }
                                 }
@@ -242,7 +250,7 @@ public abstract class MixinTrackVisual extends AbstractBlockEntityVisual<TrackBl
                                         .translate(0, (i % 4) * 0.001f, 0)
                                         .translate(-0.5 + (trackType == NARROW_GAUGE ? (first ? 0.5 : -0.5) : 0), shiftDown, 0);
                                     BlockPos relativePos2 = new BlockPos(this.pos.getX() + lightPos.getX(), this.pos.getY() + lightPos.getY(), this.pos.getZ() + lightPos.getZ());
-                                    updateLight(casingInstance2, this.level, relativePos2);
+                                    railways$updateLightHelper(casingInstance2, this.level, relativePos2);
                                     casingData.add(Pair.of(casingInstance2, relativePos2));
                                 }
                             }

@@ -52,6 +52,7 @@ import com.simibubi.create.infrastructure.config.AllConfigs;
 import net.createmod.catnip.data.Couple;
 import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.nbt.NBTHelper;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.util.Mth;
@@ -139,8 +140,8 @@ public abstract class MixinTrain implements IOccupiedCouplers, IIndexedSchedule,
         return railways$occupiedCouplers;
     }
 
-    @Inject(method = "<init>", at = @At("RETURN"))
-    private void initCouplers(UUID id, UUID owner, TrackGraph graph, List<Carriage> carriages, List<Integer> carriageSpacing, boolean doubleEnded, CallbackInfo ci) {
+    @Inject(method = "<init>(Ljava/util/UUID;Ljava/util/UUID;Lcom/simibubi/create/content/trains/graph/TrackGraph;Ljava/util/List;Ljava/util/List;ZI)V", at = @At("RETURN"))
+    private void initCouplers(UUID id, UUID owner, TrackGraph graph, List<Carriage> carriages, List<Integer> carriageSpacing, boolean doubleEnded, int mapColorIndex, CallbackInfo ci) {
         railways$occupiedCouplers = new HashSet<>();
     }
 
@@ -240,7 +241,7 @@ public abstract class MixinTrain implements IOccupiedCouplers, IIndexedSchedule,
     }
 
     @Inject(method = "write", at = @At("RETURN"))
-    private void writeOccupiedCouplers(DimensionPalette dimensions, CallbackInfoReturnable<CompoundTag> cir) {
+    private void writeOccupiedCouplers(DimensionPalette dimensions, HolderLookup.Provider registries, CallbackInfoReturnable<CompoundTag> cir) {
         CompoundTag tag = cir.getReturnValue();
         tag.put("OccupiedCouplers", NBTHelper.writeCompoundList(railways$occupiedCouplers, uid -> {
             CompoundTag compoundTag = new CompoundTag();
@@ -252,7 +253,7 @@ public abstract class MixinTrain implements IOccupiedCouplers, IIndexedSchedule,
     }
 
     @Inject(method = "read", at = @At("RETURN"))
-    private static void readOccupiedCouplers(CompoundTag tag, Map<UUID, TrackGraph> trackNetworks,
+    private static void readOccupiedCouplers(CompoundTag tag, HolderLookup.Provider registries, Map<UUID, TrackGraph> trackNetworks,
                                              DimensionPalette dimensions, CallbackInfoReturnable<Train> cir,
                                              @Local Train train) {
         NBTHelper.iterateCompoundList(tag.getList("OccupiedCouplers", Tag.TAG_COMPOUND),
