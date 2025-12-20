@@ -32,7 +32,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.Vec3;
-import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -53,27 +52,45 @@ public abstract class MixinTrackTargetingClient {
     @Shadow
     static BezierTrackPointLocation lastHoveredBezierSegment;
 
-    @Inject(method = "render", at = @At(
-        value = "FIELD", opcode = Opcodes.GETSTATIC,
-        target = "Lcom/simibubi/create/content/trains/track/TrackTargetingClient;lastType:Lcom/simibubi/create/content/trains/graph/EdgePointType;",
-        ordinal = 0
-    ), cancellable = true)
+    /**
+     * Inject at HEAD to render custom overlays for Railways edge point types (COUPLER, SWITCH).
+     * We must inject at HEAD because Create's render method has an early return check:
+     *   if (lastLocation == null || lastResult.feedback != null) return;
+     * 
+     * When placing on invalid locations (curves, non-straight tracks), our MixinTrackTargetingBlockItem
+     * returns NO_TRACK which has feedback != null, causing Create's early return.
+     * By injecting at HEAD, we can render the overlay before that check happens.
+     */
+    @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     private static void renderCustom(PoseStack ms, SuperRenderTypeBuffer buffer, Vec3 camera, CallbackInfo ci) {
-        if (CustomTrackOverlayRendering.CUSTOM_OVERLAYS.containsKey(lastType)) {
-            Minecraft mc = Minecraft.getInstance();
-            BlockPos pos = lastHovered;
-            int light = LevelRenderer.getLightColor(mc.level, pos);
-            Direction.AxisDirection direction = lastDirection ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE;
-
-            ms.pushPose();
-            TransformStack.of(ms)
-                .translate(Vec3.atLowerCornerOf(pos)
-                    .subtract(camera));
-            CustomTrackOverlayRendering.renderOverlay(mc.level, pos, direction, lastHoveredBezierSegment, ms, buffer, light,
-                OverlayTexture.NO_OVERLAY, lastType, 1 + 1 / 16f);
-            ms.popPose();
-            ci.cancel();
+        // Debug: Log what we're seeing (uncomment to debug)
+        if (lastType != null) {
+            System.out.println("[Railways DEBUG] render - lastType: " + lastType + ", lastHovered: " + lastHovered + ", isCustom: " + CustomTrackOverlayRendering.CUSTOM_OVERLAYS.containsKey(lastType));
         }
+        
+        // Only handle Railways' custom edge point types
+        if (lastType == null || !CustomTrackOverlayRendering.CUSTOM_OVERLAYS.containsKey(lastType)) {
+            return;
+        }
+        
+        // Need to have a valid hovered position
+        if (lastHovered == null) {
+            return;
+        }
+
+        Minecraft mc = Minecraft.getInstance();
+        BlockPos pos = lastHovered;
+        int light = LevelRenderer.getLightColor(mc.level, pos);
+        Direction.AxisDirection direction = lastDirection ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE;
+
+        ms.pushPose();
+        TransformStack.of(ms)
+            .translate(Vec3.atLowerCornerOf(pos)
+                .subtract(camera));
+        CustomTrackOverlayRendering.renderOverlay(mc.level, pos, direction, lastHoveredBezierSegment, ms, buffer, light,
+            OverlayTexture.NO_OVERLAY, lastType, 1 + 1 / 16f);
+        ms.popPose();
+        ci.cancel();
     }
 
     @Inject(method = "render", at = @At("HEAD"))
