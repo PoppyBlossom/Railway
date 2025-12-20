@@ -37,6 +37,7 @@ import com.simibubi.create.content.trains.graph.DimensionPalette;
 import com.simibubi.create.content.trains.graph.TrackGraph;
 import net.createmod.catnip.data.Couple;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -121,7 +122,7 @@ public abstract class MixinCarriage implements ICarriageConductors, ICarriageBuf
     }
 
     @Inject(method = "write", at = @At("RETURN"))
-    private void writeControllingConductors(DimensionPalette dimensions, net.minecraft.core.HolderLookup.Provider registries, CallbackInfoReturnable<CompoundTag> cir) {
+    private void writeControllingConductors(DimensionPalette dimensions, HolderLookup.Provider registries, CallbackInfoReturnable<CompoundTag> cir) {
         CompoundTag tag = cir.getReturnValue();
         ListTag listTag = new ListTag();
         for (UUID uuid : railways$controllingConductors) {
@@ -138,7 +139,7 @@ public abstract class MixinCarriage implements ICarriageConductors, ICarriageBuf
     }
 
     @Inject(method = "read", at = @At("RETURN"))
-    private static void readControllingConductors(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries, TrackGraph graph, DimensionPalette dimensions, CallbackInfoReturnable<Carriage> cir) {
+    private static void readControllingConductors(CompoundTag tag, HolderLookup.Provider registries, TrackGraph graph, DimensionPalette dimensions, CallbackInfoReturnable<Carriage> cir) {
         Carriage carriage = cir.getReturnValue();
         List<UUID> controllingConductors = ((ICarriageConductors) carriage).railways$getControllingConductors();
         controllingConductors.clear();

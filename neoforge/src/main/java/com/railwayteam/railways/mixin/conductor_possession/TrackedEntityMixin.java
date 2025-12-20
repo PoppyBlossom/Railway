@@ -52,9 +52,11 @@ public abstract class TrackedEntityMixin {
 	 * shouldBeSent
 	 */
 	@Inject(method = "updatePlayer", at = @At(value = "FIELD", target = "Lnet/minecraft/world/phys/Vec3;x:D", ordinal = 0), locals = LocalCapture.CAPTURE_FAILSOFT)
-	private void railways$securitycraft$onUpdatePlayer(ServerPlayer player, CallbackInfo callback, Vec3 unused, double viewDistance) {
+	private void railways$securitycraft$onUpdatePlayer(ServerPlayer player, CallbackInfo callback, Vec3 unused, int sectionRange, double viewDistance) {
 		if (ConductorPossessionController.isPossessingConductor(player)) {
-			Vec3 relativePosToCamera = player.getCamera().position().subtract(entity.position());
+			Entity camera = player.getCamera();
+			if (camera == null) return;
+			Vec3 relativePosToCamera = camera.position().subtract(entity.position());
 
 			if (relativePosToCamera.x >= -viewDistance && relativePosToCamera.x <= viewDistance && relativePosToCamera.z >= -viewDistance && relativePosToCamera.z <= viewDistance)
 				shouldBeSent = true;
