@@ -62,7 +62,10 @@ public class MixinTrackRenderer {
     @Inject(method = "renderSafe(Lcom/simibubi/create/content/trains/track/TrackBlockEntity;FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;II)V",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/MultiBufferSource;getBuffer(Lnet/minecraft/client/renderer/RenderType;)Lcom/mojang/blaze3d/vertex/VertexConsumer;"), remap = true)
     private void renderCasing(TrackBlockEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay, CallbackInfo ci) {
-        SlabBlock casingBlock = ((IHasTrackCasing) te).getTrackCasing();
+        // Safe check: ensure the mixin was applied before casting
+        if (!(te instanceof IHasTrackCasing casing))
+            return;
+        SlabBlock casingBlock = casing.getTrackCasing();
         if (casingBlock != null) {
             TrackShape shape = te.getBlockState().getValue(TrackBlock.SHAPE);
             if (CRBlockPartials.TRACK_CASINGS.containsKey(shape)) {
@@ -82,7 +85,7 @@ public class MixinTrackRenderer {
                     trackType = trackBlock.getMaterial().trackType;
 
                 CRBlockPartials.TrackCasingSpec spec = CRBlockPartials.TRACK_CASINGS.get(shape);
-                if (((IHasTrackCasing) te).isAlternate())
+                if (casing.isAlternate())
                     spec = spec.getNonNullAltSpec(trackType);
                 else
                     spec = spec.getFor(trackType);

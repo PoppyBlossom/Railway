@@ -262,7 +262,10 @@ public class CasingCollisionUtils {
 
     public static boolean shouldMakeCollision(TrackBlockEntity be, BlockState state) {
         TrackShape shape = state.getValue(TrackBlock.SHAPE);
-        if (((IHasTrackCasing) be).isAlternate() || ((IHasTrackCasing) be).getTrackCasing() == null)
+        // Safe check: ensure the mixin was applied before casting
+        if (!(be instanceof IHasTrackCasing casing))
+            return false;
+        if (casing.isAlternate() || casing.getTrackCasing() == null)
             return false;
         TrackType trackType = ((TrackBlock) state.getBlock()).getMaterial().trackType;
         if (!OFFSETS.containsKey(trackType))
