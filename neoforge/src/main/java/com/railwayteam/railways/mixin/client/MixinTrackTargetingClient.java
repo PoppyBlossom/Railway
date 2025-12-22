@@ -63,11 +63,6 @@ public abstract class MixinTrackTargetingClient {
      */
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     private static void renderCustom(PoseStack ms, SuperRenderTypeBuffer buffer, Vec3 camera, CallbackInfo ci) {
-        // Debug: Log what we're seeing (uncomment to debug)
-        if (lastType != null) {
-            System.out.println("[Railways DEBUG] render - lastType: " + lastType + ", lastHovered: " + lastHovered + ", isCustom: " + CustomTrackOverlayRendering.CUSTOM_OVERLAYS.containsKey(lastType));
-        }
-        
         // Only handle Railways' custom edge point types
         if (lastType == null || !CustomTrackOverlayRendering.CUSTOM_OVERLAYS.containsKey(lastType)) {
             return;
