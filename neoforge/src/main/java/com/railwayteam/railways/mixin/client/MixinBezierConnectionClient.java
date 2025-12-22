@@ -18,7 +18,6 @@
 
 package com.railwayteam.railways.mixin.client;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.railwayteam.railways.mixin_interfaces.IMonorailBezier;
 import com.railwayteam.railways.registry.CRTrackMaterials;
@@ -33,7 +32,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(value = BezierConnection.class, remap = false)
 public abstract class MixinBezierConnectionClient implements IMonorailBezier {
@@ -131,14 +129,4 @@ public abstract class MixinBezierConnectionClient implements IMonorailBezier {
         return bakedMonorails;
     }
 
-    @ModifyExpressionValue(method="getBakedSegments", at = @At(value = "CONSTANT", args = "doubleValue=0.9649999737739563"))
-    private double modifyRailWidth(double original) {
-        BezierConnection this$ = (BezierConnection) (Object) this;
-        if (this$.getMaterial().trackType == CRTrackMaterials.CRTrackType.WIDE_GAUGE) {
-            return original + 0.5;
-        } else if (this$.getMaterial().trackType == CRTrackMaterials.CRTrackType.NARROW_GAUGE) {
-            return original - (7 / 16.);
-        }
-        return original;
-    }
 }
