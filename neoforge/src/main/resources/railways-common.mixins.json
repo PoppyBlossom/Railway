@@ -109,6 +109,7 @@
     "client.AccessorLivingEntityRenderer",
     "client.AccessorLocalPlayer",
     "client.AccessorPartialModel",
+    "client.AccessorTrackVisual",
     "client.AccessorToolboxHandlerClient",
     "client.AccessorTrackBlockOutline",
     "client.AccessorVisualizedBogey",

@@ -18,29 +18,27 @@
 
 package com.railwayteam.railways.mixin.client;
 
-
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.railwayteam.railways.mixin_interfaces.IMonorailBezier;
 import com.railwayteam.railways.mixin_interfaces.IMonorailBezier.MonorailAngles;
 import com.railwayteam.railways.registry.CRTrackMaterials;
 import com.simibubi.create.content.trains.track.BezierConnection;
 import com.simibubi.create.content.trains.track.TrackVisual;
-import com.simibubi.create.foundation.render.SpecialModels;
 import dev.engine_room.flywheel.api.instance.InstancerProvider;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
+import dev.engine_room.flywheel.lib.model.Models;
 import dev.engine_room.flywheel.lib.transform.TransformStack;
 import net.createmod.catnip.data.Iterate;
+import net.minecraft.client.renderer.LevelRenderer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static com.railwayteam.railways.registry.CRBlockPartials.MONORAIL_SEGMENT_BOTTOM;
@@ -65,16 +63,6 @@ public abstract class MixinTrackVisual$BezierTrackVisual {
     @Mutable
     private TransformedInstance[] left;
 
-    @WrapOperation(method = "<init>", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/trains/track/BezierConnection;getSegmentCount()I"))
-    private int railways$messWithCtor(BezierConnection instance, Operation<Integer> original) {
-        return instance.getMaterial().trackType == CRTrackMaterials.CRTrackType.MONORAIL ? 0 : original.call(instance);
-    }
-
-    @WrapOperation(method = "<init>", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/trains/track/BezierConnection;getBakedSegments()Lcom/simibubi/create/content/trains/track/BezierConnection$SegmentAngles;"))
-    private BezierConnection.SegmentAngles railways$messWithCtor2(BezierConnection instance, Operation<BezierConnection.SegmentAngles> original) {
-        return instance.getMaterial().trackType == CRTrackMaterials.CRTrackType.MONORAIL ? null : original.call(instance);
-    }
-
     @SuppressWarnings("SuspiciousNameCombination")
     @Inject(method = "<init>", at = @At("RETURN"))
     private void addActualMonorail(TrackVisual trackInstance, BezierConnection bc, CallbackInfo ci) {
@@ -82,9 +70,20 @@ public abstract class MixinTrackVisual$BezierTrackVisual {
         //Use ties for center section
         //use left for bottom section
         if (bc.getMaterial().trackType == CRTrackMaterials.CRTrackType.MONORAIL) {
+            // Remove the default track segment instances created by Create.
+            // We keep the visual itself intact, but replace its instance arrays with monorail-specific ones.
+            for (TransformedInstance instance : right)
+                instance.delete();
+            for (TransformedInstance instance : ties)
+                instance.delete();
+            for (TransformedInstance instance : left)
+                instance.delete();
+
+            var visualPos = ((AccessorTrackVisual) trackInstance).railways$getVisualPos();
+
             PoseStack pose = new PoseStack();
             TransformStack.of(pose)
-                .translate(new net.minecraft.world.phys.Vec3(0, 0, 0))
+                .translate(visualPos)
                 .nudge((int) bc.bePositions.getFirst()
                     .asLong());
 
@@ -100,24 +99,32 @@ public abstract class MixinTrackVisual$BezierTrackVisual {
 
             InstancerProvider provider = ((AccessorAbstractVisual) trackInstance).railways$getInstancerProvider();
 
-            provider.instancer(InstanceTypes.TRANSFORMED, SpecialModels.flatChunk(MONORAIL_SEGMENT_TOP)).createInstances(top);
-            provider.instancer(InstanceTypes.TRANSFORMED, SpecialModels.flatChunk(MONORAIL_SEGMENT_MIDDLE)).createInstances(middle);
-            provider.instancer(InstanceTypes.TRANSFORMED, SpecialModels.flatChunk(MONORAIL_SEGMENT_BOTTOM)).createInstances(bottom);
+            // Use partial-model instancing here. Using flatChunk can result in missing/empty geometry for
+            // these block partials under Flywheel, which manifests as invisible/"transparent" curved monorail.
+            provider.instancer(InstanceTypes.TRANSFORMED, Models.partial(MONORAIL_SEGMENT_TOP)).createInstances(top);
+            provider.instancer(InstanceTypes.TRANSFORMED, Models.partial(MONORAIL_SEGMENT_MIDDLE)).createInstances(middle);
+            provider.instancer(InstanceTypes.TRANSFORMED, Models.partial(MONORAIL_SEGMENT_BOTTOM)).createInstances(bottom);
+
+            var level = ((AccessorAbstractVisual) trackInstance).railways$getLevel();
 
             for (int i = 1; i < monorails.length; i++) {
                 MonorailAngles segment = monorails[i];
                 int modelIndex = i - 1;
 
+                int packedLight = LevelRenderer.getLightColor(level, segment.lightPosition.offset(bc.bePositions.getFirst()));
+
                 PoseStack.Pose beamTransform = segment.beam;
 
                 middle[modelIndex].setTransform(pose)
                     .mul(beamTransform)
+                    .light(packedLight)
                     .setChanged();
 
                 for (boolean isTop : Iterate.trueAndFalse) {
                     PoseStack.Pose beamCapTransform = segment.beamCaps.get(isTop);
                     (isTop ? top : bottom)[modelIndex].setTransform(pose)
                         .mul(beamCapTransform)
+                        .light(packedLight)
                         .setChanged();
                 }
             }

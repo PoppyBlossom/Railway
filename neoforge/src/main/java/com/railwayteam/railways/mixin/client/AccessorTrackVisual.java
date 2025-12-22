@@ -18,18 +18,13 @@
 
 package com.railwayteam.railways.mixin.client;
 
-import dev.engine_room.flywheel.api.instance.InstancerProvider;
-import dev.engine_room.flywheel.lib.visual.AbstractVisual;
-import net.minecraft.world.level.Level;
+import com.simibubi.create.content.trains.track.TrackVisual;
+import net.minecraft.core.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
-import org.spongepowered.asm.mixin.gen.Invoker;
 
-@Mixin(AbstractVisual.class)
-public interface AccessorAbstractVisual {
-	@Invoker(value = "instancerProvider", remap = false)
-	InstancerProvider railways$getInstancerProvider();
-
-	@Accessor(value = "level", remap = false)
-	Level railways$getLevel();
+@Mixin(value = TrackVisual.class, remap = false)
+public interface AccessorTrackVisual {
+	@Accessor(value = "visualPos", remap = false)
+	BlockPos railways$getVisualPos();
 }
