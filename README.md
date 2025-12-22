@@ -22,16 +22,6 @@ This repository attempts to create a port of **Create Steam 'n' Rails** for **Mi
 
 ![Milestone Progress](https://img.shields.io/github/milestones/progress-percent/PoppyBlossom/Railway/7?color=red)
 
-**Open Issues:**
-
-![Open Issues](https://img.shields.io/github/issues/PoppyBlossom/Railway?label=Total%20Issues&color=yellow)
-
-![Open Issues](https://img.shields.io/github/issues/PoppyBlossom/Railway/bug?label=Bug%20Issues&color=red)
-
-**Pull-Requests:** 
-
-![Open Pull Requests](https://img.shields.io/github/issues-pr/PoppyBlossom/Railway?color=%232dba4e)
-
 ## Credits
 This project is an unofficial fork of **[Create: Steam 'n' Rails](https://github.com/Layers-of-Railways/Railway)**.
 >[!Warning]
