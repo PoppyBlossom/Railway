@@ -20,11 +20,11 @@ package com.railwayteam.railways.mixin.client;
 
 import com.railwayteam.railways.mixin_interfaces.IUpdateCount;
 import com.simibubi.create.content.contraptions.render.ContraptionVisual;
+import com.simibubi.create.content.trains.bogey.BogeyVisual;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import com.simibubi.create.content.trains.entity.CarriageContraptionVisual;
+import dev.engine_room.flywheel.api.visual.DynamicVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
-import net.createmod.catnip.data.Couple;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -57,19 +57,24 @@ public abstract class MixinCarriageContraptionInstance extends ContraptionVisual
     }
 
     @Shadow(remap = false)
-    private @Nullable Couple<AccessorVisualizedBogey> bogeys;
+    private int numBogeys;
+
+    @Shadow(remap = false)
+    private BogeyVisual[] visuals;
 
     @Inject(method = "beginFrame", at = @At("HEAD"), remap = false)
-    private void railways$refreshBogeys(CallbackInfo ci) {
+    private void railways$refreshBogeys(DynamicVisual.Context context, CallbackInfo ci) {
         if (IUpdateCount.outOfSync(this, (IUpdateCount) this.entity)) {
-            if (bogeys != null) {
-                bogeys.forEach(visual -> {
+            if (visuals != null)
+                for (int i = 0; i < visuals.length; i++) {
+                    BogeyVisual visual = visuals[i];
                     if (visual != null) {
-                        visual.getVisual().delete();
+                        visual.delete();
+                        visuals[i] = null;
                     }
-                });
-                bogeys = null;
-            }
+                }
+
+            numBogeys = 0;
             this.railways$fromParent((IUpdateCount) this.entity);
         }
     }

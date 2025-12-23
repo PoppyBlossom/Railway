@@ -112,7 +112,6 @@
     "client.AccessorTrackVisual",
     "client.AccessorToolboxHandlerClient",
     "client.AccessorTrackBlockOutline",
-    "client.AccessorVisualizedBogey",
     "client.AccessorWalkAnimationState",
     "client.HotbarStorageMixin",
     "client.MixinBezierConnectionClient",
