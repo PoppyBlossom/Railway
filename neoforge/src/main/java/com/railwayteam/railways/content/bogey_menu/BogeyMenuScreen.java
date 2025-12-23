@@ -270,14 +270,18 @@ public class BogeyMenuScreen extends AbstractSimiScreen {
             ms.pushPose();
 
             // Setup pose and lighting correctly
-            ms.translate(0, 0, 1000);
+            // Position preview inside the GUI window (previously rendered at screen-space ~0,0)
+            // Preview panel (used for depth clear) is x + 120 .. x + 260 and y + 48 .. y + 125
+            ms.translate(x + 190, y + 86.5, 1000);
             ms.scale(bogeyScale, bogeyScale, bogeyScale);
             Quaternionf zRot = Axis.ZP.rotationDegrees(180);
             Quaternionf xRot = Axis.XP.rotationDegrees(-20);
-            Quaternionf yRot = Axis.YP.rotationDegrees(45);
+            Quaternionf yRot = Axis.YP.rotationDegrees(-45);
             zRot.mul(xRot);
             zRot.mul(yRot);
             ms.mulPose(zRot);
+            // Center the block model around the origin (in model space, so it scales correctly)
+            ms.translate(-0.5, -0.5, -0.5);
             Lighting.setupForEntityInInventory();
 
             // Setup vars for rendering
@@ -287,16 +291,25 @@ public class BogeyMenuScreen extends AbstractSimiScreen {
             int overlay = OverlayTexture.NO_OVERLAY;
             float wheelAngle = -3 * AnimationTickHolder.getRenderTime();
 
+            // In GUI rendering, transforms can flip triangle winding; if culling remains enabled,
+            // the preview can look inside-out. Disable culling for this 3D preview render.
+            RenderSystem.enableDepthTest();
+            RenderSystem.disableCull();
+
             // Render Bogey Block & Bogey
             minecraft.getBlockRenderer().renderSingleBlock(bogeyState, ms, bufferSource, light, overlay);
             
             ms.pushPose();
-            ms.translate(0, 0, 1);
+            // BogeyStyle.render is authored relative to a different origin than the block model;
+            // lift it by 1 block so wheels/frames align with the bogey top in the preview.
+            ms.translate(0, 1, 0);
             renderStyle.render(renderSize, partialTicks, ms, bufferSource, light, overlay, wheelAngle, new CompoundTag(), false);
             ms.popPose();
             
             // End batch, pop modelViewStack & apply and pop the pose
             bufferSource.endBatch();
+
+            RenderSystem.enableCull();
             ms.popPose();
 
             // Clear depth rectangle to allow proper tooltips
