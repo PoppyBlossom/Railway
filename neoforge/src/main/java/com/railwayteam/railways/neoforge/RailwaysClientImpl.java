@@ -21,7 +21,12 @@ package com.railwayteam.railways.neoforge;
 import com.mojang.brigadier.CommandDispatcher;
 import com.railwayteam.railways.Railways;
 import com.railwayteam.railways.RailwaysClient;
+import com.railwayteam.railways.registry.CRBlockEntities;
 import com.railwayteam.railways.registry.CRParticleTypes;
+import com.simibubi.create.content.trains.bogey.BogeyBlockEntityRenderer;
+import com.simibubi.create.content.trains.bogey.BogeyBlockEntityVisual;
+import dev.engine_room.flywheel.api.visualization.VisualizerRegistry;
+import dev.engine_room.flywheel.lib.visualization.SimpleBlockEntityVisualizer;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.commands.CommandSourceStack;
@@ -35,12 +40,14 @@ import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.PackSource;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent.RegisterRenderers;
 import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,6 +65,27 @@ public class RailwaysClientImpl {
 		RailwaysImpl.bus.addListener(RailwaysClientImpl::onModelLayerRegistration);
 		RailwaysImpl.bus.addListener(RailwaysClientImpl::onBuiltinPackRegistration);
 		RailwaysImpl.bus.addListener((RegisterParticleProvidersEvent event) -> CRParticleTypes.registerFactories());
+		RailwaysImpl.bus.addListener(RailwaysClientImpl::onRendererRegistration);
+		RailwaysImpl.bus.addListener(RailwaysClientImpl::onClientSetup);
+	}
+
+	private static void onRendererRegistration(RegisterRenderers event) {
+		// Ensure Railways bogey block entities always have a vanilla renderer bound.
+		event.registerBlockEntityRenderer(CRBlockEntities.BOGEY.get(), BogeyBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(CRBlockEntities.MONO_BOGEY.get(), BogeyBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(CRBlockEntities.INVISIBLE_BOGEY.get(), BogeyBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(CRBlockEntities.INVISIBLE_MONO_BOGEY.get(), BogeyBlockEntityRenderer::new);
+	}
+
+	private static void onClientSetup(FMLClientSetupEvent event) {
+		// Flywheel visuals: explicitly register visualizers for Railways bogey block entities.
+		event.enqueueWork(() -> {
+			var visualizer = new SimpleBlockEntityVisualizer<>(BogeyBlockEntityVisual::new, be -> true);
+			VisualizerRegistry.setVisualizer(CRBlockEntities.BOGEY.get(), visualizer);
+			VisualizerRegistry.setVisualizer(CRBlockEntities.MONO_BOGEY.get(), visualizer);
+			VisualizerRegistry.setVisualizer(CRBlockEntities.INVISIBLE_BOGEY.get(), visualizer);
+			VisualizerRegistry.setVisualizer(CRBlockEntities.INVISIBLE_MONO_BOGEY.get(), visualizer);
+		});
 	}
 
 	// region -- Client Commands ---
