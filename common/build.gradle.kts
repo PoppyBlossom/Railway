@@ -31,6 +31,8 @@ repositories {
     maven("https://mvn.devos.one/snapshots/")
     maven("https://maven.blamejared.com/")
     maven("https://maven.tterrag.com/")
+    // CC: Tweaked (may be pulled transitively by Create)
+    maven("https://maven.squiddev.cc")
     maven("https://jitpack.io")
     maven("https://maven.parchmentmc.org")
     maven("https://modmaven.dev/")

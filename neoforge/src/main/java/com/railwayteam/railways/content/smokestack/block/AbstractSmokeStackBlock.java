@@ -128,7 +128,7 @@ public abstract class AbstractSmokeStackBlock<T extends SmartBlockEntity> extend
     @Override
         protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand,
                                          BlockHitResult pHit) {
-        if (AllTags.AllItemTags.WRENCH.matches(pPlayer.getItemInHand(pHand))) {
+          if (pPlayer.getItemInHand(pHand).is(AllTags.commonItemTag("tools/wrench"))) {
               return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
         pState = pState.cycle(ENABLED);

@@ -54,6 +54,8 @@ repositories {
     maven("https://maven.blamejared.com/")
     maven("https://maven.tterrag.com/")
     maven("https://maven.ftb.dev/")
+    // CC: Tweaked (required transitively by Create 6.x)
+    maven("https://maven.squiddev.cc")
     maven("https://maven.architectury.dev/")
     maven("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/")
     maven("https://jitpack.io")
