@@ -21,14 +21,18 @@ package com.railwayteam.railways.neoforge;
 import com.mojang.brigadier.CommandDispatcher;
 import com.railwayteam.railways.Railways;
 import com.railwayteam.railways.RailwaysClient;
+import com.railwayteam.railways.content.conductor.ConductorRenderer;
 import com.railwayteam.railways.registry.CRBlockEntities;
 import com.railwayteam.railways.registry.CRParticleTypes;
+import com.railwayteam.railways.registry.CREntities;
 import com.simibubi.create.content.trains.bogey.BogeyBlockEntityRenderer;
 import com.simibubi.create.content.trains.bogey.BogeyBlockEntityVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizerRegistry;
 import dev.engine_room.flywheel.lib.visualization.SimpleBlockEntityVisualizer;
+import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.renderer.entity.MinecartRenderer;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
@@ -75,6 +79,11 @@ public class RailwaysClientImpl {
 		event.registerBlockEntityRenderer(CRBlockEntities.MONO_BOGEY.get(), BogeyBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(CRBlockEntities.INVISIBLE_BOGEY.get(), BogeyBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(CRBlockEntities.INVISIBLE_MONO_BOGEY.get(), BogeyBlockEntityRenderer::new);
+
+		// Ponder renders entities in an isolated world; ensure our entity renderers are always registered.
+		event.registerEntityRenderer(CREntities.CONDUCTOR.get(), ConductorRenderer::new);
+		event.registerEntityRenderer(CREntities.CART_BLOCK.get(), ctx -> new MinecartRenderer<>(ctx, ModelLayers.MINECART));
+		event.registerEntityRenderer(CREntities.CART_JUKEBOX.get(), ctx -> new MinecartRenderer<>(ctx, ModelLayers.MINECART));
 	}
 
 	private static void onClientSetup(FMLClientSetupEvent event) {

@@ -29,6 +29,7 @@ import com.railwayteam.railways.multiloader.Env;
 import com.railwayteam.railways.registry.neoforge.CRBlockEntitiesImpl;
 import com.railwayteam.railways.registry.neoforge.CRBlocksImpl;
 import com.railwayteam.railways.registry.neoforge.CRCreativeModeTabsImpl;
+import com.railwayteam.railways.registry.neoforge.CREntityAttributesImpl;
 import com.railwayteam.railways.registry.neoforge.CRMountedStorageTypesImpl;
 import com.railwayteam.railways.registry.neoforge.CRParticleTypesParticleEntryImpl;
 import com.simibubi.create.api.connectivity.ConnectivityHandler;
@@ -68,6 +69,8 @@ public class RailwaysImpl {
 	public RailwaysImpl(IEventBus modEventBus, ModContainer modContainer) {
 		bus = modEventBus;
 		CRCreativeModeTabsImpl.register(RailwaysImpl.bus);
+		// Ensure mob attributes exist even if Registrate attribute wiring is missed.
+		modEventBus.addListener(CREntityAttributesImpl::registerAttributes);
 		Railways.init();
 		CRConfigsImpl.register(modContainer);
 		CRParticleTypesParticleEntryImpl.register(bus);
