@@ -182,22 +182,13 @@ public class ConductorEntityModel<T extends ConductorEntity> extends HumanoidMod
     return this.head;
   }
 
-  public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-    int packedColor = rgbaToInt(red, green, blue, alpha);
+  @Override
+  public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int packedColor) {
     head.render(poseStack, vertexConsumer, packedLight, packedOverlay, packedColor);
     body.render(poseStack, vertexConsumer, packedLight, packedOverlay, packedColor);
     rightArm.render(poseStack, vertexConsumer, packedLight, packedOverlay, packedColor);
     leftArm.render(poseStack, vertexConsumer, packedLight, packedOverlay, packedColor);
     rightLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay, packedColor);
     leftLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay, packedColor);
-    //hat.render(poseStack, vertexConsumer, packedLight, packedOverlay, packedColor);
-  }
-
-  private static int rgbaToInt(float r, float g, float b, float a) {
-    int ia = (int)(a * 255.0F) & 0xFF;
-    int ir = (int)(r * 255.0F) & 0xFF;
-    int ig = (int)(g * 255.0F) & 0xFF;
-    int ib = (int)(b * 255.0F) & 0xFF;
-    return (ia << 24) | (ir << 16) | (ig << 8) | ib;
   }
 }

@@ -29,6 +29,7 @@ import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.phys.Vec3;
@@ -89,7 +90,7 @@ public class ConductorFakePlayerForge extends FakePlayer implements IConductorHo
 
 	private static class ConductorNetHandler extends ServerGamePacketListenerImpl {
 		public ConductorNetHandler(MinecraftServer server, ServerPlayer player) {
-			super(server, NETWORK_MANAGER, player, null);  // Cookie can be null for fake players
+			super(server, NETWORK_MANAGER, player, CommonListenerCookie.createInitial(player.getGameProfile(), false));
 		}
 
 		@Override
