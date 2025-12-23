@@ -6,24 +6,24 @@
 </div>
 
 
->[!Important]
-> **This is a temporary substitute until the developers release their official version for 1.21.1**.
 
 ## Description
-This repository attempts to create a port of **Create Steam 'n' Rails** for **Minecraft 1.21.1**.
+This repository is a port of **Create Steam 'n' Rails** for **Minecraft 1.21.1**.
 
 >[!Important]
-**Please note that this port is currently not functional.**
+> **This port is a subsitution for _Create: Steam 'n' Rails_ until the developers release their official version for 1.21.1**.
+
 
 ## Current development progress:
-**Milestones:**
+**Releases**
 
-![Milestone Progress](https://img.shields.io/github/milestones/progress-percent/PoppyBlossom/Railway/1?color=%232dba4e)
+A **Pre-release** version is expected to roll out in the near future, though the exact date can't be determined.
 
-![Milestone Progress](https://img.shields.io/github/milestones/progress-percent/PoppyBlossom/Railway/7?color=red)
+>[!Important]
+**Please note that this port is currently not _generally released_.**
 
 ## Credits
-This project is an unofficial fork of **[Create: Steam 'n' Rails](https://github.com/Layers-of-Railways/Railway)**.
+This project is an **unofficial fork** of **[Create: Steam 'n' Rails](https://github.com/Layers-of-Railways/Railway)**.
 >[!Warning]
 >Please refrain from reporting any issues related to this repository on the official **[Create: Steam 'n' Rails Repository](https://github.com/Layers-of-Railways/Railway)**
 
