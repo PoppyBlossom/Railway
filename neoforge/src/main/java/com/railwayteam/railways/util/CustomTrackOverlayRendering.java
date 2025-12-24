@@ -96,8 +96,7 @@ public class CustomTrackOverlayRendering {
 
         ms.pushPose();
 
-        var msr = TransformStack.of(ms);
-        PartialModel partial = prepareTrackOverlay(level, pos, trackState, bezier, direction, msr, model);
+        PartialModel partial = prepareTrackOverlay(level, pos, trackState, bezier, direction, ms, model);
         if (partial != null)
             CachedBuffers.partial(partial, trackState)
                 .translate(.5, 0, .5)
@@ -111,10 +110,10 @@ public class CustomTrackOverlayRendering {
 
     //Copied from TrackBlock
     @OnlyIn(Dist.CLIENT)
-    public static <T extends dev.engine_room.flywheel.lib.transform.Affine<T>> PartialModel prepareTrackOverlay(BlockGetter world, BlockPos pos, BlockState state,
+    public static PartialModel prepareTrackOverlay(BlockGetter world, BlockPos pos, BlockState state,
                                                    BezierTrackPointLocation bezierPoint, Direction.AxisDirection direction,
-                                                   dev.engine_room.flywheel.lib.transform.Affine<T> affine, PartialModel model) {
-        // affine is already a TransformStack-compatible interface
+                                                   PoseStack ms, PartialModel model) {
+        var msr = TransformStack.of(ms);
 
         Vec3 axis = null;
         Vec3 diff = null;
@@ -139,18 +138,18 @@ public class CustomTrackOverlayRendering {
                     .subtract(bc.getPosition(tpre))
                     .normalize();
 
-                affine.translate(offset.subtract(Vec3.atBottomCenterOf(pos)));
-                affine.translate(0, -4 / 16f, 0);
+                msr.translate(offset.subtract(Vec3.atBottomCenterOf(pos)));
+                msr.translate(0, -4 / 16f, 0);
                 // Translate more for slabs or monorails
                 IHasTrackCasing casingBc = (IHasTrackCasing) bc;
                 if (bc.getMaterial().trackType == CRTrackMaterials.CRTrackType.MONORAIL) {
-                    affine.translate(0, 14/16f, 0);
+                    msr.translate(0, 14/16f, 0);
                 } else if (casingBc.getTrackCasing() != null) {
                     // Don't shift up if the curve is a slope and the casing is under the track, rather than in it
                     if (bc.bePositions.getFirst().getY() == bc.bePositions.getSecond().getY()) {
-                        affine.translate(0, 1 / 16f, 0);
+                        msr.translate(0, 1 / 16f, 0);
                     } else if (!casingBc.isAlternate()) {
-                        affine.translate(0, 4 / 16f, 0);
+                        msr.translate(0, 4 / 16f, 0);
                     }
                 }
             } else
@@ -171,7 +170,7 @@ public class CustomTrackOverlayRendering {
 
         //Shift for casings and monorails
         if (bezierPoint == null && state.getBlock() instanceof TrackBlock trackBlock && trackBlock.getMaterial().trackType == CRTrackMaterials.CRTrackType.MONORAIL) {
-            affine.translate(0, 14/16f, 0);
+            msr.translate(0, 14/16f, 0);
         } else if (bezierPoint == null && world.getBlockEntity(pos) instanceof TrackBlockEntity trackTE && state.getBlock() instanceof TrackBlock trackBlock) {
             IHasTrackCasing casingTE = (IHasTrackCasing) trackTE;
             TrackShape shape = state.getValue(TrackBlock.SHAPE);
@@ -179,7 +178,7 @@ public class CustomTrackOverlayRendering {
                 TrackCasingSpec spec = CRBlockPartials.TRACK_CASINGS.get(shape);
                 TrackType trackType = trackBlock.getMaterial().trackType;
                 if (spec != null)
-                    affine.translate(
+                    msr.translate(
                         spec.getXShift(trackType),
                         (spec.getTopSurfacePixelHeight(trackType, casingTE.isAlternate()) - 2) / 16f,
                         spec.getZShift(trackType)
@@ -189,17 +188,17 @@ public class CustomTrackOverlayRendering {
 
         Vec3 angles = TrackRenderer.getModelAngles(normal, diff);
 
-        affine.center()
+        msr.center()
             .rotateY((float) angles.y)
             .rotateX((float) angles.x)
             .uncenter();
 
         if (axis != null)
-            affine.translate(0, axis.y != 0 ? 7 / 16f : 0, axis.y != 0 ? direction.getStep() * 2.5f / 16f : 0);
+            msr.translate(0, axis.y != 0 ? 7 / 16f : 0, axis.y != 0 ? direction.getStep() * 2.5f / 16f : 0);
         else {
-            affine.translate(0, 4 / 16f, 0);
+            msr.translate(0, 4 / 16f, 0);
             if (direction == Direction.AxisDirection.NEGATIVE)
-                affine.rotateCentered(Mth.PI, Direction.UP);
+                msr.rotateCentered(Mth.PI, Direction.UP);
         }
 
         if (bezierPoint == null && world.getBlockEntity(pos) instanceof TrackBlockEntity trackTE
@@ -207,7 +206,7 @@ public class CustomTrackOverlayRendering {
             double yOffset = 0;
             for (BezierConnection bc : trackTE.getConnections().values())
                 yOffset += bc.starts.getFirst().y - pos.getY();
-            affine.center()
+            msr.center()
                 .rotateXDegrees((float) ((double) -direction.getStep() * trackTE.tilt.smoothingAngle.get()))
                 .uncenter()
                 .translate(0, yOffset / 2, 0);
