@@ -70,7 +70,14 @@ public class MixinTrackTargetingBlockItem {
                                            BiConsumer<TrackTargetingBlockItem.OverlapResult, TrackGraphLocation> callback, CallbackInfo ci) {
         if (type != CREdgePointTypes.COUPLER && type != CREdgePointTypes.SWITCH) // prevent coupler on turns
             return;
-        TrackTargetingBlockItem.OverlapResult NOT_STRAIGHT = TrackTargetingBlockItem.OverlapResult.valueOf("NOT_STRAIGHT");
+        
+        TrackTargetingBlockItem.OverlapResult NOT_STRAIGHT = null;
+        try {
+            NOT_STRAIGHT = TrackTargetingBlockItem.OverlapResult.valueOf("NOT_STRAIGHT");
+        } catch (IllegalArgumentException e) {
+            return;
+        }
+        
         if (targetBezier != null) {
             callback.accept(NOT_STRAIGHT, null);
             ci.cancel();

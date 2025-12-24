@@ -43,10 +43,11 @@ public class MixinBezierConnection$SegmentAngles {
 		if (Math.abs(scale - RAIL_OFFSET_STANDARD) > 1.0E-6)
 			return scale;
 
-		var trackType = bc.getMaterial().trackType;
+		var material = bc.getMaterial();
+		var trackType = material.trackType;
 		if (trackType == CRTrackMaterials.CRTrackType.WIDE_GAUGE)
 			return scale + RAIL_OFFSET_WIDE_ADD;
-		if (trackType == CRTrackMaterials.CRTrackType.NARROW_GAUGE || trackType == CRTrackMaterials.CRTrackType.UNIVERSAL)
+		if ((trackType == CRTrackMaterials.CRTrackType.NARROW_GAUGE || trackType == CRTrackMaterials.CRTrackType.UNIVERSAL) && material != CRTrackMaterials.PHANTOM)
 			return scale - RAIL_OFFSET_NARROW_SUB;
 		return scale;
 	}
