@@ -23,7 +23,7 @@ A **Pre-release** version is expected to roll out in the near future, though the
 **Please note that this port is currently not _generally released_.**
 
 ## Credits
-This project is an **unofficial fork** of **[Create: Steam 'n' Rails](https://github.com/Layers-of-Railways/Railway)**.
+This project is an **unofficial fork** of **[Create: Steam 'n' Rails](https://github.com/Layers-of-Railways/Railway) created by the Layers of Railways team.**
 >[!Warning]
 >Please refrain from reporting any issues related to this repository on the official **[Create: Steam 'n' Rails Repository](https://github.com/Layers-of-Railways/Railway)**
 
