@@ -24,26 +24,45 @@ import com.railwayteam.railways.base.data.recipe.RailwaysStandardRecipeGen;
 import com.railwayteam.railways.base.data.recipe.neoforge.RailwaysMechanicalCraftingRecipeGenImpl;
 import com.railwayteam.railways.base.data.RailwaysHatOffsetGenerator;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.RecipeProvider;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.bus.api.SubscribeEvent;
+import org.jetbrains.annotations.NotNull;
 
 @EventBusSubscriber(modid = Railways.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
 
     @SubscribeEvent
     public static void onGatherData(GatherDataEvent event) {
-        // Register Registrate providers and simple PackOutput-only providers via the PackGenerator path
+        // Register Registrate providers via the PackGenerator path
         DataGenerator.PackGenerator pack = event.getGenerator().getVanillaPack(true);
         Railways.gatherData(pack);
 
         // Register providers that require the lookup provider via DataGenerator directly
         boolean runServer = event.includeServer();
         var generator = event.getGenerator();
+        var lookupProvider = event.getLookupProvider();
+        var packOutput = generator.getPackOutput();
 
-        generator.addProvider(runServer, RailwaysSequencedAssemblyRecipeGen.create(generator.getPackOutput(), event.getLookupProvider()));
-        generator.addProvider(runServer, RailwaysStandardRecipeGen.create(generator.getPackOutput(), event.getLookupProvider()));
-        generator.addProvider(runServer, RailwaysMechanicalCraftingRecipeGenImpl.create(generator.getPackOutput(), event.getLookupProvider()));
-        generator.addProvider(runServer, new RailwaysHatOffsetGenerator(generator.getPackOutput(), event.getLookupProvider()));
+        // Register each recipe provider separately with unique names to avoid duplication
+        // Consolidate all recipes into a single provider since they all have the same name
+        RailwaysSequencedAssemblyRecipeGen sequencedAssembly = RailwaysSequencedAssemblyRecipeGen.create(packOutput, lookupProvider);
+        RailwaysStandardRecipeGen standardRecipes = RailwaysStandardRecipeGen.create(packOutput, lookupProvider);
+        RailwaysMechanicalCraftingRecipeGenImpl mechanicalCrafting = RailwaysMechanicalCraftingRecipeGenImpl.createImpl(packOutput, lookupProvider);
+        
+        // Create a single wrapper provider that combines all recipes
+        generator.addProvider(runServer, new RecipeProvider(packOutput, lookupProvider) {
+            @Override
+            protected void buildRecipes(@NotNull RecipeOutput output) {
+                // Call buildRecipes on each provider to populate their internal recipe lists
+                sequencedAssembly.buildRecipes(output);
+                standardRecipes.buildRecipes(output);
+                mechanicalCrafting.buildRecipes(output);
+            }
+        });
+        
+        generator.addProvider(runServer, new RailwaysHatOffsetGenerator(packOutput, lookupProvider));
     }
 }

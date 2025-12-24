@@ -23,6 +23,7 @@ import com.railwayteam.railways.registry.CRTags;
 import com.railwayteam.railways.registry.CRTags.AllBlockTags;
 import com.railwayteam.railways.registry.CRTags.AllItemTags;
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllItems;
 import com.simibubi.create.foundation.data.TagGen;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import net.minecraft.data.tags.TagsProvider.TagAppender;
@@ -73,19 +74,34 @@ public class CRTagGen {
 	}
 
 	public static void generateItemTags(RegistrateTagsProvider<Item> prov) {
-		CommonTags.DYES.values().forEach(tag -> tag.generateCommon(prov));
-		CommonTags.IRON_NUGGETS.generateCommon(prov);
-		CommonTags.ZINC_NUGGETS.generateCommon(prov);
-		CommonTags.BRASS_NUGGETS.generateCommon(prov);
-		CommonTags.COPPER_INGOTS.generateCommon(prov);
-		CommonTags.BRASS_INGOTS.generateCommon(prov);
-		CommonTags.IRON_INGOTS.generateCommon(prov);
-		CommonTags.STRING.generateCommon(prov)
-			.generateBoth(prov, tag -> tag.add(Items.STRING.builtInRegistryHolder().key()));
-		CommonTags.IRON_PLATES.generateCommon(prov);
-		CommonTags.BRASS_PLATES.generateCommon(prov);
-		CommonTags.WORKBENCH.generateCommon(prov)
-				.generateBoth(prov, tag -> tag.add(Items.CRAFTING_TABLE.builtInRegistryHolder().key()));
+		// Generate internal tags with concrete items (NeoForge only, no multi-loader fallbacks)
+		CommonTags.DYES.forEach((color, tag) -> tagAppender(prov, tag.tag)
+				.add(getDyeItem(color).builtInRegistryHolder().key()));
+		
+		tagAppender(prov, CommonTags.IRON_NUGGETS.tag)
+				.add(Items.IRON_NUGGET.builtInRegistryHolder().key());
+		tagAppender(prov, CommonTags.ZINC_NUGGETS.tag)
+				.add(AllItems.ZINC_NUGGET.get().builtInRegistryHolder().key());
+		tagAppender(prov, CommonTags.BRASS_NUGGETS.tag)
+				.add(AllItems.BRASS_NUGGET.get().builtInRegistryHolder().key());
+		
+		tagAppender(prov, CommonTags.COPPER_INGOTS.tag)
+				.add(Items.COPPER_INGOT.builtInRegistryHolder().key());
+		tagAppender(prov, CommonTags.BRASS_INGOTS.tag)
+				.add(AllItems.BRASS_INGOT.get().builtInRegistryHolder().key());
+		tagAppender(prov, CommonTags.IRON_INGOTS.tag)
+				.add(Items.IRON_INGOT.builtInRegistryHolder().key());
+		
+		tagAppender(prov, CommonTags.STRING.tag)
+				.add(Items.STRING.builtInRegistryHolder().key());
+		
+		tagAppender(prov, CommonTags.IRON_PLATES.tag)
+				.add(AllItems.IRON_SHEET.get().builtInRegistryHolder().key());
+		tagAppender(prov, CommonTags.BRASS_PLATES.tag)
+				.add(AllItems.BRASS_SHEET.get().builtInRegistryHolder().key());
+		
+		tagAppender(prov, CommonTags.WORKBENCH.tag)
+				.add(Items.CRAFTING_TABLE.builtInRegistryHolder().key());
 
 		prov.addTag(AllItemTags.NOT_TRAIN_FUEL.tag);
 
@@ -93,6 +109,27 @@ public class CRTagGen {
 			if (tag.alwaysDatagen)
 				tagAppender(prov, tag);
 		}
+	}
+
+	private static Item getDyeItem(net.minecraft.world.item.DyeColor color) {
+		return switch (color) {
+			case BLACK -> Items.BLACK_DYE;
+			case BLUE -> Items.BLUE_DYE;
+			case BROWN -> Items.BROWN_DYE;
+			case CYAN -> Items.CYAN_DYE;
+			case GRAY -> Items.GRAY_DYE;
+			case GREEN -> Items.GREEN_DYE;
+			case LIGHT_BLUE -> Items.LIGHT_BLUE_DYE;
+			case LIGHT_GRAY -> Items.LIGHT_GRAY_DYE;
+			case LIME -> Items.LIME_DYE;
+			case MAGENTA -> Items.MAGENTA_DYE;
+			case ORANGE -> Items.ORANGE_DYE;
+			case PINK -> Items.PINK_DYE;
+			case PURPLE -> Items.PURPLE_DYE;
+			case RED -> Items.RED_DYE;
+			case WHITE -> Items.WHITE_DYE;
+			case YELLOW -> Items.YELLOW_DYE;
+		};
 	}
 
 	public static TagAppender<Item> tagAppender(RegistrateTagsProvider<Item> prov, AllItemTags tag) {

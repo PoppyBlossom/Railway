@@ -63,9 +63,8 @@ public class CommonTag<T> {
 	}
 
 	public CommonTag<T> generateCommon(RegistrateTagsProvider<T> tags) {
-		CRTagGen.tagAppender(tags, tag)
-				.addOptionalTag(fabric.location())
-				.addOptionalTag(forge.location());
+		// NeoForge 1.21.1 only: no fabric or forge fallbacks needed
+		CRTagGen.tagAppender(tags, tag);
 		return this;
 	}
 }

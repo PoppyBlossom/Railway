@@ -32,6 +32,11 @@ public class RailwaysMechanicalCraftingRecipeGenImpl extends RailwaysMechanicalC
         super(pPackoutput, lookupProvider);
     }
 
+    // Public method to get the recipes for aggregation
+    public static RailwaysMechanicalCraftingRecipeGenImpl createImpl(PackOutput gen, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        return new RailwaysMechanicalCraftingRecipeGenImpl(gen, lookupProvider);
+    }
+
     public static RecipeProvider create(PackOutput gen, CompletableFuture<HolderLookup.Provider> lookupProvider) {
         RailwaysMechanicalCraftingRecipeGenImpl provider = new RailwaysMechanicalCraftingRecipeGenImpl(gen, lookupProvider);
         return new RecipeProvider(gen, lookupProvider) {

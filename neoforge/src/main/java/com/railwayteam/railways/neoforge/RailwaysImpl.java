@@ -32,11 +32,14 @@ import com.railwayteam.railways.registry.neoforge.CRCreativeModeTabsImpl;
 import com.railwayteam.railways.registry.neoforge.CREntityAttributesImpl;
 import com.railwayteam.railways.registry.neoforge.CRMountedStorageTypesImpl;
 import com.railwayteam.railways.registry.neoforge.CRParticleTypesParticleEntryImpl;
+import com.railwayteam.railways.base.data.CRTagGen;
+import com.railwayteam.railways.base.data.lang.CRLangGen;
 import com.simibubi.create.api.connectivity.ConnectivityHandler;
 import com.simibubi.create.api.contraption.BlockMovementChecks;
 import com.simibubi.create.api.contraption.BlockMovementChecks.CheckResult;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.AbstractRegistrate;
+import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.util.CreativeModeTabModifier;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands.CommandSelection;
@@ -84,6 +87,13 @@ public class RailwaysImpl {
 
 	public static void finalizeRegistrate() {
 		CreateRegistrate registrate = Railways.registrate();
+		
+		// Register data generators BEFORE suppressing tab modifiers and registering event listeners
+		// This must be done before datagen event fires
+		registrate.addDataGenerator(ProviderType.BLOCK_TAGS, CRTagGen::generateBlockTags);
+		registrate.addDataGenerator(ProviderType.ITEM_TAGS, CRTagGen::generateItemTags);
+		registrate.addDataGenerator(ProviderType.LANG, CRLangGen::generate);
+		
 		suppressRegistrateTabModifiers(registrate);
 		registrate.registerEventListeners(bus);
 	}

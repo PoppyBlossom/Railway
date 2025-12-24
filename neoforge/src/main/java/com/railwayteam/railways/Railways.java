@@ -121,12 +121,9 @@ public class Railways {
   }
 
   public static void gatherData(DataGenerator.PackGenerator gen) {
-    REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, CRTagGen::generateBlockTags);
-    REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, CRTagGen::generateItemTags);
-    REGISTRATE.addDataGenerator(ProviderType.LANG, CRLangGen::generate);
     gen.addProvider(EmiExcludedTagGen::new);
     gen.addProvider(EmiRecipeDefaultsGen::new);
-  // Requires lookup provider; registered via Forge DataGenerators
+  // Registrate data generators (tags and lang) are registered in RailwaysImpl.finalizeRegistrate()
   }
 
   public static CreateRegistrate registrate() {

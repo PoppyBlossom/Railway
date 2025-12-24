@@ -62,16 +62,16 @@ public class CustomTrackBlockStateGeneratorImpl extends CustomTrackBlockStateGen
         }
 
         BlockModelBuilder builder = prov.models()
-            .withExistingParent(prefix + value.getModel(),
-                Create.asResource("block/track/" + value.getModel()))
+            .getBuilder(prefix + value.getModel())
+            .parent(new ModelFile.UncheckedModelFile(Create.asResource("block/track/" + value.getModel())))
             .texture("particle", material.particle);
         for (String k : textureMap.keySet()) {
             builder = builder.texture(k, Railways.asResource(prefix + textureMap.get(k) + material.resourceName()));
         }
         for (String k : new String[]{"segment_left", "segment_right", "tie"}) { // obj_track
             var model = prov.models()
-                .withExistingParent(prefix + k,
-                    Create.asResource("block/track/" + k))
+                .getBuilder(prefix + k)
+                .parent(new ModelFile.UncheckedModelFile(Create.asResource("block/track/" + k)))
                 .texture("0", prefix + "standard_track_" + material.resourceName())
                 .texture("1", prefix + "standard_track_mip_" + material.resourceName())
                 .texture("particle", material.particle);
