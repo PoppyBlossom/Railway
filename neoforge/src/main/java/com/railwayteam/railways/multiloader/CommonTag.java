@@ -53,7 +53,8 @@ public class CommonTag<T> {
 		return new CommonTag<>(commonTag, commonTag, commonTag);
 	}
 
-	public CommonTag<T> generateBoth(RegistrateTagsProvider<T> tags, Consumer<TagAppender<T>> consumer) {		return this;
+	public CommonTag<T> generateBoth(RegistrateTagsProvider<T> tags, Consumer<TagAppender<T>> consumer) {
+		return this;
 	}
 
 	public CommonTag<T> generateCommon(RegistrateTagsProvider<T> tags) {
