@@ -8,7 +8,7 @@
 
 
 ## Description
-This repository is a port of **Create Steam 'n' Rails** for **Minecraft 1.21.1**.
+This repository is a port of **Create Steam 'n' Rails** for **Neoforge 1.21.1**.
 
 >[!Important]
 > **This port is a subsitution for _[Create: Steam 'n' Rails](https://github.com/Layers-of-Railways/Railway)_ until the developers release their official version for 1.21.1**.
