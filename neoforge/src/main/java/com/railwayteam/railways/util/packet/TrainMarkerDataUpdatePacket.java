@@ -68,12 +68,7 @@ public class TrainMarkerDataUpdatePacket implements S2CPacket { //TODO partial s
         buffer.writeInt(data.carriageCount());
         buffer.writeUUID(Optional.ofNullable(data.owner()).orElse(NULL_ID));
         buffer.writeUtf(data.destination());
-        // Handle null dimension - use overworld as fallback
-        if (data.dimension() != null) {
-            buffer.writeResourceLocation(data.dimension().location());
-        } else {
-            buffer.writeResourceLocation(net.minecraft.world.level.Level.OVERWORLD.location());
-        }
+        buffer.writeResourceLocation(data.dimension().location());
         buffer.writeBlockPos(data.pos());
         buffer.writeBoolean(data.incomplete());
     }

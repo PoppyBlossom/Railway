@@ -28,13 +28,17 @@ import com.simibubi.create.content.trains.track.TrackShape;
 import com.simibubi.create.content.trains.track.TrackTargetingBlockItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 
@@ -66,18 +70,39 @@ public class MixinTrackTargetingBlockItem {
                                            BiConsumer<TrackTargetingBlockItem.OverlapResult, TrackGraphLocation> callback, CallbackInfo ci) {
         if (type != CREdgePointTypes.COUPLER && type != CREdgePointTypes.SWITCH) // prevent coupler on turns
             return;
-        // Use NO_TRACK result - the feedback message "track_target.invalid" will be shown which is acceptable
-        // for curved tracks and non-straight shapes
+        TrackTargetingBlockItem.OverlapResult NOT_STRAIGHT = TrackTargetingBlockItem.OverlapResult.valueOf("NOT_STRAIGHT");
         if (targetBezier != null) {
-            callback.accept(TrackTargetingBlockItem.OverlapResult.NO_TRACK, null);
+            callback.accept(NOT_STRAIGHT, null);
             ci.cancel();
-            return;
         }
 
         TrackShape shape = level.getBlockState(pos).getValue(TrackBlock.SHAPE);
         if (!acceptableShapes.contains(shape) || (type == CREdgePointTypes.SWITCH && shape.getAxes().stream().anyMatch(v -> v.y > 0))) { // prevent switch placement on slopes
-            callback.accept(TrackTargetingBlockItem.OverlapResult.NO_TRACK, null);
+            callback.accept(NOT_STRAIGHT, null);
             ci.cancel();
+        }
+    }
+
+    @Mixin(value = TrackTargetingBlockItem.OverlapResult.class, remap = false)
+    public static class MixinOverlapResult {
+        @Shadow
+        @Final
+        @Mutable
+        private static TrackTargetingBlockItem.OverlapResult[] $VALUES;
+
+        @Invoker("<init>")
+        public static TrackTargetingBlockItem.OverlapResult railways$createType(String internalName, int ordinal, String feedback) {
+            throw new AssertionError();
+        }
+
+        @Inject(
+                method = "<clinit>",
+                at = @At("TAIL")
+        )
+        private static void railways$addTypes(CallbackInfo ci) {
+            ArrayList<TrackTargetingBlockItem.OverlapResult> types = new ArrayList<>(List.of($VALUES));
+            types.add(railways$createType("NOT_STRAIGHT", $VALUES.length, "track_target.not_straight"));
+            $VALUES = types.toArray(TrackTargetingBlockItem.OverlapResult[]::new);
         }
     }
 }

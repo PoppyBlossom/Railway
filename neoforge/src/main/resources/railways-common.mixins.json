@@ -50,7 +50,6 @@
     "MixinItemCombinerMenu",
     "MixinLargeFireball",
     "MixinMountedStorageManager",
-    "MixinCreateAllBlockTags",
     "MixinNavigation",
     "MixinNixieTubeBlockEntity",
     "MixinNixieTubeDisplaySource",
