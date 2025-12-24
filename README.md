@@ -1,7 +1,8 @@
 <div align="center">
   <h1>Create Steam 'n' Rails for 1.21.1</h1>
   
-  [![Build](https://github.com/PoppyBlossom/Railway/actions/workflows/build.yml/badge.svg)](https://github.com/PoppyBlossom/Railway/actions/workflows/build.yml)
+<img width="1024" height="351" alt="image" src="https://github.com/user-attachments/assets/4c8505f5-6871-4e3e-98bb-a05ea74c3e76" />
+
   
 </div>
 
@@ -15,6 +16,9 @@ This repository is a port of **Create Steam 'n' Rails** for **Neoforge 1.21.1**.
 
 
 ## Current development progress:
+
+ ![Build](https://github.com/PoppyBlossom/Railway/actions/workflows/build.yml/badge.svg)
+ 
 **Releases**
 
 A **Pre-release** version is expected to roll out in the near future, though the exact date can't be determined.
