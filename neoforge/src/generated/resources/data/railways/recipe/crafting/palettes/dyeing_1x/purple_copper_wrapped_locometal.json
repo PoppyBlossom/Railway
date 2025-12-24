@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "railways:palettes/dye_groups/copper_wrapped_slashed"
+    },
+    {
+      "tag": "railways:internal/dyes/purple_dyes"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "railways:purple_copper_wrapped_locometal"
+  }
+}

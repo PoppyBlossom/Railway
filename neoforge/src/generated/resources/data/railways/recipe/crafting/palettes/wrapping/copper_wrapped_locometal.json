@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "railways:slashed_locometal"
+    },
+    "d": {
+      "tag": "railways:internal/ingots/copper_ingots"
+    }
+  },
+  "pattern": [
+    "###",
+    "#d#",
+    "###"
+  ],
+  "result": {
+    "count": 8,
+    "id": "railways:copper_wrapped_locometal"
+  }
+}

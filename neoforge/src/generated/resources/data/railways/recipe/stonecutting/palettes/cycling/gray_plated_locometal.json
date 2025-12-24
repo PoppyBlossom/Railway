@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "tag": "railways:palettes/cycle_groups/gray"
+  },
+  "result": {
+    "count": 1,
+    "id": "railways:gray_plated_locometal"
+  }
+}

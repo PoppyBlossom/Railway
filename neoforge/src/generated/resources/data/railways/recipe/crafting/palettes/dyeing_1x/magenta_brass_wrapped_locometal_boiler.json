@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "railways:palettes/dye_groups/brass_wrapped_boiler"
+    },
+    {
+      "tag": "railways:internal/dyes/magenta_dyes"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "railways:magenta_brass_wrapped_locometal_boiler"
+  }
+}

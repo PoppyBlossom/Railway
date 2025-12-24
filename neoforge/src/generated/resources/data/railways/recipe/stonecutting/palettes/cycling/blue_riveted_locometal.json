@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "tag": "railways:palettes/cycle_groups/blue"
+  },
+  "result": {
+    "count": 1,
+    "id": "railways:blue_riveted_locometal"
+  }
+}

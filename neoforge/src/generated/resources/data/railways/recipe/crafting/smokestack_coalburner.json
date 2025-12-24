@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "railways:internal/plates/iron_plates"
+    },
+    "+": {
+      "item": "minecraft:campfire"
+    }
+  },
+  "pattern": [
+    "# #",
+    "# #",
+    "#+#"
+  ],
+  "result": {
+    "count": 1,
+    "id": "railways:smokestack_coalburner"
+  }
+}

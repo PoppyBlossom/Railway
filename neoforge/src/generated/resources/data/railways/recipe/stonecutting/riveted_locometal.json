@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "minecraft:iron_block"
+  },
+  "result": {
+    "count": 8,
+    "id": "railways:riveted_locometal"
+  }
+}
