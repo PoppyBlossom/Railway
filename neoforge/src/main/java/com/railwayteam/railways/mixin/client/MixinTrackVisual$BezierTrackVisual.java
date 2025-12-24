@@ -24,10 +24,11 @@ import com.railwayteam.railways.mixin_interfaces.IMonorailBezier.MonorailAngles;
 import com.railwayteam.railways.registry.CRTrackMaterials;
 import com.simibubi.create.content.trains.track.BezierConnection;
 import com.simibubi.create.content.trains.track.TrackVisual;
+import com.simibubi.create.foundation.render.SpecialModels;
+
 import dev.engine_room.flywheel.api.instance.InstancerProvider;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
-import dev.engine_room.flywheel.lib.model.Models;
 import dev.engine_room.flywheel.lib.transform.TransformStack;
 import net.createmod.catnip.data.Iterate;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -99,32 +100,24 @@ public abstract class MixinTrackVisual$BezierTrackVisual {
 
             InstancerProvider provider = ((AccessorAbstractVisual) trackInstance).railways$getInstancerProvider();
 
-            // Use partial-model instancing here. Using flatChunk can result in missing/empty geometry for
-            // these block partials under Flywheel, which manifests as invisible/"transparent" curved monorail.
-            provider.instancer(InstanceTypes.TRANSFORMED, Models.partial(MONORAIL_SEGMENT_TOP)).createInstances(top);
-            provider.instancer(InstanceTypes.TRANSFORMED, Models.partial(MONORAIL_SEGMENT_MIDDLE)).createInstances(middle);
-            provider.instancer(InstanceTypes.TRANSFORMED, Models.partial(MONORAIL_SEGMENT_BOTTOM)).createInstances(bottom);
-
-            var level = ((AccessorAbstractVisual) trackInstance).railways$getLevel();
+            provider.instancer(InstanceTypes.TRANSFORMED, SpecialModels.smoothLit(MONORAIL_SEGMENT_TOP)).createInstances(top);
+            provider.instancer(InstanceTypes.TRANSFORMED, SpecialModels.smoothLit(MONORAIL_SEGMENT_MIDDLE)).createInstances(middle);
+            provider.instancer(InstanceTypes.TRANSFORMED, SpecialModels.smoothLit(MONORAIL_SEGMENT_BOTTOM)).createInstances(bottom);
 
             for (int i = 1; i < monorails.length; i++) {
                 MonorailAngles segment = monorails[i];
                 int modelIndex = i - 1;
 
-                int packedLight = LevelRenderer.getLightColor(level, segment.lightPosition.offset(bc.bePositions.getFirst()));
-
                 PoseStack.Pose beamTransform = segment.beam;
 
                 middle[modelIndex].setTransform(pose)
                     .mul(beamTransform)
-                    .light(packedLight)
                     .setChanged();
 
                 for (boolean isTop : Iterate.trueAndFalse) {
                     PoseStack.Pose beamCapTransform = segment.beamCaps.get(isTop);
                     (isTop ? top : bottom)[modelIndex].setTransform(pose)
                         .mul(beamCapTransform)
-                        .light(packedLight)
                         .setChanged();
                 }
             }

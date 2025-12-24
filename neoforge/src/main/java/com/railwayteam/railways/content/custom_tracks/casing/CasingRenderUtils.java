@@ -27,10 +27,10 @@ import com.railwayteam.railways.registry.CRBlockPartials;
 import com.simibubi.create.content.trains.track.BezierConnection;
 import com.simibubi.create.content.trains.track.BezierConnection.SegmentAngles;
 import com.simibubi.create.content.trains.track.TrackMaterial.TrackType;
+import com.simibubi.create.foundation.render.SpecialModels;
 import dev.engine_room.flywheel.api.instance.InstancerProvider;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
-import dev.engine_room.flywheel.lib.model.Models;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import dev.engine_room.flywheel.lib.transform.TransformStack;
 import net.createmod.catnip.data.Iterate;
@@ -185,7 +185,7 @@ public abstract class CasingRenderUtils {
 
     public static TransformedInstance makeCasingInstance(PartialModel baseModel, SlabBlock slabBlock, InstancerProvider instancerProvider) {
         PartialModel texturedPartial = reTexture(baseModel, slabBlock);
-        return instancerProvider.instancer(InstanceTypes.TRANSFORMED, Models.partial(texturedPartial))
+        return instancerProvider.instancer(InstanceTypes.TRANSFORMED, SpecialModels.smoothLit(texturedPartial))
                 .createInstance();
     }
 }
