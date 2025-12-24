@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "+": {
+      "item": "minecraft:campfire"
+    },
+    ".": {
+      "tag": "railways:internal/nuggets/iron_nuggets"
+    }
+  },
+  "pattern": [
+    ".+."
+  ],
+  "result": {
+    "count": 1,
+    "id": "railways:smokestack_long"
+  }
+}

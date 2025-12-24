@@ -1,0 +1,9 @@
+{
+  "parent": "create:block/track/cross_d1_xo",
+  "textures": {
+    "0": "blue_skies:block/track/starlit/standard_track_starlit",
+    "1": "blue_skies:block/track/starlit/standard_track_mip_starlit",
+    "2": "blue_skies:block/track/starlit/standard_track_crossing_starlit",
+    "particle": "blue_skies:block/track/starlit/standard_track_crossing_starlit"
+  }
+}

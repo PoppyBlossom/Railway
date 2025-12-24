@@ -1,0 +1,27 @@
+{
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": true,
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "railways:slashed_locometal"
+    },
+    "/": {
+      "item": "minecraft:blaze_rod"
+    },
+    "u": {
+      "item": "minecraft:bucket"
+    }
+  },
+  "pattern": [
+    "  #  ",
+    " #u# ",
+    "#///#",
+    " #/# ",
+    "  #  "
+  ],
+  "result": {
+    "count": 4,
+    "id": "railways:locometal_boiler"
+  }
+}

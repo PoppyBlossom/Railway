@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "railways:palettes/dye_groups/copper_wrapped_boiler"
+    },
+    {
+      "tag": "railways:internal/dyes/pink_dyes"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "railways:pink_copper_wrapped_locometal_boiler"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "style=brass": {
+      "model": "railways:block/smokestack_oilburner_brass"
+    },
+    "style=brass_cap_copper": {
+      "model": "railways:block/smokestack_oilburner_brass_cap_copper"
+    },
+    "style=brass_cap_steel": {
+      "model": "railways:block/smokestack_oilburner_brass_cap_steel"
+    },
+    "style=copper": {
+      "model": "railways:block/smokestack_oilburner_copper"
+    },
+    "style=copper_cap_brass": {
+      "model": "railways:block/smokestack_oilburner_copper_cap_brass"
+    },
+    "style=copper_cap_steel": {
+      "model": "railways:block/smokestack_oilburner_copper_cap_steel"
+    },
+    "style=steel": {
+      "model": "railways:block/smokestack_oilburner_steel"
+    }
+  }
+}

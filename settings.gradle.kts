@@ -28,7 +28,4 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
 }
 
-// Single-loader NeoForge mod
-include("neoforge")
-
 rootProject.name = "Railway"

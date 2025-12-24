@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "diagonal=false,facing=east,style=mono": {
+      "model": "railways:block/buffer/narrow_mono_buffer_stop",
+      "y": 90
+    },
+    "diagonal=false,facing=east,style=standard": {
+      "model": "railways:block/buffer/narrow_buffer_stop",
+      "y": 90
+    },
+    "diagonal=false,facing=north,style=mono": {
+      "model": "railways:block/buffer/narrow_mono_buffer_stop"
+    },
+    "diagonal=false,facing=north,style=standard": {
+      "model": "railways:block/buffer/narrow_buffer_stop"
+    },
+    "diagonal=false,facing=south,style=mono": {
+      "model": "railways:block/buffer/narrow_mono_buffer_stop",
+      "y": 180
+    },
+    "diagonal=false,facing=south,style=standard": {
+      "model": "railways:block/buffer/narrow_buffer_stop",
+      "y": 180
+    },
+    "diagonal=false,facing=west,style=mono": {
+      "model": "railways:block/buffer/narrow_mono_buffer_stop",
+      "y": 270
+    },
+    "diagonal=false,facing=west,style=standard": {
+      "model": "railways:block/buffer/narrow_buffer_stop",
+      "y": 270
+    },
+    "diagonal=true,facing=east,style=mono": {
+      "model": "railways:block/buffer/narrow_mono_buffer_stop",
+      "y": 90
+    },
+    "diagonal=true,facing=east,style=standard": {
+      "model": "railways:block/buffer/narrow_buffer_stop",
+      "y": 90
+    },
+    "diagonal=true,facing=north,style=mono": {
+      "model": "railways:block/buffer/narrow_mono_buffer_stop"
+    },
+    "diagonal=true,facing=north,style=standard": {
+      "model": "railways:block/buffer/narrow_buffer_stop"
+    },
+    "diagonal=true,facing=south,style=mono": {
+      "model": "railways:block/buffer/narrow_mono_buffer_stop",
+      "y": 180
+    },
+    "diagonal=true,facing=south,style=standard": {
+      "model": "railways:block/buffer/narrow_buffer_stop",
+      "y": 180
+    },
+    "diagonal=true,facing=west,style=mono": {
+      "model": "railways:block/buffer/narrow_mono_buffer_stop",
+      "y": 270
+    },
+    "diagonal=true,facing=west,style=standard": {
+      "model": "railways:block/buffer/narrow_buffer_stop",
+      "y": 270
+    }
+  }
+}

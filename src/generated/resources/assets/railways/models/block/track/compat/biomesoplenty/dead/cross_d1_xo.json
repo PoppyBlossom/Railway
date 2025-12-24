@@ -1,0 +1,9 @@
+{
+  "parent": "create:block/track/cross_d1_xo",
+  "textures": {
+    "0": "biomesoplenty:block/track/dead/standard_track_dead",
+    "1": "biomesoplenty:block/track/dead/standard_track_mip_dead",
+    "2": "biomesoplenty:block/track/dead/standard_track_crossing_dead",
+    "particle": "biomesoplenty:block/track/dead/standard_track_crossing_dead"
+  }
+}

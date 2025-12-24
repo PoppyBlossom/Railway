@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "railways:palettes/dye_groups/pillar"
+    },
+    {
+      "tag": "railways:internal/dyes/pink_dyes"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "railways:pink_locometal_pillar"
+  }
+}

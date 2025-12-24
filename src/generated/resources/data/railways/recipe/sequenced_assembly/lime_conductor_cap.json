@@ -1,0 +1,61 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "minecraft:lime_wool"
+  },
+  "results": [
+    {
+      "id": "railways:lime_conductor_cap"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:cutting",
+      "ingredients": [
+        {
+          "item": "railways:lime_incomplete_conductor_cap"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:lime_incomplete_conductor_cap"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:lime_incomplete_conductor_cap"
+        },
+        {
+          "item": "create:precision_mechanism"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:lime_incomplete_conductor_cap"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:lime_incomplete_conductor_cap"
+        },
+        {
+          "tag": "railways:internal/string"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:lime_incomplete_conductor_cap"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "railways:lime_incomplete_conductor_cap"
+  }
+}
