@@ -1,4 +1,4 @@
-// 1.21.1	2025-12-23T16:56:09.6225157	Registrate Provider for railways [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
+// 1.21.1	2025-12-23T17:14:00.7129312	Registrate Provider for railways [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
 8c558c7bddce85565a267985153b6dd6857ed523 assets/railways/blockstates/big_buffer.json
 b9ca199a3d4ae83cc751d18bdc5b8f19c58dff4c assets/railways/blockstates/black_brass_wrapped_locometal.json
 8653619c96cb2a4e1e0795c2c2f790bb0b5497d1 assets/railways/blockstates/black_brass_wrapped_locometal_boiler.json
@@ -7268,8 +7268,6 @@ da5c203a018871d4beaad0e5e0eab06d7922de44 data/create/tags/block/girdable_tracks.
 9791491c5d7ac716ab658c9d11b5649cc65e8c76 data/create/tags/block/wrench_pickup.json
 6e956d8e9e5959873d41fea293ec2f9b923df90c data/create/tags/item/contraption_controlled.json
 b7da122c6bc93d4836feb422227ccd1ce4d8aa32 data/create/tags/item/tracks.json
-e0030fefbd794ccbc99d0843f26ef7ecda6622f0 data/c/tags/block/relocation_not_supported.json
-e0030fefbd794ccbc99d0843f26ef7ecda6622f0 data/forge/tags/block/relocation_not_supported.json
 55d5c08d02365d085045da392578796cce17a778 data/minecraft/tags/block/mineable/axe.json
 a3f588a83f8c15b85d87c47ee5f0e83850f59886 data/minecraft/tags/block/mineable/pickaxe.json
 a60cb937acfdd26740e31a2b9cb02f58fbc4195b data/railways/advancement/recipes/combat/dying_existing_cap_black.json
@@ -7923,6 +7921,7 @@ c9fdb1f0ee95639f57728d1645f9849f2caf5e66 data/railways/recipe/dying_existing_cap
 26a402cb91033d8dd219215e0967c4c1e202f80a data/railways/recipe/dying_existing_cap_white.json
 77db821fc6806a956c1f792a98f0216cfb80a3ee data/railways/recipe/dying_existing_cap_yellow.json
 12283be35d099b58d66301e4b552eebe60fcd400 data/railways/recipe/jukeboxcart.json
+43120b80ad2161583fcd3a3440c2d685de3a3edc data/railways/tags/block/internal/relocation_not_supported.json
 5c4d1bd9482547709b494bc2e86f5955e4a6a99c data/railways/tags/block/locometal.json
 0aa50a598c5db6ee4a85aaf8cc1183d68717b5b3 data/railways/tags/block/locometal_boilers.json
 d6ba1a1b5f6b26871e3907bad9f881f4ce2ab681 data/railways/tags/block/semaphore_poles.json

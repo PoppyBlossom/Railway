@@ -48,18 +48,12 @@ public class CommonTag<T> {
 	}
 
 	public static <T> CommonTag<T> conventional(ResourceKey<? extends Registry<T>> registry, String common, String fabric, String forge) {
-		return new CommonTag<>(
-				registry,
-				Railways.asResource("internal/" + common),
-				ResourceLocation.fromNamespaceAndPath("c", fabric),
-				ResourceLocation.fromNamespaceAndPath("forge", forge)
-		);
+		ResourceLocation commonId = Railways.asResource("internal/" + common);
+		TagKey<T> commonTag = TagKey.create(registry, commonId);
+		return new CommonTag<>(commonTag, commonTag, commonTag);
 	}
 
-	public CommonTag<T> generateBoth(RegistrateTagsProvider<T> tags, Consumer<TagAppender<T>> consumer) {
-		consumer.accept(CRTagGen.tagAppender(tags, fabric));
-		consumer.accept(CRTagGen.tagAppender(tags, forge));
-		return this;
+	public CommonTag<T> generateBoth(RegistrateTagsProvider<T> tags, Consumer<TagAppender<T>> consumer) {		return this;
 	}
 
 	public CommonTag<T> generateCommon(RegistrateTagsProvider<T> tags) {
