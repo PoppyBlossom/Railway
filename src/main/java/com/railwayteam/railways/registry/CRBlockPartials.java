@@ -22,6 +22,7 @@ import com.railwayteam.railways.Railways;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.trains.track.TrackMaterial.TrackType;
 import com.simibubi.create.content.trains.track.TrackShape;
+import com.railwayteam.railways.mixin.client.AccessorPartialModel;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.createmod.catnip.lang.Lang;
 import net.minecraft.resources.ResourceLocation;
@@ -36,6 +37,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import static com.railwayteam.railways.registry.CRTrackMaterials.CRTrackType.NARROW_GAUGE;
 import static com.railwayteam.railways.registry.CRTrackMaterials.CRTrackType.WIDE_GAUGE;
@@ -544,4 +546,12 @@ public class CRBlockPartials {
 
     @SuppressWarnings("EmptyMethod")
     public static void init() {}
+
+    public static void registerAdditionalModels(Consumer<ResourceLocation> registrar) {
+        AccessorPartialModel.railways$getALL()
+                .keySet()
+                .stream()
+                .filter(rl -> Railways.MOD_ID.equals(rl.getNamespace()))
+                .forEach(registrar);
+    }
 }

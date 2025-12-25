@@ -22,9 +22,15 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.railwayteam.railways.Railways;
 import com.railwayteam.railways.RailwaysClient;
 import com.railwayteam.railways.content.conductor.ConductorRenderer;
+import com.railwayteam.railways.content.fuel.psi.PortableFuelInterfaceBlockEntity;
+import com.railwayteam.railways.content.semaphore.SemaphoreRenderer;
+import com.railwayteam.railways.content.switches.TrackSwitchRenderer;
 import com.railwayteam.railways.registry.CRBlockEntities;
 import com.railwayteam.railways.registry.CRParticleTypes;
 import com.railwayteam.railways.registry.CREntities;
+import com.railwayteam.railways.registry.neoforge.CRBlockEntitiesImpl;
+import com.simibubi.create.content.contraptions.actors.psi.PSIVisual;
+import com.simibubi.create.content.contraptions.actors.psi.PortableStorageInterfaceRenderer;
 import com.simibubi.create.content.trains.bogey.BogeyBlockEntityRenderer;
 import com.simibubi.create.content.trains.bogey.BogeyBlockEntityVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizerRegistry;
@@ -78,6 +84,11 @@ public class RailwaysClientImpl {
 	}
 
 	private static void onRendererRegistration(RegisterRenderers event) {
+		// Registrate renderer wiring can be missed depending on init timing; explicitly bind core BE renderers.
+		event.registerBlockEntityRenderer(CRBlockEntities.SEMAPHORE.get(), SemaphoreRenderer::new);
+		event.registerBlockEntityRenderer(CRBlockEntities.ANDESITE_SWITCH.get(), TrackSwitchRenderer::new);
+		event.registerBlockEntityRenderer(CRBlockEntities.BRASS_SWITCH.get(), TrackSwitchRenderer::new);
+
 		// Ensure Railways bogey block entities always have a vanilla renderer bound.
 		event.registerBlockEntityRenderer(CRBlockEntities.BOGEY.get(), BogeyBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(CRBlockEntities.MONO_BOGEY.get(), BogeyBlockEntityRenderer::new);
@@ -98,6 +109,14 @@ public class RailwaysClientImpl {
 			VisualizerRegistry.setVisualizer(CRBlockEntities.MONO_BOGEY.get(), visualizer);
 			VisualizerRegistry.setVisualizer(CRBlockEntities.INVISIBLE_BOGEY.get(), visualizer);
 			VisualizerRegistry.setVisualizer(CRBlockEntities.INVISIBLE_MONO_BOGEY.get(), visualizer);
+
+			// Portable Fuel Interface uses Create's PSI visual path. If a visualizer isn't registered, Create's
+			// PortableStorageInterfaceRenderer will early-return under visualization, making it invisible.
+			var psiVisualizer = new SimpleBlockEntityVisualizer<PortableFuelInterfaceBlockEntity>(
+					(visualizationContext, be, partialTick) -> new PSIVisual(visualizationContext, be, partialTick),
+					be -> true
+			);
+			VisualizerRegistry.setVisualizer(CRBlockEntitiesImpl.PORTABLE_FUEL_INTERFACE.get(), psiVisualizer);
 		});
 	}
 
