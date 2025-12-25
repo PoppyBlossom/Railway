@@ -25,10 +25,9 @@ import com.simibubi.create.foundation.particle.ICustomParticleData;
 import net.createmod.catnip.lang.Lang;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 
 import java.util.function.Supplier;
 
@@ -58,9 +57,9 @@ public enum CRParticleTypes {
 	public static void init() {}
 
 	@OnlyIn(Dist.CLIENT)
-	public static void registerFactories() {
+	public static void registerFactories(RegisterParticleProvidersEvent event) {
 		for (CRParticleTypes particle : values())
-			particle.entry.registerFactory(Minecraft.getInstance().particleEngine);
+			particle.entry.registerFactory(event);
 	}
 
 	private static class ParticleEntry<D extends ParticleOptions> {
@@ -81,12 +80,12 @@ public enum CRParticleTypes {
 		}
 
 		@OnlyIn(Dist.CLIENT)
-		public void registerFactory(ParticleEngine engine) {
-			registerFactory(object, engine, typeFactory.get());
+		public void registerFactory(RegisterParticleProvidersEvent event) {
+			registerFactory(object, event, typeFactory.get());
 		}
 
-		@OnlyIn(Dist.CLIENT)		private static <T extends ParticleOptions> void registerFactory(ParticleType<T> object, ParticleEngine engine, ICustomParticleData<T> customParticleData) {
-			com.railwayteam.railways.registry.neoforge.CRParticleTypesParticleEntryImpl.registerFactory(object, engine, customParticleData);
+		@OnlyIn(Dist.CLIENT)		private static <T extends ParticleOptions> void registerFactory(ParticleType<T> object, RegisterParticleProvidersEvent event, ICustomParticleData<T> customParticleData) {
+			com.railwayteam.railways.registry.neoforge.CRParticleTypesParticleEntryImpl.registerFactory(object, event, customParticleData);
 		}
 	}
 }

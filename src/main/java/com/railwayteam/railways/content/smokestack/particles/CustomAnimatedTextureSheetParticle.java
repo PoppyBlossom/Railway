@@ -44,16 +44,42 @@ public abstract class CustomAnimatedTextureSheetParticle extends TextureSheetPar
     }
 
     @Override
+    protected float getU0() {
+        return this.sprite.getU0();
+    }
+
+    @Override
+    protected float getU1() {
+        return this.sprite.getU1();
+    }
+
+    @Override
     protected float getV0() {
-        int frames = (this.sprite.contents().height() * frameWidthFactor()) / (this.sprite.contents().width() * frameHeightFactor());
-        int frameNumber = (int) (frames * getAnimationProgress());
-    return this.sprite.getV((float) (16.0 * ((double) frameNumber / frames)));
+        int spriteHeight = this.sprite.contents().height();
+        int spriteWidth = this.sprite.contents().width();
+        int frames = (spriteHeight * frameWidthFactor()) / (spriteWidth * frameHeightFactor());
+        int frameNumber = Math.min((int) (frames * getAnimationProgress()), frames - 1);
+        
+        // Calculate the V coordinate for the top of the current frame
+        float vMin = this.sprite.getV0();
+        float vMax = this.sprite.getV1();
+        float frameSize = (vMax - vMin) / frames;
+        
+        return vMin + (frameNumber * frameSize);
     }
 
     @Override
     protected float getV1() {
-        int frames = (this.sprite.contents().height() * frameWidthFactor()) / (this.sprite.contents().width() * frameHeightFactor());
-        int frameNumber = (int) (frames * getAnimationProgress());
-    return this.sprite.getV((float) (16.0 * (((double) frameNumber + 1) / frames)));
+        int spriteHeight = this.sprite.contents().height();
+        int spriteWidth = this.sprite.contents().width();
+        int frames = (spriteHeight * frameWidthFactor()) / (spriteWidth * frameHeightFactor());
+        int frameNumber = Math.min((int) (frames * getAnimationProgress()), frames - 1);
+        
+        // Calculate the V coordinate for the bottom of the current frame
+        float vMin = this.sprite.getV0();
+        float vMax = this.sprite.getV1();
+        float frameSize = (vMax - vMin) / frames;
+        
+        return vMin + ((frameNumber + 1) * frameSize);
     }
 }

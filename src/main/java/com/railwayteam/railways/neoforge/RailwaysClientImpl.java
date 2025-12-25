@@ -68,9 +68,13 @@ public class RailwaysClientImpl {
 		RailwaysClient.init();
 		RailwaysImpl.bus.addListener(RailwaysClientImpl::onModelLayerRegistration);
 		RailwaysImpl.bus.addListener(RailwaysClientImpl::onBuiltinPackRegistration);
-		RailwaysImpl.bus.addListener((RegisterParticleProvidersEvent event) -> CRParticleTypes.registerFactories());
+		RailwaysImpl.bus.addListener(RailwaysClientImpl::onParticleProviderRegistration);
 		RailwaysImpl.bus.addListener(RailwaysClientImpl::onRendererRegistration);
 		RailwaysImpl.bus.addListener(RailwaysClientImpl::onClientSetup);
+	}
+
+	private static void onParticleProviderRegistration(RegisterParticleProvidersEvent event) {
+		CRParticleTypes.registerFactories(event);
 	}
 
 	private static void onRendererRegistration(RegisterRenderers event) {

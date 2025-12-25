@@ -22,13 +22,13 @@ import com.railwayteam.railways.Railways;
 import com.railwayteam.railways.registry.CRParticleTypes;
 import com.simibubi.create.foundation.particle.ICustomParticleData;
 import com.simibubi.create.foundation.particle.ICustomParticleDataWithSprite;
-import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
@@ -45,12 +45,13 @@ public class CRParticleTypesParticleEntryImpl {
     }
 
     @OnlyIn(Dist.CLIENT)
-    @SuppressWarnings("deprecation")
-    public static <T extends ParticleOptions> void registerFactory(ParticleType<T> object, ParticleEngine engine, ICustomParticleData<T> customParticleData) {
+    public static <T extends ParticleOptions> void registerFactory(ParticleType<T> object, RegisterParticleProvidersEvent event, ICustomParticleData<T> customParticleData) {
         if (customParticleData instanceof ICustomParticleDataWithSprite<T> withSprite) {
-            engine.register(object, withSprite.getMetaFactory());
+            // In Minecraft 1.21, we need to unwrap the SpriteParticleRegistration
+            var metaFactory = withSprite.getMetaFactory();
+            event.registerSpriteSet(object, spriteSet -> metaFactory.create(spriteSet));
         } else {
-            engine.register(object, customParticleData.getFactory());
+            event.registerSpecial(object, customParticleData.getFactory());
         }
     }
 }
