@@ -351,7 +351,7 @@ public class TrackSwitchBlockEntity extends SmartBlockEntity implements Transfor
             }
         }
 
-        //checkRedstoneInputs();
+        checkRedstoneInputs();
     }
 
     // Borrowed from Create's StationBlockEntity

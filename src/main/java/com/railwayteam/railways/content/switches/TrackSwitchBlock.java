@@ -27,6 +27,7 @@ import net.createmod.catnip.lang.Lang;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -44,6 +45,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.InteractionResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -251,6 +253,19 @@ public abstract class TrackSwitchBlock extends HorizontalDirectionalBlock implem
     if (te != null) {
       te.checkRedstoneInputs();
     }
+  }
+
+  @Override
+  public @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos,
+                                                    @NotNull Player player, @NotNull BlockHitResult hit) {
+    if (level.isClientSide) {
+      return InteractionResult.SUCCESS;
+    }
+    TrackSwitchBlockEntity te = getBlockEntity(level, pos);
+    if (te != null) {
+      return te.onUse(player.isShiftKeyDown());
+    }
+    return InteractionResult.PASS;
   }
 
   /**
