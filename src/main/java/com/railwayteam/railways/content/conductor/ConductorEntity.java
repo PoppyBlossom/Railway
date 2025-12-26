@@ -100,6 +100,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
@@ -544,7 +545,6 @@ public class ConductorEntity extends AbstractGolem {
       ClipContext context = new ClipContext(this.getEyePosition(), new Vec3(pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5),
               ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, fakePlayer);
       BlockHitResult hitResult = this.level().clip(context);
-      //Railways.LOGGER.info("pos: "+pos+", Hpos: "+hitResult.getBlockPos());
       if (!pos.equals(hitResult.getBlockPos()))
         return;
       boolean canUse = state.getShape(this.level(), pos).isEmpty() || EntityUtils.handleUseEvent(fakePlayer, InteractionHand.MAIN_HAND, hitResult);
@@ -552,7 +552,8 @@ public class ConductorEntity extends AbstractGolem {
         if (state.getBlock() instanceof VentBlock ventBlock) {
           ventBlock.teleportConductor(this.level(), pos, this, hitResult.getDirection().getOpposite());
         } else {
-          state.useItemOn(fakePlayer.getItemInHand(InteractionHand.MAIN_HAND), this.level(), fakePlayer, InteractionHand.MAIN_HAND, hitResult);
+          // Use block interaction directly (empty hand); buttons/levers expect useWithoutItem.
+          state.useWithoutItem(this.level(), fakePlayer, hitResult);
         }
       }
     }
@@ -1398,6 +1399,8 @@ public class ConductorEntity extends AbstractGolem {
 
     @Nullable
     private LivingEntity target;
+    @Nullable
+    private Player lookingPlayer;
 
     public ConductorLookedAtGoal(ConductorEntity conductor) {
       super(conductor, Job.REDSTONE_OPERATOR);
@@ -1409,33 +1412,42 @@ public class ConductorEntity extends AbstractGolem {
         return false;
       for (Player player : this.conductor.level().players()) {
         if (player.hasLineOfSight(this.conductor)) {
-          return ((conductor.distanceToSqr(player)) < 256) && conductor.isLookingAtMe(player);
+          if (((conductor.distanceToSqr(player)) < 256) && conductor.isLookingAtMe(player)) {
+            this.lookingPlayer = player;
+            return true;
+          }
         }
       }
       return false;
     }
 
     public void start() {
-    //  Railways.LOGGER.info("Player looked at me!");
-      Level level      = this.conductor.level();
-      BlockPos pos     = this.conductor.getEntityData().get(BLOCK);
-      BlockState state = level.getBlockState(pos);
-      Block block      = state.getBlock();
+      Level level       = this.conductor.level();
       ServerPlayer fake = this.conductor.fakePlayer;
+      if (fake == null)
+        return;
 
-      // -- activate a button or lever --
-      if (this.conductor.canReach(pos) && this.conductor.canUseBlock(state) && fake != null) {
-      //  Railways.LOGGER.info("I'm activating a block for you!");
-
-        ClipContext context = new ClipContext(this.conductor.getEyePosition(), new Vec3(pos.getX(), pos.getY(), pos.getZ()),
-          ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, fake);
-        BlockHitResult hitResult = level.clip(context);
-        //Railways.LOGGER.info("pos: "+pos+", Hpos: "+hitResult.getBlockPos());
-        if (!pos.equals(hitResult.getBlockPos()))
-          return;
-        boolean canUse = state.getShape(level, pos).isEmpty() || EntityUtils.handleUseEvent(fake, InteractionHand.MAIN_HAND, hitResult);
-        if (canUse) {
-          state.useItemOn(fake.getItemInHand(InteractionHand.MAIN_HAND), level, fake, InteractionHand.MAIN_HAND, hitResult);
+      // Search nearby blocks for a usable target (buttons, levers, switches)
+      for (int y = -REACH.getY(); y < REACH.getY(); y++) {
+        for (int x = -REACH.getX(); x < REACH.getX(); x++) {
+          for (int z = -REACH.getZ(); z < REACH.getZ(); z++) {
+            BlockPos at = this.conductor.blockPosition().offset(x, y, z);
+            BlockState state = level.getBlockState(at);
+            if (this.conductor.canUseBlock(state) && this.conductor.canReach(at)) {
+              ClipContext context = new ClipContext(this.conductor.getEyePosition(), new Vec3(at.getX() + 0.5, at.getY() + 0.5, at.getZ() + 0.5),
+                  ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, this.conductor);
+              BlockHitResult hitResult = level.clip(context);
+              if (hitResult.getBlockPos().equals(at)) {
+                boolean canUse = state.getShape(level, at).isEmpty() || EntityUtils.handleUseEvent(fake, InteractionHand.MAIN_HAND, hitResult);
+                if (canUse) {
+                  // Use block interaction directly (buttons/levers expect useWithoutItem)
+                  state.useWithoutItem(level, fake, hitResult);
+                  this.target = this.lookingPlayer; // Look at the player who triggered this
+                  return; // Only activate one block
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -1466,8 +1478,8 @@ public class ConductorEntity extends AbstractGolem {
             BlockPos at = this.conductor.blockPosition().offset(x, y, z);
             BlockState state = this.conductor.level().getBlockState(at);
             if (this.conductor.canUseBlock(state)) {
-              ClipContext context = new ClipContext(this.conductor.getEyePosition(), new Vec3(at.getX(), at.getY(), at.getZ()),
-                  ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, (Entity) null);
+              ClipContext context = new ClipContext(this.conductor.getEyePosition(), new Vec3(at.getX()+0.5, at.getY()+0.5, at.getZ()+0.5),
+                  ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, this.conductor);
               BlockHitResult hitResult = this.conductor.level().clip(context);
               if (hitResult.getBlockPos().equals(at)) {
                 this.target = at;
