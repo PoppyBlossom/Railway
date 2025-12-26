@@ -126,7 +126,7 @@ public class MinecartJukebox extends MinecartBlock {
         ItemStack handStack = player.getItemInHand(hand);
         // In 1.21, check for JUKEBOX_PLAYABLE component instead of RecordItem
         if (handStack.has(DataComponents.JUKEBOX_PLAYABLE)) {
-          __insertRecord(handStack);
+          insertRecord(handStack);
           if (!player.isCreative()) player.setItemInHand(hand, ItemStack.EMPTY);
           player.awardStat(Stats.PLAY_RECORD);
         }
@@ -152,29 +152,36 @@ public class MinecartJukebox extends MinecartBlock {
   protected void addAdditionalSaveData(CompoundTag compound) {
     super.addAdditionalSaveData(compound);
     // In 1.21, save requires a HolderLookup.Provider
-    compound.put("Disc", disc.save(level().registryAccess()));
-  }
-
-  // clientside
-  public void insertRecord (ItemStack record) {
-    __insertRecord(record);
-    if (level().isClientSide) {
-      if (!this.disc.isEmpty()) {
-        if (sound == null || sound.isStopped()) {
-          startPlaying();
-        } else sound.requestStop();
-      } else if (sound != null) sound.requestStop();
+    // Guard against saving empty ItemStacks - they cannot be serialized
+    if (!disc.isEmpty()) {
+      compound.put("Disc", disc.save(level().registryAccess()));
     }
   }
 
-  // serverside. Checks for side due to public method above being used clientside
-  private void __insertRecord (ItemStack record) {
+  // Called from both client and server
+  public void insertRecord (ItemStack record) {
     this.disc = record.copy();
     if (content == null) {
       content = Blocks.JUKEBOX.defaultBlockState();
     }
     this.content = content.setValue(JukeboxBlock.HAS_RECORD, !disc.isEmpty());
-    if (!level().isClientSide) PacketSender.updateJukeboxClientside(this, this.disc);
+    if (!level().isClientSide) {
+      // Only send packet if disc is not empty
+      if (!this.disc.isEmpty()) {
+        PacketSender.updateJukeboxClientside(this, this.disc);
+      }
+    } else {
+      // Client side: handle sound playback
+      if (!this.disc.isEmpty()) {
+        if (sound == null || sound.isStopped()) {
+          startPlaying();
+        } else {
+          sound.requestStop();
+        }
+      } else if (sound != null) {
+        sound.requestStop();
+      }
+    }
   }
 
   // serverside
@@ -189,7 +196,12 @@ public class MinecartJukebox extends MinecartBlock {
     ItemEntity out = new ItemEntity(level(), pos.x, pos.y, pos.z, this.disc);
     out.setDefaultPickUpDelay();
     level().addFreshEntity(out);
-    __insertRecord(ItemStack.EMPTY);
+    insertRecord(ItemStack.EMPTY);
+  }
+
+  // serverside. Checks for side due to public method above being used clientside
+  private void __insertRecord (ItemStack record) {
+    insertRecord(record);
   }
 
   @OnlyIn(Dist.CLIENT)
@@ -198,14 +210,66 @@ public class MinecartJukebox extends MinecartBlock {
     if (!this.disc.isEmpty()) {
       // In 1.21, get the sound from the JukeboxPlayable component
       JukeboxPlayable playable = disc.get(DataComponents.JUKEBOX_PLAYABLE);
-      if (playable != null) {
-        playable.song().holder().flatMap(holder -> 
-          java.util.Optional.ofNullable(holder.value().soundEvent().value())
-        ).ifPresent(soundEvent -> {
-          sound = new JukeboxCartSoundInstance(soundEvent);
-          Minecraft.getInstance().getSoundManager().play(sound);
-        });
+      if (playable == null) {
+        return;
       }
+      
+      var songHolder = playable.song();
+      
+      // Try to get the holder directly first
+      var holderOptional = songHolder.holder();
+      
+      if (holderOptional.isEmpty()) {
+        // When the holder is empty in an EitherHolder, it means the ResourceKey hasn't been resolved yet
+        // We need to extract the key field via reflection and manually resolve it
+        try {
+          var holderClass = songHolder.getClass();
+          
+          // Get the 'key' field from EitherHolder
+          var keyField = holderClass.getDeclaredField("key");
+          keyField.setAccessible(true);
+          var keyValue = keyField.get(songHolder);
+          
+          if (keyValue != null) {
+            Minecraft mc = Minecraft.getInstance();
+            if (mc.level != null) {
+              var registryAccess = mc.level.registryAccess();
+              var registry = registryAccess.registryOrThrow(net.minecraft.core.registries.Registries.JUKEBOX_SONG);
+              
+              // Cast and resolve the ResourceKey
+              @SuppressWarnings("unchecked")
+              var resourceKey = (net.minecraft.resources.ResourceKey<JukeboxSong>) keyValue;
+              var resolvedHolderRef = registry.getHolder(resourceKey);
+              
+              if (resolvedHolderRef.isPresent()) {
+                // Convert Holder.Reference to Optional<Holder>
+                var holderRef = resolvedHolderRef.get();
+                holderOptional = java.util.Optional.of((Holder<JukeboxSong>) holderRef);
+              }
+            }
+          }
+        } catch (Exception e) {
+          // If resolution fails, we can't play the sound
+        }
+        
+        // If still empty, cannot play
+        if (holderOptional.isEmpty()) {
+          return;
+        }
+      }
+      
+      holderOptional
+        .map(holder -> {
+          JukeboxSong song = holder.value();
+          SoundEvent soundEvent = song.soundEvent().value();
+          return soundEvent;
+        })
+        .ifPresent(soundEvent -> {
+          if (soundEvent != null) {
+            sound = new JukeboxCartSoundInstance(soundEvent);
+            Minecraft.getInstance().getSoundManager().play(sound);
+          }
+        });
     }
   }
 
@@ -213,15 +277,27 @@ public class MinecartJukebox extends MinecartBlock {
   public class JukeboxCartSoundInstance extends AbstractTickableSoundInstance {
     public JukeboxCartSoundInstance (SoundEvent event) {
       super(event, SoundSource.RECORDS, SoundInstance.createUnseededRandom());
+      // Initialize position
+      this.x = blockPosition().getX() + 0.5;
+      this.y = blockPosition().getY() + 0.5;
+      this.z = blockPosition().getZ() + 0.5;
+      this.looping = false;
+      this.delay = 0;
+      this.volume = 1.0f;
+      this.pitch = 1.0f;
     }
 
     @Override
     public void tick () {
-      if (isRemoved()) requestStop();
+      if (isRemoved()) {
+        requestStop();
+        return;
+      }
 
-      this.x = blockPosition().getX();
-      this.y = blockPosition().getY();
-      this.z = blockPosition().getZ();
+      // Update position to follow the minecart
+      this.x = blockPosition().getX() + 0.5;
+      this.y = blockPosition().getY() + 0.5;
+      this.z = blockPosition().getZ() + 0.5;
     }
 
     public void requestStop () {
