@@ -158,8 +158,8 @@ public class TrackSwitchBlockEntity extends SmartBlockEntity implements Transfor
                 @Override
                 public void rotate(LevelAccessor levelAccessor, BlockPos blockPos, BlockState blockState, PoseStack ms) {
                     TransformStack.of(ms)
-                            .rotateY(AngleHelper.horizontalAngle(blockState.getValue(FACING)) - 90)
-                            .rotateX(90);
+                            .rotateYDegrees(AngleHelper.horizontalAngle(blockState.getValue(FACING)) - 90)
+                            .rotateXDegrees(90);
                 }
 
                 @Override
