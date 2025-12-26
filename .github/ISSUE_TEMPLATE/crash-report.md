@@ -2,7 +2,7 @@
 name: Crash Report
 about: Report a crash to help this project
 title: "[CRASH]"
-labels: Crash
+labels: crash
 assignees: ''
 
 ---
