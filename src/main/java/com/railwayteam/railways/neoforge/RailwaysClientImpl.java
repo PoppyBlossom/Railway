@@ -25,14 +25,15 @@ import com.railwayteam.railways.content.conductor.ConductorRenderer;
 import com.railwayteam.railways.content.fuel.psi.PortableFuelInterfaceBlockEntity;
 import com.railwayteam.railways.content.semaphore.SemaphoreRenderer;
 import com.railwayteam.railways.content.switches.TrackSwitchRenderer;
+import com.railwayteam.railways.neoforge.client.track.FullShapeDestroyEffects;
 import com.railwayteam.railways.registry.CRBlockEntities;
 import com.railwayteam.railways.registry.CRParticleTypes;
 import com.railwayteam.railways.registry.CREntities;
 import com.railwayteam.railways.registry.neoforge.CRBlockEntitiesImpl;
 import com.simibubi.create.content.contraptions.actors.psi.PSIVisual;
-import com.simibubi.create.content.contraptions.actors.psi.PortableStorageInterfaceRenderer;
 import com.simibubi.create.content.trains.bogey.BogeyBlockEntityRenderer;
 import com.simibubi.create.content.trains.bogey.BogeyBlockEntityVisual;
+import com.simibubi.create.content.trains.track.TrackBlock;
 import dev.engine_room.flywheel.api.visualization.VisualizerRegistry;
 import dev.engine_room.flywheel.lib.visualization.SimpleBlockEntityVisualizer;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -41,6 +42,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.entity.MinecartRenderer;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackSelectionConfig;
@@ -53,11 +55,13 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent.RegisterRenderers;
 import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraft.world.level.block.Block;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,7 +80,22 @@ public class RailwaysClientImpl {
 		RailwaysImpl.bus.addListener(RailwaysClientImpl::onBuiltinPackRegistration);
 		RailwaysImpl.bus.addListener(RailwaysClientImpl::onParticleProviderRegistration);
 		RailwaysImpl.bus.addListener(RailwaysClientImpl::onRendererRegistration);
+		RailwaysImpl.bus.addListener(RailwaysClientImpl::onClientExtensionsRegistration);
 		RailwaysImpl.bus.addListener(RailwaysClientImpl::onClientSetup);
+	}
+
+	private static void onClientExtensionsRegistration(RegisterClientExtensionsEvent event) {
+		List<Block> blocks = new ArrayList<>();
+		BuiltInRegistries.BLOCK.entrySet().forEach(entry -> {
+			var id = entry.getKey().location();
+			Block block = entry.getValue();
+			if (Railways.MOD_ID.equals(id.getNamespace()) && block instanceof TrackBlock) {
+				blocks.add(block);
+			}
+		});
+		if (!blocks.isEmpty()) {
+			event.registerBlock(FullShapeDestroyEffects.INSTANCE, blocks.toArray(Block[]::new));
+		}
 	}
 
 	private static void onParticleProviderRegistration(RegisterParticleProvidersEvent event) {
