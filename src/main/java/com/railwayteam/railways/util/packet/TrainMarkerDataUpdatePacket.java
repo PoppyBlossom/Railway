@@ -28,6 +28,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -68,7 +69,8 @@ public class TrainMarkerDataUpdatePacket implements S2CPacket { //TODO partial s
         buffer.writeInt(data.carriageCount());
         buffer.writeUUID(Optional.ofNullable(data.owner()).orElse(NULL_ID));
         buffer.writeUtf(data.destination());
-        buffer.writeResourceLocation(data.dimension().location());
+        ResourceKey<Level> dimension = data.dimension();
+        buffer.writeResourceLocation((dimension == null ? Level.OVERWORLD : dimension).location());
         buffer.writeBlockPos(data.pos());
         buffer.writeBoolean(data.incomplete());
     }

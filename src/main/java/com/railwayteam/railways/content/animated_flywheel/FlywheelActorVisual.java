@@ -6,7 +6,6 @@ import com.simibubi.create.content.contraptions.behaviour.MovementContext;
 import com.simibubi.create.content.contraptions.render.ActorVisual;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityVisual;
 import com.simibubi.create.content.kinetics.base.RotatingInstance;
-import com.simibubi.create.content.trains.entity.Carriage;
 import com.simibubi.create.content.trains.entity.CarriageContraption;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import com.simibubi.create.foundation.render.AllInstanceTypes;
@@ -35,6 +34,9 @@ class FlywheelActorVisual extends ActorVisual {
 
 	private float angle;
 	private float lastRenderTime;
+	private boolean hasLastEntityPos;
+	private double lastEntityX;
+	private double lastEntityZ;
 
 	FlywheelActorVisual(VisualizationContext visualizationContext, VirtualRenderWorld simulationWorld, MovementContext context) {
 		super(visualizationContext, simulationWorld, context);
@@ -72,6 +74,7 @@ class FlywheelActorVisual extends ActorVisual {
 
 		this.baseTransform = new Matrix4f(this.wheel.pose);
 		this.lastRenderTime = Float.NaN;
+		this.hasLastEntityPos = false;
 
 		applyWheelAngle(0);
 	}
@@ -87,7 +90,7 @@ class FlywheelActorVisual extends ActorVisual {
 		if (deltaTicks < 0)
 			deltaTicks = 0;
 
-		float rpm = computeRpm() * SPEED_MULTIPLIER;
+		float rpm = computeRpm(deltaTicks) * SPEED_MULTIPLIER;
 		float degreesPerTick = rpm * 360.0f / 1200.0f;
 		this.angle = (this.angle + degreesPerTick * deltaTicks) % 360.0f;
 
@@ -95,7 +98,7 @@ class FlywheelActorVisual extends ActorVisual {
 		applyWheelAngle(this.angle);
 	}
 
-	private float computeRpm() {
+	private float computeRpm(float deltaTicks) {
 		if (!CRConfigs.client().animatedFlywheels.get())
 			return 0;
 		if (!(context.contraption instanceof CarriageContraption carriageContraption))
@@ -108,21 +111,42 @@ class FlywheelActorVisual extends ActorVisual {
 		if (axis.isVertical())
 			return 0;
 
-		Carriage carriage = carriageContraptionEntity.getCarriage();
-		if (carriage == null)
-			return 0;
-
-		// Train speed is in blocks/tick.
-		double trainSpeed = carriage.train.speed;
+		// Derive speed from position delta rather than Train.speed or getDeltaMovement().
+		// - Train.speed can become stale client-side when control is lost (e.g. after collisions).
+		// - getDeltaMovement() is often 0 for carriage contraptions because position is set directly.
+		double trainSpeed = computeHorizontalSpeed(carriageContraptionEntity, deltaTicks);
 		double circumference = Math.PI * FLYWHEEL_DIAMETER;
 		if (circumference <= 0)
 			return 0;
 
 		double rpm = (trainSpeed / circumference) * 1200.0;
+		if (carriageContraptionEntity.movingBackwards)
+			rpm = -rpm;
 		if (!Double.isFinite(rpm))
 			return 0;
 
 		return (float) rpm;
+	}
+
+	private double computeHorizontalSpeed(CarriageContraptionEntity entity, float deltaTicks) {
+		if (deltaTicks <= 0)
+			return 0;
+
+		double x = entity.getX();
+		double z = entity.getZ();
+		if (!hasLastEntityPos) {
+			hasLastEntityPos = true;
+			lastEntityX = x;
+			lastEntityZ = z;
+			return 0;
+		}
+
+		double dx = x - lastEntityX;
+		double dz = z - lastEntityZ;
+		lastEntityX = x;
+		lastEntityZ = z;
+
+		return Math.sqrt(dx * dx + dz * dz) / deltaTicks;
 	}
 
 	private void applyWheelAngle(float angleDegrees) {
