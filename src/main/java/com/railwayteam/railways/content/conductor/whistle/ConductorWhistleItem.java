@@ -156,14 +156,17 @@ public class ConductorWhistleItem extends TrackTargetingBlockItem {
         BlockState state = level.getBlockState(pos);
         Player player = pContext.getPlayer();
     CompoundTag stackTag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
-        if(stackTag == null) return InteractionResult.FAIL;
-        UUID trainId = stackTag.getUUID("SelectedTrain");
-        Train train = Create.RAILWAYS.trains.get(trainId);
-
-        if (player == null || train == null)
+        if (player == null)
             return InteractionResult.FAIL;
 
-    if (player instanceof DeployerFakePlayer && state.getBlock() instanceof AirBlock && train.runtime.isAutoSchedule) {train.runtime.discardSchedule();}
+        UUID trainId = null;
+        Train train = null;
+        if (stackTag.hasUUID("SelectedTrain")) {
+            trainId = stackTag.getUUID("SelectedTrain");
+            train = Create.RAILWAYS.trains.get(trainId);
+        }
+
+    if (player instanceof DeployerFakePlayer && state.getBlock() instanceof AirBlock && train != null && train.runtime.isAutoSchedule) {train.runtime.discardSchedule();}
 
 
         if (player.isSteppingCarefully() && !stackTag.isEmpty()) {
@@ -186,16 +189,17 @@ public class ConductorWhistleItem extends TrackTargetingBlockItem {
             if (!stackTag.hasUUID("SelectedTrain") || !stackTag.hasUUID("SelectedConductor"))
                 return fail(player, "not_bound");
 
-            UUID conductorId = stackTag.getUUID("SelectedConductor");
-
-
-            if (!Create.RAILWAYS.trains.containsKey(trainId))
+            trainId = stackTag.getUUID("SelectedTrain");
+            Train boundTrain = Create.RAILWAYS.trains.get(trainId);
+            if (boundTrain == null)
                 return fail(player, "train_missing");
+
+            UUID conductorId = stackTag.getUUID("SelectedConductor");
 
 
             boolean foundConductor = false;
             Carriage conductorCarriage = null;
-            for (Carriage carriage : train.carriages) {
+            for (Carriage carriage : boundTrain.carriages) {
                 if (((ICarriageConductors) carriage).railways$getControllingConductors().contains(conductorId)) {
                     foundConductor = true;
                     conductorCarriage = carriage;
