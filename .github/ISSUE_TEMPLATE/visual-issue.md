@@ -2,8 +2,8 @@
 name: Visual Issue
 about: Report a issue regarding the rendering system
 title: "[VISUAL]"
-labels: Visual
-assignees: PoppyBlossom
+labels: visual
+assignees: ''
 
 ---
 
