@@ -56,8 +56,13 @@ public class RailwaysNetworking {
             CustomPayloadWrapper.type(S2C_PACKET_ID),
             CustomPayloadWrapper.codec(S2C_PACKET_ID),
             (payload, context) -> {
-                // Handler is managed by our mixin system (ClientPacketListenerMixin)
-                // This registration just tells NeoForge the payload type is valid
+                // Delegate to our packet handling system directly
+                context.enqueueWork(() -> {
+                    net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();
+                    if (mc.level != null) {
+                        com.railwayteam.railways.registry.CRPackets.PACKETS.handleS2CPacket(mc, payload.data());
+                    }
+                });
             }
         );
         
