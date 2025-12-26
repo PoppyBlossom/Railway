@@ -20,6 +20,7 @@ package com.railwayteam.railways.content.conductor;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.authlib.GameProfile;
+import com.railwayteam.railways.Railways;
 import com.railwayteam.railways.content.conductor.toolbox.MountedToolbox;
 import com.railwayteam.railways.content.conductor.vent.VentBlock;
 import com.railwayteam.railways.content.switches.TrackSwitchBlock;
@@ -280,9 +281,19 @@ public class ConductorEntity extends AbstractGolem {
       CompoundTag tag = new CompoundTag();
       for (var freq : this.entries().entrySet()) {
         if (freq.getValue().isPresent()) {
+          ItemStack firstStack = freq.getValue().get().getFirst().getStack();
+          ItemStack secondStack = freq.getValue().get().getSecond().getStack();
+          // Skip saving if both ItemStacks are empty
+          if (firstStack.isEmpty() && secondStack.isEmpty()) {
+            continue;
+          }
           CompoundTag subTag = new CompoundTag();
-          subTag.put("first", freq.getValue().get().getFirst().getStack().save(lookupProvider));
-          subTag.put("second", freq.getValue().get().getSecond().getStack().save(lookupProvider));
+          if (!firstStack.isEmpty()) {
+            subTag.put("first", firstStack.save(lookupProvider));
+          }
+          if (!secondStack.isEmpty()) {
+            subTag.put("second", secondStack.save(lookupProvider));
+          }
           tag.put(freq.getKey(), subTag);
         }
       }
@@ -292,8 +303,13 @@ public class ConductorEntity extends AbstractGolem {
     public FrequencyHolder read(CompoundTag tag, net.minecraft.core.HolderLookup.Provider lookupProvider) {
       for (var freq : this.setters().entrySet()) {
         if (tag.contains(freq.getKey(), Tag.TAG_COMPOUND)) {
-          ItemStack first = ItemStack.parseOptional(lookupProvider, tag.getCompound(freq.getKey()).getCompound("first"));
-          ItemStack second = ItemStack.parseOptional(lookupProvider, tag.getCompound(freq.getKey()).getCompound("second"));
+          CompoundTag freqTag = tag.getCompound(freq.getKey());
+          ItemStack first = freqTag.contains("first", Tag.TAG_COMPOUND) 
+            ? ItemStack.parseOptional(lookupProvider, freqTag.getCompound("first"))
+            : ItemStack.EMPTY;
+          ItemStack second = freqTag.contains("second", Tag.TAG_COMPOUND)
+            ? ItemStack.parseOptional(lookupProvider, freqTag.getCompound("second"))
+            : ItemStack.EMPTY;
           freq.getValue().accept(Optional.of(Couple.create(Frequency.of(first), Frequency.of(second))));
         } else {
           freq.getValue().accept(Optional.empty());
@@ -792,7 +808,7 @@ public class ConductorEntity extends AbstractGolem {
 
   public ConductorEntity(EntityType<? extends AbstractGolem> type, Level level) {
     super(type, level);
-  }
+      }
 
   public boolean isHoldingSchedules() {
     return !getHeldSchedules().isEmpty();
@@ -1412,6 +1428,7 @@ public class ConductorEntity extends AbstractGolem {
         return false;
       for (Player player : this.conductor.level().players()) {
         if (player.hasLineOfSight(this.conductor)) {
+          // todo: configurable distance
           if (((conductor.distanceToSqr(player)) < 256) && conductor.isLookingAtMe(player)) {
             this.lookingPlayer = player;
             return true;
