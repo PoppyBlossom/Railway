@@ -19,20 +19,11 @@
 package com.railwayteam.railways.content.animated_flywheel;
 
 import com.railwayteam.railways.config.CRConfigs;
-import com.railwayteam.railways.mixin_interfaces.ICarriageFlywheel;
-import com.railwayteam.railways.mixin_interfaces.IDistanceTravelled;
 import com.simibubi.create.api.behaviour.movement.MovementBehaviour;
 import com.simibubi.create.content.contraptions.behaviour.MovementContext;
-import com.simibubi.create.content.contraptions.render.ContraptionMatrices;
-import com.simibubi.create.content.kinetics.flywheel.FlywheelBlockEntity;
-import com.simibubi.create.content.trains.entity.CarriageContraption;
-import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import com.simibubi.create.foundation.virtualWorld.VirtualRenderWorld;
-import net.createmod.catnip.animation.AnimationTickHolder;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import com.simibubi.create.content.contraptions.render.ActorVisual;
+import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 
 public class FlywheelMovementBehaviour implements MovementBehaviour {
     @Override
@@ -41,35 +32,14 @@ public class FlywheelMovementBehaviour implements MovementBehaviour {
     }
 
     @Override
-    public void renderInContraption(MovementContext context, VirtualRenderWorld renderWorld, ContraptionMatrices matrices, MultiBufferSource buffer) {
-        // Early exit checks, don't mind them :)
-        if (!CRConfigs.client().animatedFlywheels.get()) return;
-        if (!context.world.isClientSide || Minecraft.getInstance().isPaused()) return;
-        if (!(context.contraption instanceof CarriageContraption carriageContraption)) return;
-        if (!(carriageContraption.entity instanceof CarriageContraptionEntity carriageContraptionEntity)) return;
-        if (!(context.contraption.getContraptionWorld().getBlockEntity(context.localPos) instanceof FlywheelBlockEntity flywheelBlockEntity)) return;
-        if (flywheelBlockEntity.getBlockState().getValue(BlockStateProperties.AXIS).isVertical()) return;
-        // It wasn't that bad was it? :^)
+    public boolean disableBlockEntityRendering() {
+        return true;
+    }
 
-        Direction dir = carriageContraption.getAssemblyDirection();
-        Direction.Axis flwAxis = flywheelBlockEntity.getBlockState().getValue(BlockStateProperties.AXIS);
-
-        switch (dir) {
-            case NORTH, SOUTH -> { if (flwAxis == Direction.Axis.Z) return; }
-            case EAST, WEST -> { if (flwAxis == Direction.Axis.X) return; }
-            case UP, DOWN -> { return; } // Vertical directions not supported
-        }
-
-        ICarriageFlywheel flywheel = ((ICarriageFlywheel) flywheelBlockEntity);
-        double distanceTravelled = ((IDistanceTravelled) carriageContraptionEntity).railways$getDistanceTravelled();
-
-        double angleDiff = 360 * (distanceTravelled / AnimationTickHolder.getPartialTicks()) / (Math.PI *  2.8125);
-
-        if (dir == Direction.SOUTH || dir == Direction.WEST)
-            angleDiff = -angleDiff;
-
-        float newWheelAngle = (float) (flywheel.railways$getAngle() + angleDiff % 360);
-
-        flywheel.railways$setAngle(newWheelAngle);
+    @Override
+    public ActorVisual createVisual(VisualizationContext visualizationContext, VirtualRenderWorld simulationWorld, MovementContext context) {
+        if (!CRConfigs.client().animatedFlywheels.get())
+            return null;
+        return new FlywheelActorVisual(visualizationContext, simulationWorld, context);
     }
 }
