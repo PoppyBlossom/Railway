@@ -28,7 +28,7 @@ import com.simibubi.create.content.equipment.toolbox.ToolboxBlockEntity;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -149,7 +149,8 @@ public class MountedToolbox extends ToolboxBlockEntity {
     return stack;
   }
 
-  public void sendToMenu(FriendlyByteBuf buffer) {
+  @Override
+  public void sendToMenu(RegistryFriendlyByteBuf buffer) {
     buffer.writeVarInt(parent.getId());
     buffer.writeNbt(getUpdateTag(parent.level().registryAccess()));
   }
