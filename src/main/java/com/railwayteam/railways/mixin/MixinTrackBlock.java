@@ -36,9 +36,11 @@ import com.simibubi.create.content.trains.track.TrackShape;
 import net.createmod.catnip.data.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -66,6 +68,43 @@ public class MixinTrackBlock {
       if (result != null) {
         cir.setReturnValue(result);
       }
+    }
+  }
+
+  @Inject(method = "useItemOn", at = @At("HEAD"), cancellable = true, remap = true)
+  private void railways$extendedUseItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit,
+                                         CallbackInfoReturnable<ItemInteractionResult> cir) {
+    //noinspection ConstantValue
+    if (((Object) this) instanceof MonorailTrackBlock)
+      return;
+
+    InteractionResult result = CustomTrackBlock.casingUse(state, world, pos, player, hand, hit);
+    if (result == null)
+      return;
+
+    if (result == InteractionResult.FAIL) {
+      cir.setReturnValue(ItemInteractionResult.FAIL);
+      return;
+    }
+
+    if (result.consumesAction()) {
+      cir.setReturnValue(ItemInteractionResult.sidedSuccess(world.isClientSide));
+      return;
+    }
+
+    cir.setReturnValue(ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION);
+  }
+
+  @Inject(method = "useWithoutItem", at = @At("HEAD"), cancellable = true, remap = true)
+  private void railways$extendedUseWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit,
+                                              CallbackInfoReturnable<InteractionResult> cir) {
+    //noinspection ConstantValue
+    if (((Object) this) instanceof MonorailTrackBlock)
+      return;
+
+    InteractionResult result = CustomTrackBlock.casingUse(state, world, pos, player, InteractionHand.MAIN_HAND, hit);
+    if (result != null) {
+      cir.setReturnValue(result);
     }
   }
 
