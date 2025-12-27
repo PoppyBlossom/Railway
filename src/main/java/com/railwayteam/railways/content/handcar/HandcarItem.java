@@ -24,10 +24,14 @@ import com.railwayteam.railways.mixin_interfaces.IHandcarTrain;
 import com.railwayteam.railways.registry.CRPackets;
 import com.railwayteam.railways.registry.CRTrackMaterials.CRTrackType;
 import com.railwayteam.railways.util.packet.CurvedTrackHandcarPlacementPacket;
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.Create;
+import com.simibubi.create.content.trains.bogey.AbstractBogeyBlock;
 import com.simibubi.create.content.trains.entity.Carriage;
 import com.simibubi.create.content.trains.entity.CarriageBogey;
+import com.simibubi.create.content.trains.entity.CarriageContraption;
+import com.simibubi.create.content.trains.entity.AddTrainPacket;
 import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.content.trains.entity.TravellingPoint;
 import com.simibubi.create.content.trains.entity.TravellingPoint.SteerDirection;
@@ -53,6 +57,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -67,6 +72,8 @@ import org.apache.commons.lang3.mutable.MutableObject;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import net.createmod.catnip.platform.CatnipServices;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,8 +108,14 @@ public class HandcarItem extends BlockItem implements IDeployAnywayBlockItem {
                 return InteractionResult.SUCCESS;
 
             Vec3 lookAngle = player.getLookAngle();
-            boolean front = track.getNearestTrackAxis(level, pos, state, lookAngle)
-                .getSecond() == Direction.AxisDirection.POSITIVE;
+            var nearestAxis = track.getNearestTrackAxis(level, pos, state, lookAngle);
+            Vec3 axisVec = nearestAxis.getFirst();
+            boolean front = nearestAxis.getSecond() == Direction.AxisDirection.POSITIVE;
+
+            Direction.Axis axis = Math.abs(axisVec.x) > Math.abs(axisVec.z) ? Direction.Axis.X : Direction.Axis.Z;
+            Direction assemblyDirection = axis == Direction.Axis.X
+                ? (front ? Direction.EAST : Direction.WEST)
+                : (front ? Direction.SOUTH : Direction.NORTH);
 
             MutableObject<OverlapResult> result = new MutableObject<>(null);
             MutableObject<TrackGraphLocation> resultLoc = new MutableObject<>(null);
@@ -122,7 +135,7 @@ public class HandcarItem extends BlockItem implements IDeployAnywayBlockItem {
             if (loc == null)
                 return InteractionResult.FAIL;
 
-            boolean success = placeHandcar(loc, level, player, pos);
+            boolean success = placeHandcar(loc, level, player, pos, assemblyDirection);
             if (success) {
                 stack.shrink(1);
             }
@@ -135,10 +148,14 @@ public class HandcarItem extends BlockItem implements IDeployAnywayBlockItem {
 
     @ApiStatus.Internal
     @NotNull
-    public boolean placeHandcar(TrackGraphLocation trackGraphLocation, Level level, Player player, BlockPos soundPos) {
+    public boolean placeHandcar(TrackGraphLocation trackGraphLocation, Level level, Player player, BlockPos soundPos, Direction assemblyDirection) {
         TrackGraph graph = trackGraphLocation.graph;
         TrackNode node1 = graph.locateNode(trackGraphLocation.edge.getFirst());
         TrackNode node2 = graph.locateNode(trackGraphLocation.edge.getSecond());
+        
+        if (node1 == null || node2 == null)
+            return false;
+        
         TrackEdge edge = graph.getConnectionsFrom(node1).get(node2);
         if (edge == null)
             return false;
@@ -147,23 +164,22 @@ public class HandcarItem extends BlockItem implements IDeployAnywayBlockItem {
         TravellingPoint tp1 = new TravellingPoint(node1, node2, edge, trackGraphLocation.position, false);
         TravellingPoint tp2 = new TravellingPoint(node1, node2, edge, trackGraphLocation.position, false);
         tp1.travel(graph, offset, tp1.steer(SteerDirection.NONE, new Vec3(0, 1, 0)));
-        tp2.travel(graph, -offset, tp2.steer(SteerDirection.NONE, new Vec3(0, 1, 0)));/*
-
-        tp1.travel(graph, 10, tp1.steer(SteerDirection.NONE, new Vec3(0, 1, 0)));
-        tp2.travel(graph, 10, tp2.steer(SteerDirection.NONE, new Vec3(0, 1, 0)));
-        tp1.travel(graph, -10, tp1.steer(SteerDirection.NONE, new Vec3(0, 1, 0)));
-        tp2.travel(graph, -10, tp2.steer(SteerDirection.NONE, new Vec3(0, 1, 0)));*/
+        tp2.travel(graph, -offset, tp2.steer(SteerDirection.NONE, new Vec3(0, 1, 0)));
 
         if (!(level instanceof ServerLevel serverLevel))
             return false;
-        makeTrain(
+        Train train = makeTrain(
             player.getUUID(),
             graph,
             tp1,
             tp2,
-            serverLevel
+            serverLevel,
+            soundPos,
+            assemblyDirection
         );
 
+        if (train == null)
+            return false;
 
         AllSoundEvents.CONTROLLER_CLICK.play(level, null, soundPos, 1, 1);
         return true;
@@ -190,55 +206,67 @@ public class HandcarItem extends BlockItem implements IDeployAnywayBlockItem {
     }
 
     private @Nullable Train makeTrain(UUID owner, TrackGraph graph, TravellingPoint tp1, TravellingPoint tp2,
-                                      ServerLevel level) {
+                                      ServerLevel level, BlockPos referencePos, Direction assemblyDirection) {
         HandcarBlock handcarBlock = getBogeyBlock();
+        CarriageContraption contraption = new CarriageContraption(assemblyDirection);
+
+        BlockPos tempOrigin = new BlockPos(referencePos.getX(), level.getMaxBuildHeight() - 5, referencePos.getZ());
+        BlockPos handcarWorldPos = tempOrigin;
         
-        // Build bogey and carriage following Create 1.21.1 patterns
-        // CarriageBogey will be created with the TravellingPoints we computed
-        // Actual Create constructor: CarriageBogey(AbstractBogeyBlock<?>, boolean, CompoundTag, TravellingPoint, TravellingPoint)
-        CarriageBogey leadingBogey;
+        Direction safeAssemblyDirection = assemblyDirection.getAxis().isVertical() ? Direction.EAST : assemblyDirection;
+        BlockPos seatWorldPos = tempOrigin.relative(safeAssemblyDirection);
+
+        BlockState handcarState = handcarBlock.defaultBlockState().setValue(AbstractBogeyBlock.AXIS, safeAssemblyDirection.getAxis());
+        BlockState seatState = AllBlocks.SEATS.get(net.minecraft.world.item.DyeColor.RED).get().defaultBlockState();
+
+        level.setBlock(handcarWorldPos, handcarState, 18);
+        level.setBlock(seatWorldPos, seatState, 18);
+
+        boolean assembled = false;
         try {
-            // Create 1.21.1 constructor: type, upsideDown, data, leading point, trailing point
-            leadingBogey = new CarriageBogey(handcarBlock, false, new CompoundTag(), tp1, tp2);
-        } catch (Exception e) {
-            // Fallback: log error if constructor fails
-            Railways.LOGGER.warn("CarriageBogey constructor failed for handcar", e);
-            return null;
+            assembled = contraption.assemble(level, handcarWorldPos);
+        } catch (Throwable t) {
+            Railways.LOGGER.error("Failed to assemble handcar contraption", t);
+        } finally {
+            level.setBlock(handcarWorldPos, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 18);
+            level.setBlock(seatWorldPos, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 18);
         }
-        
-        // Single-bogey Carriage (second bogey is null for handcar, spacing = 0)
-        Carriage handcarCarriage = new Carriage(leadingBogey, null, 0);
-        
-        // Build the Train with one carriage
-        List<Carriage> carriages = new ArrayList<>();
-        carriages.add(handcarCarriage);
-        
-        List<Integer> carriageSpacing = new ArrayList<>();
-        // Single carriage → no spacing list needed
-        
-        Train train = new Train(
-            UUID.randomUUID(), // train ID
-            owner,             // owner UUID
-            graph,
-            carriages,
-            carriageSpacing,
-            false,             // not double-ended
-            0                  // map color
-        );
-        
-        // Mark as handcar via mixin
+
+        if (!assembled)
+            return null;
+
+        CompoundTag handcarNbt = new CompoundTag();
+        CompoundTag bogeyData = new CompoundTag();
+        bogeyData.putBoolean("UpsideDown", false);
+        bogeyData.putString("BogeyStyle", "railways:handcar");
+        handcarNbt.put("BogeyData", bogeyData);
+        handcarNbt.putString("id", "railways:bogey");
+
+        BlockPos localHandcarPos = BlockPos.ZERO;
+        BlockPos localSeatPos = seatWorldPos.subtract(handcarWorldPos);
+
+        var info = contraption.getBlocks().get(localHandcarPos);
+        if (info != null) {
+            contraption.getBlocks().put(localHandcarPos,
+                new net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo(localHandcarPos, info.state(), handcarNbt));
+        }
+
+        if (!contraption.getSeats().contains(localSeatPos))
+            contraption.getSeats().add(localSeatPos);
+
+        CarriageBogey bogey = new CarriageBogey(handcarBlock, false, new CompoundTag(), tp1, tp2);
+        Carriage carriage = new Carriage(bogey, null, 0);
+        Train train = new Train(UUID.randomUUID(), owner, graph, List.of(carriage), new ArrayList<>(), true, 0);
+
         ((IHandcarTrain) train).railways$setHandcar(true);
-        
-        // Register train in the global railway manager
-        Create.RAILWAYS.addTrain(train);
-        
-        // Sync to clients: Create's internal network handles TrainPacket distribution at runtime
-        // We rely on Create.RAILWAYS.addTrain(...) to trigger necessary client syncs
-        
-        // Collect initially occupied signal blocks
+
+        carriage.setContraption(level, contraption);
+
+        train.name = Component.translatable("block.railways.handcar");
         train.collectInitiallyOccupiedSignalBlocks();
-        
-        Railways.LOGGER.info("Successfully created handcar train {}", train.id);
+        Create.RAILWAYS.addTrain(train);
+        CatnipServices.NETWORK.sendToAllClients(new AddTrainPacket(train));
+
         return train;
     }
 

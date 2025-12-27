@@ -31,6 +31,7 @@ import com.simibubi.create.content.trains.track.TrackTargetingBlockItem.OverlapR
 import com.simibubi.create.foundation.utility.CreateLang;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -117,7 +118,10 @@ public class CurvedTrackHandcarPlacementPacket implements C2SPacket {
         TrackGraphLocation loc = resultLoc.getValue();
         
         // Place the handcar using the resolved location
-        boolean success = handcarItem.placeHandcar(loc, player.level(), player, pos);
+        Direction assemblyDirection = Direction.fromYRot(player.getYRot());
+        if (!front)
+            assemblyDirection = assemblyDirection.getOpposite();
+        boolean success = handcarItem.placeHandcar(loc, player.level(), player, pos, assemblyDirection);
         
         if (success) {
             stack.shrink(1);
