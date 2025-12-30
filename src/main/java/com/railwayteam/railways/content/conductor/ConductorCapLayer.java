@@ -47,6 +47,7 @@ public class ConductorCapLayer<T extends ConductorEntity, M extends EntityModel<
 		ConductorCapModel<?> model = ConductorCapModel.of(headItem, (net.minecraft.client.model.HumanoidModel<?>) this.getParentModel(), conductor);
 		ResourceLocation texture = capItem.textureId;
 		VertexConsumer consumer = buffer.getBuffer(model.renderType(texture));
+		// Textures are pre-colored per cap; render at full white to avoid over-darkening
 		model.renderToBuffer(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 	}
 }
