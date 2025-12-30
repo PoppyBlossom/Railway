@@ -40,7 +40,6 @@ public class ConductorRenderer extends MobRenderer<ConductorEntity, ConductorEnt
 
   public ConductorRenderer(EntityRendererProvider.Context ctx) {
     super (ctx, new ConductorEntityModel<>(ctx.bakeLayer(ConductorEntityModel.LAYER_LOCATION)), 0.2f);
-    this.addLayer(new ConductorCapLayer<>(this));
     this.addLayer(new HumanoidArmorLayer<>(this,
       new ConductorEntityModel<>(ctx.bakeLayer(ModelLayers.ARMOR_STAND_INNER_ARMOR)),
       new ConductorEntityModel<>(ctx.bakeLayer(ModelLayers.ARMOR_STAND_OUTER_ARMOR)),
