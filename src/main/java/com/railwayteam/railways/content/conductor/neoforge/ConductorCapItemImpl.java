@@ -52,6 +52,13 @@ public class ConductorCapItemImpl extends ConductorCapItem {
 			public Model getGenericArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
 				return ConductorCapModel.of(itemStack, _default, entityLiving);
 			}
+
+			@Override
+			public int getArmorLayerTintColor(ItemStack stack, LivingEntity entity, net.minecraft.world.item.ArmorMaterial.Layer layer, int layerIdx, int fallbackColor) {
+				if (stack.getItem() instanceof ConductorCapItem cap && layer.dyeable())
+					return 0xFF000000 | cap.color.getFireworkColor();
+				return fallbackColor;
+			}
 		});
 		super.initializeClient(consumer);
 	}
