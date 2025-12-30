@@ -69,7 +69,11 @@ public abstract class ConductorCapItem extends ArmorItem {
       0, // enchantmentValue
       SoundEvents.ARMOR_EQUIP_LEATHER,
       () -> Ingredient.EMPTY, // repairIngredient
-      List.of(new ArmorMaterial.Layer(Railways.asResource("conductor_cap"))), // layers
+      // Two layers: base (not dyeable) + stripes (dyeable) so tint doesn't affect the whole hat
+      List.of(
+        new ArmorMaterial.Layer(Railways.asResource("conductor_cap_base"), "", false),
+        new ArmorMaterial.Layer(Railways.asResource("conductor_cap_stripe"), "", true)
+      ),
       0f, // toughness
       0f  // knockbackResistance
     );
