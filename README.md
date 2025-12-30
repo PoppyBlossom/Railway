@@ -1,48 +1,57 @@
-<div align="center">
-  
 <img width="1024" height="225" alt="image" src="https://github.com/user-attachments/assets/3950cd1a-1172-4b18-8ea5-31145a966a38" />
 
-  
-</div>
-
-
+# Create: Steam ’n’ Rails NeoForge 1.21.1 Unoffical Port
 
 ## Description
-This repository is a port of **Create Steam 'n' Rails** for **Neoforge 1.21.1**.
+This repository contains an **unofficial, experimental port** of **Create: Steam ’n’ Rails** for **NeoForge 1.21.1**.
 
->[!Important]
-> **This port is a subsitution for _[Create: Steam 'n' Rails](https://github.com/Layers-of-Railways/Railway)_ until the developers release their official version for 1.21.1**.
+> ⚠️ **This is NOT an official release.**  
+> This project exists as a **temporary substitute** until the Layers of Railways team releases an official 1.21.1 version.
 
 
-## Current development progress:
+## 🚧 Project Status
 
-<div align="center">
-  
-   [![Build](https://github.com/PoppyBlossom/Railway/actions/workflows/build.yml/badge.svg)](https://github.com/PoppyBlossom/Railway/actions/workflows/build.yml)
-</div>
- 
-**Releases**
+**Current state:** Active development  
+**Stability:** Experimental  
+**Target:** Feature-complete pre-release
 
-A **Pre-release** version is expected to roll out in the near future, though the exact date can't be determined.
+### Releases
+- ❌ No general release yet
+- 🧪 A **pre-release build** is planned, but **no ETA** can be guaranteed
 
->[!Important]
-**Please note that this port is currently not _generally released_.**
+> ⚠️ **Do not use this in production worlds yet.**
+> 
+
+## ❗ - Important Notices  
+
+###  Not Official Support
+- **DO NOT** report issues from this port to the **official Create: Steam ’n’ Rails repository**
+- Issues should be reported at **our offical issue tracker**
+
+### Compatibility
+- Requires **Create for NeoForge 1.21.1**
+- Behavior may differ from official releases
+
+---
 
 ## Credits
-This project is an **unofficial fork** of **[Create: Steam 'n' Rails](https://github.com/Layers-of-Railways/Railway) created by the Layers of Railways team.**
->[!Warning]
->Please refrain from reporting any issues related to this repository on the official **[Create: Steam 'n' Rails Repository](https://github.com/Layers-of-Railways/Railway)**
 
-## License
-Steam 'n' Rails is licensed under the LGPL license. See [LICENSE](LICENSE) for more information.
+This project is an **unofficial fork** of  
+**Create: Steam ’n’ Rails** by the **Layers of Railways** team.
 
-Certain sections of the code are from the Create mod, which is licensed under the MIT license. See [Create's license](https://github.com/Creators-of-Create/Create/blob/mc1.18/dev/LICENSE) for more information.
+Additional credits:
+- Create Mod (MIT)
+- Quilt Standard Libraries (Apache-2.0)
+- Security Craft (MIT) — Spy Conductors
+- Neruina (MIT) — Conditional Mixins
+- FramedBlocks (LGPL) — Sloped / custom hitbox outlines
 
-Some datafixer code is from the Quilt Standard Libraries, which is licensed under the Apache-2.0 license. See [QSL's license](https://github.com/QuiltMC/quilt-standard-libraries/blob/1.19.4/LICENSE) for more information.
+---
 
-Most of the code for spy conductors is from Security Craft, which is licensed under the MIT license. See [Security Craft's license](https://github.com/Geforce132/SecurityCraft/blob/1.18.2/LICENSE) for more information.
+## 📜 License
 
-Most of the code for annotation-based conditional mixins is from Neruina, which is licensed under the MIT license. See [Neruina's license](https://github.com/Bawnorton/Neruina/blob/multi-version/LICENSE.txt) for more information.
+- Steam ’n’ Rails: **LGPL**
+- Create: **MIT**
+- Other components retain their original licenses
 
-Most of the code for the sloped/custom hitbox outlines is from FramedBlocks, which is licensed under the LGPL license. See [FramedBlock's license](https://github.com/XFactHD/FramedBlocks/blob/17c8274ca380c3a868763b1b05657d07860c364b/LICENSE) for more information.
-
+See the `LICENSE` file for full details.
