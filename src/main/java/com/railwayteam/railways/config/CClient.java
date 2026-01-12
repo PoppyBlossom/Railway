@@ -36,7 +36,7 @@ public class CClient extends ConfigBase {
     public final ConfigBool useDevCape = b(true, "useDevCape", Comments.useDevCape, Comments.useDevCape2);
     public final ConfigBool renderNormalCap = b(true, "renderNormalCap", Comments.renderNormalCap);
     public final ConfigBool animatedFlywheels = b(true, "animatedFlywheels", Comments.animatedFlywheels);
-    public final ConfigFloat flywheelSpeedMultiplier = f(0.5f, 0.1f, 5.0f, "flywheelSpeedMultiplier", Comments.flywheelSpeedMultiplier);
+    public final ConfigFloat flywheelSpeedMultiplier = f(0.5f, 0.1f, 1.0f, "flywheelSpeedMultiplier", Comments.flywheelSpeedMultiplier);
 	public final ConfigBool hideBlocksAndBogiesIncompatibilityWarning = b(false, "hideBlocksAndBogiesIncompatibilityWarning", Comments.hideBlocksAndBogiesIncompatibilityWarning);
 
     // smoke
@@ -72,7 +72,7 @@ public class CClient extends ConfigBase {
         static String useDevCape2 = "This setting may require a relog to take effect";
         static String renderNormalCap = "Should the normal create conductor cap be rendered on top of the conductors existing hat?";
         static String animatedFlywheels = "Should flywheels and blocks extending the FlywheelBlock class be animated when apart of trains?";
-        static String flywheelSpeedMultiplier = "Speed multiplier for flywheel animations on trains (0.1 = slow, 1.0 = realistic, 5.0 = fast)";
+        static String flywheelSpeedMultiplier = "Speed multiplier for flywheel animations on trains (0.1 = slow, 0.5 = default, 1.0 = fast)";
 		static String hideBlocksAndBogiesIncompatibilityWarning = "Don't show the Create: Blocks & Bogies incompatibility warning on the title screen";
 
         static String smoke = "Smoke Settings";
