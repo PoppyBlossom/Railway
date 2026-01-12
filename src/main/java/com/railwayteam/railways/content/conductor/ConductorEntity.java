@@ -21,6 +21,7 @@ package com.railwayteam.railways.content.conductor;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.authlib.GameProfile;
 import com.railwayteam.railways.Railways;
+import com.railwayteam.railways.config.CRConfigs;
 import com.railwayteam.railways.content.conductor.toolbox.MountedToolbox;
 import com.railwayteam.railways.content.conductor.vent.VentBlock;
 import com.railwayteam.railways.content.switches.TrackSwitchBlock;
@@ -1428,8 +1429,9 @@ public class ConductorEntity extends AbstractGolem {
         return false;
       for (Player player : this.conductor.level().players()) {
         if (player.hasLineOfSight(this.conductor)) {
-          // todo: configurable distance
-          if (((conductor.distanceToSqr(player)) < 256) && conductor.isLookingAtMe(player)) {
+          int distance = CRConfigs.server().conductors.activationDistance.get();
+          int distanceSq = distance * distance;
+          if (((conductor.distanceToSqr(player)) < distanceSq) && conductor.isLookingAtMe(player)) {
             this.lookingPlayer = player;
             return true;
           }

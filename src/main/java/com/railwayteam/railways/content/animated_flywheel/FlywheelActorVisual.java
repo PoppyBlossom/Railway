@@ -25,8 +25,7 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
 class FlywheelActorVisual extends ActorVisual {
-	private static final double FLYWHEEL_DIAMETER = 2.8125;
-	private static final float SPEED_MULTIPLIER = 0.5f; 
+	private static final double FLYWHEEL_DIAMETER = 2.8125; 
 
 	private final RotatingInstance shaft;
 	private final TransformedInstance wheel;
@@ -90,7 +89,8 @@ class FlywheelActorVisual extends ActorVisual {
 		if (deltaTicks < 0)
 			deltaTicks = 0;
 
-		float rpm = computeRpm(deltaTicks) * SPEED_MULTIPLIER;
+		float speedMultiplier = CRConfigs.client().flywheelSpeedMultiplier.getF();
+		float rpm = computeRpm(deltaTicks) * speedMultiplier;
 		float degreesPerTick = rpm * 360.0f / 1200.0f;
 		this.angle = (this.angle + degreesPerTick * deltaTicks) % 360.0f;
 
