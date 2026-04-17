@@ -24,6 +24,7 @@ import com.railwayteam.railways.registry.neoforge.CRKeysImpl;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
@@ -48,6 +49,11 @@ public class ClientEventsForge {
 	@SubscribeEvent
 	public static void onWorldLoad(LevelEvent.Load event) {
 		ClientEvents.onClientWorldLoad((Level) event.getLevel());
+	}
+
+	@SubscribeEvent
+	public static void onLoggingIn(ClientPlayerNetworkEvent.LoggingIn event) {
+		ClientEvents.onClientJoinedServer(Minecraft.getInstance());
 	}
 
 	@SubscribeEvent

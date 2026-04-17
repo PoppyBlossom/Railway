@@ -46,7 +46,6 @@ public class ClientEvents {
         CRKeys.fixBinds();
         PhantomSpriteManager.tick(mc);
 
-        Level level = mc.level;
         MountedStorageSyncDeferral.clientTick(mc);
         MountedFuelTankSyncDeferral.clientTick(mc, (BlockEntity be, net.neoforged.neoforge.fluids.FluidStack fluid) -> {
             if (!(be instanceof com.railwayteam.railways.content.fuel.tank.FuelTankBlockEntity tank))
@@ -61,10 +60,6 @@ public class ClientEvents {
             tank.getFluidLevel().chase(fillLevel, 0.5, net.createmod.catnip.animation.LerpedFloat.Chaser.EXP);
             return true;
         });
-        long ticks = level == null ? 1 : level.getGameTime();
-        if (ticks % 40 == 0 && previousDevCapeSetting != (previousDevCapeSetting = CRConfigs.client().useDevCape.get())) {
-            CRPackets.PACKETS.send(new ConfigureDevCapeC2SPacket(previousDevCapeSetting));
-        }
 
         if (isGameActive()) {
             BogeyMenuEventsHandler.clientTick();
@@ -84,6 +79,12 @@ public class ClientEvents {
     @MultiLoaderEvent
     public static void onClientWorldLoad(Level level) {
         PhantomSpriteManager.firstRun = true;
+    }
+
+    @MultiLoaderEvent
+    public static void onClientJoinedServer(Minecraft mc) {
+        previousDevCapeSetting = CRConfigs.client().useDevCape.get();
+        CRPackets.PACKETS.send(new ConfigureDevCapeC2SPacket(previousDevCapeSetting));
     }
 
     protected static boolean isGameActive() {
