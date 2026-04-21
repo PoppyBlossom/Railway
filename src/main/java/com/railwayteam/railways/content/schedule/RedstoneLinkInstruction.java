@@ -41,6 +41,10 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -73,7 +77,10 @@ public class RedstoneLinkInstruction extends ScheduleInstruction {
     public Couple<Frequency> freq;
 
     public RedstoneLinkInstruction() {
-        freq = Couple.create(() -> RedstoneLinkNetworkHandler.Frequency.EMPTY);
+        freq = Couple.create(
+                RedstoneLinkNetworkHandler.Frequency.EMPTY,
+                RedstoneLinkNetworkHandler.Frequency.EMPTY
+        );
         data.putInt("Power", 15);
     }
 
@@ -142,23 +149,54 @@ public class RedstoneLinkInstruction extends ScheduleInstruction {
 
     @Override
     public ItemStack getItem(int slot) {
-        return freq.get(slot == 0)
-            .getStack();
+        return freq.get(slot == 0).getStack();
     }
 
-    // TODO: Check if Create 1.21.1 has updated serialization methods for ScheduleInstruction  
-    // @Override
-    // protected void writeAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    //     tag.put("Frequency", freq.serializeEach(f -> (CompoundTag) f.getStack().save(provider)));
-    // }
+@Override
+    protected void writeAdditional(HolderLookup.Provider registries, CompoundTag tag) {
+        // Let the parent class save this.data (including Power)
+        super.writeAdditional(registries, tag);
+        // Serialize frequencies using the registries provided by the framework,
+        // so that ItemStack DataComponents are written correctly
+        ListTag frequencyList = new ListTag();
+        frequencyList.add(serializeFrequency(registries, freq.getFirst()));
+        frequencyList.add(serializeFrequency(registries, freq.getSecond()));
+        tag.put("Frequency", frequencyList);
+    }
 
-    // @Override
-    // protected void readAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    //     if (tag.contains("Frequency", Tag.TAG_COMPOUND))
-    //         freq = Couple.deserializeEach(tag.getList("Frequency", Tag.TAG_COMPOUND), c -> RedstoneLinkNetworkHandler.Frequency.of(ItemStack.parseOptional(provider, c)));
-    //     else
-    //         freq = Couple.create(() -> RedstoneLinkNetworkHandler.Frequency.EMPTY);
-    // }
+    private CompoundTag serializeFrequency(HolderLookup.Provider registries, Frequency frequency) {
+        if (frequency != null && !frequency.getStack().isEmpty()) {
+            Tag saved = frequency.getStack().save(registries);
+            if (saved instanceof CompoundTag ct) {
+                return ct;
+            }
+        }
+        // Return an empty CompoundTag to represent an empty frequency slot
+        return new CompoundTag();
+    }
+
+    @Override
+    protected void readAdditional(HolderLookup.Provider registries, CompoundTag tag) {
+        super.readAdditional(registries, tag);
+
+        if (tag.contains("Frequency", Tag.TAG_LIST)) {
+            ListTag list = tag.getList("Frequency", Tag.TAG_COMPOUND);
+            if (list.size() >= 2) {
+                ItemStack first = ItemStack.parseOptional(registries, list.getCompound(0));
+                ItemStack second = ItemStack.parseOptional(registries, list.getCompound(1));
+                freq = Couple.create(
+                    RedstoneLinkNetworkHandler.Frequency.of(first),
+                    RedstoneLinkNetworkHandler.Frequency.of(second)
+                );
+                return;
+            }
+        }
+
+        freq = Couple.create(
+            RedstoneLinkNetworkHandler.Frequency.EMPTY,
+            RedstoneLinkNetworkHandler.Frequency.EMPTY
+        );
+    }
 
     @Override
     @OnlyIn(Dist.CLIENT)
