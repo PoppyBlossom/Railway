@@ -52,6 +52,7 @@ val flywheelVersion: String = (rootProject.findProperty("flywheel_version") as S
 val registrateForgeVersion: String = (rootProject.findProperty("registrate_forge_version") as String)
 val mixinExtrasVersion: String = (rootProject.findProperty("mixin_extras_version") as String)
 val voicechatApiVersion: String = (rootProject.findProperty("voicechat_api_version") as String)
+val voicechatVersion: String = (rootProject.findProperty("voicechat_version") as String)
 val modName: String = (rootProject.findProperty("mod_name") as String)
 
 base {
@@ -107,31 +108,31 @@ repositories {
 neoForge {
     // NeoForge version from properties
     version.set(neoforgeVersion)
-    
+
     // Note: Parchment overlay disabled for now; fall back to Mojang mappings (stable in ModDev)
     // To re-enable later, ensure a valid parchment artifact exists for the current MC version
     // parchment {
     //     minecraftVersion.set("minecraft_version"())
     //     mappingsVersion.set("parchment_version"())
     // }
-    
+
     // Add access transformers and mixins
     accessTransformers {
         file("src/main/resources/META-INF/accesstransformer.cfg")
     }
-    
+
     runs {
         // Client run configuration
         create("client") {
             client()
         }
-        
+
         // Server run configuration
         create("server") {
             server()
             programArgument("--nogui")
         }
-        
+
         // Data generation run
         create("data") {
             data()
@@ -143,13 +144,13 @@ neoForge {
                 "--existing-mod", "create"
             )
         }
-        
+
         configureEach {
             systemProperty("forge.logging.markers", "REGISTRIES")
             systemProperty("forge.logging.console.level", "debug")
         }
     }
-    
+
     mods {
         create(modId) {
             sourceSet(sourceSets.main.get())
@@ -175,25 +176,25 @@ dependencies {
         exclude(group = "maven.modrinth", module = "journeymap")
         exclude(group = "info.journeymap")
     }
-    
+
     // Ponder
     implementation("net.createmod.ponder:ponder-neoforge:$ponderVersion+mc$minecraftVersion")
-    
+
     // Flywheel
     implementation("dev.engine-room.flywheel:flywheel-neoforge-${minecraftVersion}:${flywheelVersion}")
-    
+
     // Registrate
     implementation("com.tterrag.registrate:Registrate:${registrateForgeVersion}")
-    
+
     // Architectury
     implementation("dev.architectury:architectury-neoforge:13.0.8")
-    
+
     // MixinExtras
     implementation("io.github.llamalad7:mixinextras-neoforge:${mixinExtrasVersion}")
-    
+
     // Annotations
     compileOnly("com.google.code.findbugs:jsr305:3.0.2")
-    
+
     // JourneyMap (explicit version to avoid Create pulling in mismatched beta.46)
     // The API jar is bundled inside JourneyMap via JarJar — do NOT add it separately
     val journeymapVersion: String = (rootProject.findProperty("journeymap_version") as String)
@@ -204,7 +205,7 @@ dependencies {
     // Voice chat API
     compileOnly("de.maxhenkel.voicechat:voicechat-api:${voicechatApiVersion}")
     if ((rootProject.findProperty("enable_simple_voice_chat") as String).toBoolean()) {
-        compileOnly("de.maxhenkel.voicechat:voicechat-neoforge:1.21.1-2.6.6")
+        compileOnly("maven.modrinth:simple-voice-chat:neoforge-${voicechatVersion}")
     }
 }
 
@@ -218,7 +219,7 @@ tasks {
     processResources {
         // Prefer generated resources over hand-crafted duplicates
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-        
+
         val props = mapOf(
             "version" to project.version.toString(),
             "minecraft_version" to minecraftVersion,
@@ -233,12 +234,12 @@ tasks {
             expand(props)
         }
     }
-    
+
     // Handle duplicates in sourcesJar too
     withType<Jar> {
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
-    
+
     jar {
         manifest {
             attributes(mapOf(
