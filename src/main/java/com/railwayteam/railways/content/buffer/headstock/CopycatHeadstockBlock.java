@@ -98,6 +98,9 @@ public class CopycatHeadstockBlock extends WaterloggedCopycatBlock implements Bl
     @Override
     public boolean isIgnoredConnectivitySide(BlockAndTintGetter reader, BlockState state, Direction face,
                                              BlockPos fromPos, BlockPos toPos) {
+        if (fromPos == null || toPos == null)
+            return true;
+
         Direction facing = state.getValue(FACING);
         BlockState toState = reader.getBlockState(toPos);
 
@@ -117,6 +120,9 @@ public class CopycatHeadstockBlock extends WaterloggedCopycatBlock implements Bl
 
     @Override
     public boolean canConnectTexturesToward(BlockAndTintGetter reader, BlockPos fromPos, BlockPos toPos, BlockState state) {
+        if (fromPos == null || toPos == null)
+            return true;
+
         Direction facing = state.getValue(FACING);
         BlockState toState = reader.getBlockState(toPos);
 
