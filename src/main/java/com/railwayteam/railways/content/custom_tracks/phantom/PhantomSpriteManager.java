@@ -45,6 +45,11 @@ public abstract class PhantomSpriteManager {
     }
 
     public static boolean register(SpriteContents sprite) {
+        if (sprite.name() == null) {
+            Railways.LOGGER.debug("Skipping registration of sprite with null name");
+            return false;
+        }
+
         if (sprite.name().getNamespace().equals(Railways.MOD_ID) && sprite.name().getPath().startsWith("block/track/phantom/")) {
             map.put(sprite.name(), new WeakReference<>(sprite));
             firstRun = true;
