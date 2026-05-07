@@ -48,14 +48,10 @@ public class EntityAudioChannelImplMixin {
         "send(Lde/maxhenkel/voicechat/api/packets/MicrophonePacket;)V",
         "flush"
     }, at = @At(value = "INVOKE", target = "Lde/maxhenkel/voicechat/api/Entity;getUuid()Ljava/util/UUID;"), remap = false)
-    private UUID useConductorSpyUUID(Object instance, Operation<UUID> original) {
-        try {
-            java.lang.reflect.Method getEntity = instance.getClass().getMethod("getEntity");
-            Object entityObj = getEntity.invoke(instance);
-            if (entityObj instanceof ServerPlayer serverPlayer && ConductorPossessionController.isPossessingConductor(serverPlayer)) {
-                return serverPlayer.getCamera().getUUID();
-            }
-        } catch (ReflectiveOperationException ignored) {
+    private UUID useConductorSpyUUID(de.maxhenkel.voicechat.api.Entity instance, Operation<UUID> original) {
+        Object entityObj = instance.getEntity();
+        if (entityObj instanceof ServerPlayer serverPlayer && ConductorPossessionController.isPossessingConductor(serverPlayer)) {
+            return serverPlayer.getCamera().getUUID();
         }
         return original.call(instance);
     }
