@@ -6,7 +6,7 @@
       "tag": "c:ingots/copper"
     },
     {
-      "tag": "c:nuggets/brass"
+      "tag": "railways:internal/nuggets/brass_nuggets"
     }
   ],
   "result": {

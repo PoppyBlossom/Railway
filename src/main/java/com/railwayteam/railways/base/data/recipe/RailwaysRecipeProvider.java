@@ -147,7 +147,7 @@ public abstract class RailwaysRecipeProvider extends RecipeProvider {
     }
 
     public static TagKey<Item> brassNugget() {
-      return CommonTags.BRASS_NUGGETS.tag;
+      return TagKey.create(Registries.ITEM, Railways.asResource("internal/nuggets/brass_nuggets"));
     }
 
     public static ItemLike phantomMembrane() {
