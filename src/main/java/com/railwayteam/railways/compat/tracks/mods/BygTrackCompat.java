@@ -37,7 +37,7 @@ public class BygTrackCompat extends GenericTrackCompat {
 
     private static boolean registered = false;
     public static void register() {
-        if (!Mods.BYG.isLoaded)
+        if (!Mods.BYG.isLoaded && !GenericTrackCompat.isDataGen())
             return;
         if (registered) {
             Railways.LOGGER.error("Duplicate registration of BYG track compat");

@@ -76,6 +76,678 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_aspen",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_aspen",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_aspen_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_aspen_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_aspen_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_aspen_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_baobab",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_baobab",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_baobab_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_baobab_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_baobab_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_baobab_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_blue_enchanted",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_blue_enchanted",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_blue_enchanted_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_blue_enchanted_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_blue_enchanted_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_blue_enchanted_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_bulbis",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_bulbis",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_bulbis_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_bulbis_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_bulbis_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_bulbis_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_cika",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_cika",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_cika_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_cika_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_cika_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_cika_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_cypress",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_cypress",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_cypress_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_cypress_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_cypress_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_cypress_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_ebony",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_ebony",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_ebony_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_ebony_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_ebony_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_ebony_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_embur",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_embur",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_embur_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_embur_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_embur_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_embur_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_ether",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_ether",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_ether_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_ether_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_ether_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_ether_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_fir",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_fir",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_fir_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_fir_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_fir_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_fir_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_green_enchanted",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_green_enchanted",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_green_enchanted_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_green_enchanted_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_green_enchanted_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_green_enchanted_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_holly",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_holly",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_holly_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_holly_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_holly_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_holly_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_imparius",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_imparius",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_imparius_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_imparius_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_imparius_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_imparius_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_jacaranda",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_jacaranda",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_jacaranda_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_jacaranda_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_jacaranda_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_jacaranda_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_lament",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_lament",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_lament_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_lament_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_lament_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_lament_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_mahogany",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_mahogany",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_mahogany_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_mahogany_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_mahogany_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_mahogany_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_maple",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_maple",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_maple_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_maple_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_maple_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_maple_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_nightshade",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_nightshade",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_nightshade_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_nightshade_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_nightshade_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_nightshade_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_palm",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_palm",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_palm_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_palm_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_palm_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_palm_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_pine",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_pine",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_pine_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_pine_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_pine_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_pine_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_rainbow_eucalyptus",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_rainbow_eucalyptus",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_rainbow_eucalyptus_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_rainbow_eucalyptus_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_rainbow_eucalyptus_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_rainbow_eucalyptus_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_redwood",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_redwood",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_redwood_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_redwood_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_redwood_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_redwood_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_skyris",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_skyris",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_skyris_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_skyris_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_skyris_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_skyris_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_sythian",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_sythian",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_sythian_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_sythian_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_sythian_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_sythian_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_white_mangrove",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_white_mangrove",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_white_mangrove_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_white_mangrove_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_white_mangrove_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_white_mangrove_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_willow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_willow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_willow_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_willow_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_willow_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_willow_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_witch_hazel",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_witch_hazel",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_witch_hazel_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_witch_hazel_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_witch_hazel_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_witch_hazel_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_zelkova",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_zelkova",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_zelkova_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_zelkova_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_zelkova_narrow",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_zelkova_narrow",
+      "required": false
+    },
+    {
       "id": "railways:track_blue_skies_bluebright",
       "required": false
     },

@@ -29,7 +29,7 @@ public class NaturesSpiritTrackCompat extends GenericTrackCompat {
 
     private static boolean registered = false;
     public static void register() {
-        if (!Mods.NATURES_SPIRIT.isLoaded)
+        if (!Mods.NATURES_SPIRIT.isLoaded && !GenericTrackCompat.isDataGen())
             return;
         if (registered) {
             Railways.LOGGER.error("Duplicate registration of Nature's Spirit track compat");
