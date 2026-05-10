@@ -1,0 +1,64 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "hexcasting"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "railways:track_hexcasting_edified"
+  },
+  "results": [
+    {
+      "id": "railways:track_hexcasting_edified_wide"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:cutting",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_hexcasting_edified_wide"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_hexcasting_edified_wide"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_hexcasting_edified_wide"
+        },
+        {
+          "tag": "railways:compat_slabs/hexcasting/edified"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_hexcasting_edified_wide"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_hexcasting_edified_wide"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_hexcasting_edified_wide"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "railways:track_incomplete_hexcasting_edified_wide"
+  }
+}

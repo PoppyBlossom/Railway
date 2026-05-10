@@ -71,7 +71,7 @@ public class GenericTrackCompat {
     protected final Map<String, NonNullSupplier<? extends TrackBlock>> BLOCKS = new HashMap<>();
 
     public static boolean isDataGen() {
-        return true;
+        return Utils.isEnvVarTrue("DATAGEN");
     }
 
     static {
@@ -84,6 +84,8 @@ public class GenericTrackCompat {
     }
 
     public void register(String... names) {
+        if (!shouldRegisterMissing())
+            return;
         for (String name : names) {
             Optional<Block> baseBlock = BuiltInRegistries.BLOCK.getOptional(getSlabLocation(name));
 

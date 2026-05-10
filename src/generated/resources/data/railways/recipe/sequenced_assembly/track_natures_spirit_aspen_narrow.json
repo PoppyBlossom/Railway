@@ -1,0 +1,69 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "natures_spirit"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "tag": "railways:compat_slabs/natures_spirit/aspen"
+  },
+  "results": [
+    {
+      "id": "railways:track_natures_spirit_aspen_narrow"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:cutting",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_natures_spirit_aspen_narrow"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_natures_spirit_aspen_narrow"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_natures_spirit_aspen_narrow"
+        },
+        [
+          {
+            "tag": "c:nuggets/iron"
+          },
+          {
+            "tag": "c:nuggets/zinc"
+          }
+        ]
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_natures_spirit_aspen_narrow"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_natures_spirit_aspen_narrow"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_natures_spirit_aspen_narrow"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "railways:track_incomplete_natures_spirit_aspen_narrow"
+  }
+}

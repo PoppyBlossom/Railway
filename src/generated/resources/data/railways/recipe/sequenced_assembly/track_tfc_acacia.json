@@ -1,0 +1,77 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "tfc"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "tag": "railways:compat_slabs/tfc/acacia"
+  },
+  "results": [
+    {
+      "id": "railways:track_tfc_acacia"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_tfc_acacia"
+        },
+        [
+          {
+            "tag": "forge:rods/wrought_iron"
+          },
+          {
+            "tag": "forge:rods/zinc"
+          }
+        ]
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_tfc_acacia"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_tfc_acacia"
+        },
+        [
+          {
+            "tag": "forge:rods/wrought_iron"
+          },
+          {
+            "tag": "forge:rods/zinc"
+          }
+        ]
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_tfc_acacia"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_tfc_acacia"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_tfc_acacia"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "railways:track_incomplete_tfc_acacia"
+  }
+}
