@@ -1,6 +1,7 @@
 package com.railwayteam.railways.base.data.recipe;
 
 import com.railwayteam.railways.Railways;
+import com.railwayteam.railways.multiloader.CommonTags;
 import com.railwayteam.railways.registry.CRItems;
 import com.railwayteam.railways.registry.CRTrackMaterials;
 import com.railwayteam.railways.util.TextUtils;
@@ -139,8 +140,8 @@ public class RailwaysSequencedAssemblyRecipeGen extends RailwaysRecipeProvider {
             .transitionTo(CRItems.ITEM_INCOMPLETE_TRACK.get(CRTrackMaterials.PHANTOM).get())
             .addOutput(new ItemStack(CRTrackMaterials.PHANTOM.getBlock(), 32), 1)
             .loops(1)
-            .addStep(DeployerApplicationRecipe::new, rb -> rb.require(Ingredient.of(net.minecraft.world.item.Items.IRON_INGOT)))
-            .addStep(DeployerApplicationRecipe::new, rb -> rb.require(Ingredient.of(net.minecraft.world.item.Items.IRON_INGOT)))
+            .addStep(DeployerApplicationRecipe::new, rb -> rb.require(Ingredient.of(CommonTags.IRON_INGOTS.tag)))
+            .addStep(DeployerApplicationRecipe::new, rb -> rb.require(Ingredient.of(CommonTags.IRON_INGOTS.tag)))
             .addStep(PressingRecipe::new, rb -> rb)
         ));
 
@@ -158,7 +159,7 @@ public class RailwaysSequencedAssemblyRecipeGen extends RailwaysRecipeProvider {
             .addOutput(new ItemStack(CRTrackMaterials.NARROW_GAUGE_PHANTOM.getBlock(), 32), 1)
             .loops(1)
             .addStep(CuttingRecipe::new, rb -> rb)
-            .addStep(DeployerApplicationRecipe::new, rb -> rb.require(Ingredient.of(net.minecraft.world.item.Items.IRON_INGOT)))
+            .addStep(DeployerApplicationRecipe::new, rb -> rb.require(Ingredient.of(CommonTags.IRON_INGOTS.tag)))
             .addStep(PressingRecipe::new, rb -> rb)
         ));
 

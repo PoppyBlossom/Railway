@@ -1,12 +1,11 @@
 {
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "item": "minecraft:phantom_membrane"
+    "item": "railways:track_phantom"
   },
   "results": [
     {
-      "count": 32,
-      "id": "railways:track_phantom_narrow"
+      "id": "railways:track_phantom_wide"
     }
   ],
   "sequence": [
@@ -14,12 +13,12 @@
       "type": "create:cutting",
       "ingredients": [
         {
-          "item": "railways:track_incomplete_phantom_narrow"
+          "item": "railways:track_incomplete_phantom_wide"
         }
       ],
       "results": [
         {
-          "id": "railways:track_incomplete_phantom_narrow"
+          "id": "railways:track_incomplete_phantom_wide"
         }
       ]
     },
@@ -27,15 +26,15 @@
       "type": "create:deploying",
       "ingredients": [
         {
-          "item": "railways:track_incomplete_phantom_narrow"
+          "item": "railways:track_incomplete_phantom_wide"
         },
         {
-          "tag": "c:ingots/iron"
+          "item": "minecraft:phantom_membrane"
         }
       ],
       "results": [
         {
-          "id": "railways:track_incomplete_phantom_narrow"
+          "id": "railways:track_incomplete_phantom_wide"
         }
       ]
     },
@@ -43,17 +42,17 @@
       "type": "create:pressing",
       "ingredients": [
         {
-          "item": "railways:track_incomplete_phantom_narrow"
+          "item": "railways:track_incomplete_phantom_wide"
         }
       ],
       "results": [
         {
-          "id": "railways:track_incomplete_phantom_narrow"
+          "id": "railways:track_incomplete_phantom_wide"
         }
       ]
     }
   ],
   "transitional_item": {
-    "id": "railways:track_incomplete_phantom_narrow"
+    "id": "railways:track_incomplete_phantom_wide"
   }
 }

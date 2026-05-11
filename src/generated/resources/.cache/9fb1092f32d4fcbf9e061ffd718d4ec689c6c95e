@@ -1,4 +1,4 @@
-// 1.21.1	2026-05-10T10:09:10.7196553	Recipes
+// 1.21.1	2026-05-10T17:28:31.5838286	Recipes
 071f8ef0da6675eadaed86c5dd67d6fd6e4139a1 data/railways/advancement/recipes/misc/crafting/big_buffer.json
 e4149c5dd773d7ea34d34f3ba3fc67aa1100f02a data/railways/advancement/recipes/misc/crafting/buffer.json
 c5ae32f86a31f28e0170919921be6dec3a5906bf data/railways/advancement/recipes/misc/crafting/conductor_whistle.json
@@ -1438,8 +1438,8 @@ eb33cd58b1fbe5889862fe79f88feedbdd7da678 data/railways/recipe/sequenced_assembly
 e9ea4f877a467cee155b7b0db39f66b401fc61c9 data/railways/recipe/sequenced_assembly/track_natures_spirit_wisteria_narrow.json
 26fa5a4b91d824a9331662c9fad7570f412ff27d data/railways/recipe/sequenced_assembly/track_natures_spirit_wisteria_wide.json
 ae3b009201ebcff3018ca200fab5f4079ced6d87 data/railways/recipe/sequenced_assembly/track_oak.json
-01b138c918101cb837b1100ca55314515a2b23ae data/railways/recipe/sequenced_assembly/track_phantom.json
-68b5d277527356db84d6eee42d63843fb4336272 data/railways/recipe/sequenced_assembly/track_phantom_narrow.json
+c077c3e78a86f9bcd2957783c27b8601ec7d0fca data/railways/recipe/sequenced_assembly/track_phantom.json
+449e038ef6c5fb7dcae8778952a7e4616f7874b0 data/railways/recipe/sequenced_assembly/track_phantom_narrow.json
 514aeaa8a314449af807a748a63d2eb534f8412d data/railways/recipe/sequenced_assembly/track_phantom_wide.json
 567d7b828563aac9c1e769b5bfb84599d3144ca4 data/railways/recipe/sequenced_assembly/track_quark_ancient.json
 0bfc2ab064b0cee1c979337be1af587c432cd4ea data/railways/recipe/sequenced_assembly/track_quark_ancient_narrow.json
