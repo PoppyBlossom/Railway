@@ -145,15 +145,12 @@ public class BufferModel implements BakedModel {
         UnaryOperator<TextureAtlasSprite> materialSwapper = null;
         UnaryOperator<TextureAtlasSprite> colorSwapper = null;
 
-        CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
-        if (tag != null && tag.contains("BlockEntityTag", Tag.TAG_COMPOUND)) {
-            CompoundTag blockEntityTag = tag.getCompound("BlockEntityTag");
-            if (blockEntityTag.contains("Material", Tag.TAG_COMPOUND)) {
-                materialSwapper = getSwapper(NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), blockEntityTag.getCompound("Material")));
-            }
-            if (blockEntityTag.contains("Color", Tag.TAG_INT)) {
-                colorSwapper = getSwapper(DyeColor.byId(blockEntityTag.getInt("Color")));
-            }
+        CompoundTag blockEntityTag = stack.getOrDefault(DataComponents.BLOCK_ENTITY_DATA, CustomData.EMPTY).copyTag();
+        if (blockEntityTag.contains("Material", Tag.TAG_COMPOUND)) {
+            materialSwapper = getSwapper(NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), blockEntityTag.getCompound("Material")));
+        }
+        if (blockEntityTag.contains("Color", Tag.TAG_INT)) {
+            colorSwapper = getSwapper(DyeColor.byId(blockEntityTag.getInt("Color")));
         }
         final UnaryOperator<TextureAtlasSprite> finalMaterialSwapper = materialSwapper;
         final UnaryOperator<TextureAtlasSprite> finalColorSwapper = colorSwapper;
