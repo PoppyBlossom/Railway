@@ -126,7 +126,7 @@ public class MixinToolboxHandlerClient {
           remap = false,
           at = @At(
                   value = "INVOKE_ASSIGN",
-                  target = "Lnet/minecraft/nbt/NbtUtils;readBlockPos(Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/core/BlockPos;",
+                  target = "Lnet/createmod/catnip/nbt/NBTHelper;readBlockPos(Lnet/minecraft/nbt/CompoundTag;Ljava/lang/String;)Lnet/minecraft/core/BlockPos;",
                   remap = true
           )
   )
