@@ -36,11 +36,9 @@ public class RailwaysDataPackImpl {
 			);
 
 			PackSelectionConfig selectionConfig = new PackSelectionConfig(
-				false,
-				Pack.Position.TOP,
-				false
-			);
-
+			true,  // required - ensures pack is always enabled
+			Pack.Position.TOP,			false
+		);
 			Pack newPack = Pack.readMetaAndCreate(
 				packInfo,
 				new Pack.ResourcesSupplier() {
