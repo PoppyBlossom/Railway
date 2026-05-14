@@ -283,17 +283,14 @@ public class CopycatHeadstockModel implements BakedModel {
         BlockState material = AllBlocks.COPYCAT_BASE.getDefaultState();
         UnaryOperator<TextureAtlasSprite> colorSwapper = null;
 
-        CustomData customData = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
-        if (!customData.isEmpty()) {
-            CompoundTag tag = customData.copyTag();
-            if (tag.contains("BlockEntityTag", Tag.TAG_COMPOUND)) {
-                CompoundTag blockEntityTag = tag.getCompound("BlockEntityTag");
-                if (blockEntityTag.contains("Material", Tag.TAG_COMPOUND)) {
-                    material = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), blockEntityTag.getCompound("Material"));
-                }
-                if (blockEntityTag.contains("Color", Tag.TAG_INT)) {
-                    colorSwapper = getSwapper(DyeColor.byId(blockEntityTag.getInt("Color")));
-                }
+        CustomData blockEntityData = stack.getOrDefault(DataComponents.BLOCK_ENTITY_DATA, CustomData.EMPTY);
+        if (!blockEntityData.isEmpty()) {
+            CompoundTag blockEntityTag = blockEntityData.copyTag();
+            if (blockEntityTag.contains("Material", Tag.TAG_COMPOUND)) {
+                material = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), blockEntityTag.getCompound("Material"));
+            }
+            if (blockEntityTag.contains("Color", Tag.TAG_INT)) {
+                colorSwapper = getSwapper(DyeColor.byId(blockEntityTag.getInt("Color")));
             }
         }
         final BlockState finalMaterial = material;

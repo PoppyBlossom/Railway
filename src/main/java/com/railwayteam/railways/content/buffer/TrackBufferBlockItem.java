@@ -130,20 +130,16 @@ public class TrackBufferBlockItem extends TrackTargetingBlockItem {
                 return InteractionResult.FAIL;
             }
             
-            CustomData existing = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
-            CompoundTag stackTag = existing.copyTag();
-            
-            CompoundTag oldTeTag = stackTag.getCompound("BlockEntityTag");
-            
+            CustomData existing = stack.getOrDefault(DataComponents.BLOCK_ENTITY_DATA, CustomData.EMPTY);
+            CompoundTag oldTeTag = existing.copyTag();
+
             CompoundTag teTag = new CompoundTag();
-            if (oldTeTag != null) {
-                if (oldTeTag.contains("Material", Tag.TAG_COMPOUND))
-                    //noinspection DataFlowIssue
-                    teTag.put("Material", oldTeTag.get("Material"));
-                if (oldTeTag.contains("Color", Tag.TAG_INT))
-                    //noinspection DataFlowIssue
-                    teTag.put("Color", oldTeTag.get("Color"));
-            }
+            if (oldTeTag.contains("Material", Tag.TAG_COMPOUND))
+                //noinspection DataFlowIssue
+                teTag.put("Material", oldTeTag.get("Material"));
+            if (oldTeTag.contains("Color", Tag.TAG_INT))
+                //noinspection DataFlowIssue
+                teTag.put("Color", oldTeTag.get("Color"));
             teTag.putBoolean("TargetDirection", front);
             
             BlockPos placedPos = pos.above();
@@ -161,8 +157,7 @@ public class TrackBufferBlockItem extends TrackTargetingBlockItem {
             }
             
             teTag.put("TargetTrack", NbtUtils.writeBlockPos(pos.subtract(placedPos)));
-            stackTag.put("BlockEntityTag", teTag);
-            stack.set(DataComponents.CUSTOM_DATA, CustomData.of(stackTag));
+            stack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(teTag));
             
             TrackShape shape = state.getValue(TrackBlock.SHAPE);
             boolean diagonal = shape == TrackShape.PD || shape == TrackShape.ND;
