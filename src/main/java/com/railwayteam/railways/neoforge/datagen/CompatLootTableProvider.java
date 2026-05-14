@@ -1,6 +1,5 @@
 package com.railwayteam.railways.neoforge.datagen;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -8,12 +7,17 @@ import java.util.Map;
  * Used to identify which mod a compatibility track belongs to.
  */
 public class CompatLootTableProvider {
-    
-    private static final Map<String, String> COMPAT_MODS = new HashMap<>();
-    
-    static {
-        COMPAT_MODS.put("biomesoplenty", "biomesoplenty");
-    }
+    private static final Map<String, String> COMPAT_MODS = Map.ofEntries(
+        Map.entry("biomesoplenty", "biomesoplenty"),
+        Map.entry("blue_skies", "blue_skies"),
+        Map.entry("byg", "byg"),
+        Map.entry("create_dd", "create_dd"),
+        Map.entry("hexcasting", "hexcasting"),
+        Map.entry("natures_spirit", "natures_spirit"),
+        Map.entry("quark", "quark"),
+        Map.entry("tfc", "tfc"),
+        Map.entry("twilightforest", "twilightforest")
+    );
     
     /**
      * Checks if a track name belongs to a compat mod and returns the mod ID if so.

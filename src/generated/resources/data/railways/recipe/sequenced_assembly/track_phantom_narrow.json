@@ -30,7 +30,7 @@
           "item": "railways:track_incomplete_phantom_narrow"
         },
         {
-          "item": "minecraft:iron_ingot"
+          "tag": "c:ingots/iron"
         }
       ],
       "results": [

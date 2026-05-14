@@ -1,0 +1,69 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "blue_skies"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "tag": "railways:compat_slabs/blue_skies/maple"
+  },
+  "results": [
+    {
+      "id": "railways:track_blue_skies_maple_narrow"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:cutting",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_blue_skies_maple_narrow"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_blue_skies_maple_narrow"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_blue_skies_maple_narrow"
+        },
+        [
+          {
+            "tag": "c:nuggets/iron"
+          },
+          {
+            "tag": "c:nuggets/zinc"
+          }
+        ]
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_blue_skies_maple_narrow"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_blue_skies_maple_narrow"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_blue_skies_maple_narrow"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "railways:track_incomplete_blue_skies_maple_narrow"
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create_dd"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "tag": "railways:compat_slabs/create_dd/rubber"
+  },
+  "results": [
+    {
+      "id": "railways:track_create_dd_rubber"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_create_dd_rubber"
+        },
+        [
+          {
+            "tag": "c:nuggets/iron"
+          },
+          {
+            "tag": "c:nuggets/zinc"
+          }
+        ]
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_create_dd_rubber"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_create_dd_rubber"
+        },
+        [
+          {
+            "tag": "c:nuggets/iron"
+          },
+          {
+            "tag": "c:nuggets/zinc"
+          }
+        ]
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_create_dd_rubber"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_create_dd_rubber"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_create_dd_rubber"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "railways:track_incomplete_create_dd_rubber"
+  }
+}

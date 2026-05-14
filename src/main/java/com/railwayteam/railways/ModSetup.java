@@ -18,8 +18,11 @@
 
 package com.railwayteam.railways;
 
+import com.railwayteam.railways.compat.Mods;
+import com.railwayteam.railways.compat.tracks.GenericTrackCompat;
 import com.railwayteam.railways.compat.tracks.mods.*;
 import com.railwayteam.railways.content.custom_tracks.casing.CasingCollisionUtils;
+import com.railwayteam.railways.config.CRConfigs;
 import com.railwayteam.railways.registry.*;
 import com.railwayteam.railways.neoforge.RailwaysImpl;
 import com.railwayteam.railways.neoforge.ModSetupImpl;
@@ -64,14 +67,18 @@ public class ModSetup {
 
   // Compat (tracks) - ensure Tracks tab is active for compat track registrations
   useTracksTab();
-    HexCastingTrackCompat.register();
-    BygTrackCompat.register();
-    BlueSkiesTrackCompat.register();
-    TwilightForestTrackCompat.register();
-    BiomesOPlentyTrackCompat.register();
-    NaturesSpiritTrackCompat.register();
-    DreamsAndDesiresTrackCompat.register();
-    QuarkTrackCompat.register();
-    TFCTrackCompat.register();
+    if (shouldRegisterCompatTracks(Mods.HEXCASTING)) HexCastingTrackCompat.register();
+    if (shouldRegisterCompatTracks(Mods.BYG)) BygTrackCompat.register();
+    if (shouldRegisterCompatTracks(Mods.BLUE_SKIES)) BlueSkiesTrackCompat.register();
+    if (shouldRegisterCompatTracks(Mods.TWILIGHTFOREST)) TwilightForestTrackCompat.register();
+    if (shouldRegisterCompatTracks(Mods.BIOMESOPLENTY)) BiomesOPlentyTrackCompat.register();
+    if (shouldRegisterCompatTracks(Mods.NATURES_SPIRIT)) NaturesSpiritTrackCompat.register();
+    if (shouldRegisterCompatTracks(Mods.CREATE_DD)) DreamsAndDesiresTrackCompat.register();
+    if (shouldRegisterCompatTracks(Mods.QUARK)) QuarkTrackCompat.register();
+    if (shouldRegisterCompatTracks(Mods.TFC)) TFCTrackCompat.register();
+  }
+
+  private static boolean shouldRegisterCompatTracks(Mods mod) {
+    return GenericTrackCompat.isDataGen() || CRConfigs.getRegisterMissingTracks() || mod.isLoaded;
   }
 }

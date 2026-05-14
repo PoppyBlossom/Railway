@@ -1,0 +1,77 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "natures_spirit"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "tag": "railways:compat_slabs/natures_spirit/wisteria"
+  },
+  "results": [
+    {
+      "id": "railways:track_natures_spirit_wisteria"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_natures_spirit_wisteria"
+        },
+        [
+          {
+            "tag": "c:nuggets/iron"
+          },
+          {
+            "tag": "c:nuggets/zinc"
+          }
+        ]
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_natures_spirit_wisteria"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_natures_spirit_wisteria"
+        },
+        [
+          {
+            "tag": "c:nuggets/iron"
+          },
+          {
+            "tag": "c:nuggets/zinc"
+          }
+        ]
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_natures_spirit_wisteria"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_natures_spirit_wisteria"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_natures_spirit_wisteria"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "railways:track_incomplete_natures_spirit_wisteria"
+  }
+}

@@ -136,6 +136,7 @@ neoForge {
         // Data generation run
         create("data") {
             data()
+            environment("DATAGEN", "TRUE")
             programArguments.addAll(
                 "--mod", modId,
                 "--all",

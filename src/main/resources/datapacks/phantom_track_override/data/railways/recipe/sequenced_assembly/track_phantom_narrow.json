@@ -1,0 +1,59 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "minecraft:phantom_membrane"
+  },
+  "results": [
+    {
+      "count": 32,
+      "id": "railways:track_phantom_narrow"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:cutting",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_phantom_narrow"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_phantom_narrow"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_phantom_narrow"
+        },
+        {
+          "tag": "c:ingots/iron"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_phantom_narrow"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_phantom_narrow"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_phantom_narrow"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "railways:track_incomplete_phantom_narrow"
+  }
+}

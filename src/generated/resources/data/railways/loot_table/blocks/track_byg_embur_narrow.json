@@ -17,5 +17,11 @@
       "rolls": 1.0
     }
   ],
-  "random_sequence": "railways:blocks/track_byg_embur_narrow"
+  "random_sequence": "railways:blocks/track_byg_embur_narrow",
+  "conditions": [
+    {
+      "condition": "neoforge:mod_loaded",
+      "modid": "byg"
+    }
+  ]
 }

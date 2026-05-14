@@ -17,5 +17,11 @@
       "rolls": 1.0
     }
   ],
-  "random_sequence": "railways:blocks/track_byg_green_enchanted"
+  "random_sequence": "railways:blocks/track_byg_green_enchanted",
+  "conditions": [
+    {
+      "condition": "neoforge:mod_loaded",
+      "modid": "byg"
+    }
+  ]
 }
