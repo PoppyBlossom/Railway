@@ -19,7 +19,6 @@
 package com.railwayteam.railways.content.smokestack.particles.legacy;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 import com.railwayteam.railways.config.CRConfigs;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.minecraft.client.Camera;
@@ -32,10 +31,7 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
 
 public class SmokeParticle extends SimpleAnimatedParticle {
 
@@ -114,62 +110,17 @@ public class SmokeParticle extends SimpleAnimatedParticle {
 
 	@Override
 	public void render(@NotNull VertexConsumer buffer, @NotNull Camera renderInfo, float partialTicks) {
-		render(buffer, renderInfo, partialTicks, 0.0f, 1.0f, 1.0f);
-		if (CRConfigs.client().thickerSmoke.get()) {
-			render(buffer, renderInfo, partialTicks, 0.3f, 0.5f, 0.75f);
-			render(buffer, renderInfo, partialTicks, -0.3f, 0.5f, 0.75f);
-		}
-	}
+		super.render(buffer, renderInfo, partialTicks);
+		if (!CRConfigs.client().thickerSmoke.get()) return;
 
-	private void render(VertexConsumer buffer, Camera renderInfo, float partialTicks, float offsetDepth, float size, float alphaFactor) {
-		Vec3 vec3 = renderInfo.getPosition();
-		float f = (float)(Mth.lerp((double)partialTicks, this.xo, this.x) - vec3.x());
-		float g = (float)(Mth.lerp((double)partialTicks, this.yo, this.y) - vec3.y());
-		float h = (float)(Mth.lerp((double)partialTicks, this.zo, this.z) - vec3.z());
-		Quaternionf quaternion;
-		if (this.roll == 0.0F) {
-			quaternion = renderInfo.rotation();
-		} else {
-			quaternion = new Quaternionf(renderInfo.rotation());
-			float i = Mth.lerp(partialTicks, this.oRoll, this.roll);
-			quaternion.mul(Axis.ZP.rotation(i));
-		}
-
-        /*quaternion.mul(Axis.XP.rotationDegrees(((this.random.nextFloat()*2) - 1) * 3));
-		quaternion.mul(Axis.YP.rotationDegrees(((this.random.nextFloat()*2) - 1) * 3));
-		quaternion.mul(Axis.ZP.rotationDegrees(((this.random.nextFloat()*2) - 1) * 3));*/
-
-		Vector3f[] vector3fs = new Vector3f[]{new Vector3f(-size, -size, offsetDepth), new Vector3f(-size, size, offsetDepth), new Vector3f(size, size, offsetDepth), new Vector3f(size, -size, offsetDepth)};
-		float j = this.getQuadSize(partialTicks);
-
-		for(int k = 0; k < 4; ++k) {
-			Vector3f vector3f2 = vector3fs[k];
-			vector3f2.rotate(quaternion);
-			vector3f2.mul(j);
-			vector3f2.add(f, g, h);
-		}
-
-		float l = this.getU0();
-		float m = this.getU1();
-		float n = this.getV0();
-		float o = this.getV1();
-		int p = this.getLightColor(partialTicks);
-		buffer.addVertex(vector3fs[0].x(), vector3fs[0].y(), vector3fs[0].z())
-			.setUv(m, o)
-			.setColor(this.rCol, this.gCol, this.bCol, this.alpha * alphaFactor)
-			.setLight(p);
-		buffer.addVertex(vector3fs[1].x(), vector3fs[1].y(), vector3fs[1].z())
-			.setUv(m, n)
-			.setColor(this.rCol, this.gCol, this.bCol, this.alpha * alphaFactor)
-			.setLight(p);
-		buffer.addVertex(vector3fs[2].x(), vector3fs[2].y(), vector3fs[2].z())
-			.setUv(l, n)
-			.setColor(this.rCol, this.gCol, this.bCol, this.alpha * alphaFactor)
-			.setLight(p);
-		buffer.addVertex(vector3fs[3].x(), vector3fs[3].y(), vector3fs[3].z())
-			.setUv(l, o)
-			.setColor(this.rCol, this.gCol, this.bCol, this.alpha * alphaFactor)
-			.setLight(p);
+		float originalQuadSize = this.quadSize;
+		float originalAlpha = this.alpha;
+		this.quadSize = originalQuadSize * 0.5f;
+		this.alpha = originalAlpha * 0.75f;
+		super.render(buffer, renderInfo, partialTicks);
+		super.render(buffer, renderInfo, partialTicks);
+		this.quadSize = originalQuadSize;
+		this.alpha = originalAlpha;
 	}
 
     /*	@Override
