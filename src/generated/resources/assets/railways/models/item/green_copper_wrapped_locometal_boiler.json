@@ -1,3 +1,8 @@
 {
-  "parent": "railways:block/green_copper_wrapped_locometal_boiler_gullet_x"
+  "parent": "railways:block/palettes/boiler/boiler",
+  "textures": {
+    "front": "railways:block/palettes/green/boiler_slashed",
+    "particle": "railways:block/palettes/green/riveted_pillar_top",
+    "sides": "railways:block/palettes/green/copper_wrapped_boiler_side"
+  }
 }

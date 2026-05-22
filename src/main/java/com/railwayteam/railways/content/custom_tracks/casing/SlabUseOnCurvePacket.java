@@ -34,7 +34,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class SlabUseOnCurvePacket implements C2SPacket {
@@ -81,9 +81,10 @@ public class SlabUseOnCurvePacket implements C2SPacket {
   private InteractionResult useOn(ServerPlayer player, InteractionHand hand, Level world, IHasTrackCasing casingAble) {
     if (world.isClientSide) return InteractionResult.FAIL;
     ItemStack handStack = player.getItemInHand(hand);
-    if (handStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof SlabBlock slabBlock) {
-      SlabBlock currentCasing = casingAble.getTrackCasing();
-      if (currentCasing == slabBlock) {
+    if (handStack.getItem() instanceof BlockItem blockItem && CasingChecker.isValid(blockItem.getBlock())) {
+      Block newBlock = blockItem.getBlock();
+      Block currentCasing = casingAble.getTrackCasing();
+      if (currentCasing == newBlock) {
         casingAble.setAlternate(!casingAble.isAlternate());
         return InteractionResult.SUCCESS;
       } else {
@@ -95,11 +96,11 @@ public class SlabUseOnCurvePacket implements C2SPacket {
           }
           player.setItemInHand(hand, handStack);
         }
-        casingAble.setTrackCasing(slabBlock);
+        casingAble.setTrackCasing(newBlock);
       }
       return InteractionResult.SUCCESS;
     } else if (handStack.isEmpty()) {
-      SlabBlock currentCasing = casingAble.getTrackCasing();
+      Block currentCasing = casingAble.getTrackCasing();
       if (currentCasing != null) {
         handStack = new ItemStack(currentCasing);
         casingAble.setTrackCasing(null);

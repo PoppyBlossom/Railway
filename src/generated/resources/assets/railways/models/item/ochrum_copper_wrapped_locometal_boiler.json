@@ -1,0 +1,8 @@
+{
+  "parent": "railways:block/palettes/boiler/boiler",
+  "textures": {
+    "front": "railways:block/palettes/ochrum/boiler_slashed",
+    "particle": "railways:block/palettes/ochrum/riveted_pillar_top",
+    "sides": "railways:block/palettes/ochrum/copper_wrapped_boiler_side"
+  }
+}

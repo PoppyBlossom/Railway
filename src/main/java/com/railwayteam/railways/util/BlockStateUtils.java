@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -86,5 +87,19 @@ public class BlockStateUtils {
 
   public static Block getWoolBlock(DyeColor color) {
     return WOOL_MAP_REVERSE.getOrDefault(color, Blocks.WHITE_WOOL);
+  }
+
+  public static BlockState blockWithProperties(Block blockSource, BlockState propertySource) {
+    return blockWithProperties(blockSource.defaultBlockState(), propertySource);
+  }
+
+  @SuppressWarnings({"unchecked", "rawtypes"})
+  public static BlockState blockWithProperties(BlockState blockSource, BlockState propertySource) {
+    for (Property property : propertySource.getProperties()) {
+      if (blockSource.hasProperty(property)) {
+        blockSource = blockSource.setValue(property, propertySource.getValue(property));
+      }
+    }
+    return blockSource;
   }
 }

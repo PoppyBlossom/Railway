@@ -19,13 +19,20 @@
 package com.railwayteam.railways.registry;
 
 import com.railwayteam.railways.Railways;
+import com.railwayteam.railways.base.data.BuilderTransformers;
 import com.railwayteam.railways.base.data.recipe.RailwaysRecipeProvider.Ingredients;
 import com.railwayteam.railways.content.conductor.ConductorCapItem;
 import com.railwayteam.railways.content.conductor.remote_lens.RemoteLensItem;
 import com.railwayteam.railways.content.minecarts.MinecartJukebox;
 import com.railwayteam.railways.content.minecarts.MinecartWorkbench;
+import com.railwayteam.railways.content.palettes.PalettesColor;
+import com.railwayteam.railways.content.palettes.painting.EmptyPaintPitcherItem;
+import com.railwayteam.railways.content.palettes.painting.PaintBrushItem;
+import com.railwayteam.railways.content.palettes.painting.PaintPitcherItem;
 import com.railwayteam.railways.multiloader.CommonTags;
+import com.railwayteam.railways.util.ColorUtils;
 import com.railwayteam.railways.util.TextUtils;
+import com.simibubi.create.AllTags;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
 import com.simibubi.create.content.trains.track.TrackMaterial;
 import com.simibubi.create.foundation.data.CreateRegistrate;
@@ -46,6 +53,8 @@ import net.minecraft.world.item.MinecartItem;
 
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -138,6 +147,60 @@ public class CRItems {
   private static ItemEntry<SequencedAssemblyItem> sequencedIngredient(String name) {
     return REGISTRATE.item(name, SequencedAssemblyItem::new)
         .register();
+  }
+
+  // Paint items (ported from 1.20-dev)
+  public static final ItemEntry<? extends com.railwayteam.railways.content.palettes.painting.PaintBrushItem> PAINT_BRUSH = REGISTRATE.item("paint_brush", com.railwayteam.railways.content.palettes.painting.PaintBrushItem::new)
+      .properties(p -> p.durability(250))
+      .lang("Paint Brush")
+      .register();
+
+  public static final ItemEntry<? extends Item> EMPTY_PAINT_PITCHER = REGISTRATE.item("empty_paint_pitcher", com.railwayteam.railways.content.palettes.painting.EmptyPaintPitcherItem::create)
+      .lang("Empty Paint Pitcher")
+      .tag(AllTags.AllItemTags.UPRIGHT_ON_BELT.tag)
+      .tag(CRTags.AllItemTags.NOT_TRAIN_FUEL.tag)
+      .register();
+
+  public static final ItemEntry<? extends com.railwayteam.railways.content.palettes.painting.PaintPitcherItem> SANDY_PITCHER = REGISTRATE.item("sandy_paint_pitcher", p -> com.railwayteam.railways.content.palettes.painting.PaintPitcherItem.create(p, null))
+      .transform(BuilderTransformers.paintPitcher())
+      .properties(p -> p.stacksTo(1))
+      .tag(AllTags.AllItemTags.UPRIGHT_ON_BELT.tag)
+      .tag(CRTags.AllItemTags.FILLED_PAINT_PITCHERS.tag)
+      .tag(CRTags.AllItemTags.NOT_TRAIN_FUEL.tag)
+      .lang("Sandy Paint Pitcher")
+      .register();
+
+  // A list of colored paint pitchers; build lazily to avoid heavy registration logic here
+  public static final List<ItemEntry<? extends com.railwayteam.railways.content.palettes.painting.PaintPitcherItem>> FILLED_PITCHERS = buildDyedPitchers();
+
+  private static List<ItemEntry<? extends com.railwayteam.railways.content.palettes.painting.PaintPitcherItem>> buildDyedPitchers() {
+    List<ItemEntry<? extends com.railwayteam.railways.content.palettes.painting.PaintPitcherItem>> pitchers = new ArrayList<>();
+    
+    // Add the base sandy pitcher
+    pitchers.add(SANDY_PITCHER);
+    
+    // Add colored pitchers for each PalettesColor (except NETHERITE which is the sandy pitcher)
+    for (PalettesColor color : PalettesColor.values()) {
+      if (color.isNetherite()) continue; // NETHERITE is already added as SANDY_PITCHER
+      
+      String colorName = color.getName();
+      String colorReg = colorName.toLowerCase(Locale.ROOT);
+      String colorDisplay = TextUtils.joinSpace(com.railwayteam.railways.util.ColorUtils.coloredName(colorName), "Paint Pitcher");
+      
+      ItemEntry<? extends com.railwayteam.railways.content.palettes.painting.PaintPitcherItem> entry = REGISTRATE
+          .item(colorReg + "_paint_pitcher", p -> com.railwayteam.railways.content.palettes.painting.PaintPitcherItem.create(p, color))
+          .transform(BuilderTransformers.paintPitcher())
+          .properties(p -> p.stacksTo(1))
+          .tag(AllTags.AllItemTags.UPRIGHT_ON_BELT.tag)
+          .tag(CRTags.AllItemTags.FILLED_PAINT_PITCHERS.tag)
+          .tag(CRTags.AllItemTags.NOT_TRAIN_FUEL.tag)
+          .lang(colorDisplay)
+          .register();
+      
+      pitchers.add(entry);
+    }
+    
+    return pitchers;
   }
 
   @SuppressWarnings("EmptyMethod")

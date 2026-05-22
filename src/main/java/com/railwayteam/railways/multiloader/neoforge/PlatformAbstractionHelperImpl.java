@@ -18,10 +18,12 @@
 
 package com.railwayteam.railways.multiloader.neoforge;
 
+import com.mojang.brigadier.arguments.ArgumentType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.neoforged.neoforge.common.extensions.IItemExtension;
+import net.neoforged.neoforge.server.command.EnumArgument;
 
 public class PlatformAbstractionHelperImpl {
     /**
@@ -44,5 +46,9 @@ public class PlatformAbstractionHelperImpl {
         @SuppressWarnings("deprecation")
         int fallback = AbstractFurnaceBlockEntity.getFuel().getOrDefault(item, 0);
         return fallback;
+    }
+
+    public static <T extends Enum<T>> ArgumentType<T> enumArgument(Class<T> enumClass) {
+        return EnumArgument.enumArgument(enumClass);
     }
 }

@@ -1,0 +1,8 @@
+{
+  "parent": "railways:block/palettes/boiler/boiler",
+  "textures": {
+    "front": "railways:block/palettes/dripstone/boiler_slashed",
+    "particle": "railways:block/palettes/dripstone/riveted_pillar_top",
+    "sides": "railways:block/palettes/dripstone/copper_wrapped_boiler_side"
+  }
+}

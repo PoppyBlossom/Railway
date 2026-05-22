@@ -1,0 +1,8 @@
+{
+  "values": [
+    "railways:round_pane_locometal_window",
+    "railways:single_pane_locometal_window",
+    "railways:two_pane_locometal_window",
+    "railways:four_pane_locometal_window"
+  ]
+}
