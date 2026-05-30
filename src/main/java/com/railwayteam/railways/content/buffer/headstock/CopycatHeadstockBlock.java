@@ -139,7 +139,8 @@ public class CopycatHeadstockBlock extends WaterloggedCopycatBlock implements Bl
 
         if (isOccluded(state, toState, facing.getOpposite()))
             return true;
-        if (toState.setValue(WATERLOGGED, false) == state.setValue(WATERLOGGED, false) && coord == 0)
+        // ignore STYLE so buffer/coupling variants still merge their copycat textures (#283)
+        if (toState.setValue(WATERLOGGED, false).setValue(STYLE, state.getValue(STYLE)) == state.setValue(WATERLOGGED, false) && coord == 0)
             return true;
 
         return false;
