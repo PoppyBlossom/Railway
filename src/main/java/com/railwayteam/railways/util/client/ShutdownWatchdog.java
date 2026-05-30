@@ -32,7 +32,7 @@ public final class ShutdownWatchdog {
     private ShutdownWatchdog() {}
 
     public static void arm() {
-        if (TIMEOUT_SECONDS <= 0 || !CRConfigs.client().nvidiaShutdownWatchdog.get())
+        if (TIMEOUT_SECONDS <= 0)
             return;
         String os = System.getProperty("os.name", "").toLowerCase(Locale.ROOT);
         if (!os.contains("linux"))
@@ -47,6 +47,10 @@ public final class ShutdownWatchdog {
     }
 
     private static void onShutdown() {
+        if (!CRConfigs.client().nvidiaShutdownWatchdog.get()) {
+            Railways.LOGGER.info("[watchdog] disabled via config; not force-killing");
+            return;
+        }
         long pid = ProcessHandle.current().pid();
         Railways.LOGGER.info("[watchdog] shutdown started; force-killing pid {} if still alive in {}s",
             pid, TIMEOUT_SECONDS);
