@@ -70,6 +70,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.neoforged.neoforge.client.model.generators.loaders.ObjModelBuilder;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -463,6 +464,10 @@ public class CRPalettes {
     private static <I extends Item, P> NonNullUnaryOperator<com.tterrag.registrate.builders.ItemBuilder<I, P>> boilerItemModel(PalettesColor color, @Nullable Wrapping wrapping) {
         return i -> {
             i.model((c, p) -> p.withExistingParent(c.getName(), p.modLoc("block/palettes/boiler/boiler"))
+                .customLoader(ObjModelBuilder::begin)
+                .flipV(true)
+                .modelLocation(p.modLoc("models/block/palettes/boiler/boiler_x.obj"))
+                .end()
                 .texture("front", p.modLoc("block/palettes/" + color.getSerializedName() + "/boiler_slashed"))
                 .texture("sides", p.modLoc("block/palettes/" + color.getSerializedName() + "/" + (wrapping == null ? "boiler_side" : wrapping.prefix("wrapped_boiler_side"))))
                 .texture("particle", p.modLoc("block/palettes/" + color.getSerializedName() + "/riveted_pillar_top")));

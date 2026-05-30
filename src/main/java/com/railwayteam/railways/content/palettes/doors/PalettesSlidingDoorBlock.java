@@ -26,6 +26,7 @@ import com.railwayteam.railways.registry.CRBlockSetTypes;
 import com.railwayteam.railways.util.EntityUtils;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.decoration.slidingDoor.SlidingDoorShapes;
+import com.simibubi.create.content.decoration.slidingDoor.SlidingDoorBlock;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.block.IHaveBigOutline;
@@ -45,6 +46,8 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -59,8 +62,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class PalettesSlidingDoorBlock extends DoorBlock implements IWrenchable, IBE<PalettesSlidingDoorBlockEntity>, IHaveBigOutline {
-    public static final BooleanProperty VISIBLE = BooleanProperty.create("visible");
+public class PalettesSlidingDoorBlock extends SlidingDoorBlock implements IWrenchable, IHaveBigOutline {
     public static final BooleanProperty WINDOWED = BooleanProperty.create("windowed");
     private final boolean folds;
     public final PalettesColor color;
@@ -70,7 +72,7 @@ public class PalettesSlidingDoorBlock extends DoorBlock implements IWrenchable, 
     }
 
     public PalettesSlidingDoorBlock(Properties properties, boolean folds, PalettesColor color) {
-        super(CRBlockSetTypes.LOCOMETAL, properties);
+        super(properties, CRBlockSetTypes.LOCOMETAL, folds);
         this.folds = folds;
         this.color = color;
         registerDefaultState(defaultBlockState()
@@ -84,7 +86,7 @@ public class PalettesSlidingDoorBlock extends DoorBlock implements IWrenchable, 
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder.add(VISIBLE, WINDOWED));
+        super.createBlockStateDefinition(builder.add(WINDOWED));
     }
 
     @Override
@@ -133,7 +135,10 @@ public class PalettesSlidingDoorBlock extends DoorBlock implements IWrenchable, 
         if (state.getValue(OPEN) == open)
             return;
 
-        level.setBlock(pos, state.setValue(OPEN, open), 10);
+        BlockState changedState = state.setValue(OPEN, open);
+        if (open)
+            changedState = changedState.setValue(VISIBLE, false);
+        level.setBlock(pos, changedState, 10);
     }
 
     @Override
@@ -153,13 +158,39 @@ public class PalettesSlidingDoorBlock extends DoorBlock implements IWrenchable, 
         return super.useWithoutItem(state, level, pos, player, hit);
     }
 
+    @Nullable
     @Override
-    public BlockEntityType<? extends PalettesSlidingDoorBlockEntity> getBlockEntityType() {
-        return CRBlockEntities.PALETTES_SLIDING_DOOR.get();
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        if (state.getValue(HALF) == DoubleBlockHalf.UPPER)
+            return null;
+        return CRBlockEntities.PALETTES_SLIDING_DOOR.get().create(pos, state);
     }
 
     @Override
-    public Class<PalettesSlidingDoorBlockEntity> getBlockEntityClass() {
-        return PalettesSlidingDoorBlockEntity.class;
+    public InteractionResult onSneakWrenched(BlockState state, UseOnContext context) {
+        if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {
+            Level level = context.getLevel();
+            BlockPos posBelow = context.getClickedPos().below();
+            return super.onSneakWrenched(level.getBlockState(posBelow), new UseOnContext(
+                level,
+                context.getPlayer(),
+                context.getHand(),
+                context.getItemInHand(),
+                new BlockHitResult(
+                    context.getClickLocation().add(0, -1, 0),
+                    context.getClickedFace(),
+                    posBelow,
+                    context.isInside()
+                )
+            ));
+        }
+        return super.onSneakWrenched(state, context);
+    }
+
+    
+
+    @Override
+    public RenderShape getRenderShape(BlockState state) {
+        return state.getValue(VISIBLE) ? RenderShape.MODEL : RenderShape.ENTITYBLOCK_ANIMATED;
     }
 }

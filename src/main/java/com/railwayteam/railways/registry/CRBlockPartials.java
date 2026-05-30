@@ -20,6 +20,7 @@ package com.railwayteam.railways.registry;
 
 import com.railwayteam.railways.Railways;
 import com.simibubi.create.Create;
+import net.createmod.catnip.data.Couple;
 import com.simibubi.create.content.trains.track.TrackMaterial.TrackType;
 import com.simibubi.create.content.trains.track.TrackShape;
 import com.railwayteam.railways.mixin.client.AccessorPartialModel;
@@ -573,8 +574,8 @@ public class CRBlockPartials {
 
     public static final PartialModel PAINT_STRIPPER_BLOB = item("palettes/paint_blob/sand");
 
-    public static final PalettesColorList<SimpleCouple<SimpleCouple<PartialModel>>> FOLDING_DOORS = new PalettesColorList<>(
-        color -> SimpleCouple.createWithContext(windowed -> SimpleCouple.createWithContext(left -> {
+    public static final PalettesColorList<Couple<Couple<PartialModel>>> FOLDING_DOORS = new PalettesColorList<>(
+        color -> Couple.createWithContext(windowed -> Couple.createWithContext(left -> {
             String side = left ? "left" : "right";
             String windowStr = windowed ? "_windowed" : "";
             return block("palettes/" + color.getSerializedName() + "/folding_door/fold_" + side + windowStr);
@@ -615,13 +616,6 @@ public class CRBlockPartials {
 
     @SuppressWarnings("EmptyMethod")
     public static void init() {}
-
-    public static final class SimpleCouple<T> {
-        private final java.util.function.Function<Boolean, T> fn;
-        public SimpleCouple(java.util.function.Function<Boolean, T> fn) { this.fn = fn; }
-        public T get(boolean b) { return fn.apply(b); }
-        public static <T> SimpleCouple<T> createWithContext(java.util.function.Function<Boolean, T> fn) { return new SimpleCouple<>(fn); }
-    }
 
     public static void registerAdditionalModels(Consumer<ResourceLocation> registrar) {
         AccessorPartialModel.railways$getALL()

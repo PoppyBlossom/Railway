@@ -39,17 +39,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Based on {@link TagGen}
  */
 public class CRTagGen {
-	private static final Map<TagKey<Block>, List<ResourceLocation>> OPTIONAL_TAGS = new HashMap<>();
+	private static final Map<TagKey<Block>, List<ResourceLocation>> OPTIONAL_TAGS = new ConcurrentHashMap<>();
 
 	@SafeVarargs
 	public static void addOptionalTag(ResourceLocation id, TagKey<Block>... tags) {
 		for (TagKey<Block> tag : tags) {
-			OPTIONAL_TAGS.computeIfAbsent(tag, (e) -> new ArrayList<>()).add(id);
+			OPTIONAL_TAGS.computeIfAbsent(tag, (e) -> new CopyOnWriteArrayList<>()).add(id);
 		}
 	}
 
@@ -71,7 +73,9 @@ public class CRTagGen {
 		}
 		for (TagKey<Block> tag : OPTIONAL_TAGS.keySet()) {
 			var appender = tagAppender(prov, tag);
-			for (ResourceLocation loc : OPTIONAL_TAGS.get(tag))
+			List<ResourceLocation> list = OPTIONAL_TAGS.get(tag);
+			if (list == null) continue;
+			for (ResourceLocation loc : list)
 				appender.addOptional(loc);
 		}
 	}
