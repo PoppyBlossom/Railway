@@ -19,7 +19,10 @@
 package com.railwayteam.railways.util.client;
 
 import com.railwayteam.railways.Railways;
+import com.railwayteam.railways.config.CRConfigs;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Locale;
 
 public final class ShutdownWatchdog {
@@ -29,10 +32,13 @@ public final class ShutdownWatchdog {
     private ShutdownWatchdog() {}
 
     public static void arm() {
-        if (TIMEOUT_SECONDS <= 0)
+        if (TIMEOUT_SECONDS <= 0 || !CRConfigs.client().nvidiaShutdownWatchdog.get())
             return;
         String os = System.getProperty("os.name", "").toLowerCase(Locale.ROOT);
         if (!os.contains("linux"))
+            return;
+        // The deadlock is specific to the NVIDIA proprietary driver, so only arm when it is loaded.
+        if (!Files.exists(Path.of("/proc/driver/nvidia/version")))
             return;
         Runtime.getRuntime().addShutdownHook(
             new Thread(ShutdownWatchdog::onShutdown, "Railways NVIDIA shutdown watchdog"));
@@ -45,9 +51,11 @@ public final class ShutdownWatchdog {
         Railways.LOGGER.info("[watchdog] shutdown started; force-killing pid {} if still alive in {}s",
             pid, TIMEOUT_SECONDS);
         try {
-            new ProcessBuilder("sh", "-c",
-                "sleep " + TIMEOUT_SECONDS + "; kill -0 " + pid + " 2>/dev/null && kill -9 " + pid)
-                .start();
+            // Re-check the process start time (/proc/stat field 22) before SIGKILL so a recycled PID can't be hit.
+            String readStart = "awk '{print $22}' /proc/" + pid + "/stat 2>/dev/null";
+            String script = "S=$(" + readStart + "); sleep " + TIMEOUT_SECONDS
+                + "; [ -n \"$S\" ] && [ \"$S\" = \"$(" + readStart + ")\" ] && kill -9 " + pid;
+            new ProcessBuilder("sh", "-c", script).start();
         } catch (Exception e) {
             Railways.LOGGER.error("[watchdog] failed to spawn external killer", e);
         }
