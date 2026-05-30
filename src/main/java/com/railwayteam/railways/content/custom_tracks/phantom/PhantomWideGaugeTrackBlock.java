@@ -52,8 +52,10 @@ public class PhantomWideGaugeTrackBlock extends TrackBlock implements Transparen
     @Override
     @OnlyIn(Dist.CLIENT)
     public <Self extends Affine<Self>> PartialModel prepareTrackOverlay(Affine<Self> affine, BlockGetter world, BlockPos pos, BlockState state, BezierTrackPointLocation bezierPoint, AxisDirection direction, RenderedTrackOverlayType type) {
-        if (bezierPoint == null && !PhantomSpriteManager.isVisible())
+        if (bezierPoint == null && !PhantomSpriteManager.isVisible()) {
+            affine.scale(0); // hide the cached overlay instance rather than leaving it at the default orientation (#242)
             return null;
+        }
         return super.prepareTrackOverlay(affine, world, pos, state, bezierPoint, direction, type);
     }
 }
