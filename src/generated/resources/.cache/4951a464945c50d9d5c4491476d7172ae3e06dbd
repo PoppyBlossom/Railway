@@ -1,4 +1,4 @@
-// 1.21.1	2026-05-10T10:09:10.656279	Registrate Provider for railways [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
+// 1.21.1	2026-05-30T09:44:03.738643289	Registrate Provider for railways [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
 8c558c7bddce85565a267985153b6dd6857ed523 assets/railways/blockstates/big_buffer.json
 b9ca199a3d4ae83cc751d18bdc5b8f19c58dff4c assets/railways/blockstates/black_brass_wrapped_locometal.json
 8653619c96cb2a4e1e0795c2c2f790bb0b5497d1 assets/railways/blockstates/black_brass_wrapped_locometal_boiler.json
@@ -72,7 +72,7 @@ ee05186d84a201887e0e2360f049c014825508f4 assets/railways/blockstates/cyan_slashe
 1db975c0182f6eb2af47df134d4119e89d83ee54 assets/railways/blockstates/doubleaxle_bogey.json
 6923f978613e2734e23cc3cbc434e4dcc9c2f4df assets/railways/blockstates/flat_riveted_locometal.json
 87fdb97095aca1f64871781cdbd6763db59ef3f9 assets/railways/blockstates/flat_slashed_locometal.json
-e89c08552ff710f9ce3717bb8888870a5ee00869 assets/railways/blockstates/fuel_tank.json
+ec136079e6f3a16a066508c926633394f1b0b3ad assets/railways/blockstates/fuel_tank.json
 369019204ef0cac89b9797f003904c57498715c0 assets/railways/blockstates/generic_crossing.json
 89871fd5f8d9461650e1b6ef94843baa0ffb380a assets/railways/blockstates/gray_brass_wrapped_locometal.json
 413f0dea9e90b73e94963fcbc19ea257b1b7cf7e assets/railways/blockstates/gray_brass_wrapped_locometal_boiler.json
@@ -815,7 +815,6 @@ bfefece3c498b4298fa8d324875387f09edb89a2 assets/railways/models/block/cyan_locom
 38207b2fe9581e3bd5b1c50c4ef5e7fbb69c6b81 assets/railways/models/block/cyan_slashed_locometal.json
 1c24e04016cdb5e4510b6010790cb5bf1e3605fe assets/railways/models/block/flat_riveted_locometal.json
 bf9889837592e5af1adfa9797c7768dc97b19e29 assets/railways/models/block/flat_slashed_locometal.json
-e3c95e8fd344b4b0b82ea58b2adf947798878aff assets/railways/models/block/fuel_tank.json
 aeb297b317e6a5de8c288d5d9acbb717abff1e4a assets/railways/models/block/generic_crossing.json
 543546944c6a387bba626984eec0827a4767eedf assets/railways/models/block/gray_brass_wrapped_locometal.json
 1a51256c6e8396bfc5ff30a65ff706b9698ec531 assets/railways/models/block/gray_brass_wrapped_locometal_boiler_gullet_x.json
@@ -7296,14 +7295,6 @@ edb90127f72ef6378d3f7df59281f213064cff8d assets/railways/models/item/yellow_loco
 8e66579460f17ba6479098a7ebb57cb68107673b assets/railways/models/item/yellow_plated_locometal.json
 92ff556a73dc49b4245ea5692f20c7ba969b5b05 assets/railways/models/item/yellow_riveted_locometal.json
 413522d063683daaeabc88fa669fd88f5c004264 assets/railways/models/item/yellow_slashed_locometal.json
-0aa50a598c5db6ee4a85aaf8cc1183d68717b5b3 data/create/tags/block/copycat_deny.json
-99a15de4280040f5b17535fc2aee50dac412da0e data/create/tags/block/girdable_tracks.json
-79072a27fb7f428cf3465ad0ea3f15e68ce7708c data/create/tags/block/movable_empty_collider.json
-3591e3eab1db553d0937910cfaacf1a77d5542d5 data/create/tags/block/safe_nbt.json
-76d3e50e43f7e79e9ccfdf173e74e0165491b2d9 data/create/tags/block/tracks.json
-9791491c5d7ac716ab658c9d11b5649cc65e8c76 data/create/tags/block/wrench_pickup.json
-6e956d8e9e5959873d41fea293ec2f9b923df90c data/create/tags/item/contraption_controlled.json
-448cde58d4dd0abb3f735da2619e64a573621d62 data/create/tags/item/tracks.json
 9895e9acfe123d835ef9677b7b93504db2c39810 data/c/tags/block/relocation_not_supported.json
 b34a95093e68ad8ae22973cc4cb75d2f42382353 data/c/tags/item/dyes/black.json
 e6b249e610b79aa3883bae400e6b833813de3396 data/c/tags/item/dyes/blue.json
@@ -7331,6 +7322,14 @@ a600f08f3b82ea64e2da4220752cea0537967e95 data/c/tags/item/nuggets/iron.json
 6f72d5205b399f03e481cee15bd5c085bfe6fe3c data/c/tags/item/plates/iron.json
 6bb01ece43dc060b7f6e508c68ea0179c30e853f data/c/tags/item/string.json
 269fcb0d7980156a2d8c271bfb048968ebc0fb79 data/c/tags/item/workbench.json
+0aa50a598c5db6ee4a85aaf8cc1183d68717b5b3 data/create/tags/block/copycat_deny.json
+99a15de4280040f5b17535fc2aee50dac412da0e data/create/tags/block/girdable_tracks.json
+79072a27fb7f428cf3465ad0ea3f15e68ce7708c data/create/tags/block/movable_empty_collider.json
+3591e3eab1db553d0937910cfaacf1a77d5542d5 data/create/tags/block/safe_nbt.json
+76d3e50e43f7e79e9ccfdf173e74e0165491b2d9 data/create/tags/block/tracks.json
+9791491c5d7ac716ab658c9d11b5649cc65e8c76 data/create/tags/block/wrench_pickup.json
+6e956d8e9e5959873d41fea293ec2f9b923df90c data/create/tags/item/contraption_controlled.json
+448cde58d4dd0abb3f735da2619e64a573621d62 data/create/tags/item/tracks.json
 55d5c08d02365d085045da392578796cce17a778 data/minecraft/tags/block/mineable/axe.json
 c19c84128483003c316e54f3c70a2b792c63befb data/minecraft/tags/block/mineable/pickaxe.json
 a60cb937acfdd26740e31a2b9cb02f58fbc4195b data/railways/advancement/recipes/combat/dying_existing_cap_black.json
