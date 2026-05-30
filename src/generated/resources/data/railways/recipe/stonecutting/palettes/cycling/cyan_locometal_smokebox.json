@@ -1,7 +1,7 @@
 {
   "type": "minecraft:stonecutting",
   "ingredient": {
-    "tag": "railways:palettes/cycle_groups/cyan"
+    "tag": "railways:palettes/cycle_groups/cyan/base"
   },
   "result": {
     "count": 1,

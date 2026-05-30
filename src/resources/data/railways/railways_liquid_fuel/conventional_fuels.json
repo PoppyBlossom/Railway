@@ -1,0 +1,4 @@
+{
+  "fluids": ["#c:fuel"],
+  "fuel_ticks": 500
+}

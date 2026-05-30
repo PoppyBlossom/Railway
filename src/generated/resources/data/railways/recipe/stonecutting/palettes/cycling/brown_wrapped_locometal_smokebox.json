@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "tag": "railways:palettes/cycle_groups/brown/wrapped_brass"
+  },
+  "result": {
+    "count": 1,
+    "id": "railways:brown_wrapped_locometal_smokebox"
+  }
+}

@@ -16,6 +16,7 @@ out/
 # gradle
 build/
 .gradle/
+.gradle-user-home/
 
 # other
 eclipse/

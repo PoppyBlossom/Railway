@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "railways:palettes/dye_groups/two_pane_window"
+    },
+    {
+      "tag": "c:dyes/gray"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "railways:gray_two_pane_locometal_window"
+  }
+}

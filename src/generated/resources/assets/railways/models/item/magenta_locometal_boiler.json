@@ -1,3 +1,8 @@
 {
-  "parent": "railways:block/magenta_locometal_boiler_gullet_x"
+  "parent": "railways:block/palettes/boiler/boiler",
+  "textures": {
+    "front": "railways:block/palettes/magenta/boiler_slashed",
+    "particle": "railways:block/palettes/magenta/riveted_pillar_top",
+    "sides": "railways:block/palettes/magenta/boiler_side"
+  }
 }

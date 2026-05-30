@@ -1,7 +1,7 @@
 {
   "type": "minecraft:stonecutting",
   "ingredient": {
-    "tag": "railways:palettes/cycle_groups/base"
+    "tag": "railways:palettes/cycle_groups/netherite/base"
   },
   "result": {
     "count": 1,

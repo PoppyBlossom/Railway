@@ -1,3 +1,8 @@
 {
-  "parent": "railways:block/orange_brass_wrapped_locometal_boiler_gullet_x"
+  "parent": "railways:block/palettes/boiler/boiler",
+  "textures": {
+    "front": "railways:block/palettes/orange/boiler_slashed",
+    "particle": "railways:block/palettes/orange/riveted_pillar_top",
+    "sides": "railways:block/palettes/orange/wrapped_boiler_side"
+  }
 }

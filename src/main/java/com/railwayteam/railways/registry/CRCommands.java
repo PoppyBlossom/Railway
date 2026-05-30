@@ -29,8 +29,12 @@ import com.railwayteam.railways.registry.commands.ReloadCreativeTabsCommand;
 import com.railwayteam.railways.registry.commands.SplitTrainCommand;
 import com.railwayteam.railways.registry.commands.TrackDemoCommand;
 import com.railwayteam.railways.registry.commands.TrainInfoCommand;
+import com.railwayteam.railways.registry.commands.ShadowRealmCommand;
+import com.railwayteam.railways.registry.commands.FillPaintCommand;
+import com.railwayteam.railways.registry.commands.CountPaintCommand;
 import com.railwayteam.railways.util.Utils;
 import net.createmod.catnip.command.CatnipCommands;
+import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 
 import java.util.Collections;
@@ -38,13 +42,16 @@ import java.util.Collections;
 import static net.minecraft.commands.Commands.literal;
 
 public class CRCommands {
-    public static void register(CommandDispatcher<CommandSourceStack> dispatcher, boolean dedicated) {
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context) {
 
         var railwaysCommand = literal(Railways.MOD_ID)
                 .requires(cs -> cs.hasPermission(0))
                 //.then(ClearCasingCacheCommand.register())
                 .then(SplitTrainCommand.register())
-                .then(TrainInfoCommand.register());
+                .then(TrainInfoCommand.register())
+                .then(ShadowRealmCommand.register())
+                .then(FillPaintCommand.register(context))
+                .then(CountPaintCommand.register(context));
 
         if (Utils.isDevEnv()) {
             railwaysCommand = railwaysCommand

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "tag": "railways:palettes/cycle_groups/netherite/windows"
+  },
+  "result": {
+    "count": 1,
+    "id": "railways:four_pane_locometal_window"
+  }
+}
