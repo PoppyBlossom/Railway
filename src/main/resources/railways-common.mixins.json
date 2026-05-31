@@ -65,6 +65,7 @@
     "MixinSandPaperItem",
     "MixinScheduleItem",
     "MixinScheduleRuntime",
+    "MixinSchematicItem",
     "MixinSeatMovementBehaviour",
     "MixinSignalBoundary",
     "MixinSignalPropagator",
