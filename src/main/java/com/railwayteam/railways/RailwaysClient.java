@@ -26,6 +26,7 @@ import com.railwayteam.railways.ponder.CRPonderPlugin;
 import com.railwayteam.railways.registry.*;
 import com.railwayteam.railways.util.CustomTrackOverlayRendering;
 import com.railwayteam.railways.util.DevCapeUtils;
+import com.railwayteam.railways.util.client.ShutdownWatchdog;
 import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -36,6 +37,8 @@ import java.util.function.Supplier;
 
 public class RailwaysClient {
   public static void init() {
+    ShutdownWatchdog.arm();
+
     registerModelLayer(ConductorEntityModel.LAYER_LOCATION, ConductorEntityModel::createBodyLayer);
     registerModelLayer(ConductorCapModel.LAYER_LOCATION, ConductorCapModel::createBodyLayer);
 
