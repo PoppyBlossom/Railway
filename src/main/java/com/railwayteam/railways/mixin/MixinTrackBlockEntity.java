@@ -33,7 +33,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -53,7 +52,7 @@ public abstract class MixinTrackBlockEntity extends SmartBlockEntity implements 
   @Shadow
   Map<BlockPos, BezierConnection> connections;
 
-  protected Block trackCasing;
+  protected SlabBlock trackCasing;
   protected boolean isAlternateModel;
 
   protected MixinTrackBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -61,12 +60,12 @@ public abstract class MixinTrackBlockEntity extends SmartBlockEntity implements 
   }
 
   @Override
-  public @Nullable Block getTrackCasing() {
+  public @Nullable SlabBlock getTrackCasing() {
     return trackCasing;
   }
 
   @Override
-  public void setTrackCasing(@Nullable Block trackCasing) {
+  public void setTrackCasing(@Nullable SlabBlock trackCasing) {
     if (trackCasing != null && CRTags.AllBlockTags.TRACK_CASING_BLACKLIST.matches(trackCasing)) //sanity check
       return;
     this.trackCasing = trackCasing;
@@ -160,10 +159,10 @@ public abstract class MixinTrackBlockEntity extends SmartBlockEntity implements 
 
     if (tag.contains("TrackCasing")) {
       ResourceLocation casingName = ResourceLocation.tryParse(tag.getString("TrackCasing"));
-        if (BuiltInRegistries.BLOCK.containsKey(casingName)) {
+      if (BuiltInRegistries.BLOCK.containsKey(casingName)) {
         Block casingBlock = BuiltInRegistries.BLOCK.get(casingName);
-        if (!CRTags.AllBlockTags.TRACK_CASING_BLACKLIST.matches(casingBlock)) {
-          this.setTrackCasing(casingBlock);
+        if (casingBlock instanceof SlabBlock slab) {
+          this.setTrackCasing(slab);
           return;
         }
       }

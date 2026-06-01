@@ -10,21 +10,6 @@
       "resource": "entity/slime/slime"
     },
     {
-      "type": "directory",
-      "source": "block/palettes",
-      "prefix": "block/palettes/"
-    },
-    {
-      "type": "directory",
-      "source": "block/smokestack",
-      "prefix": "block/smokestack/"
-    },
-    {
-      "type": "directory",
-      "source": "fluid/paint_blob",
-      "prefix": "fluid/paint_blob/"
-    },
-    {
       "type": "single",
       "resource": "railways:entity/conductor"
     }

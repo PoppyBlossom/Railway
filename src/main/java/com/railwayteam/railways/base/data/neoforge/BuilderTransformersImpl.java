@@ -41,31 +41,18 @@ import com.railwayteam.railways.content.custom_tracks.casing.CasingCollisionBloc
 import com.railwayteam.railways.content.custom_tracks.generic_crossing.GenericCrossingBlock;
 import com.railwayteam.railways.content.custom_tracks.generic_crossing.neoforge.GenericCrossingModel;
 import com.railwayteam.railways.content.handcar.HandcarBlock;
-import com.railwayteam.railways.content.palettes.PalettesColor;
-import com.railwayteam.railways.content.palettes.RotatedPillarWindowBlock;
-import com.railwayteam.railways.content.palettes.doors.HingedDoorBlock;
-import com.railwayteam.railways.content.palettes.doors.PalettesSlidingDoorBlock;
-import com.railwayteam.railways.content.palettes.hazard_stripes.HazardStripesBlock;
-import com.railwayteam.railways.content.palettes.painting.PaintPitcherItem;
 import com.railwayteam.railways.content.palettes.smokebox.PalettesSmokeboxBlock;
-import com.railwayteam.railways.content.palettes.trapdoors.PalettesTrapDoorBlock;
 import com.railwayteam.railways.content.semaphore.SemaphoreBlock;
 import com.railwayteam.railways.content.smokestack.block.AbstractSmokeStackBlock;
 import com.railwayteam.railways.content.smokestack.block.DieselSmokeStackBlock;
 import com.railwayteam.railways.content.smokestack.block.SmokeStackBlock;
 import com.railwayteam.railways.content.switches.TrackSwitchBlock;
 import com.railwayteam.railways.registry.CRBlocks;
-import com.railwayteam.railways.registry.CRPalettes;
-import com.railwayteam.railways.registry.CRPalettes.Wrapping;
 import com.railwayteam.railways.registry.CRTags;
 import com.railwayteam.railways.util.ColorUtils;
-import com.railwayteam.railways.util.TextUtils;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.Create;
 import com.simibubi.create.content.decoration.copycat.CopycatBlock;
-import com.simibubi.create.content.decoration.MetalLadderBlock;
-import com.simibubi.create.content.kinetics.flywheel.FlywheelBlock;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.CreateRegistrate;
@@ -76,42 +63,27 @@ import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
-import net.createmod.catnip.data.Couple;
-import net.createmod.catnip.data.Iterate;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DoorHingeSide;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.material.MapColor;
-import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.BiConsumer;
 import java.util.Locale;
 import java.util.function.Function;
 
 import static com.railwayteam.railways.base.data.BuilderTransformers.colorNameUnderscore;
 import static com.railwayteam.railways.base.data.BuilderTransformers.sharedBogey;
 import static com.railwayteam.railways.content.conductor.vent.VentBlock.CONDUCTOR_VISIBLE;
-import static com.railwayteam.railways.util.TextUtils.join;
-import static com.simibubi.create.foundation.data.TagGen.axeOrPickaxe;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 
 public class BuilderTransformersImpl {
@@ -333,14 +305,10 @@ public class BuilderTransformersImpl {
     }
 
     public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> locoMetalBase(@Nullable DyeColor color, @Nullable String type) {
-        return locoMetalBase(color == null ? PalettesColor.NETHERITE : PalettesColor.fromDyeColor(color), type);
-    }
-
-    public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> locoMetalBase(PalettesColor color, @Nullable String type) {
         return b -> {
             BlockBuilder<B, P> out = b.initialProperties(SharedProperties::softMetal)
                 .properties(p -> p
-                    .mapColor(color.getMapColor())
+                    .mapColor(ColorUtils.mapColorFromDye(color, MapColor.COLOR_BLACK))
                     .sound(SoundType.NETHERITE_BLOCK)
                 )
                 .transform(pickaxeOnly())
@@ -348,317 +316,36 @@ public class BuilderTransformersImpl {
                 .tag(CRTags.AllBlockTags.LOCOMETAL.tag);
             if (type != null)
                 out = out.blockstate((c, p) -> p.simpleBlock(c.get(), p.models().cubeAll(
-                    "block/palettes/" + TextUtils.prefixToFolder(c.getName(), color.getSerializedName()),
-                    p.modLoc("block/palettes/" + color.getSerializedName() + "/" + type)
+                    c.getName(), p.modLoc("block/palettes/" + colorName(color) + "/" + type)
                 )));
             return out;
         };
     }
 
     public static <B extends RotatedPillarBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locoMetalPillar(@Nullable DyeColor color) {
-        return locoMetalPillar(color == null ? PalettesColor.NETHERITE : PalettesColor.fromDyeColor(color));
-    }
-
-    public static <B extends RotatedPillarBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locoMetalPillar(PalettesColor color) {
         return b -> b.transform(locoMetalBase(color, null))
-            .blockstate((c, p) -> {
-                String modelName = "block/palettes/" + TextUtils.prefixToFolder(c.getName(), color.getSerializedName());
-                ResourceLocation side = p.modLoc("block/palettes/" + color.getSerializedName() + "/riveted_pillar_side");
-                ResourceLocation end = p.modLoc("block/palettes/" + color.getSerializedName() + "/riveted_pillar_top");
-                p.axisBlock(c.get(),
-                    p.models().cubeColumn(modelName, side, end),
-                    p.models().cubeColumnHorizontal(modelName + "_horizontal", side, end)
-                );
-            });
+            .blockstate((c, p) -> p.axisBlock(c.get(),
+                p.modLoc("block/palettes/" + colorName(color) + "/riveted_pillar_side"),
+                p.modLoc("block/palettes/" + colorName(color) + "/riveted_pillar_top")
+            ));
     }
 
     public static <B extends PalettesSmokeboxBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locoMetalSmokeBox(@Nullable DyeColor color) {
-        return locoMetalSmokeBox(color == null ? PalettesColor.NETHERITE : PalettesColor.fromDyeColor(color), null);
-    }
-
-    public static <B extends PalettesSmokeboxBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locoMetalSmokeBox(PalettesColor color, @Nullable Wrapping wrapping) {
         return b -> b.transform(locoMetalBase(color, null))
                 .blockstate((c, p) -> p.getVariantBuilder(c.get()).forAllStates(state -> {
                     Direction dir = state.getValue(BlockStateProperties.FACING);
                     String name = dir.getAxis().isVertical() ? "smokebox" : "smokebox_horizontal";
-                    String wrappingName = wrapping == null ? "" : wrapping.prefix("wrapped_");
 
                     return ConfiguredModel.builder()
                             .modelFile(
-                                    p.models().withExistingParent("block/palettes/" + color.getSerializedName() + "/" + wrappingName + "locometal_" + name, p.modLoc("block/palettes/smokebox/" + name))
-                                            .texture("side", p.modLoc("block/palettes/" + color.getSerializedName() + "/" + wrappingName + "tank_side"))
-                                            .texture("top", p.modLoc("block/palettes/" + color.getSerializedName() + "/smokebox_tank_top"))
+                                    p.models().withExistingParent(colorNameUnderscore(color) + "locometal_" + name, p.modLoc("block/palettes/smokebox/" + name))
+                                            .texture("side", p.modLoc("block/palettes/" + colorName(color) + "/tank_side"))
+                                            .texture("top", p.modLoc("block/palettes/" + colorName(color) + "/smokebox_tank_top"))
                             )
                             .rotationX(dir == Direction.DOWN ? 180 : dir.getAxis().isHorizontal() ? 90 : 0)
                             .rotationY(dir.getAxis().isVertical() ? 0 : (((int) dir.toYRot()) + 180) % 360)
                             .build();
                 }));
-    }
-
-    @SafeVarargs
-    public static <B extends MetalLadderBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locoMetalLadder(PalettesColor color, String ladderType, TagKey<Item>... tags) {
-        return b -> b.transform(locoMetalBase(color, null))
-            .initialProperties(() -> Blocks.LADDER)
-            .addLayer(() -> RenderType::cutout)
-            .properties(p -> p.sound(SoundType.COPPER))
-            .blockstate((c, p) -> {
-                String main = join("/", "block", "palettes", color.getSerializedName(), ladderType + "_ladder");
-                String hoop = main + "_hoop";
-                p.horizontalBlock(c.get(), p.models()
-                    .withExistingParent(main, Create.asResource("block/ladder"))
-                    .texture("0", p.modLoc(hoop))
-                    .texture("1", p.modLoc(main))
-                    .texture("particle", p.modLoc(main))
-                );
-            })
-            .tag(BlockTags.CLIMBABLE)
-            .item()
-            .model((c, p) -> p.blockSprite(
-                c::get,
-                p.modLoc(join("/", "block", "palettes", color.getSerializedName(), ladderType + "_ladder"))
-            ))
-            .tag(tags)
-            .build();
-    }
-
-    @SafeVarargs
-    public static <B extends FlywheelBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locoMetalFlywheel(PalettesColor color, TagKey<Item>... tags) {
-        return b -> b.transform(locoMetalBase(color, null))
-            .properties(p -> p.noOcclusion())
-            .transform(axeOrPickaxe())
-            .blockstate((c, p) -> {
-                String modelName = join("/", "block", "palettes", "flywheel", color.getSerializedName(), "block");
-                ResourceLocation flywheelTex = p.modLoc(join("/", "block", "palettes", color.getSerializedName(), "flywheel"));
-                BlockStateGen.axisBlock(
-                    c, p,
-                    $ -> p.models().withExistingParent(modelName, Create.asResource("block/flywheel/block"))
-                        .texture("0", flywheelTex)
-                        .texture("particle", flywheelTex)
-                );
-            })
-            .item()
-            .tag(tags)
-            .model((c, p) -> {
-                ResourceLocation flywheelTex = p.modLoc(join("/", "block", "palettes", color.getSerializedName(), "flywheel"));
-                p.withExistingParent(c.getName(), Create.asResource("block/flywheel/item"))
-                    .texture("0", flywheelTex)
-                    .texture("particle", flywheelTex);
-            })
-            .build();
-    }
-
-    public static <B extends DoorBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locometalHingedDoorBlockState(PalettesColor color, String type) {
-        return b -> b.blockstate((c, p) -> {
-            Couple<Couple<Couple<BlockModelBuilder>>> pieces = Couple.createWithContext((right) -> Couple.createWithContext((bottom) -> {
-                String texName = bottom ? "bottom" : "top";
-                String modelSuffix = texName + "_" + (right ? "right" : "left");
-                String modelName = "block/palettes/" + color.getSerializedName() + "/" + type + "_door/block_" + modelSuffix;
-                return Couple.createWithContext((windowed) -> {
-                    String windowedName = windowed ? "_windowed" : "";
-                    return p.models().withExistingParent(
-                            modelName + windowedName,
-                            p.modLoc("block/palettes/doors/block_" + modelSuffix)
-                        )
-                        .texture("side", p.modLoc("block/palettes/" + color.getSerializedName() + "/" + type + windowedName + "_door_side"))
-                        .texture(texName, p.modLoc("block/palettes/" + color.getSerializedName() + "/" + type + windowedName + "_door_" + texName))
-                        .texture("block_particle", p.modLoc("block/palettes/" + color.getSerializedName() + "/annexed_slashed"));
-                });
-            }));
-            p.getVariantBuilder(c.get()).forAllStatesExcept((state) -> {
-                int yRot = (int) state.getValue(DoorBlock.FACING).toYRot() + 90;
-                boolean right = state.getValue(DoorBlock.HINGE) == DoorHingeSide.RIGHT;
-                boolean open = state.getValue(DoorBlock.OPEN);
-                boolean lower = state.getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER;
-                boolean windowed = state.getValue(HingedDoorBlock.WINDOWED);
-
-                if (open)
-                    yRot += 90;
-                if (right && open)
-                    yRot += 180;
-                yRot %= 360;
-
-                ModelFile model = pieces.get(right ^ open).get(lower).get(windowed);
-
-                return ConfiguredModel.builder()
-                    .modelFile(model)
-                    .rotationY(yRot)
-                    .build();
-            }, DoorBlock.POWERED);
-        });
-    }
-
-    public static <B extends DoorBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locometalSlidingDoorBlockState(PalettesColor color, String type) {
-        return locometalSlidingDoorBlockState(color, type, (c, p) -> {});
-    }
-
-    private static <B extends DoorBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locometalSlidingDoorBlockState(PalettesColor color, String type, BiConsumer<DataGenContext<Block, B>, RegistrateBlockstateProvider> extraRegistration) {
-        return b -> b.blockstate((c, p) -> {
-            extraRegistration.accept(c, p);
-            Couple<Couple<BlockModelBuilder>> pieces = Couple.createWithContext((bottom) -> {
-                String texName = bottom ? "bottom" : "top";
-                String modelName = "block/palettes/" + color.getSerializedName() + "/" + type + "_door/block_" + texName;
-                return Couple.createWithContext((windowed) -> {
-                    String windowedName = windowed ? "_windowed" : "";
-                    return p.models().withExistingParent(
-                            modelName + windowedName,
-                            p.modLoc("block/palettes/doors/block_" + texName + "_left")
-                        )
-                        .texture("side", p.modLoc("block/palettes/" + color.getSerializedName() + "/" + type + windowedName + "_door_side"))
-                        .texture(texName, p.modLoc("block/palettes/" + color.getSerializedName() + "/" + type + windowedName + "_door_" + texName))
-                        .texture("block_particle", p.modLoc("block/palettes/" + color.getSerializedName() + "/annexed_slashed"));
-                });
-            });
-            p.getVariantBuilder(c.get()).forAllStatesExcept((state) -> {
-                int yRot = (int) state.getValue(DoorBlock.FACING).toYRot() + 90;
-                boolean right = state.getValue(DoorBlock.HINGE) == DoorHingeSide.RIGHT;
-                boolean open = state.getValue(DoorBlock.OPEN);
-                boolean lower = state.getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER;
-                B block = c.get();
-                boolean windowed = block instanceof PalettesSlidingDoorBlock ? 
-                    state.getValue(PalettesSlidingDoorBlock.WINDOWED) :
-                    state.getValue(HingedDoorBlock.WINDOWED);
-
-                if (open)
-                    yRot += 90;
-                if (right && open)
-                    yRot += 180;
-                yRot %= 360;
-
-                ModelFile model = pieces.get(lower).get(windowed);
-
-                return ConfiguredModel.builder()
-                    .modelFile(model)
-                    .rotationY(yRot)
-                    .build();
-            }, DoorBlock.POWERED);
-        });
-    }
-
-    public static <B extends DoorBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locometalFoldingDoorBlockState(PalettesColor color, String type) {
-        return b -> b.transform(locometalSlidingDoorBlockState(color, type, (c, p) -> {
-            for (boolean right : Iterate.trueAndFalse) {
-                for (boolean windowed : Iterate.trueAndFalse) {
-                    String name = right ? "right" : "left";
-                    String windowStr = windowed ? "_windowed" : "";
-                    String modelName = "block/palettes/" + color.getSerializedName() + "/" + type + "_door/fold_" + name + windowStr;
-                    p.models().withExistingParent(
-                            modelName,
-                            p.modLoc("block/palettes/doors/fold_" + name)
-                        )
-                        .texture("side", p.modLoc("block/palettes/" + color.getSerializedName() + "/" + type + windowStr + "_door_side"))
-                        .texture("bottom", p.modLoc("block/palettes/" + color.getSerializedName() + "/" + type + windowStr + "_door_bottom"))
-                        .texture("top", p.modLoc("block/palettes/" + color.getSerializedName() + "/" + type + windowStr + "_door_top"))
-                        .texture("block_particle", p.modLoc("block/palettes/" + color.getSerializedName() + "/annexed_slashed"));
-                }
-            }
-        }));
-    }
-
-    private static void axisBlock(RegistrateBlockstateProvider p, RotatedPillarWindowBlock block, ModelFile vertical, ModelFile horizontal) {
-        p.getVariantBuilder(block)
-            .partialState().with(RotatedPillarWindowBlock.AXIS, Direction.Axis.Y)
-            .modelForState().modelFile(vertical).addModel()
-            .partialState().with(RotatedPillarWindowBlock.AXIS, Direction.Axis.Z)
-            .modelForState().modelFile(horizontal).rotationX(90).addModel()
-            .partialState().with(RotatedPillarWindowBlock.AXIS, Direction.Axis.X)
-            .modelForState().modelFile(horizontal).rotationX(90).rotationY(90).addModel();
-    }
-
-    public static <B extends RotatedPillarWindowBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locometalWindow(PalettesColor color, CRPalettes.WindowType type) {
-        return b -> b.transform(locoMetalBase(color, null))
-            .blockstate((c, p) -> {
-                String modelName = "block/palettes/" + TextUtils.prefixToFolder(c.getName(), color.getSerializedName());
-                ResourceLocation side = p.modLoc("block/palettes/" + color.getSerializedName() + "/" + type.getTextureName());
-                ResourceLocation end = p.modLoc("block/palettes/" + color.getSerializedName() + "/" + type.getTextureName());
-                axisBlock(p, c.get(),
-                    p.models().cubeColumn(modelName, side, end),
-                    p.models().cubeColumnHorizontal(modelName + "_horizontal", side, end)
-                );
-            });
-    }
-
-    public static <B extends PalettesTrapDoorBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locometalTrapdoor(PalettesColor color) {
-        return b -> b.transform(locoMetalBase(color, null))
-            .blockstate((c, p) -> {
-                String[] qualifiers = {"bottom", "top", "open"};
-                Couple<ModelFile[]> models = Couple.createWithContext((windowed) -> {
-                    String windowStr = windowed ? "windowed_" : "";
-                    ModelFile[] out = new ModelFile[3];
-                    for (int i = 0; i < 3; i++) {
-                        String modelName = "block/palettes/" + color.getSerializedName() + "/trapdoors/" + windowStr + "trapdoor_" + qualifiers[i];
-                        out[i] = p.models().withExistingParent(
-                                modelName,
-                                p.modLoc("block/palettes/trapdoors/template_orientable_trapdoor_" + qualifiers[i])
-                            )
-                            .texture("texture", p.modLoc("block/palettes/" + color.getSerializedName() + "/" + windowStr + "trapdoor"))
-                            .texture("side", p.modLoc("block/palettes/" + color.getSerializedName() + "/hinged_door_side"));
-                    }
-                    return out;
-                });
-
-                Couple<ModelFile> bottom = Couple.createWithContext((windowed) -> models.get(windowed)[0]);
-                Couple<ModelFile> top = Couple.createWithContext((windowed) -> models.get(windowed)[1]);
-                Couple<ModelFile> open = Couple.createWithContext((windowed) -> models.get(windowed)[2]);
-
-                p.models().withExistingParent(
-                    "block/palettes/" + TextUtils.prefixToFolder(c.getName(), color.getSerializedName()),
-                    bottom.get(false).getLocation()
-                );
-
-                p.getVariantBuilder(c.get()).forAllStatesExcept(state -> {
-                    Direction facing = state.getValue(PalettesTrapDoorBlock.FACING);
-                    boolean isOpen = state.getValue(PalettesTrapDoorBlock.OPEN);
-                    Half half = state.getValue(PalettesTrapDoorBlock.HALF);
-                    boolean windowed = state.getValue(PalettesTrapDoorBlock.WINDOWED);
-
-                    int xRot = 0;
-                    int yRot = ((int) facing.toYRot()) + 180;
-                    if (isOpen && half == Half.TOP) {
-                        xRot += 180;
-                        yRot += 180;
-                    }
-                    yRot %= 360;
-                    return ConfiguredModel.builder()
-                        .modelFile((isOpen ? open : half == Half.TOP ? top : bottom).get(windowed))
-                        .rotationX(xRot)
-                        .rotationY(yRot)
-                        .build();
-                }, PalettesTrapDoorBlock.POWERED, PalettesTrapDoorBlock.WATERLOGGED);
-            });
-    }
-
-    public static <B extends HazardStripesBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> hazardStripes(boolean chevron) {
-        return b -> b.blockstate((c, p) -> {
-            PalettesColor color = c.get().getMainColor();
-            PalettesColor baseColor = c.get().getBaseColor();
-
-            String shape = chevron ? "chevron" : "diagonal";
-            String baseModel = "block/palettes/hazard_stripes/" + shape;
-            var model = p.models().withExistingParent(
-                "block/palettes/" + TextUtils.prefixToFolder(c.getName(), color.getSerializedName()),
-                p.modLoc(baseModel)
-            ).texture("texture", p.modLoc("block/palettes/" + color.getSerializedName() +
-                "/hazard_stripes_" + shape + "_a_on_" + baseColor.getSerializedName()));
-
-            p.getVariantBuilder(c.get()).forAllStates(state -> {
-                int yRot = c.get().getYRot(state) % 360;
-                return ConfiguredModel.builder()
-                    .modelFile(model)
-                    .rotationY(yRot)
-                    .build();
-            });
-        });
-    }
-
-    public static <I extends BlockItem, P> NonNullUnaryOperator<ItemBuilder<I, P>> locometalDoorItemModel(PalettesColor color, String type) {
-        return i -> i.model((c, p) -> p.blockSprite(c, p.modLoc("block/palettes/" + color.getSerializedName() + "/" + type + "_door")));
-    }
-
-    public static <I extends Item, P> NonNullUnaryOperator<ItemBuilder<I, P>> locoMetalItem(PalettesColor color) {
-        return i -> i.model((c, p) -> p.withExistingParent(
-            c.getName(),
-            p.modLoc("block/palettes/" + TextUtils.prefixToFolder(c.getName(), color.getSerializedName()))
-        ));
     }
 
     public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> variantBuffer() {
@@ -667,18 +354,6 @@ public class BuilderTransformersImpl {
 
     public static <I extends Item, P> NonNullUnaryOperator<ItemBuilder<I, P>> variantBufferItem() {
         return i -> i.onRegister(CreateRegistrate.itemModel(() -> BufferModel::new));
-    }
-
-    public static <I extends PaintPitcherItem, P> NonNullUnaryOperator<ItemBuilder<I, P>> paintPitcher() {
-        return i -> i.model((c, p) -> {
-            PalettesColor color = c.get().getColor();
-            p.blockSprite(
-                c,
-                color == null
-                    ? p.modLoc("block/palettes/sandy_pitcher")
-                    : p.modLoc("block/palettes/" + color.getSerializedName() + "/paint_pitcher")
-            );
-        });
     }
 
     public static <B extends CopycatHeadstockBarsBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> copycatHeadstockBars() {

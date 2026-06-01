@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#railways:palettes/cycle_groups/brown/base"
+            "items": "#railways:palettes/cycle_groups/brown"
           }
         ]
       },

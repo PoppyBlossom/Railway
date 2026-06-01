@@ -41,8 +41,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -65,7 +65,7 @@ public class MixinTrackRenderer {
         // Safe check: ensure the mixin was applied before casting
         if (!(te instanceof IHasTrackCasing casing))
             return;
-        Block casingBlock = casing.getTrackCasing();
+        SlabBlock casingBlock = casing.getTrackCasing();
         if (casingBlock != null) {
             TrackShape shape = te.getBlockState().getValue(TrackBlock.SHAPE);
             if (CRBlockPartials.TRACK_CASINGS.containsKey(shape)) {
@@ -115,7 +115,7 @@ public class MixinTrackRenderer {
 
     @Inject(method = "renderBezierTurn", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;pushPose()V", remap = true), remap = false)
     private static void renderCurveCasings(Level level, BezierConnection bc, PoseStack ms, VertexConsumer vb, CallbackInfo ci) {
-        Block casingBlock = ((IHasTrackCasing) bc).getTrackCasing();
+        SlabBlock casingBlock = ((IHasTrackCasing) bc).getTrackCasing();
         if (casingBlock != null) {
             renderBezierCasings(ms, level, reTexture(CRBlockPartials.TRACK_CASING_FLAT_THICK, casingBlock), casingBlock.defaultBlockState(), vb, bc);
         }

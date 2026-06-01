@@ -19,7 +19,6 @@
 package com.railwayteam.railways.content.custom_tracks;
 
 import com.railwayteam.railways.mixin_interfaces.IHasTrackCasing;
-import com.railwayteam.railways.content.custom_tracks.casing.CasingChecker;
 import com.railwayteam.railways.registry.CRTags;
 import com.railwayteam.railways.util.AdventureUtils;
 import com.railwayteam.railways.util.EntityUtils;
@@ -32,7 +31,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -48,11 +46,11 @@ public class CustomTrackBlock  { //done using a brass hand on a track should cal
             TrackPropagator.onRailAdded(world, pos, state);
             return InteractionResult.SUCCESS;
         }
-        Block newBlock;
-        if (handStack.getItem() instanceof BlockItem blockItem && CasingChecker.isValid(newBlock = blockItem.getBlock())) {
+        if (handStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof SlabBlock slabBlock &&
+            !CRTags.AllBlockTags.TRACK_CASING_BLACKLIST.matches(slabBlock)) {
             if (world.isClientSide) return InteractionResult.SUCCESS;
-            Block currentCasing = IHasTrackCasing.getTrackCasing(world, pos);
-            if (currentCasing == newBlock) {
+            SlabBlock currentCasing = IHasTrackCasing.getTrackCasing(world, pos);
+            if (currentCasing == slabBlock) {
                 return (IHasTrackCasing.setAlternateModel(world, pos, !IHasTrackCasing.isAlternate(world, pos))) ?
                     InteractionResult.SUCCESS : InteractionResult.FAIL;
             } else {
@@ -64,11 +62,11 @@ public class CustomTrackBlock  { //done using a brass hand on a track should cal
                         EntityUtils.givePlayerItem(player, casingStack);
                     }
                 }
-                IHasTrackCasing.setTrackCasing(world, pos, newBlock);
+                IHasTrackCasing.setTrackCasing(world, pos, slabBlock);
             }
             return InteractionResult.SUCCESS;
         } else if (handStack.isEmpty()) {
-            Block currentCasing = IHasTrackCasing.getTrackCasing(world, pos);
+            SlabBlock currentCasing = IHasTrackCasing.getTrackCasing(world, pos);
             if (currentCasing != null) {
                 if (world.isClientSide) return InteractionResult.SUCCESS;
                 handStack = new ItemStack(currentCasing);

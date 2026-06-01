@@ -11,7 +11,6 @@ import net.minecraft.world.item.Item;
 import com.simibubi.create.content.trains.track.TrackMaterial;
 import com.railwayteam.railways.compat.tracks.TrackCompatUtils;
 
-import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 
 public class CompatTrackTagProvider extends TagsProvider<Item> {
@@ -21,8 +20,8 @@ public class CompatTrackTagProvider extends TagsProvider<Item> {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        for (String modId : new ArrayList<>(TrackCompatUtils.TRACK_COMPAT_MODS)) {
-            for (TrackMaterial material : new ArrayList<>(TrackMaterial.allFromMod(modId))) {
+        for (String modId : TrackCompatUtils.TRACK_COMPAT_MODS) {
+            for (TrackMaterial material : TrackMaterial.allFromMod(modId)) {
                 ResourceLocation tagId = ResourceLocation.fromNamespaceAndPath("railways", "compat_slabs/" + material.id.getNamespace() + "/" + material.resourceName());
                 TagKey<Item> tagKey = TagKey.create(Registries.ITEM, tagId);
 

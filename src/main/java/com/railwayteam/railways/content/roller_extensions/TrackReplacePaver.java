@@ -33,7 +33,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import org.jetbrains.annotations.ApiStatus;
@@ -66,7 +66,7 @@ public class TrackReplacePaver {
             FilterItemStack filter = FilterItemStack.of(filterStack);
             if (replacedState.getBlock() != stateToPaveWith.getBlock()) {
                 boolean restoreBE = false;
-                Pair<Block, Boolean> casingData = null;
+                Pair<SlabBlock, Boolean> casingData = null;
                 Map<BlockPos, BezierConnection> connections = new HashMap<>();
                 if (replacedState.getOptionalValue(TrackBlock.HAS_BE).orElse(false)) {
                     if (context.world.getBlockEntity(trackPos) instanceof TrackBlockEntity trackBE) {

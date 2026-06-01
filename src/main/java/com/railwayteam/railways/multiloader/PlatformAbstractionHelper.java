@@ -18,14 +18,9 @@
 
 package com.railwayteam.railways.multiloader;
 
-import com.mojang.brigadier.arguments.ArgumentType;
 import net.minecraft.world.item.Item;
 
 public class PlatformAbstractionHelper {    public static int getBurnTime(Item item) {
     return com.railwayteam.railways.multiloader.neoforge.PlatformAbstractionHelperImpl.getBurnTime(item);
-    }
-
-    public static <T extends Enum<T>> ArgumentType<T> enumArgument(Class<T> enumClass) {
-        return com.railwayteam.railways.multiloader.neoforge.PlatformAbstractionHelperImpl.enumArgument(enumClass);
     }
 }

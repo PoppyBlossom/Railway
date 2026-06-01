@@ -1,8 +1,0 @@
-{
-  "parent": "railways:block/palettes/doors/block_top_right",
-  "textures": {
-    "block_particle": "railways:block/palettes/turquoise/annexed_slashed",
-    "side": "railways:block/palettes/turquoise/hinged_door_side",
-    "top": "railways:block/palettes/turquoise/hinged_door_top"
-  }
-}

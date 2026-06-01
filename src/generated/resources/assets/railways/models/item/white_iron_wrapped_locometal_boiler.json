@@ -1,8 +1,3 @@
 {
-  "parent": "railways:block/palettes/boiler/boiler",
-  "textures": {
-    "front": "railways:block/palettes/white/boiler_slashed",
-    "particle": "railways:block/palettes/white/riveted_pillar_top",
-    "sides": "railways:block/palettes/white/iron_wrapped_boiler_side"
-  }
+  "parent": "railways:block/white_iron_wrapped_locometal_boiler_gullet_x"
 }

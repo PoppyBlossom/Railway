@@ -35,7 +35,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -52,16 +51,16 @@ public abstract class MixinBezierConnection implements IHasTrackCasing {
 
   @Shadow public abstract Vec3 getPosition(double t);
 
-  protected Block trackCasing;
+  protected SlabBlock trackCasing;
   protected boolean isShiftedDown;
 
   @Override
-  public @Nullable Block getTrackCasing() {
+  public @Nullable SlabBlock getTrackCasing() {
     return trackCasing;
   }
 
   @Override
-  public void setTrackCasing(@Nullable Block trackCasing) {
+  public void setTrackCasing(@Nullable SlabBlock trackCasing) {
     if (trackCasing != null && CRTags.AllBlockTags.TRACK_CASING_BLACKLIST.matches(trackCasing)) //sanity check
       return;
     this.trackCasing = trackCasing;
@@ -108,7 +107,7 @@ public abstract class MixinBezierConnection implements IHasTrackCasing {
 		  Railways.LOGGER.error("NBTCtor trackCasing was minecraft:block!!! for BezierConnection: primary={}, secondary={}", bePositions.getFirst(), bePositions.getSecond());
       }
       //Railways.LOGGER.warn("NBTCtor: Casing="+compound.getString("Casing"));
-      setTrackCasing(BuiltInRegistries.BLOCK.get(ResourceLocation.parse(compound.getString("Casing"))));
+      setTrackCasing((SlabBlock) BuiltInRegistries.BLOCK.get(ResourceLocation.parse(compound.getString("Casing"))));
     }
     if (compound.contains("ShiftDown", Tag.TAG_BYTE)) {
       setAlternate(compound.getBoolean("ShiftDown"));

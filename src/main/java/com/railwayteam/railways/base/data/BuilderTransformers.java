@@ -35,28 +35,18 @@ import com.railwayteam.railways.content.custom_bogeys.special.monobogey.Invisibl
 import com.railwayteam.railways.content.custom_bogeys.special.monobogey.MonoBogeyBlock;
 import com.railwayteam.railways.content.custom_tracks.generic_crossing.GenericCrossingBlock;
 import com.railwayteam.railways.content.handcar.HandcarBlock;
-import com.railwayteam.railways.content.palettes.PalettesColor;
-import com.railwayteam.railways.content.palettes.RotatedPillarWindowBlock;
 import com.railwayteam.railways.content.palettes.boiler.BoilerBlock;
 import com.railwayteam.railways.content.palettes.boiler.BoilerGenerator;
-import com.railwayteam.railways.content.palettes.hazard_stripes.HazardStripesBlock;
 import com.railwayteam.railways.content.palettes.smokebox.PalettesSmokeboxBlock;
-import com.railwayteam.railways.content.palettes.painting.PaintPitcherItem;
-import com.railwayteam.railways.content.palettes.trapdoors.PalettesTrapDoorBlock;
 import com.railwayteam.railways.content.semaphore.SemaphoreBlock;
 import com.railwayteam.railways.content.smokestack.block.DieselSmokeStackBlock;
 import com.railwayteam.railways.content.smokestack.block.SmokeStackBlock;
 import com.railwayteam.railways.content.switches.TrackSwitchBlock;
-import com.railwayteam.railways.registry.CRPalettes.WindowType;
 import com.railwayteam.railways.registry.CRPalettes.Wrapping;
 import com.railwayteam.railways.registry.CRTags;
 import com.railwayteam.railways.util.ColorUtils;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour;
-import com.simibubi.create.content.contraptions.behaviour.DoorMovingInteraction;
-import com.simibubi.create.content.decoration.MetalLadderBlock;
-import com.simibubi.create.content.kinetics.flywheel.FlywheelBlock;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.tterrag.registrate.builders.BlockBuilder;
@@ -68,20 +58,14 @@ import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.material.PushReaction;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
@@ -141,20 +125,11 @@ public class BuilderTransformers {    public static <B extends MonoBogeyBlock, P
     }    public static <B extends PalettesSmokeboxBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locoMetalSmokeBox(@Nullable DyeColor color) {
         return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.locoMetalSmokeBox(color);
     }
-    public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> locoMetalBase(PalettesColor color, @Nullable String type) {
-        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.locoMetalBase(color, type);
-    }
-    public static <B extends RotatedPillarBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locoMetalPillar(PalettesColor color) {
-        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.locoMetalPillar(color);
-    }
-    public static <B extends PalettesSmokeboxBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locoMetalSmokeBox(PalettesColor color, @Nullable Wrapping wrapping) {
-        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.locoMetalSmokeBox(color, wrapping);
-    }
 
-    public static <B extends BoilerBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locoMetalBoiler(PalettesColor color, @Nullable Wrapping wrapping) {
+    public static <B extends BoilerBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locoMetalBoiler(@Nullable DyeColor color, @Nullable Wrapping wrapping) {
         return b -> b.initialProperties(SharedProperties::softMetal)
             .properties(p -> p
-                .mapColor(color.getMapColor())
+                .mapColor(ColorUtils.mapColorFromDye(color, MapColor.COLOR_BLACK))
                 .sound(SoundType.NETHERITE_BLOCK)
                 .noOcclusion()
             )
@@ -166,70 +141,8 @@ public class BuilderTransformers {    public static <B extends MonoBogeyBlock, P
             .blockstate(BoilerGenerator.create(color, wrapping)::generate);
     }
 
-    @SafeVarargs
-    public static <B extends MetalLadderBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locoMetalLadder(PalettesColor color, String ladderType, TagKey<Item>... tags) {
-        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.locoMetalLadder(color, ladderType, tags);
-    }
-
-    @SafeVarargs
-    public static <B extends FlywheelBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locoMetalFlywheel(PalettesColor color, TagKey<Item>... tags) {
-        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.locoMetalFlywheel(color, tags);
-    }
-
-    public static <B extends DoorBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locometalDoor(PalettesColor color, String type, TagKey<Item>[] itemTags, TagKey<Block>[] blockTags) {
-        return b -> b
-            .transform(BuilderTransformers.locoMetalBase(color, null))
-            .properties(BlockBehaviour.Properties::noOcclusion)
-            .properties(p -> p.pushReaction(PushReaction.DESTROY))
-            .addLayer(() -> net.minecraft.client.renderer.RenderType::cutoutMipped)
-            .onRegister(MovingInteractionBehaviour.interactionBehaviour(new DoorMovingInteraction()))
-            .tag(BlockTags.DOORS)
-            .tag(BlockTags.WOODEN_DOORS)
-            .tag(blockTags)
-            .loot((lr, block) -> lr.add(block, lr.createDoorTable(block)))
-            .item()
-            .tag(ItemTags.DOORS)
-            .tag(itemTags)
-            .transform(locometalDoorItemModel(color, type))
-            .build();
-    }
-
-    public static <B extends DoorBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locometalHingedDoorBlockState(PalettesColor color, String type) {
-        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.locometalHingedDoorBlockState(color, type);
-    }
-
-    public static <B extends DoorBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locometalSlidingDoorBlockState(PalettesColor color, String type) {
-        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.locometalSlidingDoorBlockState(color, type);
-    }
-
-    public static <B extends DoorBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locometalFoldingDoorBlockState(PalettesColor color, String type) {
-        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.locometalFoldingDoorBlockState(color, type);
-    }
-
-    public static <B extends RotatedPillarWindowBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locometalWindow(PalettesColor color, WindowType type) {
-        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.locometalWindow(color, type);
-    }
-
-    public static <B extends PalettesTrapDoorBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> locometalTrapdoor(PalettesColor color) {
-        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.locometalTrapdoor(color);
-    }
-
-    public static <B extends HazardStripesBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> hazardStripes(boolean chevron) {
-        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.hazardStripes(chevron);
-    }
-
-    public static <I extends BlockItem, P> NonNullUnaryOperator<ItemBuilder<I, P>> locometalDoorItemModel(PalettesColor color, String type) {
-        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.locometalDoorItemModel(color, type);
-    }
-
-    public static <I extends Item, P> NonNullUnaryOperator<ItemBuilder<I, P>> locoMetalItem(PalettesColor color) {
-        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.locoMetalItem(color);
-    }
-
     public static String colorNameUnderscore(@Nullable DyeColor color) {
         return color == null ? "" : color.name().toLowerCase(Locale.ROOT) + "_";
-    }    public static <I extends PaintPitcherItem, P> NonNullUnaryOperator<ItemBuilder<I, P>> paintPitcher() {
-        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.paintPitcher();
     }    public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> variantBuffer() {
         return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.variantBuffer();
     }    public static <I extends Item, P> NonNullUnaryOperator<ItemBuilder<I, P>> variantBufferItem() {

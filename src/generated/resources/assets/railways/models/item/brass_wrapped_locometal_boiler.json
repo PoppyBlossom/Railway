@@ -1,8 +1,3 @@
 {
-  "parent": "railways:block/palettes/boiler/boiler",
-  "textures": {
-    "front": "railways:block/palettes/netherite/boiler_slashed",
-    "particle": "railways:block/palettes/netherite/riveted_pillar_top",
-    "sides": "railways:block/palettes/netherite/wrapped_boiler_side"
-  }
+  "parent": "railways:block/brass_wrapped_locometal_boiler_gullet_x"
 }

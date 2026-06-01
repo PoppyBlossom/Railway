@@ -28,7 +28,6 @@ import com.simibubi.create.content.trains.graph.TrackGraphHelper;
 import com.simibubi.create.content.trains.graph.TrackGraphLocation;
 import com.simibubi.create.content.trains.graph.TrackNode;
 import com.simibubi.create.content.trains.signal.SignalBoundary;
-import com.simibubi.create.content.trains.signal.SignalBlockEntity;
 import com.simibubi.create.content.trains.signal.SingleBlockEntityEdgePoint;
 import com.simibubi.create.content.trains.track.ITrackBlock;
 import com.simibubi.create.content.trains.track.TrackBlockOutline;
@@ -60,8 +59,6 @@ public class TrackEdgePointHighlighter {
         final Object TRACK_BOX = new Object();
         final Object CONNECTOR2 = new Object();
         final Object TRACK_BOX2 = new Object();
-        final Object ARROW_A = new Object();
-        final Object ARROW_B = new Object();
     }
 
     private static final ArrayList<HolderSet> HOLDERS = new ArrayList();
@@ -157,31 +154,6 @@ public class TrackEdgePointHighlighter {
             Outliner.getInstance().showLine(holder.CONNECTOR, aa.getCenter(), bb.getCenter())
                 .colored(Color.SPRING_GREEN)
                 .lineWidth(1 / 16f);
-
-            if (be instanceof SignalBlockEntity) {
-                TrackGraphLocation location = trackTarget1.determineGraphLocation();
-                if (location != null) {
-                    TrackEdge edge = location.graph.getConnection(location.edge.map(location.graph::locateNode));
-                    if (edge != null) {
-                        Vec3 forward = edge.getDirectionAt(location.position);
-                        Vec3 normal = edge.getNormal(location.graph, location.position);
-                        Vec3 side = forward.cross(normal).normalize();
-
-                        Vec3 arrowCenter = bb.getCenter().add(0, 1 / 8f, 0);
-                        Vec3 point = arrowCenter.add(forward.scale(0.45f));
-                        Vec3 sideA = arrowCenter.add(side.scale(0.45f));
-                        Vec3 sideB = arrowCenter.subtract(side.scale(0.45f));
-
-                        Outliner.getInstance().showLine(holder.ARROW_A, point, sideA)
-                            .colored(Color.SPRING_GREEN)
-                            .lineWidth(1 / 16f);
-
-                        Outliner.getInstance().showLine(holder.ARROW_B, point, sideB)
-                            .colored(Color.SPRING_GREEN)
-                            .lineWidth(1 / 16f);
-                    }
-                }
-            }
 
             SecondaryTrackTargetingBehaviour<?> trackTarget2 = SecondaryTrackTargetingBehaviour.get(be, SecondaryTrackTargetingBehaviour.TYPE);
             if (trackTarget2 != null) {

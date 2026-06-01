@@ -45,8 +45,4 @@ public interface AccessorPartialModel {
 
 	@Accessor(value = "bakedModel", remap = false)
 	void railways$setBakedModel(BakedModel bakedModel);
-
-	@Accessor(value = "bakedModel", remap = false)
-	BakedModel railways$getBakedModel();
-
 }

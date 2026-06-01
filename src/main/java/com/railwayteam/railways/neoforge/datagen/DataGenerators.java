@@ -47,9 +47,6 @@ public class DataGenerators {
         var lookupProvider = event.getLookupProvider();
         var packOutput = generator.getPackOutput();
 
-    // Register generated entries (potato projectile types, etc.)
-    generator.addProvider(runServer, new RailwaysGeneratedEntriesProvider(packOutput, lookupProvider));
-
         // Register each recipe provider separately with unique names to avoid duplication
         // Consolidate all recipes into a single provider since they all have the same name
         RailwaysSequencedAssemblyRecipeGen sequencedAssembly = RailwaysSequencedAssemblyRecipeGen.create(packOutput, lookupProvider);

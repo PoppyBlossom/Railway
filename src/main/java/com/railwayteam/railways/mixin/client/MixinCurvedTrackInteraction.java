@@ -18,7 +18,6 @@
 
 package com.railwayteam.railways.mixin.client;
 
-import com.railwayteam.railways.content.custom_tracks.casing.CasingChecker;
 import com.railwayteam.railways.content.custom_tracks.casing.SlabUseOnCurvePacket;
 import com.railwayteam.railways.content.handcar.HandcarItem;
 import com.railwayteam.railways.registry.CRPackets;
@@ -33,6 +32,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.SlabBlock;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -77,7 +77,9 @@ public abstract class MixinCurvedTrackInteraction {
       if (!held.isEmpty()) {
         if (!(held.getItem() instanceof BlockItem block))
           return;
-        if (!CasingChecker.isValid(block.getBlock())) // Relaxed validation
+        if (!(block.getBlock() instanceof SlabBlock slab))
+          return;
+        if (AllBlockTags.TRACK_CASING_BLACKLIST.matches(slab))
           return;
       }
 
