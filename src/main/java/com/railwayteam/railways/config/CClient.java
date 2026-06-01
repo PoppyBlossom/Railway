@@ -37,6 +37,7 @@ public class CClient extends ConfigBase {
     public final ConfigBool renderNormalCap = b(true, "renderNormalCap", Comments.renderNormalCap);
     public final ConfigBool animatedFlywheels = b(true, "animatedFlywheels", Comments.animatedFlywheels);
     public final ConfigFloat flywheelSpeedMultiplier = f(0.5f, 0.0f, 1.0f, "flywheelSpeedMultiplier", Comments.flywheelSpeedMultiplier);
+    public final ConfigBool nvidiaShutdownWatchdog = b(true, "nvidiaShutdownWatchdog", Comments.nvidiaShutdownWatchdog);
 
     // smoke
     public final ConfigGroup smoke = group(1, "smoke", Comments.smoke);
@@ -72,6 +73,7 @@ public class CClient extends ConfigBase {
         static String renderNormalCap = "Should the normal create conductor cap be rendered on top of the conductors existing hat?";
         static String animatedFlywheels = "Should flywheels and blocks extending the FlywheelBlock class be animated when apart of trains?";
         static String flywheelSpeedMultiplier = "Speed multiplier for flywheel animations on trains (0.1 = slow, 0.5 = default, 1.0 = fast)";
+        static String nvidiaShutdownWatchdog = "Force-exit the game if it hangs on the NVIDIA Linux GL-teardown bug at shutdown (issue #267). Disable if a driver update fixes the hang for you";
 
         static String smoke = "Smoke Settings";
         static String oldSmoke = "Old-style Smoke Settings";

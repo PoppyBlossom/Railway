@@ -27,11 +27,11 @@ import me.modmuss50.mpp.ReleaseType
 plugins {
     java
     `maven-publish`
-    id("net.neoforged.moddev") version "2.0.28-beta"
-    id("me.modmuss50.mod-publish-plugin") version "0.7.4"
-    id("dev.ithundxr.silk") version "0.11.15"
-    id("net.kyori.blossom") version "2.1.0"
-    id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.8"
+    id("net.neoforged.moddev") version "2.0.141"
+    id("me.modmuss50.mod-publish-plugin") version "2.0.0-beta.2"
+    id("dev.ithundxr.silk") version "1.0.1"
+    id("net.kyori.blossom") version "2.2.0"
+    id("org.jetbrains.gradle.plugin.idea-ext") version "1.4.1"
 }
 
 println("Steam 'n' Rails v${"mod_version"()}")
@@ -107,7 +107,7 @@ repositories {
 // NeoForge ModDev configuration
 neoForge {
     // NeoForge version from properties
-    version.set(neoforgeVersion)
+    version = neoforgeVersion
 
     // Note: Parchment overlay disabled for now; fall back to Mojang mappings (stable in ModDev)
     // To re-enable later, ensure a valid parchment artifact exists for the current MC version

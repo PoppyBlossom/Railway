@@ -19,6 +19,10 @@
 package com.railwayteam.railways.content.buffer;
 
 
+import org.apache.commons.lang3.mutable.MutableObject;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import com.railwayteam.railways.registry.CRBlocks;
 import com.railwayteam.railways.registry.CRTrackMaterials;
 import com.simibubi.create.AllSoundEvents;
@@ -30,9 +34,8 @@ import com.simibubi.create.content.trains.track.TrackShape;
 import com.simibubi.create.content.trains.track.TrackTargetingBlockItem;
 import com.simibubi.create.foundation.utility.CreateLang;
 import com.tterrag.registrate.util.nullness.NonNullBiFunction;
+
 import net.createmod.catnip.data.Pair;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -40,6 +43,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Direction.AxisDirection;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
@@ -48,16 +53,14 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import org.apache.commons.lang3.mutable.MutableObject;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 public class TrackBufferBlockItem extends TrackTargetingBlockItem {
     
@@ -155,6 +158,9 @@ public class TrackBufferBlockItem extends TrackTargetingBlockItem {
                 placedPos = context.getClickedFace() == Direction.DOWN ? pos.below() : pos.above();
                 placeDirection = context.getClickedFace();
             }
+
+            TrackBufferBlock<?> bufferBlock = overrideBlock != null ? overrideBlock : (TrackBufferBlock<?>) getBlock();
+            teTag.putString("id", BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(bufferBlock.getBlockEntityType()).toString());
             
             teTag.put("TargetTrack", NbtUtils.writeBlockPos(pos.subtract(placedPos)));
             stack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(teTag));
