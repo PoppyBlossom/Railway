@@ -18,6 +18,36 @@
 
 package com.railwayteam.railways.content.palettes.painting;
 
+import com.mojang.datafixers.util.Pair;
+import com.railwayteam.railways.Railways;
+import com.railwayteam.railways.content.palettes.PalettesColor;
+import net.minecraft.Util;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
+import org.jetbrains.annotations.Contract;
+
+import java.util.Optional;
+
 public class PaintFluid {
     public static final String LANG_PREFIX = "fluid.railways.paint.";
+
+    public static Optional<PalettesColor> getColor(CompoundTag nbt) {
+        if (nbt == null) return Optional.empty();
+        Tag colorTag = nbt.get("Color");
+        if (colorTag == null) return Optional.empty();
+
+        return PalettesColor.CODEC.decode(NbtOps.INSTANCE, colorTag)
+            .resultOrPartial(Util.prefix("Failed to decode color from NBT: ", Railways.LOGGER::error))
+            .map(Pair::getFirst);
+    }
+
+    @Contract("_, !null -> param1")
+    public static CompoundTag setColor(CompoundTag nbt, PalettesColor color) {
+        if (color == null) return nbt;
+        PalettesColor.CODEC.encodeStart(NbtOps.INSTANCE, color)
+            .resultOrPartial(Util.prefix("Failed to encode color to NBT: ", Railways.LOGGER::error))
+            .ifPresent(encoded -> nbt.put("Color", encoded));
+        return nbt;
+    }
 }

@@ -1,6 +1,6 @@
 /*
  * Steam 'n' Rails
- * Copyright (c) 2022-2025 The Railways Team
+ * Copyright (c) 2026 The Railways Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -18,114 +18,148 @@
 
 package com.railwayteam.railways.registry.commands;
 
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.railwayteam.railways.content.shadow_realm.ShadowRealm;
+import com.railwayteam.railways.mixin.AccessorGlobalRailwayManager;
+import com.railwayteam.railways.mixin_interfaces.IShadowTrain;
+import com.railwayteam.railways.mixin_interfaces.RailwaySavedDataDuck;
+import com.railwayteam.railways.registry.CRPackets;
+import com.railwayteam.railways.util.packet.ShadowTrainRestorePacket;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.trains.entity.Train;
+import net.createmod.catnip.platform.CatnipServices;
+import com.simibubi.create.content.trains.entity.AddTrainPacket;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.commands.arguments.ResourceLocationArgument;
+import net.minecraft.commands.arguments.UuidArgument;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+
+import static net.minecraft.commands.Commands.argument;
+import static net.minecraft.commands.Commands.literal;
 
 public class ShadowRealmCommand {
     public static ArgumentBuilder<CommandSourceStack, ?> register() {
-        return Commands.literal("shadow_realm")
+        return literal("shadow_realm")
             .requires(cs -> cs.hasPermission(2))
-            .then(Commands.literal("banish")
-                .then(Commands.argument("train", StringArgumentType.string())
-                    .then(Commands.argument("key", StringArgumentType.string())
-                        .executes(ctx -> banish(
-                            ctx.getSource(),
-                            StringArgumentType.getString(ctx, "train"),
-                            StringArgumentType.getString(ctx, "key")
-                        ))
-                    )
-                )
-            )
-            .then(Commands.literal("restore")
-                .then(Commands.argument("key", StringArgumentType.string())
-                    .executes(ctx -> restore(
-                        ctx.getSource(),
-                        StringArgumentType.getString(ctx, "key")
-                    ))
-                )
-            )
-            .then(Commands.literal("kill")
-                .then(Commands.argument("key", StringArgumentType.string())
-                    .executes(ctx -> kill(
-                        ctx.getSource(),
-                        StringArgumentType.getString(ctx, "key")
-                    ))
-                )
-            );
+            .then(banish())
+            .then(restore())
+            .then(kill());
     }
 
-    private static int banish(CommandSourceStack source, String trainName, String key) {
-        // Find train by name
-        Train train = Create.RAILWAYS.trains.values().stream()
-            .filter(t -> t.name.getString().equals(trainName))
-            .findFirst()
-            .orElse(null);
+    private static ArgumentBuilder<CommandSourceStack, ?> banish() {
+        return literal("banish")
+            .then(argument("train", UuidArgument.uuid())
+                .then(argument("key", ResourceLocationArgument.id())
+                    .executes(ctx -> $banish(
+                        ctx.getSource(),
+                        UuidArgument.getUuid(ctx, "train"),
+                        ResourceLocationArgument.getId(ctx, "key")
+                    ))));
+    }
 
+    private static int $banish(CommandSourceStack source, UUID trainId, ResourceLocation shadowKey) throws CommandSyntaxException {
+        Train train = Create.RAILWAYS.trains.get(trainId);
         if (train == null) {
-            source.sendFailure(Component.literal("Train '" + trainName + "' not found"));
+            source.sendFailure(Component.literal("No Train with id " + trainId.toString()
+                .substring(0, 5) + "[...] was found"));
             return 0;
         }
 
-        if (ShadowRealm.exists(key)) {
-            source.sendFailure(Component.literal("Key '" + key + "' already in use. Please use a different key."));
+        IShadowTrain shadowTrain = (IShadowTrain) train;
+        if (shadowTrain.railways$isShadow()) {
+            source.sendFailure(Component.literal("Train '").append(train.name)
+                .append("' is already a shadow train"));
             return 0;
         }
 
-        try {
-            // Remove from world
-            Create.RAILWAYS.removeTrain(train.id);
-            
-            // Banish to shadow realm
-            ShadowRealm.banish(key, train, source.getServer().registryAccess());
-            
-            source.sendSuccess(() -> Component.literal("Train '")
-                .append(train.name)
-                .append("' banished to shadow realm with key '")
-                .append(key)
-                .append("'"), true);
-            return 1;
-        } catch (Exception e) {
-            source.sendFailure(Component.literal("Failed to banish train: " + e.getMessage()));
-            return 0;
-        }
-    }
+        ShadowRealm.banishTrain(train, shadowKey);
 
-    private static int restore(CommandSourceStack source, String key) {
-        Train restoredTrain = ShadowRealm.restore(key);
-
-        if (restoredTrain == null) {
-            source.sendFailure(Component.literal("No train found with key '" + key + "'"));
-            return 0;
-        }
-
-        try {
-            Create.RAILWAYS.addTrain(restoredTrain);
-            source.sendSuccess(() -> Component.literal("Restored train '")
-                .append(restoredTrain.name)
-                .append("' from shadow realm"), true);
-            return 1;
-        } catch (Exception e) {
-            source.sendFailure(Component.literal("Failed to restore train: " + e.getMessage()));
-            return 0;
-        }
-    }
-
-    private static int kill(CommandSourceStack source, String key) {
-        if (!ShadowRealm.exists(key)) {
-            source.sendFailure(Component.literal("No train found with key '" + key + "'"));
-            return 0;
-        }
-
-        ShadowRealm.kill(key);
-        source.sendSuccess(() -> Component.literal("Train with key '")
-            .append(key)
-            .append("' permanently deleted from shadow realm"), true);
+        source.sendSuccess(() -> Component.literal("Train '").append(train.name)
+            .append("' banished to the shadow realm"), true);
         return 1;
+    }
+
+    private static ArgumentBuilder<CommandSourceStack, ?> restore() {
+        return literal("restore")
+            .then(argument("key", ResourceLocationArgument.id())
+                .suggests(ShadowRealmCommand::suggestKeys)
+                .executes(ctx -> $restore(
+                    ctx.getSource(),
+                    ResourceLocationArgument.getId(ctx, "key")
+                )));
+    }
+
+    private static int $restore(CommandSourceStack source, ResourceLocation shadowKey) throws CommandSyntaxException {
+        ServerPlayer player = source.getPlayerOrException();
+
+        var savedData = ((AccessorGlobalRailwayManager) Create.RAILWAYS).railways$getSavedData();
+        UUID trainId = ((RailwaySavedDataDuck) savedData).railways$getShadowKeys().get(shadowKey);
+        if (trainId == null) {
+            source.sendFailure(Component.literal("No shadow train with key '" + shadowKey + "' was found"));
+            return 0;
+        }
+
+        Train train = ((RailwaySavedDataDuck) savedData).railway$getShadowTrains().get(trainId);
+        if (train == null) {
+            source.sendFailure(Component.literal("Shadow train with key '" + shadowKey + "' has disappeared"));
+            return 0;
+        }
+
+        // Send AddTrainPacket to all clients so the train data is available
+        CatnipServices.NETWORK.sendToAllClients(new AddTrainPacket(train));
+        // Then tell this client to start the relocation flow
+        CRPackets.PACKETS.sendTo(player, new ShadowTrainRestorePacket(train.id));
+
+        source.sendSuccess(() -> Component.literal("Use a wrench on a track to restore '").append(train.name).append("'"), true);
+        return 1;
+    }
+
+    private static ArgumentBuilder<CommandSourceStack, ?> kill() {
+        return literal("kill")
+            .then(argument("key", ResourceLocationArgument.id())
+                .suggests(ShadowRealmCommand::suggestKeys)
+                .executes(ctx -> $kill(
+                    ctx.getSource(),
+                    ResourceLocationArgument.getId(ctx, "key")
+                )));
+    }
+
+    private static int $kill(CommandSourceStack source, ResourceLocation shadowKey) {
+        var savedData = ((AccessorGlobalRailwayManager) Create.RAILWAYS).railways$getSavedData();
+        UUID trainId = ((RailwaySavedDataDuck) savedData).railways$getShadowKeys().get(shadowKey);
+        if (trainId == null) {
+            source.sendFailure(Component.literal("No shadow train with key '" + shadowKey + "' was found"));
+            return 0;
+        }
+
+        Train train = ((RailwaySavedDataDuck) savedData).railway$getShadowTrains().get(trainId);
+        if (train == null) {
+            source.sendFailure(Component.literal("Shadow train with key '" + shadowKey + "' has disappeared"));
+            return 0;
+        }
+
+        ((RailwaySavedDataDuck) savedData).railway$getShadowTrains().remove(trainId);
+        ((RailwaySavedDataDuck) savedData).railways$getShadowKeys().remove(shadowKey);
+        savedData.setDirty();
+
+        source.sendSuccess(() -> Component.literal("Shadow train '").append(train.name).append("' has been permanently removed"), true);
+        return 1;
+    }
+
+    private static CompletableFuture<Suggestions> suggestKeys(CommandContext<CommandSourceStack> ctx, SuggestionsBuilder suggestionsBuilder) {
+        var savedData = ((AccessorGlobalRailwayManager) Create.RAILWAYS).railways$getSavedData();
+        if (savedData == null) return Suggestions.empty();
+        var shadowKeys = ((RailwaySavedDataDuck) savedData).railways$getShadowKeys();
+        return SharedSuggestionProvider.suggestResource(shadowKeys.keySet(), suggestionsBuilder);
     }
 }

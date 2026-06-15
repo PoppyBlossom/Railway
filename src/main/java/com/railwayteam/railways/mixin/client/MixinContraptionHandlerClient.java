@@ -18,8 +18,7 @@
 
 package com.railwayteam.railways.mixin.client;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.railwayteam.railways.config.CRConfigs;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.ContraptionHandlerClient;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
@@ -33,35 +32,35 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
-import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ContraptionHandlerClient.class)
+@Mixin(value = ContraptionHandlerClient.class, priority = 600)
 public class MixinContraptionHandlerClient {
-    @WrapOperation(method = "handleSpecialInteractions", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/trains/entity/TrainRelocator;carriageWrenched(Lnet/minecraft/world/phys/Vec3;Lcom/simibubi/create/content/trains/entity/CarriageContraptionEntity;)Z"))
-    private static boolean shadowRealmShortcut(
-        Vec3 vec3,
-        CarriageContraptionEntity entity,
-        Operation<Boolean> original,
+
+    @Inject(method = "handleSpecialInteractions", at = @At("HEAD"), cancellable = true)
+    private static void shadowRealmShortcut(
         AbstractContraptionEntity contraptionEntity,
         Player player,
         BlockPos localPos,
         Direction side,
-        InteractionHand interactionHand
+        InteractionHand interactionHand,
+        CallbackInfoReturnable<Boolean> cir
     ) {
-        if (!player.isShiftKeyDown())
-            return original.call(vec3, entity);
+        if (!player.isShiftKeyDown()) return;
+        if (!(contraptionEntity instanceof CarriageContraptionEntity entity)) return;
 
         ItemStack stack = player.getItemInHand(interactionHand);
         CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
-        if (tag == null || !tag.getBoolean("ShadowHammer")) {
-            // ShadowHammer tag required; universal wrench config not yet ported
-            return original.call(vec3, entity);
-        }
+        boolean hasShadowHammer = tag != null && tag.getBoolean("ShadowHammer");
+        boolean universalWrench = player.isCreative() && CRConfigs.client().universalShadowWrench.get();
+
+        if (!hasShadowHammer && !universalWrench) return;
 
         Minecraft mc = Minecraft.getInstance();
         mc.setScreen(new ChatScreen("/snr shadow_realm banish " + entity.trainId + " "));
-        return true;
+        cir.setReturnValue(true);
     }
 }

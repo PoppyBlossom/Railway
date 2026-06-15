@@ -20,29 +20,45 @@ package com.railwayteam.railways.neoforge.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.railwayteam.railways.config.CRConfigs;
+import com.railwayteam.railways.content.shadow_realm.ShadowRealm;
+import com.railwayteam.railways.content.shadow_realm.ShadowRealm.RestorationTarget;
 import com.simibubi.create.content.trains.entity.TrainRelocationPacket;
+import com.simibubi.create.content.trains.track.BezierTrackPointLocation;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Position;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.Shadow;
 
+import java.util.UUID;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+// earlier priority to bypass OPAC protections, which freak out about there being no entity associated with the relocation
 @Mixin(value = TrainRelocationPacket.class, priority = 500)
 public class TrainRelocationPacketMixin {
+    @Shadow @Final UUID trainId;
+    @Shadow @Final BlockPos pos;
+    @Shadow @Final BezierTrackPointLocation hoveredBezier;
+    @Shadow @Final boolean direction;
+    @Shadow @Final Vec3 lookAngle;
 
-    @WrapOperation(
-        method = "handle",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/world/phys/Vec3;closerThan(Lnet/minecraft/core/Position;D)Z",
-            ordinal = 1),
-        remap = false)
-    private boolean railways$unrestrictRange(Vec3 instance, Position pos, double distance,
-                                            Operation<Boolean> original,
-                                            ServerPlayer sender) {
+    @WrapOperation(method = "handle", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;closerThan(Lnet/minecraft/core/Position;D)Z", ordinal = 0))
+    private boolean unrestrictRange(Vec3 instance, Position pos, double distance, Operation<Boolean> original,
+                                    @Local ServerPlayer sender) {
         if (sender.isCreative() && CRConfigs.server().unlimitedCreativeRelocation.get())
             return true;
         return original.call(instance, pos, distance);
+    }
+
+    @Inject(method = "handle", at = @At("HEAD"), cancellable = true)
+    private void relocateShadowTrain(ServerPlayer sender, CallbackInfo ci) {
+        RestorationTarget target = new RestorationTarget(sender.level(), pos, hoveredBezier, direction, lookAngle);
+        ShadowRealm.handleTrainRelocationPacket(sender, trainId, target, ci);
     }
 }
