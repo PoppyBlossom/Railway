@@ -18,6 +18,7 @@
     "RollingModeMixin",
     "ServerGamePacketListenerImplMixin",
     "TrainMixin",
+    "TrainRelocationPacketMixin",
     "self.BoilerBlockMixin"
   ],
   "injectors": {

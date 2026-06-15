@@ -151,6 +151,7 @@
     "client.MixinStationRenderer",
     "client.MixinStationScreen",
     "client.MixinSlidingDoorRenderer",
+    "client.MixinTrainRelocator",
     "client.MixinSuperGlueSelectionHandler",
     "client.MixinTextureAtlas",
     "client.MixinToolboxHandlerClient",
