@@ -28,7 +28,6 @@ import com.railwayteam.railways.registry.commands.ReloadCasingCollisionCommand;
 import com.railwayteam.railways.registry.commands.ReloadCreativeTabsCommand;
 import com.railwayteam.railways.registry.commands.SplitTrainCommand;
 import com.railwayteam.railways.registry.commands.TrackDemoCommand;
-import com.railwayteam.railways.registry.commands.TrainInfoCommand;
 import com.railwayteam.railways.registry.commands.ShadowRealmCommand;
 import com.railwayteam.railways.registry.commands.FillPaintCommand;
 import com.railwayteam.railways.registry.commands.CountPaintCommand;
@@ -48,7 +47,6 @@ public class CRCommands {
                 .requires(cs -> cs.hasPermission(0))
                 //.then(ClearCasingCacheCommand.register())
                 .then(SplitTrainCommand.register())
-                .then(TrainInfoCommand.register())
                 .then(ShadowRealmCommand.register())
                 .then(FillPaintCommand.register(context))
                 .then(CountPaintCommand.register(context));
