@@ -73,12 +73,11 @@ import com.railwayteam.railways.content.handcar.HandcarItem;
 import com.railwayteam.railways.content.semaphore.SemaphoreBlock;
 import com.railwayteam.railways.content.semaphore.SemaphoreItem;
 import com.railwayteam.railways.content.smokestack.SmokeStackMovementBehaviour;
+import com.railwayteam.railways.content.smokestack.SmokeEmissionParams;
 import com.railwayteam.railways.content.smokestack.SmokestackStyle;
-import com.railwayteam.railways.content.smokestack.block.AxisSmokeStackBlock;
-import com.railwayteam.railways.content.smokestack.block.DieselSmokeStackBlock;
-import com.railwayteam.railways.content.smokestack.block.FacingSmokeStackBlock;
-import com.railwayteam.railways.content.smokestack.block.SmokeStackBlock;
-import com.railwayteam.railways.content.smokestack.block.SmokeStackBlock.RotationType;
+import com.railwayteam.railways.content.smokestack.block.*;
+import com.railwayteam.railways.content.smokestack.block.variable.*;
+import com.railwayteam.railways.content.smokestack.RotationType;
 import com.railwayteam.railways.content.switches.TrackSwitchBlock;
 import com.railwayteam.railways.content.switches.TrackSwitchBlockItem;
 import com.railwayteam.railways.multiloader.CommonTags;
@@ -101,7 +100,9 @@ import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import java.util.function.Supplier;
 import net.createmod.catnip.data.Couple;
+import net.createmod.catnip.data.Pair;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -113,9 +114,11 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.createmod.catnip.math.VoxelShaper;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -189,36 +192,129 @@ public class CRBlocks {
             .register();
     }
 
-    private static BlockEntry<SmokeStackBlock> makeSmokeStack(String variant, SmokeStackBlock.SmokeStackType type, String description, VoxelShape shape, boolean emitStationarySmoke) {
-        return makeSmokeStack(variant, type, description, RotationType.NONE, ShapeWrapper.wrapped(shape), true, emitStationarySmoke);
+    private static BlockEntry<SmokeStackBlock> makeSmokeStack(String variant, SmokeEmissionParams emissionParams, String description, VoxelShape shape, boolean emitStationarySmoke) {
+        return makeSmokeStack(variant, emissionParams, description, RotationType.NONE, ShapeWrapper.wrapped(shape), true, emitStationarySmoke);
     }
 
-    private static BlockEntry<SmokeStackBlock> makeSmokeStack(String variant, SmokeStackBlock.SmokeStackType type, String description, VoxelShape shape, boolean spawnExtraSmoke, boolean emitStationarySmoke) {
-        return makeSmokeStack(variant, type, description, RotationType.NONE, ShapeWrapper.wrapped(shape), spawnExtraSmoke, emitStationarySmoke);
+    private static BlockEntry<SmokeStackBlock> makeSmokeStack(String variant, SmokeEmissionParams emissionParams, String description, VoxelShape shape, boolean spawnExtraSmoke, boolean emitStationarySmoke) {
+        return makeSmokeStack(variant, emissionParams, description, RotationType.NONE, ShapeWrapper.wrapped(shape), spawnExtraSmoke, emitStationarySmoke);
     }
 
     @FunctionalInterface
     private interface SmokeStackFunction<T extends SmokeStackBlock> {
-        T create(BlockBehaviour.Properties properties, SmokeStackBlock.SmokeStackType type, ShapeWrapper shape, boolean emitStationarySmoke, String variant);
+        T create(BlockBehaviour.Properties properties, RotationType rotationType, SmokeEmissionParams emissionParams, ShapeWrapper shape, boolean createsStationarySmoke);
     }
 
-    private static BlockEntry<SmokeStackBlock> makeSmokeStack(String variant, SmokeStackBlock.SmokeStackType type, String description, RotationType rotType, ShapeWrapper shape, boolean spawnExtraSmoke, boolean emitStationarySmoke) {
-        SmokeStackFunction<SmokeStackBlock> blockFunction = SmokeStackBlock::new;
+    private static BlockEntry<SmokeStackBlock> makeSmokeStack(String variant, SmokeEmissionParams emissionParams, String description, RotationType rotType, ShapeWrapper shape, boolean spawnExtraSmoke, boolean emitStationarySmoke) {
+        SmokeStackFunction<SmokeStackBlock> blockFunction;
 
-        switch (rotType) {
-            case NONE -> blockFunction = SmokeStackBlock::new;
-            case AXIS -> blockFunction = AxisSmokeStackBlock::new;
-            case FACING -> blockFunction = FacingSmokeStackBlock::new;
+        if (rotType == RotationType.AXIS) {
+            blockFunction = AxisSmokeStackBlock::new;
+        } else if (rotType == RotationType.FACING) {
+            blockFunction = FacingSmokeStackBlock::new;
+        } else {
+            blockFunction = SmokeStackBlock::new;
         }
 
-        return makeSmokeStack(variant, type, description, shape, spawnExtraSmoke, emitStationarySmoke, BuilderTransformers.defaultSmokeStack(variant, rotType), blockFunction);
+        return makeSmokeStack(variant, emissionParams, description, shape, spawnExtraSmoke, emitStationarySmoke, rotType, BuilderTransformers.defaultSmokeStack(variant, rotType), blockFunction);
     }
 
-    public static final HashMap<String, BlockStateBlockItemGroup<Couple<String>, SmokestackStyle>> SMOKESTACK_GROUP = new HashMap<>();
+    public static final HashMap<String, BlockStateBlockItemGroup<SmokestackStyle.Context, SmokestackStyle>> SMOKESTACK_GROUP = new HashMap<>();
 
-    private static BlockEntry<SmokeStackBlock> makeSmokeStack(String variant, SmokeStackBlock.SmokeStackType type, String description, ShapeWrapper shape, boolean spawnExtraSmoke, boolean emitStationarySmoke, NonNullBiConsumer<DataGenContext<Block, SmokeStackBlock>, RegistrateBlockstateProvider> blockStateProvider, SmokeStackFunction<SmokeStackBlock> blockFunction) {
+    // Lazy holders for circular references in variable smokestack registration
+    private static class Holder<T> {
+        private Supplier<T> value;
+        T get() { return value.get(); }
+        void set(T value) { this.value = () -> value; }
+        void setLazy(Supplier<T> value) { this.value = value; }
+    }
+
+    private static EnumMap<VariableStackPart, ShapeWrapper> variableShaper(VoxelShape singleShape, VoxelShape doubleShape, VoxelShape segmentShape) {
+        return variableShaper(
+            ShapeWrapper.wrapped(singleShape),
+            ShapeWrapper.wrapped(doubleShape),
+            ShapeWrapper.wrapped(segmentShape)
+        );
+    }
+
+    private static EnumMap<VariableStackPart, ShapeWrapper> variableShaper(VoxelShaper singleShaper, VoxelShaper doubleShaper, VoxelShaper segmentShaper) {
+        return variableShaper(
+            ShapeWrapper.wrapped(singleShaper),
+            ShapeWrapper.wrapped(doubleShaper),
+            ShapeWrapper.wrapped(segmentShaper)
+        );
+    }
+
+    private static EnumMap<VariableStackPart, ShapeWrapper> variableShaper(ShapeWrapper single, ShapeWrapper doubleS, ShapeWrapper segment) {
+        EnumMap<VariableStackPart, ShapeWrapper> map = new EnumMap<>(VariableStackPart.class);
+        map.put(VariableStackPart.SINGLE, single);
+        map.put(VariableStackPart.DOUBLE, doubleS);
+        map.put(VariableStackPart.SEGMENT, segment);
+        return map;
+    }
+
+    private static Pair<BlockEntry<VariableSmokeStackBlock>, BlockEntry<SmokeStackExtenderBlock>> makeVariableSmokeStack(
+        String variant, SmokeEmissionParams emissionParams, String description, RotationType rotType,
+        VariableStackPart.Type variationType, EnumMap<VariableStackPart, ShapeWrapper> shape, boolean spawnExtraSmoke
+    ) {
+        Holder<BlockStateBlockItemGroup<SmokestackStyle.Context, SmokestackStyle>> cycleGroupHolder = new Holder<>();
+        Holder<VariableSmokeStackBlock> baseHolder = new Holder<>();
+        Holder<SmokeStackExtenderBlock> extenderHolder = new Holder<>();
+
         TagKey<Item> cycleTag = SmokestackStyle.variantToTagKey(variant);
-        BlockEntry<SmokeStackBlock> BLOCK = REGISTRATE.block("smokestack_" + variant, p -> blockFunction.create(p, type, shape, emitStationarySmoke, variant))
+
+        BlockEntry<VariableSmokeStackBlock> BASE = REGISTRATE.block("smokestack_" + variant,
+                p -> new VariableSmokeStackBlock(p, rotType, emissionParams, shape, true,
+                    cycleGroupHolder::get, extenderHolder::get, variationType.property, variationType.defaultPart))
+            .initialProperties(SharedProperties::softMetal)
+            .blockstate(BuilderTransformers.variableSmokeStack(variant, rotType))
+            .properties(p -> p.mapColor(MapColor.COLOR_GRAY))
+            .properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
+            .properties(BlockBehaviour.Properties::noOcclusion)
+            .addLayer(() -> RenderType::cutoutMipped)
+            .transform(pickaxeOnly())
+            .onRegister(movementBehaviour(new SmokeStackMovementBehaviour(spawnExtraSmoke)))
+            .lang(description)
+            .item(BlockStateBlockItem.create(SmokeStackBlock.STYLE, SmokestackStyle.STEEL, true))
+            .lang(description)
+            .model((c, p) -> p.withExistingParent(c.getName(),
+                p.modLoc("block/smokestack_" + variant + "_steel" + variationType.modelSuffix)))
+            .tag(cycleTag)
+            .build()
+            .onRegisterAfter(Registries.ITEM, v -> ItemDescription.useKey(v, "block.railways.smokestack"))
+            .register();
+
+        BlockEntry<SmokeStackExtenderBlock> EXTENDER = REGISTRATE.block("smokestack_" + variant + "_extension",
+                p -> new SmokeStackExtenderBlock(p, rotType, shape, cycleGroupHolder::get, baseHolder::get,
+                    variationType.property, variationType.defaultPart))
+            .initialProperties(SharedProperties::softMetal)
+            .blockstate(BuilderTransformers.variableSmokeStack(variant, rotType))
+            .properties(p -> p.mapColor(MapColor.COLOR_GRAY))
+            .properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
+            .properties(BlockBehaviour.Properties::noOcclusion)
+            .addLayer(() -> RenderType::cutoutMipped)
+            .transform(pickaxeOnly())
+            .lang(description + " Extension")
+            .register();
+
+        BlockStateBlockItemGroup<SmokestackStyle.Context, SmokestackStyle> group = new BlockStateBlockItemGroup<>(
+            new SmokestackStyle.Context("smokestack_" + variant + "_", description, variationType.modelSuffix),
+            SmokeStackBlock.STYLE, SmokestackStyle.values(), BASE,
+            i -> i.onRegisterAfter(Registries.ITEM, v -> ItemDescription.useKey(v, "block.railways.smokestack")),
+            cycleTag, SmokestackStyle.STEEL, null);
+        SMOKESTACK_GROUP.put(variant, group);
+        group.registerDefaultEntry(SmokestackStyle.STEEL, ItemEntry.cast(REGISTRATE.get("smokestack_" + variant, Registries.ITEM)));
+
+        cycleGroupHolder.set(group);
+        baseHolder.setLazy(BASE::get);
+        extenderHolder.setLazy(EXTENDER::get);
+
+        return Pair.of(BASE, EXTENDER);
+    }
+
+    private static BlockEntry<SmokeStackBlock> makeSmokeStack(String variant, SmokeEmissionParams emissionParams, String description, ShapeWrapper shape, boolean spawnExtraSmoke, boolean emitStationarySmoke, RotationType rotType, NonNullBiConsumer<DataGenContext<Block, SmokeStackBlock>, RegistrateBlockstateProvider> blockStateProvider, SmokeStackFunction<SmokeStackBlock> blockFunction) {
+        TagKey<Item> cycleTag = SmokestackStyle.variantToTagKey(variant);
+        BlockEntry<SmokeStackBlock> BLOCK = REGISTRATE.block("smokestack_" + variant, p -> blockFunction.create(p, rotType, emissionParams, shape, emitStationarySmoke))
             .initialProperties(SharedProperties::softMetal)
             .blockstate(blockStateProvider)
             .properties(p -> p.mapColor(MapColor.COLOR_GRAY))
@@ -240,7 +336,7 @@ public class CRBlocks {
             .register();
 
         if (!variant.equals("caboosestyle")) {
-            BlockStateBlockItemGroup<Couple<String>, SmokestackStyle> group = new BlockStateBlockItemGroup<>(Couple.create("smokestack_" + variant + "_", description), SmokeStackBlock.STYLE, SmokestackStyle.values(), BLOCK,
+            BlockStateBlockItemGroup<SmokestackStyle.Context, SmokestackStyle> group = new BlockStateBlockItemGroup<SmokestackStyle.Context, SmokestackStyle>(new SmokestackStyle.Context("smokestack_" + variant + "_", description, ""), SmokeStackBlock.STYLE, SmokestackStyle.values(), BLOCK,
                 i -> i.onRegisterAfter(Registries.ITEM, v -> ItemDescription.useKey(v, "block.railways.smokestack")),
                 cycleTag, SmokestackStyle.STEEL, null);
             SMOKESTACK_GROUP.put(variant, group);
@@ -578,12 +674,14 @@ public class CRBlocks {
     woodburner
      */
     public static final BlockEntry<SmokeStackBlock>
-        CABOOSESTYLE_STACK = makeSmokeStack("caboosestyle", new SmokeStackBlock.SmokeStackType(0.5, 0.5, 0.5), "Caboose Smokestack", RotationType.AXIS, ShapeWrapper.wrapped(CRShapes.CABOOSE_STACK), false, true),
-        LONG_STACK = makeSmokeStack("long", new SmokeStackBlock.SmokeStackType(0.5, 0.45, 0.5), "Double Smokestack", RotationType.AXIS, ShapeWrapper.wrapped(CRShapes.LONG_STACK), true, true),
-        COALBURNER_STACK = makeSmokeStack("coalburner", new SmokeStackBlock.SmokeStackType(0.5, 1.5, 0.5), "Coalburner Smokestack", CRShapes.COAL_STACK, true),
-        OILBURNER_STACK = makeSmokeStack("oilburner", new SmokeStackBlock.SmokeStackType(new Vec3(0.5, 0.9, 0.5), new Vec3(0.2, 0.2, 0.2)), "Oilburner Smokestack", RotationType.NONE, ShapeWrapper.wrapped(CRShapes.OIL_STACK), true, true),
-        STREAMLINED_STACK = makeSmokeStack("streamlined", new SmokeStackBlock.SmokeStackType(new Vec3(0.5, 0.3, 0.5), new Vec3(0.25, 0.2, 0.25)), "Streamlined Smokestack", RotationType.FACING, ShapeWrapper.wrapped(CRShapes.STREAMLINED_STACK), true, true),
-        WOODBURNER_STACK = makeSmokeStack("woodburner", new SmokeStackBlock.SmokeStackType(0.5, 0.4, 0.5), "Woodburner Smokestack", CRShapes.WOOD_STACK, true);
+        CABOOSESTYLE_STACK = makeSmokeStack("caboosestyle", new SmokeEmissionParams(0.5, 0.5, 0.5), "Caboose Smokestack", RotationType.AXIS, ShapeWrapper.wrapped(CRShapes.CABOOSE_STACK), false, true);
+
+    public static final Pair<BlockEntry<VariableSmokeStackBlock>, BlockEntry<SmokeStackExtenderBlock>>
+        LONG_STACKS = makeVariableSmokeStack("long", new SmokeEmissionParams(0.5, 0.45, 0.5), "Double Smokestack", RotationType.AXIS, VariableStackPart.Type.STANDARD, variableShaper(CRShapes.LONG_STACK_SINGLE, CRShapes.LONG_STACK_DOUBLE, CRShapes.LONG_STACK_SEGMENT), true),
+        COALBURNER_STACKS = makeVariableSmokeStack("coalburner", new SmokeEmissionParams(0.5, 1.5, 0.5), "Coalburner Smokestack", RotationType.NONE, VariableStackPart.Type.STANDARD, variableShaper(CRShapes.COAL_STACK_SINGLE, CRShapes.COAL_STACK_DOUBLE, CRShapes.COAL_STACK_SEGMENT), true),
+        OILBURNER_STACKS = makeVariableSmokeStack("oilburner", new SmokeEmissionParams(new Vec3(0.5, 0.9, 0.5), new Vec3(0.2, 0.2, 0.2)), "Oilburner Smokestack", RotationType.NONE, VariableStackPart.Type.STANDARD, variableShaper(CRShapes.OIL_STACK_SINGLE, CRShapes.OIL_STACK_DOUBLE, CRShapes.OIL_STACK_SEGMENT), true),
+        STREAMLINED_STACKS = makeVariableSmokeStack("streamlined", new SmokeEmissionParams(new Vec3(0.5, 0.3, 0.5), new Vec3(0.25, 0.2, 0.25)), "Streamlined Smokestack", RotationType.FACING, VariableStackPart.Type.STANDARD, variableShaper(CRShapes.STREAMLINED_STACK_SINGLE, CRShapes.STREAMLINED_STACK_DOUBLE, CRShapes.STREAMLINED_STACK_SEGMENT), true),
+        WOODBURNER_STACKS = makeVariableSmokeStack("woodburner", new SmokeEmissionParams(0.5, 0.4, 0.5), "Woodburner Smokestack", RotationType.NONE, VariableStackPart.Type.NO_HALF, variableShaper(CRShapes.WOOD_STACK, CRShapes.WOOD_STACK, CRShapes.COAL_STACK_SEGMENT), true);
 
     public static final BlockEntry<DieselSmokeStackBlock> DIESEL_STACK = REGISTRATE.block("smokestack_diesel", p -> new DieselSmokeStackBlock(p, ShapeWrapper.wrapped(CRShapes.DIESEL_STACK)))
         .initialProperties(SharedProperties::softMetal)

@@ -18,6 +18,14 @@
 
 package com.railwayteam.railways.base.data;
 
+import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
+
+import java.util.Locale;
+import java.util.function.Function;
+
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
+
 import com.railwayteam.railways.content.buffer.MonoTrackBufferBlock;
 import com.railwayteam.railways.content.buffer.TrackBufferBlock;
 import com.railwayteam.railways.content.buffer.headstock.CopycatHeadstockBarsBlock;
@@ -29,10 +37,10 @@ import com.railwayteam.railways.content.conductor.vent.VentBlock;
 import com.railwayteam.railways.content.conductor.whistle.ConductorWhistleFlagBlock;
 import com.railwayteam.railways.content.coupling.coupler.TrackCouplerBlock;
 import com.railwayteam.railways.content.custom_bogeys.blocks.base.CRBogeyBlock;
-import com.railwayteam.railways.content.custom_tracks.casing.CasingCollisionBlock;
 import com.railwayteam.railways.content.custom_bogeys.special.invisible.InvisibleBogeyBlock;
 import com.railwayteam.railways.content.custom_bogeys.special.monobogey.InvisibleMonoBogeyBlock;
 import com.railwayteam.railways.content.custom_bogeys.special.monobogey.MonoBogeyBlock;
+import com.railwayteam.railways.content.custom_tracks.casing.CasingCollisionBlock;
 import com.railwayteam.railways.content.custom_tracks.generic_crossing.GenericCrossingBlock;
 import com.railwayteam.railways.content.handcar.HandcarBlock;
 import com.railwayteam.railways.content.palettes.PalettesColor;
@@ -40,17 +48,18 @@ import com.railwayteam.railways.content.palettes.RotatedPillarWindowBlock;
 import com.railwayteam.railways.content.palettes.boiler.BoilerBlock;
 import com.railwayteam.railways.content.palettes.boiler.BoilerGenerator;
 import com.railwayteam.railways.content.palettes.hazard_stripes.HazardStripesBlock;
-import com.railwayteam.railways.content.palettes.smokebox.PalettesSmokeboxBlock;
 import com.railwayteam.railways.content.palettes.painting.PaintPitcherItem;
+import com.railwayteam.railways.content.palettes.smokebox.PalettesSmokeboxBlock;
 import com.railwayteam.railways.content.palettes.trapdoors.PalettesTrapDoorBlock;
 import com.railwayteam.railways.content.semaphore.SemaphoreBlock;
+import com.railwayteam.railways.content.smokestack.RotationType;
 import com.railwayteam.railways.content.smokestack.block.DieselSmokeStackBlock;
+import com.railwayteam.railways.content.smokestack.block.variable.VariableStack;
 import com.railwayteam.railways.content.smokestack.block.SmokeStackBlock;
 import com.railwayteam.railways.content.switches.TrackSwitchBlock;
 import com.railwayteam.railways.registry.CRPalettes.WindowType;
 import com.railwayteam.railways.registry.CRPalettes.Wrapping;
 import com.railwayteam.railways.registry.CRTags;
-import com.railwayteam.railways.util.ColorUtils;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour;
@@ -65,14 +74,15 @@ import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
+
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
@@ -80,15 +90,7 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
-import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Locale;
-import java.util.function.Function;
-
-import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 
 public class BuilderTransformers {    public static <B extends MonoBogeyBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> monobogey() {
         return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.monobogey();
@@ -126,8 +128,11 @@ public class BuilderTransformers {    public static <B extends MonoBogeyBlock, P
         return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.dieselSmokeStack();
     }    public static <B extends VentBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> conductorVent() {
         return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.conductorVent();
-    }    public static NonNullBiConsumer<DataGenContext<Block, SmokeStackBlock>, RegistrateBlockstateProvider> defaultSmokeStack(String variant, SmokeStackBlock.RotationType rotType) {
+    }    public static NonNullBiConsumer<DataGenContext<Block, SmokeStackBlock>, RegistrateBlockstateProvider> defaultSmokeStack(String variant, RotationType rotType) {
         return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.defaultSmokeStack(variant, rotType);
+    }
+    public static <B extends Block & VariableStack> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockstateProvider> variableSmokeStack(String variant, RotationType rotType) {
+        return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.variableSmokeStack(variant, rotType);
     }    public static <B extends CasingCollisionBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> casingCollision() {
         return com.railwayteam.railways.base.data.neoforge.BuilderTransformersImpl.casingCollision();
     }    public static <B extends HandcarBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> handcar() {

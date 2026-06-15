@@ -1,1457 +1,209 @@
 {
   "variants": {
-    "enabled=false,facing=down,powered=false,style=brass,waterlogged=false": {
+    "enabled=false,facing=down,powered=false,waterlogged=false": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 180
     },
-    "enabled=false,facing=down,powered=false,style=brass,waterlogged=true": {
+    "enabled=false,facing=down,powered=false,waterlogged=true": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 180
     },
-    "enabled=false,facing=down,powered=false,style=brass_cap_copper,waterlogged=false": {
+    "enabled=false,facing=down,powered=true,waterlogged=false": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 180
     },
-    "enabled=false,facing=down,powered=false,style=brass_cap_copper,waterlogged=true": {
+    "enabled=false,facing=down,powered=true,waterlogged=true": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 180
     },
-    "enabled=false,facing=down,powered=false,style=brass_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=false,facing=down,powered=false,style=brass_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=false,facing=down,powered=false,style=copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=false,facing=down,powered=false,style=copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=false,facing=down,powered=false,style=copper_cap_brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=false,facing=down,powered=false,style=copper_cap_brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=false,facing=down,powered=false,style=copper_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=false,facing=down,powered=false,style=copper_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=false,facing=down,powered=false,style=steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=false,facing=down,powered=false,style=steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=false,facing=down,powered=true,style=brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=false,facing=down,powered=true,style=brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=false,facing=down,powered=true,style=brass_cap_copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=false,facing=down,powered=true,style=brass_cap_copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=false,facing=down,powered=true,style=brass_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=false,facing=down,powered=true,style=brass_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=false,facing=down,powered=true,style=copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=false,facing=down,powered=true,style=copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=false,facing=down,powered=true,style=copper_cap_brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=false,facing=down,powered=true,style=copper_cap_brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=false,facing=down,powered=true,style=copper_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=false,facing=down,powered=true,style=copper_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=false,facing=down,powered=true,style=steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=false,facing=down,powered=true,style=steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=false,facing=east,powered=false,style=brass,waterlogged=false": {
+    "enabled=false,facing=east,powered=false,waterlogged=false": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90,
       "y": 90
     },
-    "enabled=false,facing=east,powered=false,style=brass,waterlogged=true": {
+    "enabled=false,facing=east,powered=false,waterlogged=true": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90,
       "y": 90
     },
-    "enabled=false,facing=east,powered=false,style=brass_cap_copper,waterlogged=false": {
+    "enabled=false,facing=east,powered=true,waterlogged=false": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90,
       "y": 90
     },
-    "enabled=false,facing=east,powered=false,style=brass_cap_copper,waterlogged=true": {
+    "enabled=false,facing=east,powered=true,waterlogged=true": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90,
       "y": 90
     },
-    "enabled=false,facing=east,powered=false,style=brass_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=false,facing=east,powered=false,style=brass_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=false,facing=east,powered=false,style=copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=false,facing=east,powered=false,style=copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=false,facing=east,powered=false,style=copper_cap_brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=false,facing=east,powered=false,style=copper_cap_brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=false,facing=east,powered=false,style=copper_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=false,facing=east,powered=false,style=copper_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=false,facing=east,powered=false,style=steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=false,facing=east,powered=false,style=steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=false,facing=east,powered=true,style=brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=false,facing=east,powered=true,style=brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=false,facing=east,powered=true,style=brass_cap_copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=false,facing=east,powered=true,style=brass_cap_copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=false,facing=east,powered=true,style=brass_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=false,facing=east,powered=true,style=brass_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=false,facing=east,powered=true,style=copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=false,facing=east,powered=true,style=copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=false,facing=east,powered=true,style=copper_cap_brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=false,facing=east,powered=true,style=copper_cap_brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=false,facing=east,powered=true,style=copper_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=false,facing=east,powered=true,style=copper_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=false,facing=east,powered=true,style=steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=false,facing=east,powered=true,style=steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=false,facing=north,powered=false,style=brass,waterlogged=false": {
+    "enabled=false,facing=north,powered=false,waterlogged=false": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90
     },
-    "enabled=false,facing=north,powered=false,style=brass,waterlogged=true": {
+    "enabled=false,facing=north,powered=false,waterlogged=true": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90
     },
-    "enabled=false,facing=north,powered=false,style=brass_cap_copper,waterlogged=false": {
+    "enabled=false,facing=north,powered=true,waterlogged=false": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90
     },
-    "enabled=false,facing=north,powered=false,style=brass_cap_copper,waterlogged=true": {
+    "enabled=false,facing=north,powered=true,waterlogged=true": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90
     },
-    "enabled=false,facing=north,powered=false,style=brass_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=false,facing=north,powered=false,style=brass_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=false,facing=north,powered=false,style=copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=false,facing=north,powered=false,style=copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=false,facing=north,powered=false,style=copper_cap_brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=false,facing=north,powered=false,style=copper_cap_brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=false,facing=north,powered=false,style=copper_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=false,facing=north,powered=false,style=copper_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=false,facing=north,powered=false,style=steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=false,facing=north,powered=false,style=steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=false,facing=north,powered=true,style=brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=false,facing=north,powered=true,style=brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=false,facing=north,powered=true,style=brass_cap_copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=false,facing=north,powered=true,style=brass_cap_copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=false,facing=north,powered=true,style=brass_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=false,facing=north,powered=true,style=brass_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=false,facing=north,powered=true,style=copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=false,facing=north,powered=true,style=copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=false,facing=north,powered=true,style=copper_cap_brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=false,facing=north,powered=true,style=copper_cap_brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=false,facing=north,powered=true,style=copper_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=false,facing=north,powered=true,style=copper_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=false,facing=north,powered=true,style=steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=false,facing=north,powered=true,style=steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=false,facing=south,powered=false,style=brass,waterlogged=false": {
+    "enabled=false,facing=south,powered=false,waterlogged=false": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90,
       "y": 180
     },
-    "enabled=false,facing=south,powered=false,style=brass,waterlogged=true": {
+    "enabled=false,facing=south,powered=false,waterlogged=true": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90,
       "y": 180
     },
-    "enabled=false,facing=south,powered=false,style=brass_cap_copper,waterlogged=false": {
+    "enabled=false,facing=south,powered=true,waterlogged=false": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90,
       "y": 180
     },
-    "enabled=false,facing=south,powered=false,style=brass_cap_copper,waterlogged=true": {
+    "enabled=false,facing=south,powered=true,waterlogged=true": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90,
       "y": 180
     },
-    "enabled=false,facing=south,powered=false,style=brass_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=false,facing=south,powered=false,style=brass_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=false,facing=south,powered=false,style=copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=false,facing=south,powered=false,style=copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=false,facing=south,powered=false,style=copper_cap_brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=false,facing=south,powered=false,style=copper_cap_brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=false,facing=south,powered=false,style=copper_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=false,facing=south,powered=false,style=copper_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=false,facing=south,powered=false,style=steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=false,facing=south,powered=false,style=steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=false,facing=south,powered=true,style=brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=false,facing=south,powered=true,style=brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=false,facing=south,powered=true,style=brass_cap_copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=false,facing=south,powered=true,style=brass_cap_copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=false,facing=south,powered=true,style=brass_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=false,facing=south,powered=true,style=brass_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=false,facing=south,powered=true,style=copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=false,facing=south,powered=true,style=copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=false,facing=south,powered=true,style=copper_cap_brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=false,facing=south,powered=true,style=copper_cap_brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=false,facing=south,powered=true,style=copper_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=false,facing=south,powered=true,style=copper_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=false,facing=south,powered=true,style=steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=false,facing=south,powered=true,style=steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=false,facing=up,powered=false,style=brass,waterlogged=false": {
+    "enabled=false,facing=up,powered=false,waterlogged=false": {
       "model": "railways:block/smokestack/block_diesel_case"
     },
-    "enabled=false,facing=up,powered=false,style=brass,waterlogged=true": {
+    "enabled=false,facing=up,powered=false,waterlogged=true": {
       "model": "railways:block/smokestack/block_diesel_case"
     },
-    "enabled=false,facing=up,powered=false,style=brass_cap_copper,waterlogged=false": {
+    "enabled=false,facing=up,powered=true,waterlogged=false": {
       "model": "railways:block/smokestack/block_diesel_case"
     },
-    "enabled=false,facing=up,powered=false,style=brass_cap_copper,waterlogged=true": {
+    "enabled=false,facing=up,powered=true,waterlogged=true": {
       "model": "railways:block/smokestack/block_diesel_case"
     },
-    "enabled=false,facing=up,powered=false,style=brass_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=false,facing=up,powered=false,style=brass_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=false,facing=up,powered=false,style=copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=false,facing=up,powered=false,style=copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=false,facing=up,powered=false,style=copper_cap_brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=false,facing=up,powered=false,style=copper_cap_brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=false,facing=up,powered=false,style=copper_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=false,facing=up,powered=false,style=copper_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=false,facing=up,powered=false,style=steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=false,facing=up,powered=false,style=steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=false,facing=up,powered=true,style=brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=false,facing=up,powered=true,style=brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=false,facing=up,powered=true,style=brass_cap_copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=false,facing=up,powered=true,style=brass_cap_copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=false,facing=up,powered=true,style=brass_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=false,facing=up,powered=true,style=brass_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=false,facing=up,powered=true,style=copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=false,facing=up,powered=true,style=copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=false,facing=up,powered=true,style=copper_cap_brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=false,facing=up,powered=true,style=copper_cap_brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=false,facing=up,powered=true,style=copper_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=false,facing=up,powered=true,style=copper_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=false,facing=up,powered=true,style=steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=false,facing=up,powered=true,style=steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=false,facing=west,powered=false,style=brass,waterlogged=false": {
+    "enabled=false,facing=west,powered=false,waterlogged=false": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90,
       "y": 270
     },
-    "enabled=false,facing=west,powered=false,style=brass,waterlogged=true": {
+    "enabled=false,facing=west,powered=false,waterlogged=true": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90,
       "y": 270
     },
-    "enabled=false,facing=west,powered=false,style=brass_cap_copper,waterlogged=false": {
+    "enabled=false,facing=west,powered=true,waterlogged=false": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90,
       "y": 270
     },
-    "enabled=false,facing=west,powered=false,style=brass_cap_copper,waterlogged=true": {
+    "enabled=false,facing=west,powered=true,waterlogged=true": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90,
       "y": 270
     },
-    "enabled=false,facing=west,powered=false,style=brass_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=false,facing=west,powered=false,style=brass_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=false,facing=west,powered=false,style=copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=false,facing=west,powered=false,style=copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=false,facing=west,powered=false,style=copper_cap_brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=false,facing=west,powered=false,style=copper_cap_brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=false,facing=west,powered=false,style=copper_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=false,facing=west,powered=false,style=copper_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=false,facing=west,powered=false,style=steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=false,facing=west,powered=false,style=steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=false,facing=west,powered=true,style=brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=false,facing=west,powered=true,style=brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=false,facing=west,powered=true,style=brass_cap_copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=false,facing=west,powered=true,style=brass_cap_copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=false,facing=west,powered=true,style=brass_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=false,facing=west,powered=true,style=brass_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=false,facing=west,powered=true,style=copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=false,facing=west,powered=true,style=copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=false,facing=west,powered=true,style=copper_cap_brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=false,facing=west,powered=true,style=copper_cap_brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=false,facing=west,powered=true,style=copper_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=false,facing=west,powered=true,style=copper_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=false,facing=west,powered=true,style=steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=false,facing=west,powered=true,style=steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=true,facing=down,powered=false,style=brass,waterlogged=false": {
+    "enabled=true,facing=down,powered=false,waterlogged=false": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 180
     },
-    "enabled=true,facing=down,powered=false,style=brass,waterlogged=true": {
+    "enabled=true,facing=down,powered=false,waterlogged=true": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 180
     },
-    "enabled=true,facing=down,powered=false,style=brass_cap_copper,waterlogged=false": {
+    "enabled=true,facing=down,powered=true,waterlogged=false": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 180
     },
-    "enabled=true,facing=down,powered=false,style=brass_cap_copper,waterlogged=true": {
+    "enabled=true,facing=down,powered=true,waterlogged=true": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 180
     },
-    "enabled=true,facing=down,powered=false,style=brass_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=true,facing=down,powered=false,style=brass_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=true,facing=down,powered=false,style=copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=true,facing=down,powered=false,style=copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=true,facing=down,powered=false,style=copper_cap_brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=true,facing=down,powered=false,style=copper_cap_brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=true,facing=down,powered=false,style=copper_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=true,facing=down,powered=false,style=copper_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=true,facing=down,powered=false,style=steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=true,facing=down,powered=false,style=steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=true,facing=down,powered=true,style=brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=true,facing=down,powered=true,style=brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=true,facing=down,powered=true,style=brass_cap_copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=true,facing=down,powered=true,style=brass_cap_copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=true,facing=down,powered=true,style=brass_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=true,facing=down,powered=true,style=brass_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=true,facing=down,powered=true,style=copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=true,facing=down,powered=true,style=copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=true,facing=down,powered=true,style=copper_cap_brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=true,facing=down,powered=true,style=copper_cap_brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=true,facing=down,powered=true,style=copper_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=true,facing=down,powered=true,style=copper_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=true,facing=down,powered=true,style=steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=true,facing=down,powered=true,style=steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 180
-    },
-    "enabled=true,facing=east,powered=false,style=brass,waterlogged=false": {
+    "enabled=true,facing=east,powered=false,waterlogged=false": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90,
       "y": 90
     },
-    "enabled=true,facing=east,powered=false,style=brass,waterlogged=true": {
+    "enabled=true,facing=east,powered=false,waterlogged=true": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90,
       "y": 90
     },
-    "enabled=true,facing=east,powered=false,style=brass_cap_copper,waterlogged=false": {
+    "enabled=true,facing=east,powered=true,waterlogged=false": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90,
       "y": 90
     },
-    "enabled=true,facing=east,powered=false,style=brass_cap_copper,waterlogged=true": {
+    "enabled=true,facing=east,powered=true,waterlogged=true": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90,
       "y": 90
     },
-    "enabled=true,facing=east,powered=false,style=brass_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=true,facing=east,powered=false,style=brass_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=true,facing=east,powered=false,style=copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=true,facing=east,powered=false,style=copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=true,facing=east,powered=false,style=copper_cap_brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=true,facing=east,powered=false,style=copper_cap_brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=true,facing=east,powered=false,style=copper_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=true,facing=east,powered=false,style=copper_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=true,facing=east,powered=false,style=steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=true,facing=east,powered=false,style=steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=true,facing=east,powered=true,style=brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=true,facing=east,powered=true,style=brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=true,facing=east,powered=true,style=brass_cap_copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=true,facing=east,powered=true,style=brass_cap_copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=true,facing=east,powered=true,style=brass_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=true,facing=east,powered=true,style=brass_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=true,facing=east,powered=true,style=copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=true,facing=east,powered=true,style=copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=true,facing=east,powered=true,style=copper_cap_brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=true,facing=east,powered=true,style=copper_cap_brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=true,facing=east,powered=true,style=copper_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=true,facing=east,powered=true,style=copper_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=true,facing=east,powered=true,style=steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=true,facing=east,powered=true,style=steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 90
-    },
-    "enabled=true,facing=north,powered=false,style=brass,waterlogged=false": {
+    "enabled=true,facing=north,powered=false,waterlogged=false": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90
     },
-    "enabled=true,facing=north,powered=false,style=brass,waterlogged=true": {
+    "enabled=true,facing=north,powered=false,waterlogged=true": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90
     },
-    "enabled=true,facing=north,powered=false,style=brass_cap_copper,waterlogged=false": {
+    "enabled=true,facing=north,powered=true,waterlogged=false": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90
     },
-    "enabled=true,facing=north,powered=false,style=brass_cap_copper,waterlogged=true": {
+    "enabled=true,facing=north,powered=true,waterlogged=true": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90
     },
-    "enabled=true,facing=north,powered=false,style=brass_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=true,facing=north,powered=false,style=brass_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=true,facing=north,powered=false,style=copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=true,facing=north,powered=false,style=copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=true,facing=north,powered=false,style=copper_cap_brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=true,facing=north,powered=false,style=copper_cap_brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=true,facing=north,powered=false,style=copper_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=true,facing=north,powered=false,style=copper_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=true,facing=north,powered=false,style=steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=true,facing=north,powered=false,style=steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=true,facing=north,powered=true,style=brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=true,facing=north,powered=true,style=brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=true,facing=north,powered=true,style=brass_cap_copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=true,facing=north,powered=true,style=brass_cap_copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=true,facing=north,powered=true,style=brass_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=true,facing=north,powered=true,style=brass_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=true,facing=north,powered=true,style=copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=true,facing=north,powered=true,style=copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=true,facing=north,powered=true,style=copper_cap_brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=true,facing=north,powered=true,style=copper_cap_brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=true,facing=north,powered=true,style=copper_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=true,facing=north,powered=true,style=copper_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=true,facing=north,powered=true,style=steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=true,facing=north,powered=true,style=steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90
-    },
-    "enabled=true,facing=south,powered=false,style=brass,waterlogged=false": {
+    "enabled=true,facing=south,powered=false,waterlogged=false": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90,
       "y": 180
     },
-    "enabled=true,facing=south,powered=false,style=brass,waterlogged=true": {
+    "enabled=true,facing=south,powered=false,waterlogged=true": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90,
       "y": 180
     },
-    "enabled=true,facing=south,powered=false,style=brass_cap_copper,waterlogged=false": {
+    "enabled=true,facing=south,powered=true,waterlogged=false": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90,
       "y": 180
     },
-    "enabled=true,facing=south,powered=false,style=brass_cap_copper,waterlogged=true": {
+    "enabled=true,facing=south,powered=true,waterlogged=true": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90,
       "y": 180
     },
-    "enabled=true,facing=south,powered=false,style=brass_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=true,facing=south,powered=false,style=brass_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=true,facing=south,powered=false,style=copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=true,facing=south,powered=false,style=copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=true,facing=south,powered=false,style=copper_cap_brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=true,facing=south,powered=false,style=copper_cap_brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=true,facing=south,powered=false,style=copper_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=true,facing=south,powered=false,style=copper_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=true,facing=south,powered=false,style=steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=true,facing=south,powered=false,style=steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=true,facing=south,powered=true,style=brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=true,facing=south,powered=true,style=brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=true,facing=south,powered=true,style=brass_cap_copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=true,facing=south,powered=true,style=brass_cap_copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=true,facing=south,powered=true,style=brass_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=true,facing=south,powered=true,style=brass_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=true,facing=south,powered=true,style=copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=true,facing=south,powered=true,style=copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=true,facing=south,powered=true,style=copper_cap_brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=true,facing=south,powered=true,style=copper_cap_brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=true,facing=south,powered=true,style=copper_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=true,facing=south,powered=true,style=copper_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=true,facing=south,powered=true,style=steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=true,facing=south,powered=true,style=steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 180
-    },
-    "enabled=true,facing=up,powered=false,style=brass,waterlogged=false": {
+    "enabled=true,facing=up,powered=false,waterlogged=false": {
       "model": "railways:block/smokestack/block_diesel_case"
     },
-    "enabled=true,facing=up,powered=false,style=brass,waterlogged=true": {
+    "enabled=true,facing=up,powered=false,waterlogged=true": {
       "model": "railways:block/smokestack/block_diesel_case"
     },
-    "enabled=true,facing=up,powered=false,style=brass_cap_copper,waterlogged=false": {
+    "enabled=true,facing=up,powered=true,waterlogged=false": {
       "model": "railways:block/smokestack/block_diesel_case"
     },
-    "enabled=true,facing=up,powered=false,style=brass_cap_copper,waterlogged=true": {
+    "enabled=true,facing=up,powered=true,waterlogged=true": {
       "model": "railways:block/smokestack/block_diesel_case"
     },
-    "enabled=true,facing=up,powered=false,style=brass_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=true,facing=up,powered=false,style=brass_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=true,facing=up,powered=false,style=copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=true,facing=up,powered=false,style=copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=true,facing=up,powered=false,style=copper_cap_brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=true,facing=up,powered=false,style=copper_cap_brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=true,facing=up,powered=false,style=copper_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=true,facing=up,powered=false,style=copper_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=true,facing=up,powered=false,style=steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=true,facing=up,powered=false,style=steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=true,facing=up,powered=true,style=brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=true,facing=up,powered=true,style=brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=true,facing=up,powered=true,style=brass_cap_copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=true,facing=up,powered=true,style=brass_cap_copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=true,facing=up,powered=true,style=brass_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=true,facing=up,powered=true,style=brass_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=true,facing=up,powered=true,style=copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=true,facing=up,powered=true,style=copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=true,facing=up,powered=true,style=copper_cap_brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=true,facing=up,powered=true,style=copper_cap_brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=true,facing=up,powered=true,style=copper_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=true,facing=up,powered=true,style=copper_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=true,facing=up,powered=true,style=steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=true,facing=up,powered=true,style=steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case"
-    },
-    "enabled=true,facing=west,powered=false,style=brass,waterlogged=false": {
+    "enabled=true,facing=west,powered=false,waterlogged=false": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90,
       "y": 270
     },
-    "enabled=true,facing=west,powered=false,style=brass,waterlogged=true": {
+    "enabled=true,facing=west,powered=false,waterlogged=true": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90,
       "y": 270
     },
-    "enabled=true,facing=west,powered=false,style=brass_cap_copper,waterlogged=false": {
+    "enabled=true,facing=west,powered=true,waterlogged=false": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90,
       "y": 270
     },
-    "enabled=true,facing=west,powered=false,style=brass_cap_copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=true,facing=west,powered=false,style=brass_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=true,facing=west,powered=false,style=brass_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=true,facing=west,powered=false,style=copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=true,facing=west,powered=false,style=copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=true,facing=west,powered=false,style=copper_cap_brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=true,facing=west,powered=false,style=copper_cap_brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=true,facing=west,powered=false,style=copper_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=true,facing=west,powered=false,style=copper_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=true,facing=west,powered=false,style=steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=true,facing=west,powered=false,style=steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=true,facing=west,powered=true,style=brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=true,facing=west,powered=true,style=brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=true,facing=west,powered=true,style=brass_cap_copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=true,facing=west,powered=true,style=brass_cap_copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=true,facing=west,powered=true,style=brass_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=true,facing=west,powered=true,style=brass_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=true,facing=west,powered=true,style=copper,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=true,facing=west,powered=true,style=copper,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=true,facing=west,powered=true,style=copper_cap_brass,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=true,facing=west,powered=true,style=copper_cap_brass,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=true,facing=west,powered=true,style=copper_cap_steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=true,facing=west,powered=true,style=copper_cap_steel,waterlogged=true": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=true,facing=west,powered=true,style=steel,waterlogged=false": {
-      "model": "railways:block/smokestack/block_diesel_case",
-      "x": 90,
-      "y": 270
-    },
-    "enabled=true,facing=west,powered=true,style=steel,waterlogged=true": {
+    "enabled=true,facing=west,powered=true,waterlogged=true": {
       "model": "railways:block/smokestack/block_diesel_case",
       "x": 90,
       "y": 270

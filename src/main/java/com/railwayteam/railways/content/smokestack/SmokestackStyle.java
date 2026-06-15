@@ -1,6 +1,6 @@
 /*
  * Steam 'n' Rails
- * Copyright (c) 2022-2025 The Railways Team
+ * Copyright (c) 2022-2026 The Railways Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,7 +22,6 @@ import com.railwayteam.railways.Railways;
 import com.railwayteam.railways.content.buffer.BlockStateBlockItemGroup;
 import com.railwayteam.railways.registry.CRTags;
 import com.railwayteam.railways.util.TextUtils;
-import net.createmod.catnip.data.Couple;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.StringRepresentable;
@@ -31,26 +30,39 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
-public enum SmokestackStyle implements StringRepresentable, BlockStateBlockItemGroup.IStyle<Couple<String>> {
-    STEEL("steel", "Steel"),
-    BRASS_CAP_STEEL("brass_cap_steel", "Brass Capped Steel"),
-    COPPER_CAP_STEEL("copper_cap_steel", "Copper Capped Steel"),
-    BRASS("brass", "Brass"),
-    COPPER_CAP_BRASS("copper_cap_brass", "Copper Capped Brass"),
-    COPPER("copper", "Copper"),
-    BRASS_CAP_COPPER("brass_cap_copper", "Brass Capped Copper");
+public enum SmokestackStyle implements StringRepresentable, BlockStateBlockItemGroup.IStyle<SmokestackStyle.Context> {
+    STEEL(Material.STEEL),
+    BRASS_CAP_STEEL(Material.STEEL, Material.BRASS),
+    COPPER_CAP_STEEL(Material.STEEL, Material.COPPER),
+    IRON_CAP_STEEL(Material.STEEL, Material.IRON),
+
+    BRASS(Material.BRASS),
+    COPPER_CAP_BRASS(Material.BRASS, Material.COPPER),
+    IRON_CAP_BRASS(Material.BRASS, Material.IRON),
+
+    COPPER(Material.COPPER),
+    BRASS_CAP_COPPER(Material.COPPER, Material.BRASS),
+    IRON_CAP_COPPER(Material.COPPER, Material.IRON);
 
     private final String model;
+    private final String segmentModel;
     private final String langName;
 
-    SmokestackStyle(String model, String langName) {
-        this.model = model;
-        this.langName = langName;
+    SmokestackStyle(Material material) {
+        this.model = material.id();
+        this.segmentModel = material.id();
+        this.langName = material.lang();
+    }
+
+    SmokestackStyle(Material material, Material capMaterial) {
+        this.model = capMaterial.id() + "_cap_" + material.id();
+        this.segmentModel = material.id();
+        this.langName = TextUtils.titleCaseConversion(capMaterial.lang() + " Capped " + material.lang());
     }
 
     @Override
-    public ResourceLocation getModel(Couple<String> context) {
-        return Railways.asResource("block/" + context.getFirst() + model);
+    public ResourceLocation getModel(Context context) {
+        return Railways.asResource("block/" + context.prefix + model + context.modelSuffix);
     }
 
     public ResourceLocation getTexture(String variant) {
@@ -59,19 +71,23 @@ public enum SmokestackStyle implements StringRepresentable, BlockStateBlockItemG
         return Railways.asResource("block/smokestack/caboosestyle");
     }
 
+    public ResourceLocation getSegmentTexture(String variant) {
+        return Railways.asResource("block/smokestack/" + variant + "/segment_" + segmentModel);
+    }
+
     @Override
     public @NotNull String getSerializedName() {
         return name().toLowerCase(Locale.ROOT);
     }
 
     @Override
-    public String getLangName(Couple<String> context) {
-        return langName + " " + TextUtils.titleCaseConversion(context.getSecond());
+    public String getLangName(Context context) {
+        return langName + " " + TextUtils.titleCaseConversion(context.description);
     }
 
     @Override
-    public String getBlockId(Couple<String> context) {
-        return context.getFirst() + model;
+    public String getBlockId(Context context) {
+        return context.prefix + model;
     }
 
     public String getBlockId() {
@@ -89,4 +105,14 @@ public enum SmokestackStyle implements StringRepresentable, BlockStateBlockItemG
             default -> throw new IllegalArgumentException();
         };
     }
+
+    private enum Material {
+        BRASS(false), COPPER(false), STEEL(false), IRON(true);
+        public final boolean capOnly;
+        Material(boolean capOnly) { this.capOnly = capOnly; }
+        public String id() { return name().toLowerCase(Locale.ROOT); }
+        public String lang() { return TextUtils.titleCaseConversion(name()); }
+    }
+
+    public record Context(String prefix, String description, String modelSuffix) {}
 }

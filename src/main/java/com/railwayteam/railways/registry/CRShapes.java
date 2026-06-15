@@ -209,9 +209,23 @@ public class CRShapes {
         COAL_STACK = shape(4, 0, 4, 12, 16, 12)
             .add(3, 12, 3, 13, 15, 13)
             .build(),
+        COAL_STACK_SINGLE = shape(4, 0, 4, 12, 8, 12)
+            .add(3, 4, 3, 13, 7, 13)
+            .build(),
+        COAL_STACK_DOUBLE = shape(4, 0, 4, 12, 16, 12)
+            .add(3, 12, 3, 13, 15, 13)
+            .build(),
+        COAL_STACK_SEGMENT = cuboid(4, 0, 4, 12, 16, 12),
         OIL_STACK = shape(2, 0, 2, 14, 16, 14)
             .add(0, 11, 0, 16, 14, 16)
             .build(),
+        OIL_STACK_SINGLE = shape(2, 0, 2, 14, 8, 14)
+            .add(0, 3, 0, 16, 6, 16)
+            .build(),
+        OIL_STACK_DOUBLE = shape(2, 0, 2, 14, 16, 14)
+            .add(0, 11, 0, 16, 14, 16)
+            .build(),
+        OIL_STACK_SEGMENT = cuboid(2, 0, 2, 14, 16, 14),
         WOOD_STACK = shape(4, 0, 4, 12, 4, 12)
             .add(2 ,4, 2, 14, 9, 14)
             .add(0 ,9, 0, 16, 14, 16)
@@ -226,7 +240,21 @@ public class CRShapes {
         LONG_STACK = shape(1, 0, 3, 15, 5, 13)
             .add(0, 2, 2, 16, 4, 14)
             .forHorizontal(Direction.WEST),
+        LONG_STACK_SINGLE = shape(1, 0, 3, 15, 8, 13)
+            .add(0, 5, 2, 16, 7, 14)
+            .forHorizontal(Direction.WEST),
+        LONG_STACK_DOUBLE = shape(1, 0, 3, 15, 16, 13)
+            .add(0, 13, 2, 16, 15, 14)
+            .forHorizontal(Direction.WEST),
+        LONG_STACK_SEGMENT = shape(1, 0, 3, 15, 16, 13)
+            .forHorizontal(Direction.WEST),
         STREAMLINED_STACK = shape(1, 0, 3, 15, 2, 13)
+            .forHorizontal(Direction.EAST),
+        STREAMLINED_STACK_SINGLE = shape(1, 0, 3, 15, 2, 13)
+            .forHorizontal(Direction.EAST),
+        STREAMLINED_STACK_DOUBLE = shape(1, 0, 3, 15, 10, 13)
+            .forHorizontal(Direction.EAST),
+        STREAMLINED_STACK_SEGMENT = shape(1, 0, 3, 15, 16, 13)
             .forHorizontal(Direction.EAST),
         DIESEL_STACK = shape(0, 0, 0, 16, 4, 16)
             .forDirectional(Direction.UP);
