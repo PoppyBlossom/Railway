@@ -29,6 +29,7 @@ import com.simibubi.create.content.kinetics.deployer.DeployerFakePlayer;
 import com.simibubi.create.content.trains.entity.Carriage;
 import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.content.trains.schedule.Schedule;
+import com.simibubi.create.content.trains.station.TrainEditPacket;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.component.CustomData;
 import com.simibubi.create.content.trains.schedule.ScheduleEntry;
@@ -37,6 +38,7 @@ import com.simibubi.create.content.trains.schedule.destination.DestinationInstru
 import com.simibubi.create.content.trains.station.GlobalStation;
 import com.simibubi.create.content.trains.station.StationBlock;
 import com.simibubi.create.content.trains.station.StationBlockEntity;
+import net.createmod.catnip.platform.CatnipServices;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -44,7 +46,11 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.NameTagItem;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -70,6 +76,15 @@ public abstract class MixinStationBlock {
     @Inject(method = "use", at = @At("HEAD"), cancellable = true, remap = true)
     private void autoWhistle(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit, CallbackInfoReturnable<InteractionResult> cir){
         ItemStack itemInHand = pPlayer.getItemInHand(pHand);
+        // Check nametag interaction first
+        if (!pLevel.isClientSide && pPlayer instanceof DeployerFakePlayer
+            && pLevel.getBlockEntity(pPos) instanceof StationBlockEntity stationBe
+            && itemInHand.getItem() instanceof NameTagItem
+        ) {
+            cir.setReturnValue(deployersNameTag(itemInHand, stationBe));
+            return;
+        }
+
         if (CRBlocks.CONDUCTOR_WHISTLE_FLAG.asStack().getItem().equals(itemInHand.getItem())) {
             if (!pLevel.isClientSide && pPlayer instanceof DeployerFakePlayer && pLevel.getBlockEntity(pPos) instanceof StationBlockEntity stationBe) {
                 cir.setReturnValue(InteractionResult.CONSUME);
@@ -197,5 +212,41 @@ public abstract class MixinStationBlock {
             if (CRBlocks.CONDUCTOR_WHISTLE_FLAG.isIn(itemInHand))
                 cir.setReturnValue(InteractionResult.PASS);
         }
+    }
+
+    @Inject(method = "useItemOn", at = @At("HEAD"), cancellable = true, remap = true)
+    private void deployersNameTagItemOn(ItemStack stack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit, CallbackInfoReturnable<ItemInteractionResult> cir) {
+        if (!pLevel.isClientSide && pPlayer instanceof DeployerFakePlayer
+            && pLevel.getBlockEntity(pPos) instanceof StationBlockEntity stationBe
+            && stack.getItem() instanceof NameTagItem
+        ) {
+            if (deployersNameTag(stack, stationBe).consumesAction())
+                cir.setReturnValue(ItemInteractionResult.sidedSuccess(pLevel.isClientSide));
+        }
+    }
+
+    private InteractionResult deployersNameTag(ItemStack itemInHand, StationBlockEntity stationBe) {
+        GlobalStation station = stationBe.getStation();
+        if (station == null || station.getPresentTrain() == null) return InteractionResult.PASS;
+
+        Train train = station.getPresentTrain();
+        Component customName = itemInHand.getOrDefault(DataComponents.CUSTOM_NAME, null);
+        if (customName != null) {
+            // Set the train name from the nametag's custom name
+            String newName = customName.getString();
+            if (!train.name.getString().equals(newName)) {
+                train.name = Component.literal(newName);
+                CatnipServices.NETWORK.sendToAllClients(new TrainEditPacket.TrainEditReturnPacket(
+                    train.id,
+                    newName,
+                    train.icon.getId(),
+                    train.mapColorIndex
+                ));
+            }
+        } else {
+            // Get the train's name and put it on the nametag
+            itemInHand.set(DataComponents.CUSTOM_NAME, Component.literal(train.name.getString()));
+        }
+        return InteractionResult.CONSUME;
     }
 }

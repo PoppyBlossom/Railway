@@ -1,0 +1,22 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "railways:green_paint_pitcher"
+    },
+    {
+      "item": "railways:black_paint_pitcher"
+    }
+  ],
+  "results": [
+    {
+      "amount": 250,
+      "components": {
+        "minecraft:custom_data": {
+          "Color": "pine_green"
+        }
+      },
+      "id": "railways:paint"
+    }
+  ]
+}

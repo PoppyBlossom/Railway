@@ -56,5 +56,7 @@ public class CRPackets {
         .s2c(CameraMovePacket.class, CameraMovePacket::new)
         .s2c(ConfigureDevCapeS2CPacket.class, ConfigureDevCapeS2CPacket::new)
 
+        .s2c(ShadowTrainRestorePacket.class, ShadowTrainRestorePacket::new)
+
         .build();
 }

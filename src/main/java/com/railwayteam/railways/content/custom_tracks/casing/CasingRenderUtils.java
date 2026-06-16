@@ -41,6 +41,7 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -57,7 +58,7 @@ import static com.railwayteam.railways.util.MathUtils.copy;
 
 public abstract class CasingRenderUtils {
 
-    private static final HashMap<Pair<PartialModel, SlabBlock>, PartialModel> reTexturedModels = new HashMap<>();
+    private static final HashMap<Pair<PartialModel, Block>, PartialModel> reTexturedModels = new HashMap<>();
 
     public static void clearModelCache() {
         reTexturedModels.clear();
@@ -65,8 +66,8 @@ public abstract class CasingRenderUtils {
         Minecraft.getInstance().levelRenderer.allChanged();
     }
 
-    public static PartialModel reTexture(PartialModel model, SlabBlock block) {
-        Pair<PartialModel, SlabBlock> key = Pair.of(model, block);
+    public static PartialModel reTexture(PartialModel model, Block block) {
+        Pair<PartialModel, Block> key = Pair.of(model, block);
         if (!reTexturedModels.containsKey(key)) {
             BlockState slabState = block.defaultBlockState();
             BakedModel slabModel = Minecraft.getInstance().getModelManager().getBlockModelShaper().getBlockModel(slabState);
@@ -184,8 +185,8 @@ public abstract class CasingRenderUtils {
         return positions.stream().toList();
     }
 
-    public static TransformedInstance makeCasingInstance(PartialModel baseModel, SlabBlock slabBlock, InstancerProvider instancerProvider) {
-        PartialModel texturedPartial = reTexture(baseModel, slabBlock);
+    public static TransformedInstance makeCasingInstance(PartialModel baseModel, Block casingBlock, InstancerProvider instancerProvider) {
+        PartialModel texturedPartial = reTexture(baseModel, casingBlock);
         return instancerProvider.instancer(InstanceTypes.TRANSFORMED, SpecialModels.smoothLit(texturedPartial))
                 .createInstance();
     }

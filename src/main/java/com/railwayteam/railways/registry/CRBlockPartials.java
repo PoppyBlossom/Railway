@@ -20,6 +20,7 @@ package com.railwayteam.railways.registry;
 
 import com.railwayteam.railways.Railways;
 import com.simibubi.create.Create;
+import net.createmod.catnip.data.Couple;
 import com.simibubi.create.content.trains.track.TrackMaterial.TrackType;
 import com.simibubi.create.content.trains.track.TrackShape;
 import com.railwayteam.railways.mixin.client.AccessorPartialModel;
@@ -28,6 +29,7 @@ import net.createmod.catnip.lang.Lang;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import org.jetbrains.annotations.NotNull;
+import com.railwayteam.railways.registry.CRPalettes.PalettesColorList;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -570,6 +572,27 @@ public class CRBlockPartials {
     public static final PartialModel DIESEL_STACK_FAN = block("smokestack/block_diesel_fan");
     public static final PartialModel CONDUCTOR_ANTENNA = block("conductor_antenna");
 
+    public static final PartialModel PAINT_STRIPPER_BLOB = item("palettes/paint_blob/sand");
+
+    public static final PalettesColorList<Couple<Couple<PartialModel>>> FOLDING_DOORS = new PalettesColorList<>(
+        color -> Couple.createWithContext(windowed -> Couple.createWithContext(left -> {
+            String side = left ? "left" : "right";
+            String windowStr = windowed ? "_windowed" : "";
+            return block("palettes/" + color.getSerializedName() + "/folding_door/fold_" + side + windowStr);
+        }))
+    );
+
+    public static final PalettesColorList<PartialModel> FLYWHEELS = new PalettesColorList<>(
+        color -> block("palettes/flywheel/" + color.getSerializedName() + "/block")
+    );
+
+    public static final PalettesColorList<PartialModel> PAINT_BLOBS = new PalettesColorList<>(
+        color -> item("palettes/paint_blob/" + color.getSerializedName())
+    );
+
+    public static final EnumMap<com.railwayteam.railways.content.palettes.PalettesColor, PartialModel> UNUSED_PAINT_BLOBS = new EnumMap<>(com.railwayteam.railways.content.palettes.PalettesColor.class);
+
+
     private static PartialModel createBlock(String path) {
         return PartialModel.of(Create.asResource("block/" + path));
     }
@@ -578,11 +601,17 @@ public class CRBlockPartials {
         return PartialModel.of(Railways.asResource("block/" + path));
     }
 
+    private static PartialModel item(String path) {
+        return PartialModel.of(Railways.asResource("item/" + path));
+    }
+
     static {
         for (DyeColor color : DyeColor.values()) {
             TOOLBOX_BODIES.put(color, createBlock(Lang.asId(color.name()) + "_toolbox"));
             CONDUCTOR_WHISTLE_FLAGS.put(color, block("conductor_whistle/flag_"+ Lang.asId(color.name())));
         }
+
+        // PalettesColorList initializers populate PAINT_BLOBS and FOLDING_DOORS
     }
 
     @SuppressWarnings("EmptyMethod")

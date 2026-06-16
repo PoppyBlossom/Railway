@@ -37,6 +37,8 @@
   "block.railways.buffer.tooltip": "BUFFER",
   "block.railways.buffer.tooltip.summary": "Can be dyed by _clicking_ with dye.",
 
+  "item.railways.paint_pitcher.paint_level": "Paint Level: %s/%s",
+
   "block.railways.track_buffer.tooltip": "TRACK BUFFER",
   "block.railways.track_buffer.tooltip.summary": "_Variant_ can be changed by _wrenching the front face_, can be dyed by _clicking_ with dye and the wood board can be changed by _clicking_ with planks."
 }

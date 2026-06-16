@@ -33,22 +33,25 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Based on {@link TagGen}
  */
 public class CRTagGen {
-	private static final Map<TagKey<Block>, List<ResourceLocation>> OPTIONAL_TAGS = new HashMap<>();
+	private static final Map<TagKey<Block>, List<ResourceLocation>> OPTIONAL_TAGS = new ConcurrentHashMap<>();
 
 	@SafeVarargs
 	public static void addOptionalTag(ResourceLocation id, TagKey<Block>... tags) {
 		for (TagKey<Block> tag : tags) {
-			OPTIONAL_TAGS.computeIfAbsent(tag, (e) -> new ArrayList<>()).add(id);
+			OPTIONAL_TAGS.computeIfAbsent(tag, (e) -> new CopyOnWriteArrayList<>()).add(id);
 		}
 	}
 
@@ -58,6 +61,8 @@ public class CRTagGen {
 		.addTag(BlockTags.FENCES);
 
 		prov.addTag(CRTags.AllBlockTags.TRACK_CASING_BLACKLIST.tag);
+	prov.addTag(CRTags.AllBlockTags.TRACK_CASING_WHITELIST.tag)
+		.add(Blocks.SNOW.builtInRegistryHolder().key(), Blocks.MOSS_CARPET.builtInRegistryHolder().key());
 
 		// VALIDATE
 
@@ -68,7 +73,9 @@ public class CRTagGen {
 		}
 		for (TagKey<Block> tag : OPTIONAL_TAGS.keySet()) {
 			var appender = tagAppender(prov, tag);
-			for (ResourceLocation loc : OPTIONAL_TAGS.get(tag))
+			List<ResourceLocation> list = OPTIONAL_TAGS.get(tag);
+			if (list == null) continue;
+			for (ResourceLocation loc : list)
 				appender.addOptional(loc);
 		}
 	}
@@ -104,6 +111,10 @@ public class CRTagGen {
 				.add(Items.CRAFTING_TABLE.builtInRegistryHolder().key());
 
 		prov.addTag(AllItemTags.NOT_TRAIN_FUEL.tag);
+
+		// Binding agents tag (for paint mixing recipes)
+		tagAppender(prov, AllItemTags.BINDING_AGENTS.tag)
+			.add(Items.CLAY_BALL.builtInRegistryHolder().key());
 
 		for (AllItemTags tag : AllItemTags.values()) {
 			if (tag.alwaysDatagen)

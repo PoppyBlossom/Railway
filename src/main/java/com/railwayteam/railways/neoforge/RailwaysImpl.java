@@ -42,7 +42,6 @@ import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.util.CreativeModeTabModifier;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands.CommandSelection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
@@ -50,6 +49,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.minecraft.commands.CommandBuildContext;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -83,6 +83,25 @@ public class RailwaysImpl {
 		
 		//noinspection Convert2MethodRef
 		Env.CLIENT.runIfCurrent(() -> () -> RailwaysClientImpl.init());
+
+		// Register fluid handler capability for paint pitchers
+		modEventBus.addListener(RailwaysImpl::registerCapabilities);
+	}
+
+	public static void registerCapabilities(net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent event) {
+		var cap = net.neoforged.neoforge.capabilities.Capabilities.FluidHandler.ITEM;
+		event.registerItem(
+			cap,
+			(stack, ctx) -> new com.railwayteam.railways.content.palettes.painting.PaintPitcherFluidHandler(stack),
+			com.railwayteam.railways.registry.CRItems.EMPTY_PAINT_PITCHER.get()
+		);
+		for (var entry : com.railwayteam.railways.registry.CRItems.FILLED_PITCHERS) {
+			event.registerItem(
+				cap,
+				(stack, ctx) -> new com.railwayteam.railways.content.palettes.painting.PaintPitcherFluidHandler(stack),
+				entry.get()
+			);
+		}
 	}
 
 	public static void finalizeRegistrate() {
@@ -169,17 +188,15 @@ public class RailwaysImpl {
 		}
 	}
 
-	private static final Set<BiConsumer<CommandDispatcher<CommandSourceStack>, Boolean>> commandConsumers = new HashSet<>();
+	private static final Set<BiConsumer<CommandDispatcher<CommandSourceStack>, CommandBuildContext>> commandConsumers = new HashSet<>();
 
-	public static void registerCommands(BiConsumer<CommandDispatcher<CommandSourceStack>, Boolean> consumer) {
+	public static void registerCommands(BiConsumer<CommandDispatcher<CommandSourceStack>, CommandBuildContext> consumer) {
 		commandConsumers.add(consumer);
 	}
 
 	@SubscribeEvent
 	public static void onCommandRegistration(RegisterCommandsEvent event) {
-		CommandSelection selection = event.getCommandSelection();
-		boolean dedicated = selection == CommandSelection.ALL || selection == CommandSelection.DEDICATED;
-		commandConsumers.forEach(consumer -> consumer.accept(event.getDispatcher(), dedicated));
+		commandConsumers.forEach(consumer -> consumer.accept(event.getDispatcher(), event.getBuildContext()));
 	}
 
 	public static void platformBasedRegistration() {
@@ -192,5 +209,6 @@ public class RailwaysImpl {
 		CRMountedStorageTypesImpl.init();
 		CRBlocksImpl.init();
 		CRBlockEntitiesImpl.init();
+		com.railwayteam.railways.registry.CRFluids.register();
 	}
 }

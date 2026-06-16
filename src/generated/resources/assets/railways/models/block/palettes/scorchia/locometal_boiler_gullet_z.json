@@ -1,0 +1,11 @@
+{
+  "parent": "railways:block/palettes/boiler/boiler",
+  "flip_v": true,
+  "loader": "neoforge:obj",
+  "model": "railways:models/block/palettes/boiler/boiler_z.obj",
+  "textures": {
+    "front": "railways:block/palettes/scorchia/boiler_gullet",
+    "particle": "railways:block/palettes/scorchia/riveted_pillar_top",
+    "sides": "railways:block/palettes/scorchia/boiler_side"
+  }
+}

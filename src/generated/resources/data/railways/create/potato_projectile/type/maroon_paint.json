@@ -1,0 +1,17 @@
+{
+  "damage": 3,
+  "items": "railways:maroon_paint_pitcher",
+  "knockback": 1.5,
+  "on_entity_hit": {
+    "type": "create:potion_effect",
+    "effect": "minecraft:poison",
+    "level": 1,
+    "recoverable": false,
+    "ticks": 100
+  },
+  "reload_ticks": 15,
+  "render_mode": {
+    "type": "create:tumble"
+  },
+  "velocity_multiplier": 1.25
+}

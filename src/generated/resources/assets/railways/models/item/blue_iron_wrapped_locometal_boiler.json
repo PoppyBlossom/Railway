@@ -1,3 +1,11 @@
 {
-  "parent": "railways:block/blue_iron_wrapped_locometal_boiler_gullet_x"
+  "parent": "railways:block/palettes/boiler/boiler",
+  "flip_v": true,
+  "loader": "neoforge:obj",
+  "model": "railways:models/block/palettes/boiler/boiler_x.obj",
+  "textures": {
+    "front": "railways:block/palettes/blue/boiler_slashed",
+    "particle": "railways:block/palettes/blue/riveted_pillar_top",
+    "sides": "railways:block/palettes/blue/iron_wrapped_boiler_side"
+  }
 }

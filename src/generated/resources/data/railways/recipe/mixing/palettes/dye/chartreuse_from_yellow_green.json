@@ -1,0 +1,22 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "railways:yellow_paint_pitcher"
+    },
+    {
+      "item": "railways:green_paint_pitcher"
+    }
+  ],
+  "results": [
+    {
+      "amount": 250,
+      "components": {
+        "minecraft:custom_data": {
+          "Color": "chartreuse"
+        }
+      },
+      "id": "railways:paint"
+    }
+  ]
+}

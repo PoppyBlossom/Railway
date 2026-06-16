@@ -34,6 +34,8 @@ import com.railwayteam.railways.content.custom_bogeys.special.monobogey.Invisibl
 import com.railwayteam.railways.content.custom_bogeys.special.monobogey.MonoBogeyBlockEntity;
 import com.railwayteam.railways.content.custom_tracks.casing.CasingCollisionBlockEntity;
 import com.railwayteam.railways.content.custom_tracks.generic_crossing.GenericCrossingBlockEntity;
+import com.railwayteam.railways.content.palettes.PalettesColor;
+import com.railwayteam.railways.content.palettes.doors.PalettesSlidingDoorBlockEntity;
 import com.railwayteam.railways.content.semaphore.SemaphoreBlockEntity;
 import com.railwayteam.railways.content.semaphore.SemaphoreRenderer;
 import com.railwayteam.railways.content.smokestack.block.be.DieselSmokeStackBlockEntity;
@@ -44,6 +46,8 @@ import com.railwayteam.railways.content.switches.TrackSwitchRenderer;
 import com.simibubi.create.content.trains.bogey.BogeyBlockEntityRenderer;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import net.minecraft.world.level.block.Block;
 
 public class CRBlockEntities {
     private static final CreateRegistrate REGISTRATE = Railways.registrate();
@@ -113,7 +117,7 @@ public class CRBlockEntities {
         .register();
 
     public static final BlockEntityEntry<SmokeStackBlockEntity> SMOKE_STACK = REGISTRATE.blockEntity("smokestack", SmokeStackBlockEntity::new)
-        .validBlocks(CRBlocks.CABOOSESTYLE_STACK, CRBlocks.LONG_STACK, CRBlocks.COALBURNER_STACK, CRBlocks.OILBURNER_STACK, CRBlocks.STREAMLINED_STACK, CRBlocks.WOODBURNER_STACK)
+        .validBlocks(CRBlocks.CABOOSESTYLE_STACK, CRBlocks.LONG_STACKS.getFirst(), CRBlocks.LONG_STACKS.getSecond(), CRBlocks.COALBURNER_STACKS.getFirst(), CRBlocks.COALBURNER_STACKS.getSecond(), CRBlocks.OILBURNER_STACKS.getFirst(), CRBlocks.OILBURNER_STACKS.getSecond(), CRBlocks.STREAMLINED_STACKS.getFirst(), CRBlocks.STREAMLINED_STACKS.getSecond(), CRBlocks.WOODBURNER_STACKS.getFirst(), CRBlocks.WOODBURNER_STACKS.getSecond())
         .register();
 
     public static final BlockEntityEntry<DieselSmokeStackBlockEntity> DIESEL_SMOKE_STACK = REGISTRATE.blockEntity("diesel_smokestack", DieselSmokeStackBlockEntity::new)
@@ -145,6 +149,23 @@ public class CRBlockEntities {
         .blockEntity("copycat_headstock", CopycatHeadstockBlockEntity::new)
         .validBlocks(CRBlocks.COPYCAT_HEADSTOCK)
         .register();
+
+    public static final BlockEntityEntry<PalettesSlidingDoorBlockEntity> PALETTES_SLIDING_DOOR = REGISTRATE
+        .blockEntity("palettes_sliding_door", PalettesSlidingDoorBlockEntity::new)
+        .validBlocks(paletteDoorBlocks())
+        .register();
+
+    private static NonNullSupplier<? extends Block>[] paletteDoorBlocks() {
+        PalettesColor[] colors = PalettesColor.values();
+        @SuppressWarnings("unchecked")
+        NonNullSupplier<? extends Block>[] blocks = new NonNullSupplier[colors.length * 2];
+        for (int index = 0; index < colors.length; index++) {
+            PalettesColor color = colors[index];
+            blocks[index * 2] = () -> CRPalettes.Styles.SLIDING_DOOR.get(color).get();
+            blocks[index * 2 + 1] = () -> CRPalettes.Styles.FOLDING_DOOR.get(color).get();
+        }
+        return blocks;
+    }
 
     public static void register() {}
 }

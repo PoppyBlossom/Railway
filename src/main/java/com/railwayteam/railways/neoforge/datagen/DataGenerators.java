@@ -22,6 +22,7 @@ import java.util.concurrent.CompletableFuture;
 import com.railwayteam.railways.Railways;
 import com.railwayteam.railways.base.data.recipe.RailwaysSequencedAssemblyRecipeGen;
 import com.railwayteam.railways.base.data.recipe.RailwaysStandardRecipeGen;
+import com.railwayteam.railways.base.data.recipe.processing.RailwaysMixingRecipeGen;
 import com.railwayteam.railways.base.data.recipe.neoforge.RailwaysMechanicalCraftingRecipeGenImpl;
 import com.railwayteam.railways.base.data.RailwaysHatOffsetGenerator;
 import net.minecraft.data.DataGenerator;
@@ -47,20 +48,24 @@ public class DataGenerators {
         var lookupProvider = event.getLookupProvider();
         var packOutput = generator.getPackOutput();
 
+    // Register generated entries (potato projectile types, etc.)
+    generator.addProvider(runServer, new RailwaysGeneratedEntriesProvider(packOutput, lookupProvider));
+
         // Register each recipe provider separately with unique names to avoid duplication
         // Consolidate all recipes into a single provider since they all have the same name
         RailwaysSequencedAssemblyRecipeGen sequencedAssembly = RailwaysSequencedAssemblyRecipeGen.create(packOutput, lookupProvider);
         RailwaysStandardRecipeGen standardRecipes = RailwaysStandardRecipeGen.create(packOutput, lookupProvider);
         RailwaysMechanicalCraftingRecipeGenImpl mechanicalCrafting = RailwaysMechanicalCraftingRecipeGenImpl.createImpl(packOutput, lookupProvider);
+        RailwaysMixingRecipeGen mixingRecipes = new RailwaysMixingRecipeGen(packOutput, lookupProvider);
         
-        // Create a single wrapper provider that combines all recipes
+        // Create a single wrapper provider that combines all recipe providers
         generator.addProvider(runServer, new RecipeProvider(packOutput, lookupProvider) {
             @Override
             protected void buildRecipes(@NotNull RecipeOutput output) {
-                // Call buildRecipes on each provider to populate their internal recipe lists
                 sequencedAssembly.buildRecipes(output);
                 standardRecipes.buildRecipes(output);
                 mechanicalCrafting.buildRecipes(output);
+                mixingRecipes.buildRecipes(output);
             }
         });
         

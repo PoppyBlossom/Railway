@@ -19,7 +19,6 @@
 package com.railwayteam.railways.base.data.compat.emi;
 
 import com.google.gson.*;
-import com.railwayteam.railways.registry.CRPalettes;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
@@ -62,7 +61,6 @@ public class EmiRecipeDefaultsGen implements DataProvider {
         JsonObject tags = new JsonObject();
 
         DEFAULT_RECIPES.forEach(loc -> added.add(loc.toString()));
-        TAG_DEFAULTS.put(CRPalettes.CYCLE_GROUPS.get(null), CRPalettes.Styles.RIVETED.get(null).getId());
         TAG_DEFAULTS.forEach((tag, itemLoc) -> {
             String tagString = "#item:" + tag.location();
             String itemString = "item:" + itemLoc;

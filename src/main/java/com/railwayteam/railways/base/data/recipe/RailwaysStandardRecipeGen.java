@@ -27,6 +27,7 @@ import com.railwayteam.railways.registry.CRPalettes;
 import com.railwayteam.railways.registry.CRPalettes.CyclingStyleList;
 import com.railwayteam.railways.registry.CRPalettes.StyledList;
 import com.railwayteam.railways.registry.CRPalettes.Styles;
+import com.railwayteam.railways.content.palettes.PalettesColor;
 import com.railwayteam.railways.registry.CRTags;
 import com.railwayteam.railways.util.AbstractionUtils;
 import com.simibubi.create.AllBlocks;
@@ -45,6 +46,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleCookingSerializer;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
@@ -75,7 +77,7 @@ public class RailwaysStandardRecipeGen extends RailwaysRecipeProvider {
                 .requires(Ingredients.eyeOfEnder())
                 .requires(Ingredients.brassSheet()));
 
-    GeneratedRecipe COALBURNER_STACK = create(CRBlocks.COALBURNER_STACK)
+    GeneratedRecipe COALBURNER_STACK = create(CRBlocks.COALBURNER_STACKS.getFirst())
         .unlockedBy(Ingredients::campfire)
         .viaShaped(b -> b.define('#', Ingredients.ironSheet())
             .define('+', Ingredients.campfire())
@@ -100,7 +102,7 @@ public class RailwaysStandardRecipeGen extends RailwaysRecipeProvider {
             .pattern(" + ")
         );
 
-    GeneratedRecipe OILBURNER_STACK = create(CRBlocks.OILBURNER_STACK)
+    GeneratedRecipe OILBURNER_STACK = create(CRBlocks.OILBURNER_STACKS.getFirst())
         .unlockedBy(Ingredients::campfire)
         .viaShaped(b -> b.define('#', Ingredients.ironSheet())
             .define('+', Ingredients.campfire())
@@ -108,14 +110,14 @@ public class RailwaysStandardRecipeGen extends RailwaysRecipeProvider {
             .pattern("#+#")
         );
 
-    GeneratedRecipe STREAMLINED_STACK = create(CRBlocks.STREAMLINED_STACK)
+    GeneratedRecipe STREAMLINED_STACK = create(CRBlocks.STREAMLINED_STACKS.getFirst())
         .unlockedBy(Ingredients::campfire)
         .viaShaped(b -> b.define('#', Ingredients.ironSheet())
             .define('+', Ingredients.campfire())
             .pattern("#+#")
         );
 
-    GeneratedRecipe WOODBURNER_STACK = create(CRBlocks.WOODBURNER_STACK)
+    GeneratedRecipe WOODBURNER_STACK = create(CRBlocks.WOODBURNER_STACKS.getFirst())
         .unlockedBy(Ingredients::campfire)
         .viaShaped(b -> b.define('#', Ingredients.ironSheet())
             .define('+', Ingredients.campfire())
@@ -124,7 +126,7 @@ public class RailwaysStandardRecipeGen extends RailwaysRecipeProvider {
             .pattern("#+#")
         );
 
-    GeneratedRecipe LONG_STACK = create(CRBlocks.LONG_STACK)
+    GeneratedRecipe LONG_STACK = create(CRBlocks.LONG_STACKS.getFirst())
         .unlockedBy(Ingredients::campfire)
         .viaShaped(b -> b.define('+', Ingredients.campfire())
             .define('.', Ingredients.ironNugget())
@@ -243,7 +245,7 @@ public class RailwaysStandardRecipeGen extends RailwaysRecipeProvider {
             .pattern("# #")
         );
 
-    GeneratedRecipe RIVETED_LOCOMETAL = create(Styles.RIVETED.get(null))
+    GeneratedRecipe RIVETED_LOCOMETAL = create(Styles.RIVETED.get(PalettesColor.NETHERITE))
         .returns(8)
         .setEmiDefault()
         .viaStonecutting(Ingredients::ironBlock)
@@ -319,7 +321,7 @@ public class RailwaysStandardRecipeGen extends RailwaysRecipeProvider {
     CyclingStyleList<DyedRecipeList> LOCOMETAL_CYCLING = new CyclingStyleList<>(style -> new NullableDyedRecipeList(color ->
         new GeneratedRecipeBuilder("palettes/cycling", style.get(color))
             .setEmiDefault(color == null && style != Styles.RIVETED)
-            .viaStonecuttingTag(() -> CRPalettes.CYCLE_GROUPS.get(color))
+            .viaStonecuttingTag(() -> CRPalettes.CYCLE_GROUPS.get(net.createmod.catnip.data.Pair.of(color == null ? com.railwayteam.railways.content.palettes.PalettesColor.NETHERITE : com.railwayteam.railways.content.palettes.PalettesColor.fromDyeColor(color), style.cycleGroupCategory)))
             .create()
     ));
 
@@ -338,7 +340,30 @@ public class RailwaysStandardRecipeGen extends RailwaysRecipeProvider {
             .viaShapeless(b -> b
                     .requires(Ingredients.railwayCasing())
                     .requires(Ingredients.chute())
-            );
+        );
+
+    // Paint System Recipes
+    GeneratedRecipe EMPTY_PAINT_PITCHER = create(CRItems.EMPTY_PAINT_PITCHER)
+        .unlockedByTag(() -> Ingredients.brassIngot())
+        .viaShaped(b -> b
+            .define('B', Ingredients.brassIngot())
+            .define('G', Blocks.GLASS)
+            .define('I', Ingredients.ironSheet())
+            .pattern(" G ")
+            .pattern("IBI")
+            .pattern(" I ")
+        );
+
+    GeneratedRecipe PAINT_BRUSH = create(CRItems.PAINT_BRUSH)
+        .unlockedBy(Ingredients::stick)
+        .viaShaped(b -> b
+            .define('S', Ingredients.stick())
+            .define('W', Items.WHITE_WOOL)
+            .define('I', Items.IRON_INGOT)
+            .pattern("W")
+            .pattern("I")
+            .pattern("S")
+        );
 
     GeneratedRecipeBuilder create(Supplier<ItemLike> result) {
         return new GeneratedRecipeBuilder("/", result);

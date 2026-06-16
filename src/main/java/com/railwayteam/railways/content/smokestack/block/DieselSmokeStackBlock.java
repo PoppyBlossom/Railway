@@ -47,7 +47,7 @@ public class DieselSmokeStackBlock extends AbstractSmokeStackBlock<DieselSmokeSt
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
     public DieselSmokeStackBlock(Properties properties, ShapeWrapper shape) {
-        super(properties, shape, "diesel");
+        super(properties, shape);
         registerDefaultState(defaultBlockState().setValue(FACING, Direction.DOWN));
     }
 

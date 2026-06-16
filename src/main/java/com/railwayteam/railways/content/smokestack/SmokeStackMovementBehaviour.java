@@ -81,8 +81,8 @@ public class SmokeStackMovementBehaviour implements MovementBehaviour {
         void moveParticles(MovementContext context) {
             if (pushParticles == null) return;
 
-            SmokeStackBlock.SmokeStackType type = ((SmokeStackBlock) context.state.getBlock()).type;
-            Vec3 pos = context.position.subtract(0.5, 0, 0.5).add(type.getParticleSpawnOffset());
+            SmokeEmissionParams emissionParams = ((SmokeStackBlock) context.state.getBlock()).emissionParams;
+            Vec3 pos = context.position.subtract(0.5, 0, 0.5).add(emissionParams.particleSpawnOffset());
 
             Iterator<ChimneyPushParticle> iterator = pushParticles.iterator();
             while (iterator.hasNext()) {
@@ -226,7 +226,7 @@ public class SmokeStackMovementBehaviour implements MovementBehaviour {
 
         // Mostly copied from CampfireBlock and CampfireBlockEntity
         RandomSource random = context.world.random;
-        SmokeStackBlock.SmokeStackType type = ((SmokeStackBlock) context.state.getBlock()).type;
+        SmokeEmissionParams emissionParams = ((SmokeStackBlock) context.state.getBlock()).emissionParams;
         double speedModifierTarget = 5 * (0.5+maxModifier);
         speedMultiplierChaser.chase(speedModifierTarget, 0.4, LerpedFloat.Chaser.LINEAR);
         speedMultiplierChaser.tickChaser();
@@ -251,12 +251,12 @@ public class SmokeStackMovementBehaviour implements MovementBehaviour {
                     particleType = ChimneyPushParticleData.create(random.nextBoolean(), false);
                 }
 
-                Vec3 pos = context.position.subtract(0.5, 0, 0.5).add(type.getParticleSpawnOffset());
+                Vec3 pos = context.position.subtract(0.5, 0, 0.5).add(emissionParams.particleSpawnOffset());
                 data.addAndTrackParticle(particleType, true, pos.x, pos.y, pos.z, context.motion.x, context.motion.y, context.motion.z);
             } else if (movementTicks == 8) {
                 for (int i = 0; i < 3; i++) {
-                    SmokeStackBlock.makeParticles(context.world, context.position.subtract(0.5, 0, 0.5).subtract((random.nextDouble() - 0.5) * 0.5, (random.nextDouble() - 0.5) * 0.5, (random.nextDouble() - 0.5) * 0.5), random.nextBoolean(), true,
-                        type.getParticleSpawnOffset(), type.getParticleSpawnDelta(), speedMultiplierChaser.getValue(), false, color, true, isSoul);
+                    emissionParams.makeParticles(context.world, context.position.subtract(0.5, 0, 0.5).subtract((random.nextDouble() - 0.5) * 0.5, (random.nextDouble() - 0.5) * 0.5, (random.nextDouble() - 0.5) * 0.5), random.nextBoolean(),
+                        speedMultiplierChaser.getValue(), true, color, true, isSoul);
                 }
             } else if (movementTicks < 15) {
                 return;
@@ -267,8 +267,8 @@ public class SmokeStackMovementBehaviour implements MovementBehaviour {
 
         // normal smoke
         if (smokeType != SmokeType.CARTOON || color != DyeColor.WHITE) {
-            if (random.nextFloat() < type.particleSpawnChance * chanceModifier * CRConfigs.client().smokePercentage.get()) {
-                for (int i = 0; i < random.nextInt((type.maxParticles + maxModifier - (type.minParticles + minModifier))) + type.minParticles + minModifier; ++i) {
+            if (random.nextFloat() < emissionParams.particleSpawnChance() * chanceModifier * CRConfigs.client().smokePercentage.get()) {
+                for (int i = 0; i < random.nextInt((emissionParams.maxParticles() + maxModifier - (emissionParams.minParticles() + minModifier))) + emissionParams.minParticles() + minModifier; ++i) {
                     boolean small = movementTicks < 50;
                     if (!small) {
                         double smallChance = 0.33;
@@ -278,8 +278,8 @@ public class SmokeStackMovementBehaviour implements MovementBehaviour {
                         double speedFactor = 0.3 + (0.7 * Math.max(0, Math.min(chanceModifier / 2, 1)));
                         small = random.nextDouble() * speedFactor < smallChance;
                     }
-                    SmokeStackBlock.makeParticles(context.world, context.position.subtract(0.5, 0, 0.5).subtract((random.nextDouble() - 0.5) * 0.5, (random.nextDouble() - 0.5) * 0.5, (random.nextDouble() - 0.5) * 0.5), random.nextBoolean(), true,
-                        type.getParticleSpawnOffset(), type.getParticleSpawnDelta(), speedMultiplierChaser.getValue(), false, color, small, isSoul);
+                    emissionParams.makeParticles(context.world, context.position.subtract(0.5, 0, 0.5).subtract((random.nextDouble() - 0.5) * 0.5, (random.nextDouble() - 0.5) * 0.5, (random.nextDouble() - 0.5) * 0.5), random.nextBoolean(),
+                        speedMultiplierChaser.getValue(), true, color, small, isSoul);
                 }
             }
         }
@@ -296,10 +296,10 @@ public class SmokeStackMovementBehaviour implements MovementBehaviour {
             if (time % littleSmokeInterval >= 0 && time % littleSmokeInterval <= 2) {
                 //if (movementTicks < 40)
                 //    color = DyeColor.BLUE;
-                for (int i = 0; i < random.nextInt((type.maxParticles + maxModifier - (type.minParticles + minModifier))) + type.minParticles + minModifier; ++i) {
+                for (int i = 0; i < random.nextInt((emissionParams.maxParticles() + maxModifier - (emissionParams.minParticles() + minModifier))) + emissionParams.minParticles() + minModifier; ++i) {
                     boolean small = true;
-                    SmokeStackBlock.makeParticles(context.world, context.position.subtract(0.5, 0, 0.5).subtract((random.nextDouble() - 0.5) * 0.5, (random.nextDouble() - 0.5) * 0.5, (random.nextDouble() - 0.5) * 0.5), random.nextBoolean(), true,
-                        type.getParticleSpawnOffset(), type.getParticleSpawnDelta(), -1, false, color, small, isSoul);
+                    emissionParams.makeParticles(context.world, context.position.subtract(0.5, 0, 0.5).subtract((random.nextDouble() - 0.5) * 0.5, (random.nextDouble() - 0.5) * 0.5, (random.nextDouble() - 0.5) * 0.5), random.nextBoolean(),
+                        -1, true, color, small, isSoul);
                 }
             }
             if (time % littleSmokeInterval == 3)
@@ -314,10 +314,10 @@ public class SmokeStackMovementBehaviour implements MovementBehaviour {
                 if (data.getPushParticles().isEmpty()) {
                     ChimneyPushParticleData<?> particleType = ChimneyPushParticleData.create(false, false, color);
 
-                    Vec3 pos = context.position.subtract(0.5, 0, 0.5).add(type.getParticleSpawnOffset());
+                    Vec3 pos = context.position.subtract(0.5, 0, 0.5).add(emissionParams.particleSpawnOffset());
                     data.addAndTrackParticle(particleType, true, pos.x, pos.y, pos.z, context.motion.x, context.motion.y, context.motion.z);
                 }
-                for (int i = 0; i < random.nextInt((type.maxParticles + maxModifier - (type.minParticles + minModifier))) + type.minParticles + minModifier; ++i) {
+                for (int i = 0; i < random.nextInt((emissionParams.maxParticles() + maxModifier - (emissionParams.minParticles() + minModifier))) + emissionParams.minParticles() + minModifier; ++i) {
                     boolean small = movementTicks < 50;
                     if (!small) {
                         double smallChance = 0.33;
@@ -327,8 +327,8 @@ public class SmokeStackMovementBehaviour implements MovementBehaviour {
                         double speedFactor = 0.3 + (0.7 * Math.max(0, Math.min(chanceModifier / 2, 1)));
                         small = random.nextDouble() * speedFactor < smallChance;
                     }
-                    SmokeStackBlock.makeParticles(context.world, context.position.subtract(0.5, 0, 0.5).subtract((random.nextDouble() - 0.5) * 0.5, (random.nextDouble() - 0.5) * 0.5, (random.nextDouble() - 0.5) * 0.5), random.nextBoolean(), true,
-                        type.getParticleSpawnOffset(), type.getParticleSpawnDelta(), speedMultiplierChaser.getValue(), false, color, small, false);
+                    emissionParams.makeParticles(context.world, context.position.subtract(0.5, 0, 0.5).subtract((random.nextDouble() - 0.5) * 0.5, (random.nextDouble() - 0.5) * 0.5, (random.nextDouble() - 0.5) * 0.5), random.nextBoolean(),
+                        speedMultiplierChaser.getValue(), true, color, small, false);
                 }
             }
         }

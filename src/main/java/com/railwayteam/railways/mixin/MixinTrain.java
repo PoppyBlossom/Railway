@@ -30,6 +30,7 @@ import com.railwayteam.railways.mixin_interfaces.IFuelInventory;
 import com.railwayteam.railways.mixin_interfaces.IHandcarTrain;
 import com.railwayteam.railways.mixin_interfaces.IIndexedSchedule;
 import com.railwayteam.railways.mixin_interfaces.IOccupiedCouplers;
+import com.railwayteam.railways.mixin_interfaces.IShadowTrain;
 import com.railwayteam.railways.mixin_interfaces.IStrictSignalTrain;
 import com.railwayteam.railways.mixin_interfaces.IWaypointableNavigation;
 import com.railwayteam.railways.registry.CRBlocks;
@@ -61,6 +62,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.mutable.MutableObject;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -68,6 +70,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashSet;
 import java.util.List;
@@ -77,7 +81,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Mixin(value = Train.class, remap = false)
-public abstract class MixinTrain implements IOccupiedCouplers, IIndexedSchedule, IHandcarTrain, IStrictSignalTrain, IBufferBlockedTrain, ICrashAdvancement {
+public abstract class MixinTrain implements IOccupiedCouplers, IIndexedSchedule, IHandcarTrain, IStrictSignalTrain, IBufferBlockedTrain, ICrashAdvancement, IShadowTrain {
     @Shadow public TrackGraph graph;
     @Shadow public Navigation navigation;
     @Shadow public abstract void arriveAt(GlobalStation station);
@@ -93,6 +97,7 @@ public abstract class MixinTrain implements IOccupiedCouplers, IIndexedSchedule,
     @Unique protected boolean railways$isStrictSignalTrain = false;
     @Unique protected int railways$controlBlockedTicks = -1;
     @Unique protected int railways$controlBlockedSign = 0;
+    @Unique protected @Nullable ResourceLocation railways$shadowKey = null;
 
     @Override
     public boolean railways$isControlBlocked() {
@@ -252,6 +257,9 @@ public abstract class MixinTrain implements IOccupiedCouplers, IIndexedSchedule,
         }));
         tag.putInt("ScheduleHolderIndex", railways$index);
         tag.putBoolean("IsHandcar", railways$isHandcar);
+        if (railways$shadowKey != null) {
+            tag.putString("ShadowKey", railways$shadowKey.toString());
+        }
     }
 
     @Inject(method = "read", at = @At("RETURN"))
@@ -262,6 +270,12 @@ public abstract class MixinTrain implements IOccupiedCouplers, IIndexedSchedule,
             c -> ((IOccupiedCouplers) train).railways$getOccupiedCouplers().add(c.getUUID("Id")));
         ((IIndexedSchedule) train).railways$setIndex(tag.getInt("ScheduleHolderIndex"));
         ((IHandcarTrain) train).railways$setHandcar(tag.getBoolean("IsHandcar"));
+
+        if (tag.contains("ShadowKey", Tag.TAG_STRING)) {
+            ((IShadowTrain) train).railways$setShadow(ResourceLocation.parse(tag.getString("ShadowKey")));
+        } else {
+            ((IShadowTrain) train).railways$clearShadow();
+        }
     }
 
     @Inject(method = "collideWithOtherTrains", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/trains/entity/Train;crash()V", ordinal = 0), cancellable = true)
@@ -348,5 +362,20 @@ public abstract class MixinTrain implements IOccupiedCouplers, IIndexedSchedule,
 
         if (backwardsDriver != null)
             AllAdvancements.TRAIN_CRASH_BACKWARDS.awardTo(backwardsDriver);
+    }
+
+    @Override
+    public void railways$setShadow(ResourceLocation shadowKey) {
+        railways$shadowKey = shadowKey;
+    }
+
+    @Override
+    public void railways$clearShadow() {
+        railways$shadowKey = null;
+    }
+
+    @Override
+    public @Nullable ResourceLocation railways$getShadowKey() {
+        return railways$shadowKey;
     }
 }

@@ -1,0 +1,11 @@
+{
+  "parent": "railways:block/palettes/boiler/boiler",
+  "flip_v": true,
+  "loader": "neoforge:obj",
+  "model": "railways:models/block/palettes/boiler/boiler_x.obj",
+  "textures": {
+    "front": "railways:block/palettes/maroon/boiler_slashed",
+    "particle": "railways:block/palettes/maroon/riveted_pillar_top",
+    "sides": "railways:block/palettes/maroon/iron_wrapped_boiler_side"
+  }
+}
