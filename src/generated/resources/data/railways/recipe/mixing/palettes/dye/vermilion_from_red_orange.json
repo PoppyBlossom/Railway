@@ -1,0 +1,22 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "railways:red_paint_pitcher"
+    },
+    {
+      "item": "railways:orange_paint_pitcher"
+    }
+  ],
+  "results": [
+    {
+      "amount": 250,
+      "components": {
+        "minecraft:custom_data": {
+          "Color": "vermilion"
+        }
+      },
+      "id": "railways:paint"
+    }
+  ]
+}

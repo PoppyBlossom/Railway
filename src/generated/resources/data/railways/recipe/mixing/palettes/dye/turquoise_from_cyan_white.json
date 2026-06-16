@@ -1,0 +1,22 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "railways:cyan_paint_pitcher"
+    },
+    {
+      "item": "railways:white_paint_pitcher"
+    }
+  ],
+  "results": [
+    {
+      "amount": 250,
+      "components": {
+        "minecraft:custom_data": {
+          "Color": "turquoise"
+        }
+      },
+      "id": "railways:paint"
+    }
+  ]
+}

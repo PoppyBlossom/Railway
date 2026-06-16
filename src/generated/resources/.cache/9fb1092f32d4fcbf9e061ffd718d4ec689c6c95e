@@ -1,4 +1,4 @@
-// 1.21.1	2026-06-14T21:57:09.708365723	Recipes
+// 1.21.1	2026-06-15T20:43:04.308873344	Recipes
 071f8ef0da6675eadaed86c5dd67d6fd6e4139a1 data/railways/advancement/recipes/misc/crafting/big_buffer.json
 e4149c5dd773d7ea34d34f3ba3fc67aa1100f02a data/railways/advancement/recipes/misc/crafting/buffer.json
 c5ae32f86a31f28e0170919921be6dec3a5906bf data/railways/advancement/recipes/misc/crafting/conductor_whistle.json
@@ -2789,6 +2789,34 @@ c9d62a9249f87790ad449cff45a8b37c93147365 data/railways/recipe/mechanical_craftin
 3fd7667d155668dc0590c28ae1809dac5626e2b7 data/railways/recipe/mechanical_crafting/yellow_copper_wrapped_locometal_boiler.json
 6de548308e0304034b2814a363585bf4a9663667 data/railways/recipe/mechanical_crafting/yellow_iron_wrapped_locometal_boiler.json
 20055ae639f4a0d88053abeedcbcd4d9f9a4cd9a data/railways/recipe/mechanical_crafting/yellow_locometal_boiler.json
+789df17588331977ced3a336385d52a7ca4de253 data/railways/recipe/mixing/palettes/dye/black.json
+97ac1fdfdffd2bd469befd1ee05067e41274cbff data/railways/recipe/mixing/palettes/dye/blue.json
+3548440c70bb691262371cb340372af77694e4c8 data/railways/recipe/mixing/palettes/dye/brown.json
+e135f401b122d9d11005f5eff82abb8638e2919a data/railways/recipe/mixing/palettes/dye/chartreuse_from_yellow_green.json
+bf84ab7890a1070d2ce409a8003eba07b202556b data/railways/recipe/mixing/palettes/dye/cyan.json
+fb4b54b89b4f03aea80f0f50dd34655a4ab2fdb2 data/railways/recipe/mixing/palettes/dye/diorite.json
+3d874277511750e69afd66db876d750929f54f9d data/railways/recipe/mixing/palettes/dye/dripstone.json
+edf1eb34069216e40ee87e168fc19bc72106e283 data/railways/recipe/mixing/palettes/dye/granite.json
+736e4a98025eaf4a36fc383ce8fe2aea4c76a5d5 data/railways/recipe/mixing/palettes/dye/gray.json
+bcf58979ff70a267c4286182fd79af4afd1f6168 data/railways/recipe/mixing/palettes/dye/green.json
+91e989a53a15e5397909d43f8ba67c70016cc84f data/railways/recipe/mixing/palettes/dye/light_blue.json
+94e93d1523c4c10f9985f9642f2c56790997e472 data/railways/recipe/mixing/palettes/dye/light_gray.json
+d1c9259eb329f23662fde091d7495c707d31cdb9 data/railways/recipe/mixing/palettes/dye/lime.json
+a3190620bc6c6fc193d469c06fcd43b9569bc0f9 data/railways/recipe/mixing/palettes/dye/magenta.json
+f0b9919e03abf0930a74146492225b47e3ad64eb data/railways/recipe/mixing/palettes/dye/maroon_from_red_black.json
+263d64cc16c39eeaa0bb18309a52ce42026607a6 data/railways/recipe/mixing/palettes/dye/olive_green_from_lime_green.json
+6f5a8c263b582923deef2ef8ac8b15d6a83c3da1 data/railways/recipe/mixing/palettes/dye/orange.json
+a3fba5aa2072fc3d2db654dbe680e9432b290d1a data/railways/recipe/mixing/palettes/dye/pine_green_from_green_black.json
+897ff62e63e780dc40abfd446fe0be948aa75046 data/railways/recipe/mixing/palettes/dye/pink.json
+a466ba3ba7e32463987134aa91d84be542dc2d9d data/railways/recipe/mixing/palettes/dye/purple.json
+33160dc11a6c1626d341afc161b90f0a2b2d3cc4 data/railways/recipe/mixing/palettes/dye/red.json
+4777073b87e7f5fb386453dcae810be236287d09 data/railways/recipe/mixing/palettes/dye/royal_blue_from_blue_black.json
+805778b4e548191ad1069d305510800fe1a233ca data/railways/recipe/mixing/palettes/dye/sea_green_from_cyan_black.json
+8bda13336e966480d648c17ef4888ec0b0207eb9 data/railways/recipe/mixing/palettes/dye/tuff.json
+2878158fa9529cc1cafd6015d691d4be8b9973a3 data/railways/recipe/mixing/palettes/dye/turquoise_from_cyan_white.json
+9cb075ec751aaca61d1be1d1ac4fca2c3c6228b1 data/railways/recipe/mixing/palettes/dye/vermilion_from_red_orange.json
+ab4d76028746cb9689528e83a1e3115e98dd37c3 data/railways/recipe/mixing/palettes/dye/white.json
+bf0385b413b867659ae4be26f939a2bfd5161271 data/railways/recipe/mixing/palettes/dye/yellow.json
 d12cfd2c4b63a96d722c70d6568b4c301e119de5 data/railways/recipe/sequenced_assembly/black_conductor_cap.json
 7e33d328b6f3026cdf964cf5e985fd95a7f1a8b1 data/railways/recipe/sequenced_assembly/blue_conductor_cap.json
 d3cf67ff1292eb441358c9648c51fc34d6660efc data/railways/recipe/sequenced_assembly/brown_conductor_cap.json

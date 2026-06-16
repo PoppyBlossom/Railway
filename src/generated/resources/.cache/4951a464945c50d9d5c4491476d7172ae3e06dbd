@@ -1,4 +1,4 @@
-// 1.21.1	2026-06-14T21:57:09.662135795	Registrate Provider for railways [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
+// 1.21.1	2026-06-15T19:16:15.79557942	Registrate Provider for railways [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
 8c558c7bddce85565a267985153b6dd6857ed523 assets/railways/blockstates/big_buffer.json
 951f94b03d04ec3d8c1e5842a95b2c24dd481644 assets/railways/blockstates/black_brass_wrapped_locometal.json
 287b9981e295f25a10a2e62d9a42089d48b6a8fd assets/railways/blockstates/black_brass_wrapped_locometal_boiler.json
@@ -1439,8 +1439,8 @@ ded200e995cc50bc13f2d655493ef78c78600c3b assets/railways/blockstates/yellow_slas
 61bf5cb67eaa6ea0d5f6e74e2bcced7b2cb208d6 assets/railways/blockstates/yellow_sliding_locometal_door.json
 81bde303c0bbb3500cd3ff12cd1cc18976080340 assets/railways/blockstates/yellow_two_pane_locometal_window.json
 e9a915a465f7424e356ab46f6ab2c57be3a79f53 assets/railways/blockstates/yellow_wrapped_locometal_smokebox.json
-81778f9e3fe4987d60ab5b6f6411ddc2325f414a assets/railways/lang/en_ud.json
-7f85d2052cefefddcda702b4514b81c768dd48b1 assets/railways/lang/en_us.json
+92ce0f5276b172e3e8d0c783828b3c05811e313c assets/railways/lang/en_ud.json
+851e1b591230c07e63cd22a314a4a105fb0cfe8d assets/railways/lang/en_us.json
 2d1ade82820569936fd3021a877283474ced09d0 assets/railways/models/block/casing_collision.json
 aeb297b317e6a5de8c288d5d9acbb717abff1e4a assets/railways/models/block/generic_crossing.json
 85ca4109f93c3378b2801b583af0190a3d60db0b assets/railways/models/block/palettes/black/brass_wrapped_locometal.json
@@ -13021,6 +13021,7 @@ e35c98db4462fea9b1a5762d763634611cce7b0e data/railways/tags/block/palettes/dye_g
 d6ba1a1b5f6b26871e3907bad9f881f4ce2ab681 data/railways/tags/block/semaphore_poles.json
 35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/railways/tags/block/track_casing_blacklist.json
 7c1903f3bed8a089ef64784583221edfb5406efa data/railways/tags/block/track_casing_whitelist.json
+0b4e9eb2e57b7d0790ad2a0344733be5de39a297 data/railways/tags/item/binding_agents.json
 3be6148d7885c328211de5768d2e58b847bd8ac0 data/railways/tags/item/caboosestyle_stack.json
 5ebe2c2acb72280da5ec96f4c0978764b5d45514 data/railways/tags/item/coalburner_stack.json
 688a4b055e8ffd1fad216727c01807f0017dcac2 data/railways/tags/item/conductor_caps.json

@@ -83,6 +83,25 @@ public class RailwaysImpl {
 		
 		//noinspection Convert2MethodRef
 		Env.CLIENT.runIfCurrent(() -> () -> RailwaysClientImpl.init());
+
+		// Register fluid handler capability for paint pitchers
+		modEventBus.addListener(RailwaysImpl::registerCapabilities);
+	}
+
+	public static void registerCapabilities(net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent event) {
+		var cap = net.neoforged.neoforge.capabilities.Capabilities.FluidHandler.ITEM;
+		event.registerItem(
+			cap,
+			(stack, ctx) -> new com.railwayteam.railways.content.palettes.painting.PaintPitcherFluidHandler(stack),
+			com.railwayteam.railways.registry.CRItems.EMPTY_PAINT_PITCHER.get()
+		);
+		for (var entry : com.railwayteam.railways.registry.CRItems.FILLED_PITCHERS) {
+			event.registerItem(
+				cap,
+				(stack, ctx) -> new com.railwayteam.railways.content.palettes.painting.PaintPitcherFluidHandler(stack),
+				entry.get()
+			);
+		}
 	}
 
 	public static void finalizeRegistrate() {
@@ -190,5 +209,6 @@ public class RailwaysImpl {
 		CRMountedStorageTypesImpl.init();
 		CRBlocksImpl.init();
 		CRBlockEntitiesImpl.init();
+		com.railwayteam.railways.registry.CRFluids.register();
 	}
 }

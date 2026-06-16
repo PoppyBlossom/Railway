@@ -18,18 +18,35 @@
 
 package com.railwayteam.railways.util;
 
+import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.fluids.FluidStack;
+import org.jetbrains.annotations.Nullable;
 
-public class FluidUtils {    public static boolean canUseAsFuelStorage(BlockEntity be) {
-    return com.railwayteam.railways.util.neoforge.FluidUtilsImpl.canUseAsFuelStorage(be);
+public class FluidUtils {
+    public static boolean canUseAsFuelStorage(BlockEntity be) {
+        return com.railwayteam.railways.util.neoforge.FluidUtilsImpl.canUseAsFuelStorage(be);
     }
 
     /**
      * @param o Either a FluidStack (forge & fabric) or FluidVariant (fabric)
      * @return The fluid
      * @throws IllegalArgumentException If any object that isn't an instance of FluidStack or FluidVariant is passed.
-     */    public static Fluid getFluid(Object o) {
-    return com.railwayteam.railways.util.neoforge.FluidUtilsImpl.getFluid(o);
+     */
+    public static Fluid getFluid(Object o) {
+        return com.railwayteam.railways.util.neoforge.FluidUtilsImpl.getFluid(o);
+    }
+
+    @SuppressWarnings("rawtypes")
+    public static void addFluidOutput(ProcessingRecipeBuilder b, Fluid fluid, long amount, @Nullable CompoundTag nbt) {
+        FluidStack stack = new FluidStack(fluid, (int) amount);
+        if (nbt != null) {
+            stack.set(DataComponents.CUSTOM_DATA, CustomData.of(nbt));
+        }
+        b.output(stack);
     }
 }

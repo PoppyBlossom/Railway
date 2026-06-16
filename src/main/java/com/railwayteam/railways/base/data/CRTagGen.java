@@ -112,6 +112,10 @@ public class CRTagGen {
 
 		prov.addTag(AllItemTags.NOT_TRAIN_FUEL.tag);
 
+		// Binding agents tag (for paint mixing recipes)
+		tagAppender(prov, AllItemTags.BINDING_AGENTS.tag)
+			.add(Items.CLAY_BALL.builtInRegistryHolder().key());
+
 		for (AllItemTags tag : AllItemTags.values()) {
 			if (tag.alwaysDatagen)
 				tagAppender(prov, tag);

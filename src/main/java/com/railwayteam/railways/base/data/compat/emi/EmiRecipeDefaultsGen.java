@@ -19,7 +19,6 @@
 package com.railwayteam.railways.base.data.compat.emi;
 
 import com.google.gson.*;
-import com.railwayteam.railways.registry.CRPalettes;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
