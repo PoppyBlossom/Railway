@@ -22,6 +22,7 @@ import com.railwayteam.railways.content.shadow_realm.ShadowRealm;
 import com.railwayteam.railways.mixin.AccessorTrainRelocator;
 import com.railwayteam.railways.multiloader.S2CPacket;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 
 import java.util.UUID;
@@ -62,7 +63,7 @@ public class ShadowTrainRestorePacket implements S2CPacket {
 
             // Use the real train ID directly — no MARKER indirection
             AccessorTrainRelocator.railways$setRelocatingTrain(trainId);
-            AccessorTrainRelocator.railways$setRelocatingOrigin(mc.player.position());
+            AccessorTrainRelocator.railways$setRelocatingOrigin(BlockPos.containing(mc.player.position()));
             AccessorTrainRelocator.railways$setRelocatingEntityId(-1);
         });
     }

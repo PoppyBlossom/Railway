@@ -20,15 +20,14 @@ package com.railwayteam.railways.neoforge.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.llamalad7.mixinextras.sugar.Local;
 import com.railwayteam.railways.config.CRConfigs;
 import com.railwayteam.railways.content.shadow_realm.ShadowRealm;
 import com.railwayteam.railways.content.shadow_realm.ShadowRealm.RestorationTarget;
 import com.simibubi.create.content.trains.entity.TrainRelocationPacket;
 import com.simibubi.create.content.trains.track.BezierTrackPointLocation;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Position;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -48,12 +47,18 @@ public class TrainRelocationPacketMixin {
     @Shadow @Final boolean direction;
     @Shadow @Final Vec3 lookAngle;
 
-    @WrapOperation(method = "handle", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;closerThan(Lnet/minecraft/core/Position;D)Z", ordinal = 0))
-    private boolean unrestrictRange(Vec3 instance, Position pos, double distance, Operation<Boolean> original,
-                                    @Local ServerPlayer sender) {
+    @WrapOperation(method = "handle", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;canInteractWithBlock(Lnet/minecraft/core/BlockPos;D)Z", ordinal = 0))
+    private boolean unrestrictRange_Block(ServerPlayer sender, BlockPos pos, double distance, Operation<Boolean> original) {
         if (sender.isCreative() && CRConfigs.server().unlimitedCreativeRelocation.get())
             return true;
-        return original.call(instance, pos, distance);
+        return original.call(sender, pos, distance);
+    }
+
+    @WrapOperation(method = "handle", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;canInteractWithEntity(Lnet/minecraft/world/entity/Entity;D)Z", ordinal = 0))
+    private boolean unrestrictRange_Entity(ServerPlayer sender, Entity entity, double distance, Operation<Boolean> original) {
+        if (sender.isCreative() && CRConfigs.server().unlimitedCreativeRelocation.get())
+            return true;
+        return original.call(sender, entity, distance);
     }
 
     @Inject(method = "handle", at = @At("HEAD"), cancellable = true)

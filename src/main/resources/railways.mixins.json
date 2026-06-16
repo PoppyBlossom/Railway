@@ -3,7 +3,6 @@
   "minVersion": "0.8",
   "package": "com.railwayteam.railways.neoforge.mixin",
   "compatibilityLevel": "JAVA_21",
-  "refmap": "Steam_Rails-neoforge-refmap.json",
   "client": [
     "client.ClientPacketListenerMixin",
     "client.TrackBlockOutlineMixin",

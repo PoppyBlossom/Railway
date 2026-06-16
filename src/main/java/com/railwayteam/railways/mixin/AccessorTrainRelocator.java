@@ -19,7 +19,7 @@
 package com.railwayteam.railways.mixin;
 
 import com.simibubi.create.content.trains.entity.TrainRelocator;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.core.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
@@ -33,7 +33,7 @@ public interface AccessorTrainRelocator {
     }
 
     @Accessor("relocatingOrigin")
-    static void railways$setRelocatingOrigin(Vec3 origin) {
+    static void railways$setRelocatingOrigin(BlockPos origin) {
         throw new AssertionError("Mixin failed to apply");
     }
 
