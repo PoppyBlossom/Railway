@@ -237,5 +237,9 @@ public abstract class RailwaysRecipeProvider extends RecipeProvider {
     public static ItemLike chute() {
       return AllBlocks.CHUTE.get();
     }
+
+    public static ItemLike flywheel() {
+      return AllBlocks.FLYWHEEL.get();
+    }
   }
 }

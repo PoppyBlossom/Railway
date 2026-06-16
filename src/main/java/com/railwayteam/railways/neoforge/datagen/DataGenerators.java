@@ -22,6 +22,7 @@ import java.util.concurrent.CompletableFuture;
 import com.railwayteam.railways.Railways;
 import com.railwayteam.railways.base.data.recipe.RailwaysSequencedAssemblyRecipeGen;
 import com.railwayteam.railways.base.data.recipe.RailwaysStandardRecipeGen;
+import com.railwayteam.railways.base.data.recipe.processing.RailwaysItemApplicationRecipeGen;
 import com.railwayteam.railways.base.data.recipe.processing.RailwaysMixingRecipeGen;
 import com.railwayteam.railways.base.data.recipe.neoforge.RailwaysMechanicalCraftingRecipeGenImpl;
 import com.railwayteam.railways.base.data.RailwaysHatOffsetGenerator;
@@ -57,6 +58,7 @@ public class DataGenerators {
         RailwaysStandardRecipeGen standardRecipes = RailwaysStandardRecipeGen.create(packOutput, lookupProvider);
         RailwaysMechanicalCraftingRecipeGenImpl mechanicalCrafting = RailwaysMechanicalCraftingRecipeGenImpl.createImpl(packOutput, lookupProvider);
         RailwaysMixingRecipeGen mixingRecipes = new RailwaysMixingRecipeGen(packOutput, lookupProvider);
+        RailwaysItemApplicationRecipeGen itemApplicationRecipes = new RailwaysItemApplicationRecipeGen(packOutput, lookupProvider);
         
         // Create a single wrapper provider that combines all recipe providers
         generator.addProvider(runServer, new RecipeProvider(packOutput, lookupProvider) {
@@ -66,6 +68,7 @@ public class DataGenerators {
                 standardRecipes.buildRecipes(output);
                 mechanicalCrafting.buildRecipes(output);
                 mixingRecipes.buildRecipes(output);
+                itemApplicationRecipes.buildRecipes(output);
             }
         });
         
