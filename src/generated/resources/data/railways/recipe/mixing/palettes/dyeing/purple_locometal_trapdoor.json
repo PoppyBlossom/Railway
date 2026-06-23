@@ -1,0 +1,23 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "tag": "railways:palettes/dye_groups/trapdoor"
+    },
+    {
+      "type": "neoforge:components",
+      "amount": 125,
+      "components": {
+        "minecraft:custom_data": {
+          "Color": "purple"
+        }
+      },
+      "fluids": "railways:paint"
+    }
+  ],
+  "results": [
+    {
+      "id": "railways:purple_locometal_trapdoor"
+    }
+  ]
+}

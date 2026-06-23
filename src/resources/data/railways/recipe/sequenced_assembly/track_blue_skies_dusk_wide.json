@@ -1,0 +1,64 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "blue_skies"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "railways:track_blue_skies_dusk"
+  },
+  "results": [
+    {
+      "id": "railways:track_blue_skies_dusk_wide"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:cutting",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_blue_skies_dusk_wide"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_blue_skies_dusk_wide"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_blue_skies_dusk_wide"
+        },
+        {
+          "tag": "railways:compat_slabs/blue_skies/dusk"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_blue_skies_dusk_wide"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_blue_skies_dusk_wide"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_blue_skies_dusk_wide"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "railways:track_incomplete_blue_skies_dusk_wide"
+  }
+}

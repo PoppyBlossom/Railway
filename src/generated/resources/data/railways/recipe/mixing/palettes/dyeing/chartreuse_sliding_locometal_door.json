@@ -1,0 +1,23 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "tag": "railways:palettes/dye_groups/sliding_door"
+    },
+    {
+      "type": "neoforge:components",
+      "amount": 125,
+      "components": {
+        "minecraft:custom_data": {
+          "Color": "chartreuse"
+        }
+      },
+      "fluids": "railways:paint"
+    }
+  ],
+  "results": [
+    {
+      "id": "railways:chartreuse_sliding_locometal_door"
+    }
+  ]
+}

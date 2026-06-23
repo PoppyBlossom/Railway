@@ -6,7 +6,7 @@
       "item": "minecraft:minecart"
     },
     {
-      "tag": "c:workbench"
+      "tag": "railways:internal/workbench"
     }
   ],
   "result": {

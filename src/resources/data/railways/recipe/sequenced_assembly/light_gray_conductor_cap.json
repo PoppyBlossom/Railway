@@ -45,7 +45,7 @@
           "item": "railways:light_gray_incomplete_conductor_cap"
         },
         {
-          "tag": "railways:internal/string"
+          "item": "minecraft:string"
         }
       ],
       "results": [

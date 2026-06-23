@@ -1,0 +1,23 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "tag": "railways:palettes/dye_groups/end_ladder"
+    },
+    {
+      "type": "neoforge:components",
+      "amount": 125,
+      "components": {
+        "minecraft:custom_data": {
+          "Color": "lime"
+        }
+      },
+      "fluids": "railways:paint"
+    }
+  ],
+  "results": [
+    {
+      "id": "railways:lime_locometal_end_ladder"
+    }
+  ]
+}

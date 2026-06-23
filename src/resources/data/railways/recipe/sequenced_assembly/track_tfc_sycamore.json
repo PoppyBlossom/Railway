@@ -1,0 +1,77 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "tfc"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "tag": "railways:compat_slabs/tfc/sycamore"
+  },
+  "results": [
+    {
+      "id": "railways:track_tfc_sycamore"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_tfc_sycamore"
+        },
+        [
+          {
+            "tag": "c:rods/wrought_iron"
+          },
+          {
+            "tag": "c:rods/zinc"
+          }
+        ]
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_tfc_sycamore"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_tfc_sycamore"
+        },
+        [
+          {
+            "tag": "c:rods/wrought_iron"
+          },
+          {
+            "tag": "c:rods/zinc"
+          }
+        ]
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_tfc_sycamore"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_tfc_sycamore"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_tfc_sycamore"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "railways:track_incomplete_tfc_sycamore"
+  }
+}

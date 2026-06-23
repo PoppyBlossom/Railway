@@ -1,0 +1,23 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "tag": "railways:palettes/dye_groups/flat_slashed"
+    },
+    {
+      "type": "neoforge:components",
+      "amount": 125,
+      "components": {
+        "minecraft:custom_data": {
+          "Color": "yellow"
+        }
+      },
+      "fluids": "railways:paint"
+    }
+  ],
+  "results": [
+    {
+      "id": "railways:yellow_flat_slashed_locometal"
+    }
+  ]
+}

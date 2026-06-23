@@ -1,0 +1,23 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "tag": "railways:palettes/dye_groups/vent"
+    },
+    {
+      "type": "neoforge:components",
+      "amount": 125,
+      "components": {
+        "minecraft:custom_data": {
+          "Color": "dripstone"
+        }
+      },
+      "fluids": "railways:paint"
+    }
+  ],
+  "results": [
+    {
+      "id": "railways:dripstone_locometal_vent"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create_dd"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "railways:track_create_dd_spirit"
+  },
+  "results": [
+    {
+      "id": "railways:track_create_dd_spirit_wide"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:cutting",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_create_dd_spirit_wide"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_create_dd_spirit_wide"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_create_dd_spirit_wide"
+        },
+        {
+          "tag": "railways:compat_slabs/create_dd/spirit"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_create_dd_spirit_wide"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_create_dd_spirit_wide"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_create_dd_spirit_wide"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "railways:track_incomplete_create_dd_spirit_wide"
+  }
+}

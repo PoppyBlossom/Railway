@@ -1,0 +1,28 @@
+{
+  "type": "create:mixing",
+  "heat_requirement": "heated",
+  "ingredients": [
+    {
+      "item": "create:ochrum"
+    },
+    {
+      "tag": "railways:binding_agents"
+    },
+    {
+      "type": "neoforge:single",
+      "amount": 1000,
+      "fluid": "minecraft:water"
+    }
+  ],
+  "results": [
+    {
+      "amount": 1000,
+      "components": {
+        "minecraft:custom_data": {
+          "Color": "ochrum"
+        }
+      },
+      "id": "railways:paint"
+    }
+  ]
+}

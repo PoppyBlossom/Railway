@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "minecraft:wooden_doors"
+    },
+    {
+      "item": "railways:ochrum_riveted_locometal"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "railways:ochrum_hinged_locometal_door"
+  }
+}

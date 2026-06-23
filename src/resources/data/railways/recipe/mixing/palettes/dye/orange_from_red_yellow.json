@@ -1,0 +1,36 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "type": "neoforge:components",
+      "amount": 125,
+      "components": {
+        "minecraft:custom_data": {
+          "Color": "red"
+        }
+      },
+      "fluids": "railways:paint"
+    },
+    {
+      "type": "neoforge:components",
+      "amount": 125,
+      "components": {
+        "minecraft:custom_data": {
+          "Color": "yellow"
+        }
+      },
+      "fluids": "railways:paint"
+    }
+  ],
+  "results": [
+    {
+      "amount": 250,
+      "components": {
+        "minecraft:custom_data": {
+          "Color": "orange"
+        }
+      },
+      "id": "railways:paint"
+    }
+  ]
+}

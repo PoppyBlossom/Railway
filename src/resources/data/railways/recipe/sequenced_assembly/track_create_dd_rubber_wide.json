@@ -1,0 +1,64 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create_dd"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "railways:track_create_dd_rubber"
+  },
+  "results": [
+    {
+      "id": "railways:track_create_dd_rubber_wide"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:cutting",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_create_dd_rubber_wide"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_create_dd_rubber_wide"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_create_dd_rubber_wide"
+        },
+        {
+          "tag": "railways:compat_slabs/create_dd/rubber"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_create_dd_rubber_wide"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_create_dd_rubber_wide"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_create_dd_rubber_wide"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "railways:track_incomplete_create_dd_rubber_wide"
+  }
+}

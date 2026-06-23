@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "#c:brass_plates",
+      "required": false
+    },
+    {
+      "id": "#forge:plates/brass",
+      "required": false
+    }
+  ]
+}

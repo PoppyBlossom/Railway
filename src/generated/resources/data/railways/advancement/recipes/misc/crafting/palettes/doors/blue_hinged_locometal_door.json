@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#minecraft:wooden_doors"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "railways:crafting/palettes/doors/blue_hinged_locometal_door"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_item"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "railways:crafting/palettes/doors/blue_hinged_locometal_door"
+    ]
+  }
+}

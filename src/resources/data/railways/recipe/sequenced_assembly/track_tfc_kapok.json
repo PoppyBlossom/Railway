@@ -1,0 +1,77 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "tfc"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "tag": "railways:compat_slabs/tfc/kapok"
+  },
+  "results": [
+    {
+      "id": "railways:track_tfc_kapok"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_tfc_kapok"
+        },
+        [
+          {
+            "tag": "c:rods/wrought_iron"
+          },
+          {
+            "tag": "c:rods/zinc"
+          }
+        ]
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_tfc_kapok"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_tfc_kapok"
+        },
+        [
+          {
+            "tag": "c:rods/wrought_iron"
+          },
+          {
+            "tag": "c:rods/zinc"
+          }
+        ]
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_tfc_kapok"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_tfc_kapok"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_tfc_kapok"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "railways:track_incomplete_tfc_kapok"
+  }
+}

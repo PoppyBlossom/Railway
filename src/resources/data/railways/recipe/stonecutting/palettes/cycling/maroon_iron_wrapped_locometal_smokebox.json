@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "tag": "railways:palettes/cycle_groups/maroon/wrapped_iron"
+  },
+  "result": {
+    "count": 1,
+    "id": "railways:maroon_iron_wrapped_locometal_smokebox"
+  }
+}

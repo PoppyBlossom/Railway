@@ -17,7 +17,7 @@
           "item": "railways:track_incomplete_phantom"
         },
         {
-          "tag": "c:ingots/iron"
+          "tag": "railways:internal/ingots/iron_ingots"
         }
       ],
       "results": [
@@ -33,7 +33,7 @@
           "item": "railways:track_incomplete_phantom"
         },
         {
-          "tag": "c:ingots/iron"
+          "tag": "railways:internal/ingots/iron_ingots"
         }
       ],
       "results": [

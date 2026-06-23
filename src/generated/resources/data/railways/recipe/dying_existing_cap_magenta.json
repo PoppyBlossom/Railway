@@ -6,7 +6,7 @@
       "tag": "railways:conductor_caps"
     },
     {
-      "tag": "c:dyes/magenta"
+      "tag": "railways:internal/dyes/magenta_dyes"
     }
   ],
   "result": {

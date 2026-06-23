@@ -1,0 +1,64 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "quark"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "railways:track_quark_ancient"
+  },
+  "results": [
+    {
+      "id": "railways:track_quark_ancient_wide"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:cutting",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_quark_ancient_wide"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_quark_ancient_wide"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_quark_ancient_wide"
+        },
+        {
+          "tag": "railways:compat_slabs/quark/ancient"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_quark_ancient_wide"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_quark_ancient_wide"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_quark_ancient_wide"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "railways:track_incomplete_quark_ancient_wide"
+  }
+}

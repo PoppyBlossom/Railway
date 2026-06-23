@@ -20,12 +20,13 @@ package com.railwayteam.railways.base.data.recipe;
 
 import com.railwayteam.railways.Railways;
 import com.railwayteam.railways.base.data.compat.emi.EmiRecipeDefaultsGen;
-import com.railwayteam.railways.base.data.recipe.DyedRecipeList.NullableDyedRecipeList;
+import com.railwayteam.railways.base.data.recipe.EnumRecipeList.PalettesRecipeList;
 import com.railwayteam.railways.registry.CRBlocks;
 import com.railwayteam.railways.registry.CRItems;
 import com.railwayteam.railways.registry.CRPalettes;
+import com.railwayteam.railways.registry.CRPalettes.CycleCategoryList;
+import com.railwayteam.railways.registry.CRPalettes.CycleGroupCategory;
 import com.railwayteam.railways.registry.CRPalettes.CyclingStyleList;
-import com.railwayteam.railways.registry.CRPalettes.StyledList;
 import com.railwayteam.railways.registry.CRPalettes.Styles;
 import com.railwayteam.railways.content.palettes.PalettesColor;
 import com.railwayteam.railways.registry.CRTags;
@@ -33,6 +34,7 @@ import com.railwayteam.railways.util.AbstractionUtils;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
+import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.core.HolderLookup;
@@ -46,7 +48,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleCookingSerializer;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Blocks;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
@@ -251,35 +252,76 @@ public class RailwaysStandardRecipeGen extends RailwaysRecipeProvider {
         .viaStonecutting(Ingredients::ironBlock)
         .create();
 
-    // dye a style
-    StyledList<DyedRecipeList> LOCOMETAL_DYEING_8x = new StyledList<>(style -> new DyedRecipeList(color ->
-        new GeneratedRecipeBuilder("palettes/dyeing_8x", style.get(color))
-            .unlockedByTag(() -> style.dyeGroupTag)
-            .returns(8)
-            .setEmiDefault()
-            .viaShaped(b -> b
-                .define('#', style.dyeGroupTag)
-                .define('d', Ingredients.dye(color))
-                .pattern("###")
-                .pattern("#d#")
-                .pattern("###")
-            )
-    ));
+    CyclingStyleList<PalettesRecipeList> LOCOMETAL_LADDERS = new CyclingStyleList<>(CycleGroupCategory.LADDERS, style ->
+        new PalettesRecipeList(color ->
+            new GeneratedRecipeBuilder("palettes/ladders", style.get(color))
+                .returns(2)
+                .setEmiDefault(color.isNetherite())
+                .viaStonecuttingTag(() -> CycleGroupCategory.BASE.getTag(color))
+                .create()
+        )
+    );
 
-    StyledList<DyedRecipeList> LOCOMETAL_DYEING_1x = new StyledList<>(style -> new DyedRecipeList(color ->
-        new GeneratedRecipeBuilder("palettes/dyeing_1x", style.get(color))
-            .unlockedByTag(() -> style.dyeGroupTag)
+    PalettesRecipeList LOCOMETAL_DOORS = new PalettesRecipeList(color ->
+        new GeneratedRecipeBuilder("palettes/doors", Styles.HINGED_DOOR.get(color))
+            .setEmiDefault(color.isNetherite())
+            .unlockedByTag(Ingredients::woodenDoors)
             .viaShapeless(b -> b
-                .requires(style.dyeGroupTag)
-                .requires(Ingredients.dye(color))
+                .requires(Ingredients.woodenDoors())
+                .requires(Styles.RIVETED.get(color))
             )
-    ));
+    );
 
-    DyedRecipeList LOCOMETAL_WRAPPING_BRASS = new NullableDyedRecipeList(color ->
+    PalettesRecipeList LOCOMETAL_TRAPDOORS = new PalettesRecipeList(color ->
+        new GeneratedRecipeBuilder("palettes/trapdoors", Styles.TRAPDOOR.get(color))
+            .setEmiDefault(color.isNetherite())
+            .unlockedByTag(Ingredients::woodenTrapdoors)
+            .viaShapeless(b -> b
+                .requires(Ingredients.woodenTrapdoors())
+                .requires(Styles.RIVETED.get(color))
+            )
+    );
+
+    PalettesRecipeList LOCOMETAL_WINDOWS = new PalettesRecipeList(color ->
+        new GeneratedRecipeBuilder("palettes/windows", Styles.SINGLE_PANE_WINDOW.get(color))
+            .setEmiDefault(color.isNetherite())
+            .unlockedByTag(Ingredients::colorlessGlass)
+            .viaShapeless(b -> b
+                .requires(Ingredients.colorlessGlass())
+                .requires(Styles.RIVETED.get(color))
+            )
+    );
+
+    PalettesRecipeList
+        HAZARD_STRIPES_DIAGONAL_BLACK_A = hazardStripesDiagonal(PalettesColor.BLACK, Styles.HAZARD_STRIPES_DIAGONAL_BLACK, false),
+        HAZARD_STRIPES_DIAGONAL_BLACK_B = hazardStripesDiagonal(PalettesColor.BLACK, Styles.HAZARD_STRIPES_DIAGONAL_BLACK, true),
+        HAZARD_STRIPES_DIAGONAL_WHITE_A = hazardStripesDiagonal(PalettesColor.WHITE, Styles.HAZARD_STRIPES_DIAGONAL_WHITE, false),
+        HAZARD_STRIPES_DIAGONAL_WHITE_B = hazardStripesDiagonal(PalettesColor.WHITE, Styles.HAZARD_STRIPES_DIAGONAL_WHITE, true)
+    ;
+
+    private PalettesRecipeList hazardStripesDiagonal(PalettesColor baseColor, Styles hazardStyle, boolean flipped) {
+        char c1 = flipped ? '.' : '#';
+        char c2 = flipped ? '#' : '.';
+
+        return new PalettesRecipeList(color ->
+            new GeneratedRecipeBuilder("palettes/hazard_stripes_" + (flipped ? "b" : "a") + "/", hazardStyle.get(color))
+                .setEmiDefault()
+                .unlockedBy(() -> Styles.SLASHED.get(baseColor).get())
+                .returns(4)
+                .viaShaped(b -> b
+                    .define(c1, Styles.SLASHED.get(color).get())
+                    .define(c2, Styles.SLASHED.get(baseColor).get())
+                    .pattern(".#")
+                    .pattern("#.")
+                )
+        );
+    }
+
+    PalettesRecipeList LOCOMETAL_WRAPPING_BRASS = new PalettesRecipeList(color ->
         new GeneratedRecipeBuilder("palettes/wrapping", Styles.BRASS_WRAPPED_SLASHED.get(color))
             .unlockedBy(() -> Styles.SLASHED.get(color).get())
             .returns(8)
-            .setEmiDefault(color == null)
+            .setEmiDefault(color.isNetherite())
             .viaShaped(b -> b
                 .define('#', Styles.SLASHED.get(color).get())
                 .define('d', Ingredients.brassIngot())
@@ -289,11 +331,11 @@ public class RailwaysStandardRecipeGen extends RailwaysRecipeProvider {
             )
     );
 
-    DyedRecipeList LOCOMETAL_WRAPPING_COPPER = new NullableDyedRecipeList(color ->
+    PalettesRecipeList LOCOMETAL_WRAPPING_COPPER = new PalettesRecipeList(color ->
         new GeneratedRecipeBuilder("palettes/wrapping", Styles.COPPER_WRAPPED_SLASHED.get(color))
             .unlockedBy(() -> Styles.SLASHED.get(color).get())
             .returns(8)
-            .setEmiDefault(color == null)
+            .setEmiDefault(color.isNetherite())
             .viaShaped(b -> b
                 .define('#', Styles.SLASHED.get(color).get())
                 .define('d', Ingredients.copperIngot())
@@ -303,11 +345,11 @@ public class RailwaysStandardRecipeGen extends RailwaysRecipeProvider {
             )
     );
 
-    DyedRecipeList LOCOMETAL_WRAPPING_IRON = new NullableDyedRecipeList(color ->
+    PalettesRecipeList LOCOMETAL_WRAPPING_IRON = new PalettesRecipeList(color ->
         new GeneratedRecipeBuilder("palettes/wrapping", Styles.IRON_WRAPPED_SLASHED.get(color))
             .unlockedBy(() -> Styles.SLASHED.get(color).get())
             .returns(8)
-            .setEmiDefault(color == null)
+            .setEmiDefault(color.isNetherite())
             .viaShaped(b -> b
                 .define('#', Styles.SLASHED.get(color).get())
                 .define('d', Ingredients.ironIngot())
@@ -318,12 +360,16 @@ public class RailwaysStandardRecipeGen extends RailwaysRecipeProvider {
     );
 
     // cut a color to other blocks in the cycle
-    CyclingStyleList<DyedRecipeList> LOCOMETAL_CYCLING = new CyclingStyleList<>(style -> new NullableDyedRecipeList(color ->
-        new GeneratedRecipeBuilder("palettes/cycling", style.get(color))
-            .setEmiDefault(color == null && style != Styles.RIVETED)
-            .viaStonecuttingTag(() -> CRPalettes.CYCLE_GROUPS.get(net.createmod.catnip.data.Pair.of(color == null ? com.railwayteam.railways.content.palettes.PalettesColor.NETHERITE : com.railwayteam.railways.content.palettes.PalettesColor.fromDyeColor(color), style.cycleGroupCategory)))
-            .create()
-    ));
+    CycleCategoryList<CyclingStyleList<PalettesRecipeList>> LOCOMETAL_CYCLING = new CycleCategoryList<>(category ->
+        new CyclingStyleList<>(category, style ->
+            new PalettesRecipeList(color ->
+                new GeneratedRecipeBuilder("palettes/cycling", style.get(color))
+                    .setEmiDefault(color.isNetherite() && style != category.baseStyle.get())
+                    .viaStonecuttingTag(() -> CRPalettes.CYCLE_GROUPS.get(Pair.of(color, style.cycleGroupCategory)))
+                    .create()
+            )
+        )
+    );
 
     GeneratedRecipe FUEL_TANK = create(AbstractionUtils.getFluidTankBlockEntry())
             .unlockedBy(AllBlocks.FLUID_TANK)
@@ -343,26 +389,25 @@ public class RailwaysStandardRecipeGen extends RailwaysRecipeProvider {
         );
 
     // Paint System Recipes
-    GeneratedRecipe EMPTY_PAINT_PITCHER = create(CRItems.EMPTY_PAINT_PITCHER)
-        .unlockedByTag(() -> Ingredients.brassIngot())
+    GeneratedRecipe EMPTY_PAINT_PITCHER = create(Ingredients::emptyPaintPitcher)
+        .unlockedByTag(Ingredients::colorlessGlass)
+        .returns(5)
         .viaShaped(b -> b
-            .define('B', Ingredients.brassIngot())
-            .define('G', Blocks.GLASS)
-            .define('I', Ingredients.ironSheet())
+            .define('G', Ingredients.colorlessGlass())
+            .pattern("G G")
+            .pattern("G G")
             .pattern(" G ")
-            .pattern("IBI")
-            .pattern(" I ")
         );
 
-    GeneratedRecipe PAINT_BRUSH = create(CRItems.PAINT_BRUSH)
-        .unlockedBy(Ingredients::stick)
+    GeneratedRecipe PAINT_BRUSH = create(Ingredients::paintBrush)
+        .unlockedBy(Ingredients::feather)
         .viaShaped(b -> b
-            .define('S', Ingredients.stick())
-            .define('W', Items.WHITE_WOOL)
-            .define('I', Items.IRON_INGOT)
-            .pattern("W")
-            .pattern("I")
-            .pattern("S")
+            .define('F', Ingredients.feather())
+            .define('_', Ingredients.ironIngot())
+            .define('|', Ingredients.stick())
+            .pattern("F")
+            .pattern("_")
+            .pattern("|")
         );
 
     GeneratedRecipeBuilder create(Supplier<ItemLike> result) {

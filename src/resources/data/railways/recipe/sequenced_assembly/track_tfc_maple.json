@@ -1,0 +1,77 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "tfc"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "tag": "railways:compat_slabs/tfc/maple"
+  },
+  "results": [
+    {
+      "id": "railways:track_tfc_maple"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_tfc_maple"
+        },
+        [
+          {
+            "tag": "c:rods/wrought_iron"
+          },
+          {
+            "tag": "c:rods/zinc"
+          }
+        ]
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_tfc_maple"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_tfc_maple"
+        },
+        [
+          {
+            "tag": "c:rods/wrought_iron"
+          },
+          {
+            "tag": "c:rods/zinc"
+          }
+        ]
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_tfc_maple"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_tfc_maple"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_tfc_maple"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "railways:track_incomplete_tfc_maple"
+  }
+}

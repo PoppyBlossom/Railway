@@ -1,0 +1,64 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "biomesoplenty"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "railways:track_biomesoplenty_palm"
+  },
+  "results": [
+    {
+      "id": "railways:track_biomesoplenty_palm_wide"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:cutting",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_biomesoplenty_palm_wide"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_biomesoplenty_palm_wide"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_biomesoplenty_palm_wide"
+        },
+        {
+          "tag": "railways:compat_slabs/biomesoplenty/palm"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_biomesoplenty_palm_wide"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_biomesoplenty_palm_wide"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_biomesoplenty_palm_wide"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "railways:track_incomplete_biomesoplenty_palm_wide"
+  }
+}

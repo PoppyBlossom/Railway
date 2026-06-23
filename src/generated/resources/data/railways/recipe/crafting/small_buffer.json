@@ -9,7 +9,7 @@
       "item": "create:shaft"
     },
     "_": {
-      "tag": "c:plates/iron"
+      "tag": "railways:internal/plates/iron_plates"
     }
   },
   "pattern": [

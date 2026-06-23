@@ -1,0 +1,77 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "tfc"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "tag": "railways:compat_slabs/tfc/white_cedar"
+  },
+  "results": [
+    {
+      "id": "railways:track_tfc_white_cedar"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_tfc_white_cedar"
+        },
+        [
+          {
+            "tag": "c:rods/wrought_iron"
+          },
+          {
+            "tag": "c:rods/zinc"
+          }
+        ]
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_tfc_white_cedar"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_tfc_white_cedar"
+        },
+        [
+          {
+            "tag": "c:rods/wrought_iron"
+          },
+          {
+            "tag": "c:rods/zinc"
+          }
+        ]
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_tfc_white_cedar"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_tfc_white_cedar"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_tfc_white_cedar"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "railways:track_incomplete_tfc_white_cedar"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "byg"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "railways:track_byg_witch_hazel"
+  },
+  "results": [
+    {
+      "id": "railways:track_byg_witch_hazel_wide"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:cutting",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_byg_witch_hazel_wide"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_byg_witch_hazel_wide"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_byg_witch_hazel_wide"
+        },
+        {
+          "tag": "railways:compat_slabs/byg/witch_hazel"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_byg_witch_hazel_wide"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "railways:track_incomplete_byg_witch_hazel_wide"
+        }
+      ],
+      "results": [
+        {
+          "id": "railways:track_incomplete_byg_witch_hazel_wide"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "railways:track_incomplete_byg_witch_hazel_wide"
+  }
+}

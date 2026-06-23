@@ -3,13 +3,13 @@
   "category": "misc",
   "key": {
     "#": {
-      "tag": "c:plates/iron"
+      "tag": "railways:internal/plates/iron_plates"
     },
     "+": {
       "item": "minecraft:campfire"
     },
     ".": {
-      "tag": "c:nuggets/iron"
+      "tag": "railways:internal/nuggets/iron_nuggets"
     }
   },
   "pattern": [

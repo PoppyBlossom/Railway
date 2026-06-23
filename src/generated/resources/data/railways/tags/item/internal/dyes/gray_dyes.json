@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "#c:gray_dyes",
+      "required": false
+    },
+    {
+      "id": "#forge:dyes/gray",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#railways:internal/glass/colorless"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "railways:crafting/palettes/windows/green_single_pane_locometal_window"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_item"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "railways:crafting/palettes/windows/green_single_pane_locometal_window"
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "tag": "railways:palettes/cycle_groups/tuff/hazard_stripes_black"
+  },
+  "result": {
+    "count": 1,
+    "id": "railways:tuff_hazard_stripes_chevron_on_black"
+  }
+}

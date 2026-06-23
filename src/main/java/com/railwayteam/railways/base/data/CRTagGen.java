@@ -64,6 +64,11 @@ public class CRTagGen {
 	prov.addTag(CRTags.AllBlockTags.TRACK_CASING_WHITELIST.tag)
 		.add(Blocks.SNOW.builtInRegistryHolder().key(), Blocks.MOSS_CARPET.builtInRegistryHolder().key());
 
+		// Colorless glass: mirror the item-side tag so block-side recipe
+		// consumers (if any) and the loot table predicates resolve via the
+		// same optional alias mechanism.
+		CommonTags.COLORLESS_GLASS_B.generateCommon(prov);
+
 		// VALIDATE
 
 		for (CRTags.AllBlockTags tag : CRTags.AllBlockTags.values()) {
@@ -81,34 +86,42 @@ public class CRTagGen {
 	}
 
 	public static void generateItemTags(RegistrateTagsProvider<Item> prov) {
-		// Generate internal tags with concrete items (NeoForge only, no multi-loader fallbacks)
-		CommonTags.DYES.forEach((color, tag) -> tagAppender(prov, tag.tag)
-				.add(getDyeItem(color).builtInRegistryHolder().key()));
-		
-		tagAppender(prov, CommonTags.IRON_NUGGETS.tag)
-				.add(Items.IRON_NUGGET.builtInRegistryHolder().key());
-		tagAppender(prov, CommonTags.ZINC_NUGGETS.tag)
-				.add(AllItems.ZINC_NUGGET.get().builtInRegistryHolder().key());
-		tagAppender(prov, CommonTags.BRASS_NUGGETS.tag)
-				.add(AllItems.BRASS_NUGGET.get().builtInRegistryHolder().key());
-		
-		tagAppender(prov, CommonTags.COPPER_INGOTS.tag)
-				.add(Items.COPPER_INGOT.builtInRegistryHolder().key());
-		tagAppender(prov, CommonTags.BRASS_INGOTS.tag)
-				.add(AllItems.BRASS_INGOT.get().builtInRegistryHolder().key());
-		tagAppender(prov, CommonTags.IRON_INGOTS.tag)
-				.add(Items.IRON_INGOT.builtInRegistryHolder().key());
-		
-		tagAppender(prov, CommonTags.STRING.tag)
-				.add(Items.STRING.builtInRegistryHolder().key());
-		
-		tagAppender(prov, CommonTags.IRON_PLATES.tag)
-				.add(AllItems.IRON_SHEET.get().builtInRegistryHolder().key());
-		tagAppender(prov, CommonTags.BRASS_PLATES.tag)
-				.add(AllItems.BRASS_SHEET.get().builtInRegistryHolder().key());
-		
-		tagAppender(prov, CommonTags.WORKBENCH.tag)
-				.add(Items.CRAFTING_TABLE.builtInRegistryHolder().key());
+		// Common tags: generate the railways:internal/<path> alias with optional
+		// refs to c:<path> and forge:<path>, then populate the loader-specific
+		// tags with the actual vanilla/create items via generateBoth.
+		CommonTags.DYES.forEach((color, tag) -> tag.generateCommon(prov)
+			.generateBoth(prov, t -> t.add(getDyeItem(color).builtInRegistryHolder().key())));
+
+		CommonTags.IRON_NUGGETS.generateCommon(prov)
+			.generateBoth(prov, t -> t.add(Items.IRON_NUGGET.builtInRegistryHolder().key()));
+		CommonTags.ZINC_NUGGETS.generateCommon(prov)
+			.generateBoth(prov, t -> t.add(AllItems.ZINC_NUGGET.get().builtInRegistryHolder().key()));
+		CommonTags.BRASS_NUGGETS.generateCommon(prov)
+			.generateBoth(prov, t -> t.add(AllItems.BRASS_NUGGET.get().builtInRegistryHolder().key()));
+
+		CommonTags.COPPER_INGOTS.generateCommon(prov)
+			.generateBoth(prov, t -> t.add(Items.COPPER_INGOT.builtInRegistryHolder().key()));
+		CommonTags.BRASS_INGOTS.generateCommon(prov)
+			.generateBoth(prov, t -> t.add(AllItems.BRASS_INGOT.get().builtInRegistryHolder().key()));
+		CommonTags.IRON_INGOTS.generateCommon(prov)
+			.generateBoth(prov, t -> t.add(Items.IRON_INGOT.builtInRegistryHolder().key()));
+
+		CommonTags.STRING.generateCommon(prov)
+			.generateBoth(prov, t -> t.add(Items.STRING.builtInRegistryHolder().key()));
+
+		CommonTags.IRON_PLATES.generateCommon(prov)
+			.generateBoth(prov, t -> t.add(AllItems.IRON_SHEET.get().builtInRegistryHolder().key()));
+		CommonTags.BRASS_PLATES.generateCommon(prov)
+			.generateBoth(prov, t -> t.add(AllItems.BRASS_SHEET.get().builtInRegistryHolder().key()));
+
+		CommonTags.WORKBENCH.generateCommon(prov)
+			.generateBoth(prov, t -> t.add(Items.CRAFTING_TABLE.builtInRegistryHolder().key()));
+
+		// Colorless glass: no vanilla item to add; recipes resolve via the
+		// railways:internal/glass/colorless alias which references c:colorless_glass
+		// and forge:glass/colorless as optional, so any installed mod that
+		// provides either tag will satisfy the recipe.
+		CommonTags.COLORLESS_GLASS_I.generateCommon(prov);
 
 		prov.addTag(AllItemTags.NOT_TRAIN_FUEL.tag);
 

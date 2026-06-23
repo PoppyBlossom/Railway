@@ -6,7 +6,7 @@
       "item": "minecraft:campfire"
     },
     ".": {
-      "tag": "c:nuggets/iron"
+      "tag": "railways:internal/nuggets/iron_nuggets"
     }
   },
   "pattern": [

@@ -45,7 +45,7 @@
           "item": "railways:blue_incomplete_conductor_cap"
         },
         {
-          "tag": "railways:internal/string"
+          "item": "minecraft:string"
         }
       ],
       "results": [

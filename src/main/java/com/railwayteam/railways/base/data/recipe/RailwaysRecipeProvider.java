@@ -21,24 +21,34 @@ package com.railwayteam.railways.base.data.recipe;
 import com.railwayteam.railways.Railways;
 import com.railwayteam.railways.content.buffer.headstock.HeadstockStyle;
 import com.railwayteam.railways.content.buffer.single_deco.LinkPinBlock;
+import com.railwayteam.railways.content.palettes.PalettesColor;
+import com.railwayteam.railways.content.palettes.painting.PaintFluid;
 import com.railwayteam.railways.multiloader.CommonTags;
 import com.railwayteam.railways.registry.CRBlocks;
+import com.railwayteam.railways.registry.CRFluids;
+import com.railwayteam.railways.registry.CRItems;
 import com.railwayteam.railways.registry.CRTags;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.crafting.DataComponentFluidIngredient;
+import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -240,6 +250,40 @@ public abstract class RailwaysRecipeProvider extends RecipeProvider {
 
     public static ItemLike flywheel() {
       return AllBlocks.FLYWHEEL.get();
+    }
+
+    public static TagKey<Item> woodenDoors() {
+      return ItemTags.WOODEN_DOORS;
+    }
+
+    public static TagKey<Item> woodenTrapdoors() {
+      return ItemTags.WOODEN_TRAPDOORS;
+    }
+
+    public static TagKey<Item> colorlessGlass() {
+      return CommonTags.COLORLESS_GLASS_I.tag;
+    }
+
+    public static ItemLike emptyPaintPitcher() {
+      return CRItems.EMPTY_PAINT_PITCHER.get();
+    }
+
+    public static ItemLike paintBrush() {
+      return CRItems.PAINT_BRUSH.get();
+    }
+
+    public static ItemLike feather() {
+      return Items.FEATHER;
+    }
+
+    public static TagKey<Item> bindingAgent() {
+      return CRTags.AllItemTags.BINDING_AGENTS.tag;
+    }
+
+    public static SizedFluidIngredient palettesPaint(@NotNull PalettesColor color, long amount) {
+      FluidStack stack = new FluidStack(CRFluids.paintSource(), (int) amount);
+      stack.set(DataComponents.CUSTOM_DATA, CustomData.of(PaintFluid.setColor(new CompoundTag(), color)));
+      return new SizedFluidIngredient(DataComponentFluidIngredient.of(false, stack), (int) amount);
     }
   }
 }

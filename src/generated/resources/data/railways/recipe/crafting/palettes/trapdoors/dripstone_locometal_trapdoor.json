@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "minecraft:wooden_trapdoors"
+    },
+    {
+      "item": "railways:dripstone_riveted_locometal"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "railways:dripstone_locometal_trapdoor"
+  }
+}
