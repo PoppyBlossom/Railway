@@ -126,7 +126,11 @@ public class MinecartJukebox extends MinecartBlock {
     if (active && !level().isClientSide) {
       if (cooldownCount <= 0) {
         cooldownCount = COOLDOWN;
-        PacketSender.updateJukeboxClientside(this, this.disc);
+
+          // Guard against saving/sending empty ItemStacks to the client
+          if (!disc.isEmpty()) {
+              PacketSender.updateJukeboxClientside(this, this.disc);
+          }
       }
     }
   }
