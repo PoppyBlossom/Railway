@@ -1,6 +1,7 @@
 package com.railwayteam.railways.content.animated_flywheel;
 
 import com.railwayteam.railways.config.CRConfigs;
+import com.railwayteam.railways.mixin_interfaces.IDistanceTravelled;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.contraptions.behaviour.MovementContext;
 import com.simibubi.create.content.contraptions.render.ActorVisual;
@@ -33,11 +34,6 @@ class FlywheelActorVisual extends ActorVisual {
 
 	private float angle;
 	private float lastRenderTime;
-	private boolean hasLastEntityPos;
-	private double lastEntityX;
-	private double lastEntityZ;
-	private double lastDx;
-	private double lastDz;
 
 	FlywheelActorVisual(VisualizationContext visualizationContext, VirtualRenderWorld simulationWorld, MovementContext context) {
 		super(visualizationContext, simulationWorld, context);
@@ -75,7 +71,6 @@ class FlywheelActorVisual extends ActorVisual {
 
 		this.baseTransform = new Matrix4f(this.wheel.pose);
 		this.lastRenderTime = Float.NaN;
-		this.hasLastEntityPos = false;
 
 		applyWheelAngle(0);
 	}
@@ -92,7 +87,7 @@ class FlywheelActorVisual extends ActorVisual {
 			deltaTicks = 0;
 
 		float speedMultiplier = CRConfigs.client().flywheelSpeedMultiplier.getF();
-		float rpm = computeRpm(deltaTicks) * speedMultiplier;
+		float rpm = computeRpm() * speedMultiplier;
 		float degreesPerTick = rpm * 360.0f / 1200.0f;
 		this.angle = (this.angle + degreesPerTick * deltaTicks) % 360.0f;
 
@@ -100,7 +95,7 @@ class FlywheelActorVisual extends ActorVisual {
 		applyWheelAngle(this.angle);
 	}
 
-	private float computeRpm(float deltaTicks) {
+	private float computeRpm() {
 		if (!CRConfigs.client().animatedFlywheels.get())
 			return 0;
 		if (!(context.contraption instanceof CarriageContraption carriageContraption))
@@ -113,49 +108,23 @@ class FlywheelActorVisual extends ActorVisual {
 		if (axis.isVertical())
 			return 0;
 
-		// Derive speed from position delta rather than Train.speed or getDeltaMovement().
-		// - Train.speed can become stale client-side when control is lost (e.g. after collisions).
-		// - getDeltaMovement() is often 0 for carriage contraptions because position is set directly.
-		double trainSpeed = computeHorizontalSpeed(carriageContraptionEntity, deltaTicks);
-		double circumference = Math.PI * FLYWHEEL_DIAMETER;
-		if (circumference <= 0)
+		Direction assemblyDirection = carriageContraption.getAssemblyDirection();
+		if (assemblyDirection.getAxis() == axis)
 			return 0;
 
-		double rpm = (trainSpeed / circumference) * 1200.0;
+		// Signed distance moved this tick, in the carriage's own frame of travel,
+		// so the spin direction does not depend on the train's world heading.
+		double distancePerTick = ((IDistanceTravelled) carriageContraptionEntity).railways$getDistanceTravelled();
+		double circumference = Math.PI * FLYWHEEL_DIAMETER;
 
-		if (axis == Direction.Axis.X) {
-			if (lastDz < 0) rpm = -rpm;
-		} else {
-			if (lastDx > 0) rpm = -rpm;
-		}
+		double rpm = (distancePerTick / circumference) * 1200.0;
 
-		if (carriageContraptionEntity.movingBackwards)
+		if (assemblyDirection == Direction.SOUTH || assemblyDirection == Direction.WEST)
 			rpm = -rpm;
 		if (!Double.isFinite(rpm))
 			return 0;
 
 		return (float) rpm;
-	}
-
-	private double computeHorizontalSpeed(CarriageContraptionEntity entity, float deltaTicks) {
-		if (deltaTicks <= 0)
-			return 0;
-
-		double x = entity.getX();
-		double z = entity.getZ();
-		if (!hasLastEntityPos) {
-			hasLastEntityPos = true;
-			lastEntityX = x;
-			lastEntityZ = z;
-			return 0;
-		}
-
-		lastDx = x - lastEntityX;
-		lastDz = z - lastEntityZ;
-		lastEntityX = x;
-		lastEntityZ = z;
-
-		return Math.sqrt(lastDx * lastDx + lastDz * lastDz) / deltaTicks;
 	}
 
 	private void applyWheelAngle(float angleDegrees) {
