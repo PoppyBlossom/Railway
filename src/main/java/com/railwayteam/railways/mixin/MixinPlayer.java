@@ -37,23 +37,14 @@ public abstract class MixinPlayer extends LivingEntity {
         super(entityType, level);
     }
 
-    @Inject(method = "getEyeHeight", at = @At("RETURN"), cancellable = true, require = 0)
-    private void conductorsAreSmaller(Pose pose, EntityDimensions dimensions, CallbackInfoReturnable<Float> cir) {
-        if (ConductorEntity.isPlayerDisguised((Player) (Object) this)) {
-            if (pose == Pose.SLEEPING || pose == Pose.FALL_FLYING || pose == Pose.SPIN_ATTACK || pose == Pose.SWIMMING || pose == Pose.DYING)
-                return;
-            // conductor eye height is 1.5 * 0.76
-            // player eye height is 1.62
-            cir.setReturnValue(cir.getReturnValueF() * (1.5f * 0.76f / 1.62f));
-        }
-    }
-
-    @Inject(method = "getDimensions", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "getDefaultDimensions", at = @At("RETURN"), cancellable = true)
     private void shrinkConductorPlayer(Pose pose, CallbackInfoReturnable<EntityDimensions> cir) {
         if (ConductorEntity.isPlayerDisguised((Player) (Object) this)) {
             if (pose == Pose.SLEEPING || pose == Pose.FALL_FLYING || pose == Pose.SPIN_ATTACK || pose == Pose.SWIMMING || pose == Pose.DYING) return;
             EntityDimensions dimensions = cir.getReturnValue();
-            cir.setReturnValue(dimensions.scale(1.0f, 1.5f / 1.8f));
+            // conductor eye height is 1.5 * 0.76, player eye height is 1.62
+            cir.setReturnValue(dimensions.scale(1.0f, 1.5f / 1.8f)
+                    .withEyeHeight(dimensions.eyeHeight() * (1.5f * 0.76f / 1.62f)));
         }
     }
 
