@@ -158,7 +158,7 @@ public class TrackEdgePointHighlighter {
                 .colored(Color.SPRING_GREEN)
                 .lineWidth(1 / 16f);
 
-            if (be instanceof SignalBlockEntity) {
+            if (be instanceof SignalBlockEntity && trackTarget1.hasValidTrack()) {
                 TrackGraphLocation location = trackTarget1.determineGraphLocation();
                 if (location != null) {
                     TrackEdge edge = location.graph.getConnection(location.edge.map(location.graph::locateNode));
