@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#railways:internal/glass/colorless"
+            "items": "#railways:internal/glass_blocks/colorless"
           }
         ]
       },

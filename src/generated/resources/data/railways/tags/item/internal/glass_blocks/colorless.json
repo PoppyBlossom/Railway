@@ -1,11 +1,11 @@
 {
   "values": [
     {
-      "id": "#c:colorless_glass",
+      "id": "#c:glass_blocks/colorless",
       "required": false
     },
     {
-      "id": "#forge:glass/colorless",
+      "id": "#forge:glass_blocks/colorless",
       "required": false
     }
   ]

@@ -1,4 +1,4 @@
-// 1.21.1	2026-06-22T10:45:43.836123919	Registrate Provider for railways [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
+// 1.21.1	2026-07-23T10:25:26.940474538	Registrate Provider for railways [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
 8c558c7bddce85565a267985153b6dd6857ed523 assets/railways/blockstates/big_buffer.json
 951f94b03d04ec3d8c1e5842a95b2c24dd481644 assets/railways/blockstates/black_brass_wrapped_locometal.json
 287b9981e295f25a10a2e62d9a42089d48b6a8fd assets/railways/blockstates/black_brass_wrapped_locometal_boiler.json
@@ -1439,8 +1439,8 @@ ded200e995cc50bc13f2d655493ef78c78600c3b assets/railways/blockstates/yellow_slas
 61bf5cb67eaa6ea0d5f6e74e2bcced7b2cb208d6 assets/railways/blockstates/yellow_sliding_locometal_door.json
 81bde303c0bbb3500cd3ff12cd1cc18976080340 assets/railways/blockstates/yellow_two_pane_locometal_window.json
 e9a915a465f7424e356ab46f6ab2c57be3a79f53 assets/railways/blockstates/yellow_wrapped_locometal_smokebox.json
-92ce0f5276b172e3e8d0c783828b3c05811e313c assets/railways/lang/en_ud.json
-851e1b591230c07e63cd22a314a4a105fb0cfe8d assets/railways/lang/en_us.json
+f1f549955985ba4dacac888425e0c78f9d02741e assets/railways/lang/en_ud.json
+b9d9baaec19e1a3527dfa0df327b76857ebcfecd assets/railways/lang/en_us.json
 2d1ade82820569936fd3021a877283474ced09d0 assets/railways/models/block/casing_collision.json
 aeb297b317e6a5de8c288d5d9acbb717abff1e4a assets/railways/models/block/generic_crossing.json
 85ca4109f93c3378b2801b583af0190a3d60db0b assets/railways/models/block/palettes/black/brass_wrapped_locometal.json
@@ -13010,7 +13010,7 @@ c9fdb1f0ee95639f57728d1645f9849f2caf5e66 data/railways/recipe/dying_existing_cap
 26a402cb91033d8dd219215e0967c4c1e202f80a data/railways/recipe/dying_existing_cap_white.json
 77db821fc6806a956c1f792a98f0216cfb80a3ee data/railways/recipe/dying_existing_cap_yellow.json
 12283be35d099b58d66301e4b552eebe60fcd400 data/railways/recipe/jukeboxcart.json
-e5f31e56d11dc4523f5fa58604fdfca8b131da9a data/railways/tags/block/internal/glass/colorless.json
+b56a354c74a89c0447960114c3dd2ad63ec33d1c data/railways/tags/block/internal/glass_blocks/colorless.json
 aa04d34e44ee662869e6ee637977ff64998b6c97 data/railways/tags/block/locometal.json
 df1144d3f4071404af5fa40c3564227eb5e57ab5 data/railways/tags/block/locometal_boilers.json
 30798ce2fb5db0f50655a9056752d9ea848e2027 data/railways/tags/block/palettes/dye_groups/boiler.json
@@ -13072,7 +13072,7 @@ be360893ec78089772465e74408d129890938f63 data/railways/tags/item/internal/dyes/l
 bece9f522ef9bf432865443bfc171825643ea95c data/railways/tags/item/internal/dyes/red_dyes.json
 40dc36b56b08257ed7f055a13d243ed0434e353c data/railways/tags/item/internal/dyes/white_dyes.json
 8fad549bad6423ee217699d8a0d8d5d4e2be0f00 data/railways/tags/item/internal/dyes/yellow_dyes.json
-e5f31e56d11dc4523f5fa58604fdfca8b131da9a data/railways/tags/item/internal/glass/colorless.json
+b56a354c74a89c0447960114c3dd2ad63ec33d1c data/railways/tags/item/internal/glass_blocks/colorless.json
 51ca216d827a5a7b62c4652a1e68e59ffccd0061 data/railways/tags/item/internal/ingots/brass_ingots.json
 7873d5f7d2b4112b5dc253a3d66ffc1ecb593b7a data/railways/tags/item/internal/ingots/copper_ingots.json
 7e6cc7259d3417b853ba3a05f15ba4e3076d4a18 data/railways/tags/item/internal/ingots/iron_ingots.json
