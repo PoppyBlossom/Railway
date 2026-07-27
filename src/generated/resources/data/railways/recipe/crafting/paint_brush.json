@@ -6,7 +6,7 @@
       "item": "minecraft:feather"
     },
     "_": {
-      "tag": "railways:internal/ingots/iron_ingots"
+      "tag": "c:ingots/iron"
     },
     "|": {
       "item": "minecraft:stick"

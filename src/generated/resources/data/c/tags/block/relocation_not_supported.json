@@ -56,7 +56,19 @@
       "required": false
     },
     {
+      "id": "railways:track_hexcasting_edified",
+      "required": false
+    },
+    {
       "id": "railways:track_hexcasting_edified_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_hexcasting_edified_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_hexcasting_edified_narrow",
       "required": false
     },
     {
@@ -68,7 +80,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_aspen",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_aspen_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_aspen_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_aspen_narrow",
       "required": false
     },
     {
@@ -80,7 +104,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_baobab",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_baobab_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_baobab_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_baobab_narrow",
       "required": false
     },
     {
@@ -92,7 +128,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_blue_enchanted",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_blue_enchanted_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_blue_enchanted_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_blue_enchanted_narrow",
       "required": false
     },
     {
@@ -104,7 +152,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_bulbis",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_bulbis_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_bulbis_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_bulbis_narrow",
       "required": false
     },
     {
@@ -116,7 +176,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_cika",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_cika_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_cika_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_cika_narrow",
       "required": false
     },
     {
@@ -128,7 +200,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_cypress",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_cypress_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_cypress_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_cypress_narrow",
       "required": false
     },
     {
@@ -140,7 +224,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_ebony",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_ebony_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_ebony_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_ebony_narrow",
       "required": false
     },
     {
@@ -152,7 +248,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_embur",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_embur_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_embur_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_embur_narrow",
       "required": false
     },
     {
@@ -164,7 +272,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_ether",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_ether_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_ether_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_ether_narrow",
       "required": false
     },
     {
@@ -176,7 +296,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_fir",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_fir_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_fir_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_fir_narrow",
       "required": false
     },
     {
@@ -188,7 +320,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_green_enchanted",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_green_enchanted_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_green_enchanted_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_green_enchanted_narrow",
       "required": false
     },
     {
@@ -200,7 +344,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_holly",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_holly_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_holly_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_holly_narrow",
       "required": false
     },
     {
@@ -212,7 +368,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_imparius",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_imparius_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_imparius_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_imparius_narrow",
       "required": false
     },
     {
@@ -224,7 +392,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_jacaranda",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_jacaranda_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_jacaranda_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_jacaranda_narrow",
       "required": false
     },
     {
@@ -236,7 +416,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_lament",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_lament_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_lament_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_lament_narrow",
       "required": false
     },
     {
@@ -248,7 +440,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_mahogany",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_mahogany_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_mahogany_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_mahogany_narrow",
       "required": false
     },
     {
@@ -260,7 +464,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_maple",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_maple_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_maple_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_maple_narrow",
       "required": false
     },
     {
@@ -272,7 +488,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_nightshade",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_nightshade_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_nightshade_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_nightshade_narrow",
       "required": false
     },
     {
@@ -284,7 +512,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_palm",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_palm_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_palm_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_palm_narrow",
       "required": false
     },
     {
@@ -296,7 +536,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_pine",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_pine_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_pine_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_pine_narrow",
       "required": false
     },
     {
@@ -308,7 +560,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_rainbow_eucalyptus",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_rainbow_eucalyptus_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_rainbow_eucalyptus_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_rainbow_eucalyptus_narrow",
       "required": false
     },
     {
@@ -320,7 +584,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_redwood",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_redwood_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_redwood_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_redwood_narrow",
       "required": false
     },
     {
@@ -332,7 +608,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_skyris",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_skyris_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_skyris_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_skyris_narrow",
       "required": false
     },
     {
@@ -344,7 +632,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_sythian",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_sythian_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_sythian_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_sythian_narrow",
       "required": false
     },
     {
@@ -356,7 +656,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_white_mangrove",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_white_mangrove_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_white_mangrove_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_white_mangrove_narrow",
       "required": false
     },
     {
@@ -368,7 +680,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_willow",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_willow_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_willow_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_willow_narrow",
       "required": false
     },
     {
@@ -380,7 +704,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_witch_hazel",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_witch_hazel_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_witch_hazel_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_witch_hazel_narrow",
       "required": false
     },
     {
@@ -392,7 +728,19 @@
       "required": false
     },
     {
+      "id": "railways:track_byg_zelkova",
+      "required": false
+    },
+    {
       "id": "railways:track_byg_zelkova_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_zelkova_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_byg_zelkova_narrow",
       "required": false
     },
     {
@@ -404,7 +752,19 @@
       "required": false
     },
     {
+      "id": "railways:track_blue_skies_bluebright",
+      "required": false
+    },
+    {
       "id": "railways:track_blue_skies_bluebright_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_blue_skies_bluebright_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_blue_skies_bluebright_narrow",
       "required": false
     },
     {
@@ -416,7 +776,19 @@
       "required": false
     },
     {
+      "id": "railways:track_blue_skies_dusk",
+      "required": false
+    },
+    {
       "id": "railways:track_blue_skies_dusk_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_blue_skies_dusk_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_blue_skies_dusk_narrow",
       "required": false
     },
     {
@@ -428,7 +800,19 @@
       "required": false
     },
     {
+      "id": "railways:track_blue_skies_frostbright",
+      "required": false
+    },
+    {
       "id": "railways:track_blue_skies_frostbright_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_blue_skies_frostbright_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_blue_skies_frostbright_narrow",
       "required": false
     },
     {
@@ -440,7 +824,19 @@
       "required": false
     },
     {
+      "id": "railways:track_blue_skies_lunar",
+      "required": false
+    },
+    {
       "id": "railways:track_blue_skies_lunar_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_blue_skies_lunar_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_blue_skies_lunar_narrow",
       "required": false
     },
     {
@@ -452,7 +848,19 @@
       "required": false
     },
     {
+      "id": "railways:track_blue_skies_maple",
+      "required": false
+    },
+    {
       "id": "railways:track_blue_skies_maple_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_blue_skies_maple_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_blue_skies_maple_narrow",
       "required": false
     },
     {
@@ -464,7 +872,19 @@
       "required": false
     },
     {
+      "id": "railways:track_blue_skies_starlit",
+      "required": false
+    },
+    {
       "id": "railways:track_blue_skies_starlit_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_blue_skies_starlit_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_blue_skies_starlit_narrow",
       "required": false
     },
     {
@@ -476,7 +896,19 @@
       "required": false
     },
     {
+      "id": "railways:track_twilightforest_canopy",
+      "required": false
+    },
+    {
       "id": "railways:track_twilightforest_canopy_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_twilightforest_canopy_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_twilightforest_canopy_narrow",
       "required": false
     },
     {
@@ -488,7 +920,19 @@
       "required": false
     },
     {
+      "id": "railways:track_twilightforest_darkwood",
+      "required": false
+    },
+    {
       "id": "railways:track_twilightforest_darkwood_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_twilightforest_darkwood_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_twilightforest_darkwood_narrow",
       "required": false
     },
     {
@@ -500,7 +944,19 @@
       "required": false
     },
     {
+      "id": "railways:track_twilightforest_mangrove",
+      "required": false
+    },
+    {
       "id": "railways:track_twilightforest_mangrove_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_twilightforest_mangrove_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_twilightforest_mangrove_narrow",
       "required": false
     },
     {
@@ -512,7 +968,19 @@
       "required": false
     },
     {
+      "id": "railways:track_twilightforest_minewood",
+      "required": false
+    },
+    {
       "id": "railways:track_twilightforest_minewood_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_twilightforest_minewood_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_twilightforest_minewood_narrow",
       "required": false
     },
     {
@@ -524,7 +992,19 @@
       "required": false
     },
     {
+      "id": "railways:track_twilightforest_sortingwood",
+      "required": false
+    },
+    {
       "id": "railways:track_twilightforest_sortingwood_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_twilightforest_sortingwood_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_twilightforest_sortingwood_narrow",
       "required": false
     },
     {
@@ -536,7 +1016,19 @@
       "required": false
     },
     {
+      "id": "railways:track_twilightforest_timewood",
+      "required": false
+    },
+    {
       "id": "railways:track_twilightforest_timewood_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_twilightforest_timewood_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_twilightforest_timewood_narrow",
       "required": false
     },
     {
@@ -548,7 +1040,19 @@
       "required": false
     },
     {
+      "id": "railways:track_twilightforest_transwood",
+      "required": false
+    },
+    {
       "id": "railways:track_twilightforest_transwood_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_twilightforest_transwood_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_twilightforest_transwood_narrow",
       "required": false
     },
     {
@@ -560,7 +1064,19 @@
       "required": false
     },
     {
+      "id": "railways:track_twilightforest_twilight_oak",
+      "required": false
+    },
+    {
       "id": "railways:track_twilightforest_twilight_oak_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_twilightforest_twilight_oak_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_twilightforest_twilight_oak_narrow",
       "required": false
     },
     {
@@ -572,7 +1088,19 @@
       "required": false
     },
     {
+      "id": "railways:track_biomesoplenty_dead",
+      "required": false
+    },
+    {
       "id": "railways:track_biomesoplenty_dead_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_biomesoplenty_dead_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_biomesoplenty_dead_narrow",
       "required": false
     },
     {
@@ -584,7 +1112,19 @@
       "required": false
     },
     {
+      "id": "railways:track_biomesoplenty_fir",
+      "required": false
+    },
+    {
       "id": "railways:track_biomesoplenty_fir_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_biomesoplenty_fir_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_biomesoplenty_fir_narrow",
       "required": false
     },
     {
@@ -596,7 +1136,19 @@
       "required": false
     },
     {
+      "id": "railways:track_biomesoplenty_hellbark",
+      "required": false
+    },
+    {
       "id": "railways:track_biomesoplenty_hellbark_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_biomesoplenty_hellbark_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_biomesoplenty_hellbark_narrow",
       "required": false
     },
     {
@@ -608,7 +1160,19 @@
       "required": false
     },
     {
+      "id": "railways:track_biomesoplenty_jacaranda",
+      "required": false
+    },
+    {
       "id": "railways:track_biomesoplenty_jacaranda_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_biomesoplenty_jacaranda_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_biomesoplenty_jacaranda_narrow",
       "required": false
     },
     {
@@ -620,7 +1184,19 @@
       "required": false
     },
     {
+      "id": "railways:track_biomesoplenty_magic",
+      "required": false
+    },
+    {
       "id": "railways:track_biomesoplenty_magic_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_biomesoplenty_magic_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_biomesoplenty_magic_narrow",
       "required": false
     },
     {
@@ -632,7 +1208,19 @@
       "required": false
     },
     {
+      "id": "railways:track_biomesoplenty_mahogany",
+      "required": false
+    },
+    {
       "id": "railways:track_biomesoplenty_mahogany_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_biomesoplenty_mahogany_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_biomesoplenty_mahogany_narrow",
       "required": false
     },
     {
@@ -644,7 +1232,19 @@
       "required": false
     },
     {
+      "id": "railways:track_biomesoplenty_palm",
+      "required": false
+    },
+    {
       "id": "railways:track_biomesoplenty_palm_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_biomesoplenty_palm_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_biomesoplenty_palm_narrow",
       "required": false
     },
     {
@@ -656,7 +1256,19 @@
       "required": false
     },
     {
+      "id": "railways:track_biomesoplenty_redwood",
+      "required": false
+    },
+    {
       "id": "railways:track_biomesoplenty_redwood_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_biomesoplenty_redwood_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_biomesoplenty_redwood_narrow",
       "required": false
     },
     {
@@ -668,7 +1280,19 @@
       "required": false
     },
     {
+      "id": "railways:track_biomesoplenty_umbran",
+      "required": false
+    },
+    {
       "id": "railways:track_biomesoplenty_umbran_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_biomesoplenty_umbran_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_biomesoplenty_umbran_narrow",
       "required": false
     },
     {
@@ -680,7 +1304,19 @@
       "required": false
     },
     {
+      "id": "railways:track_biomesoplenty_willow",
+      "required": false
+    },
+    {
       "id": "railways:track_biomesoplenty_willow_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_biomesoplenty_willow_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_biomesoplenty_willow_narrow",
       "required": false
     },
     {
@@ -692,7 +1328,19 @@
       "required": false
     },
     {
+      "id": "railways:track_natures_spirit_redwood",
+      "required": false
+    },
+    {
       "id": "railways:track_natures_spirit_redwood_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_natures_spirit_redwood_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_natures_spirit_redwood_narrow",
       "required": false
     },
     {
@@ -704,7 +1352,19 @@
       "required": false
     },
     {
+      "id": "railways:track_natures_spirit_sugi",
+      "required": false
+    },
+    {
       "id": "railways:track_natures_spirit_sugi_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_natures_spirit_sugi_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_natures_spirit_sugi_narrow",
       "required": false
     },
     {
@@ -716,7 +1376,19 @@
       "required": false
     },
     {
+      "id": "railways:track_natures_spirit_wisteria",
+      "required": false
+    },
+    {
       "id": "railways:track_natures_spirit_wisteria_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_natures_spirit_wisteria_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_natures_spirit_wisteria_narrow",
       "required": false
     },
     {
@@ -728,7 +1400,19 @@
       "required": false
     },
     {
+      "id": "railways:track_natures_spirit_fir",
+      "required": false
+    },
+    {
       "id": "railways:track_natures_spirit_fir_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_natures_spirit_fir_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_natures_spirit_fir_narrow",
       "required": false
     },
     {
@@ -740,7 +1424,19 @@
       "required": false
     },
     {
+      "id": "railways:track_natures_spirit_willow",
+      "required": false
+    },
+    {
       "id": "railways:track_natures_spirit_willow_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_natures_spirit_willow_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_natures_spirit_willow_narrow",
       "required": false
     },
     {
@@ -752,7 +1448,19 @@
       "required": false
     },
     {
+      "id": "railways:track_natures_spirit_aspen",
+      "required": false
+    },
+    {
       "id": "railways:track_natures_spirit_aspen_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_natures_spirit_aspen_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_natures_spirit_aspen_narrow",
       "required": false
     },
     {
@@ -764,7 +1472,19 @@
       "required": false
     },
     {
+      "id": "railways:track_natures_spirit_maple",
+      "required": false
+    },
+    {
       "id": "railways:track_natures_spirit_maple_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_natures_spirit_maple_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_natures_spirit_maple_narrow",
       "required": false
     },
     {
@@ -776,7 +1496,19 @@
       "required": false
     },
     {
+      "id": "railways:track_natures_spirit_cypress",
+      "required": false
+    },
+    {
       "id": "railways:track_natures_spirit_cypress_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_natures_spirit_cypress_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_natures_spirit_cypress_narrow",
       "required": false
     },
     {
@@ -788,7 +1520,19 @@
       "required": false
     },
     {
+      "id": "railways:track_natures_spirit_olive",
+      "required": false
+    },
+    {
       "id": "railways:track_natures_spirit_olive_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_natures_spirit_olive_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_natures_spirit_olive_narrow",
       "required": false
     },
     {
@@ -800,7 +1544,19 @@
       "required": false
     },
     {
+      "id": "railways:track_natures_spirit_joshua",
+      "required": false
+    },
+    {
       "id": "railways:track_natures_spirit_joshua_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_natures_spirit_joshua_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_natures_spirit_joshua_narrow",
       "required": false
     },
     {
@@ -812,7 +1568,19 @@
       "required": false
     },
     {
+      "id": "railways:track_natures_spirit_ghaf",
+      "required": false
+    },
+    {
       "id": "railways:track_natures_spirit_ghaf_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_natures_spirit_ghaf_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_natures_spirit_ghaf_narrow",
       "required": false
     },
     {
@@ -824,7 +1592,19 @@
       "required": false
     },
     {
+      "id": "railways:track_natures_spirit_palo_verde",
+      "required": false
+    },
+    {
       "id": "railways:track_natures_spirit_palo_verde_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_natures_spirit_palo_verde_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_natures_spirit_palo_verde_narrow",
       "required": false
     },
     {
@@ -836,7 +1616,19 @@
       "required": false
     },
     {
+      "id": "railways:track_create_dd_rose",
+      "required": false
+    },
+    {
       "id": "railways:track_create_dd_rose_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_create_dd_rose_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_create_dd_rose_narrow",
       "required": false
     },
     {
@@ -848,7 +1640,19 @@
       "required": false
     },
     {
+      "id": "railways:track_create_dd_rubber",
+      "required": false
+    },
+    {
       "id": "railways:track_create_dd_rubber_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_create_dd_rubber_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_create_dd_rubber_narrow",
       "required": false
     },
     {
@@ -860,7 +1664,19 @@
       "required": false
     },
     {
+      "id": "railways:track_create_dd_smoked",
+      "required": false
+    },
+    {
       "id": "railways:track_create_dd_smoked_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_create_dd_smoked_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_create_dd_smoked_narrow",
       "required": false
     },
     {
@@ -872,7 +1688,19 @@
       "required": false
     },
     {
+      "id": "railways:track_create_dd_spirit",
+      "required": false
+    },
+    {
       "id": "railways:track_create_dd_spirit_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_create_dd_spirit_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_create_dd_spirit_narrow",
       "required": false
     },
     {
@@ -884,7 +1712,19 @@
       "required": false
     },
     {
+      "id": "railways:track_quark_blossom",
+      "required": false
+    },
+    {
       "id": "railways:track_quark_blossom_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_quark_blossom_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_quark_blossom_narrow",
       "required": false
     },
     {
@@ -896,7 +1736,19 @@
       "required": false
     },
     {
+      "id": "railways:track_quark_ancient",
+      "required": false
+    },
+    {
       "id": "railways:track_quark_ancient_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_quark_ancient_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_quark_ancient_narrow",
       "required": false
     },
     {
@@ -908,7 +1760,19 @@
       "required": false
     },
     {
+      "id": "railways:track_quark_azalea",
+      "required": false
+    },
+    {
       "id": "railways:track_quark_azalea_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_quark_azalea_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_quark_azalea_narrow",
       "required": false
     },
     {
@@ -920,7 +1784,19 @@
       "required": false
     },
     {
+      "id": "railways:track_tfc_acacia",
+      "required": false
+    },
+    {
       "id": "railways:track_tfc_acacia_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_acacia_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_acacia_narrow",
       "required": false
     },
     {
@@ -932,7 +1808,19 @@
       "required": false
     },
     {
+      "id": "railways:track_tfc_ash",
+      "required": false
+    },
+    {
       "id": "railways:track_tfc_ash_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_ash_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_ash_narrow",
       "required": false
     },
     {
@@ -944,7 +1832,19 @@
       "required": false
     },
     {
+      "id": "railways:track_tfc_aspen",
+      "required": false
+    },
+    {
       "id": "railways:track_tfc_aspen_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_aspen_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_aspen_narrow",
       "required": false
     },
     {
@@ -956,7 +1856,19 @@
       "required": false
     },
     {
+      "id": "railways:track_tfc_birch",
+      "required": false
+    },
+    {
       "id": "railways:track_tfc_birch_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_birch_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_birch_narrow",
       "required": false
     },
     {
@@ -968,7 +1880,19 @@
       "required": false
     },
     {
+      "id": "railways:track_tfc_blackwood",
+      "required": false
+    },
+    {
       "id": "railways:track_tfc_blackwood_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_blackwood_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_blackwood_narrow",
       "required": false
     },
     {
@@ -980,7 +1904,19 @@
       "required": false
     },
     {
+      "id": "railways:track_tfc_chestnut",
+      "required": false
+    },
+    {
       "id": "railways:track_tfc_chestnut_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_chestnut_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_chestnut_narrow",
       "required": false
     },
     {
@@ -992,7 +1928,19 @@
       "required": false
     },
     {
+      "id": "railways:track_tfc_douglas_fir",
+      "required": false
+    },
+    {
       "id": "railways:track_tfc_douglas_fir_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_douglas_fir_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_douglas_fir_narrow",
       "required": false
     },
     {
@@ -1004,7 +1952,19 @@
       "required": false
     },
     {
+      "id": "railways:track_tfc_hickory",
+      "required": false
+    },
+    {
       "id": "railways:track_tfc_hickory_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_hickory_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_hickory_narrow",
       "required": false
     },
     {
@@ -1016,7 +1976,19 @@
       "required": false
     },
     {
+      "id": "railways:track_tfc_kapok",
+      "required": false
+    },
+    {
       "id": "railways:track_tfc_kapok_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_kapok_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_kapok_narrow",
       "required": false
     },
     {
@@ -1028,7 +2000,19 @@
       "required": false
     },
     {
+      "id": "railways:track_tfc_mangrove",
+      "required": false
+    },
+    {
       "id": "railways:track_tfc_mangrove_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_mangrove_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_mangrove_narrow",
       "required": false
     },
     {
@@ -1040,7 +2024,19 @@
       "required": false
     },
     {
+      "id": "railways:track_tfc_maple",
+      "required": false
+    },
+    {
       "id": "railways:track_tfc_maple_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_maple_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_maple_narrow",
       "required": false
     },
     {
@@ -1052,7 +2048,19 @@
       "required": false
     },
     {
+      "id": "railways:track_tfc_oak",
+      "required": false
+    },
+    {
       "id": "railways:track_tfc_oak_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_oak_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_oak_narrow",
       "required": false
     },
     {
@@ -1064,7 +2072,19 @@
       "required": false
     },
     {
+      "id": "railways:track_tfc_palm",
+      "required": false
+    },
+    {
       "id": "railways:track_tfc_palm_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_palm_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_palm_narrow",
       "required": false
     },
     {
@@ -1076,7 +2096,19 @@
       "required": false
     },
     {
+      "id": "railways:track_tfc_pine",
+      "required": false
+    },
+    {
       "id": "railways:track_tfc_pine_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_pine_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_pine_narrow",
       "required": false
     },
     {
@@ -1088,7 +2120,19 @@
       "required": false
     },
     {
+      "id": "railways:track_tfc_rosewood",
+      "required": false
+    },
+    {
       "id": "railways:track_tfc_rosewood_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_rosewood_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_rosewood_narrow",
       "required": false
     },
     {
@@ -1100,7 +2144,19 @@
       "required": false
     },
     {
+      "id": "railways:track_tfc_sequoia",
+      "required": false
+    },
+    {
       "id": "railways:track_tfc_sequoia_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_sequoia_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_sequoia_narrow",
       "required": false
     },
     {
@@ -1112,7 +2168,19 @@
       "required": false
     },
     {
+      "id": "railways:track_tfc_spruce",
+      "required": false
+    },
+    {
       "id": "railways:track_tfc_spruce_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_spruce_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_spruce_narrow",
       "required": false
     },
     {
@@ -1124,7 +2192,19 @@
       "required": false
     },
     {
+      "id": "railways:track_tfc_sycamore",
+      "required": false
+    },
+    {
       "id": "railways:track_tfc_sycamore_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_sycamore_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_sycamore_narrow",
       "required": false
     },
     {
@@ -1136,7 +2216,19 @@
       "required": false
     },
     {
+      "id": "railways:track_tfc_white_cedar",
+      "required": false
+    },
+    {
       "id": "railways:track_tfc_white_cedar_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_white_cedar_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_white_cedar_narrow",
       "required": false
     },
     {
@@ -1148,7 +2240,19 @@
       "required": false
     },
     {
+      "id": "railways:track_tfc_willow",
+      "required": false
+    },
+    {
       "id": "railways:track_tfc_willow_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_willow_wide",
+      "required": false
+    },
+    {
+      "id": "railways:track_tfc_willow_narrow",
       "required": false
     },
     {

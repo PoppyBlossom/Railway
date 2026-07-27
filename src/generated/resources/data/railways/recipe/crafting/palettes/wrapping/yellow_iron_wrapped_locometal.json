@@ -6,7 +6,7 @@
       "item": "railways:yellow_slashed_locometal"
     },
     "d": {
-      "tag": "railways:internal/ingots/iron_ingots"
+      "tag": "c:ingots/iron"
     }
   },
   "pattern": [

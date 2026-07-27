@@ -9,7 +9,7 @@
       "tag": "minecraft:fences"
     },
     "S": {
-      "tag": "railways:internal/plates/iron_plates"
+      "tag": "c:plates/iron"
     },
     "T": {
       "item": "create:electron_tube"

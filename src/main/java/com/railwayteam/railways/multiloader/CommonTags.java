@@ -57,8 +57,7 @@ public class CommonTags {
 	});
 
 	public static final CommonTag<Block>
-			RELOCATION_NOT_SUPPORTED = block("relocation_not_supported"),
-			COLORLESS_GLASS_B = block("glass_blocks/colorless");
+			RELOCATION_NOT_SUPPORTED = block("relocation_not_supported");
 
 	public static CommonTag<Block> block(String common, String fabric, String forge) {
 		CommonTag<Block> tag = CommonTag.conventional(Registries.BLOCK, common, fabric, forge);

@@ -6,7 +6,7 @@
       "tag": "railways:conductor_caps"
     },
     {
-      "tag": "railways:internal/dyes/light_blue_dyes"
+      "tag": "c:dyes/light_blue"
     }
   ],
   "result": {

@@ -2,7 +2,7 @@
   "type": "create:mixing",
   "ingredients": [
     {
-      "tag": "railways:internal/dyes/black_dyes"
+      "tag": "c:dyes/black"
     },
     {
       "tag": "railways:binding_agents"

@@ -81,8 +81,12 @@ public class RailwaysSequencedAssemblyRecipeGen extends RailwaysRecipeProvider {
 
         for (TrackMaterial material : trackMaterials) {
             boolean isCompat = TRACK_COMPAT_MODS.contains(material.id.getNamespace());
-            
-            if (!isCompat && (material.railsIngredient.isEmpty() || material.sleeperIngredient.isEmpty())) {
+
+            // Phantom variants and monorail have explicit recipes defined after this loop
+            if (material == CRTrackMaterials.PHANTOM
+                || material == CRTrackMaterials.WIDE_GAUGE_PHANTOM
+                || material == CRTrackMaterials.NARROW_GAUGE_PHANTOM
+                || material == CRTrackMaterials.MONORAIL) {
                 continue;
             }
 
@@ -120,6 +124,10 @@ public class RailwaysSequencedAssemblyRecipeGen extends RailwaysRecipeProvider {
                         .addStep(PressingRecipe::new, rb -> rb)
                 ));
             } else {
+                if (!isCompat && (material.railsIngredient.isEmpty() || material.sleeperIngredient.isEmpty())) {
+                    continue;
+                }
+
                 Ingredient sleeperIngredient = resolveCompatSleeperIngredient(material);
                 Ingredient finalRailsIngredient = material.railsIngredient;
 

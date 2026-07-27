@@ -6,7 +6,7 @@
       "item": "minecraft:redstone"
     },
     "=": {
-      "tag": "railways:internal/plates/iron_plates"
+      "tag": "c:plates/iron"
     },
     "T": {
       "item": "create:railway_casing"
