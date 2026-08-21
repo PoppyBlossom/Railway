@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "G": {
-      "tag": "railways:internal/glass/colorless"
+      "tag": "c:glass_blocks/colorless"
     }
   },
   "pattern": [

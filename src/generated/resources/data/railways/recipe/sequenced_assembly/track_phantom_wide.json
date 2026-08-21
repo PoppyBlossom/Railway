@@ -29,7 +29,7 @@
           "item": "railways:track_incomplete_phantom_wide"
         },
         {
-          "item": "minecraft:phantom_membrane"
+          "tag": "railways:compat_slabs/railways/phantom"
         }
       ],
       "results": [

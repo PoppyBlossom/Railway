@@ -18,27 +18,15 @@
 
 package com.railwayteam.railways.multiloader;
 
-import com.railwayteam.railways.Railways;
-import com.railwayteam.railways.base.data.CRTagGen;
-import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import net.minecraft.core.Registry;
-import net.minecraft.data.tags.TagsProvider.TagAppender;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 
-import java.util.function.Consumer;
-
 /**
- * A common tag is a trio of tags: an internal {@code railways:internal/<path>}
- * alias, a {@code c:<path>} tag, and a {@code forge:<path>} tag. The alias is
- * the one used by recipes (via {@link #tag}); it references the {@code c:} and
- * {@code forge:} tags as optional so a recipe works whichever of the two
- * platforms' common tags any installed mod populates.
- *
- * <p>Content is added to the {@code c:} and {@code forge:} tags via
- * {@link #generateBoth(RegistrateTagsProvider, Consumer)}; the alias is
- * registered as a tag file by {@link #generateCommon(RegistrateTagsProvider)}.
+ * A common tag wrapping a single {@code c:<forge>} conventional tag.
+ * All three fields ({@link #tag}, {@link #fabric}, {@link #forge}) point to the
+ * same tag key. NeoForge 1.21.1 only.
  */
 public class CommonTag<T> {
 	public final TagKey<T> tag, fabric, forge;
@@ -54,24 +42,8 @@ public class CommonTag<T> {
 	}
 
 	public static <T> CommonTag<T> conventional(ResourceKey<? extends Registry<T>> registry, String common, String fabric, String forge) {
-		return new CommonTag<>(
-			registry,
-			Railways.asResource("internal/" + common),
-			ResourceLocation.fromNamespaceAndPath("c", fabric),
-			ResourceLocation.fromNamespaceAndPath("forge", forge)
-		);
-	}
-
-	public CommonTag<T> generateBoth(RegistrateTagsProvider<T> tags, Consumer<TagAppender<T>> consumer) {
-		consumer.accept(CRTagGen.tagAppender(tags, fabric));
-		consumer.accept(CRTagGen.tagAppender(tags, forge));
-		return this;
-	}
-
-	public CommonTag<T> generateCommon(RegistrateTagsProvider<T> tags) {
-		CRTagGen.tagAppender(tags, tag)
-			.addOptionalTag(fabric.location())
-			.addOptionalTag(forge.location());
-		return this;
+		ResourceLocation commonId = ResourceLocation.fromNamespaceAndPath("c", forge);
+		TagKey<T> commonTag = TagKey.create(registry, commonId);
+		return new CommonTag<>(commonTag, commonTag, commonTag);
 	}
 }

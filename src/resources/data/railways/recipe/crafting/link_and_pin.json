@@ -6,13 +6,13 @@
       "item": "create:industrial_iron_block"
     },
     ",": {
-      "tag": "railways:internal/nuggets/iron_nuggets"
+      "tag": "c:nuggets/iron"
     },
     "I": {
       "item": "create:shaft"
     },
     "_": {
-      "tag": "railways:internal/plates/iron_plates"
+      "tag": "c:plates/iron"
     }
   },
   "pattern": [

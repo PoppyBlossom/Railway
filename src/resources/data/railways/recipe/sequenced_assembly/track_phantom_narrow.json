@@ -30,7 +30,7 @@
           "item": "railways:track_incomplete_phantom_narrow"
         },
         {
-          "tag": "railways:internal/ingots/iron_ingots"
+          "tag": "c:ingots/iron"
         }
       ],
       "results": [

@@ -43,7 +43,7 @@ public class CommonTags {
 			COPPER_INGOTS = item("ingots/copper_ingots", "copper_ingots", "ingots/copper"),
 			BRASS_INGOTS = item("ingots/brass_ingots", "brass_ingots", "ingots/brass"),
 			IRON_INGOTS = item("ingots/iron_ingots", "iron_ingots", "ingots/iron"),
-			COLORLESS_GLASS_I = item("glass/colorless", "colorless_glass", "glass/colorless"),
+			COLORLESS_GLASS_I = item("glass_blocks/colorless"),
 			WORKBENCH = item("workbench");
 
 	public static final Map<DyeColor, CommonTag<Item>> DYES = Util.make(new EnumMap<>(DyeColor.class), dyes -> {
@@ -57,8 +57,7 @@ public class CommonTags {
 	});
 
 	public static final CommonTag<Block>
-			RELOCATION_NOT_SUPPORTED = block("relocation_not_supported"),
-			COLORLESS_GLASS_B = block("glass/colorless", "colorless_glass", "glass/colorless");
+			RELOCATION_NOT_SUPPORTED = block("relocation_not_supported");
 
 	public static CommonTag<Block> block(String common, String fabric, String forge) {
 		CommonTag<Block> tag = CommonTag.conventional(Registries.BLOCK, common, fabric, forge);

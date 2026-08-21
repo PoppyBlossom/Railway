@@ -2,7 +2,7 @@
   "type": "create:mixing",
   "ingredients": [
     {
-      "tag": "railways:internal/dyes/white_dyes"
+      "tag": "c:dyes/white"
     },
     {
       "tag": "railways:binding_agents"

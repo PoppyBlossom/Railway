@@ -3,7 +3,7 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "railways:internal/glass/colorless"
+      "tag": "c:glass_blocks/colorless"
     },
     {
       "item": "railways:blue_riveted_locometal"

@@ -6,7 +6,7 @@
       "item": "railways:white_slashed_locometal"
     },
     "d": {
-      "tag": "railways:internal/ingots/copper_ingots"
+      "tag": "c:ingots/copper"
     }
   },
   "pattern": [

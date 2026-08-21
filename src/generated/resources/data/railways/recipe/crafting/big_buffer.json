@@ -9,7 +9,7 @@
       "item": "railways:small_buffer"
     },
     "_": {
-      "tag": "railways:internal/plates/iron_plates"
+      "tag": "c:plates/iron"
     }
   },
   "pattern": [

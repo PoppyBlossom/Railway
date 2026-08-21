@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": {
-      "tag": "railways:internal/plates/iron_plates"
+      "tag": "c:plates/iron"
     },
     "+": {
       "item": "minecraft:campfire"

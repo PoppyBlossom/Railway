@@ -3,10 +3,10 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "railways:internal/ingots/copper_ingots"
+      "tag": "c:ingots/copper"
     },
     {
-      "tag": "railways:internal/nuggets/brass_nuggets"
+      "tag": "c:nuggets/brass"
     }
   ],
   "result": {
